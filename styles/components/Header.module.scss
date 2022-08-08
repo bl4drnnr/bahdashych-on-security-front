@@ -1,0 +1,23 @@
+.header {
+  width: 100%;
+  background-color: rgb(15 23 42/1);
+  padding: 15px;
+  color: white;
+  .header__inner {
+    width: 60%;
+    margin: 0 auto;
+    justify-content: space-between;
+    display: flex;
+    .header__headerTitle {
+      margin: 0;
+      cursor: pointer;
+      transition: .2s;
+      &:hover {
+        color: lightskyblue;
+      }
+    }
+    .header__buttons {
+      display: flex;
+    }
+  }
+}
