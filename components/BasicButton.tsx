@@ -1,11 +1,12 @@
 import styles from '../styles/components/Button.module.scss';
 
-const Button = ({ title }: { title: string }) => {
+const BasicButton = ({ children, ...props }: any) => {
   return (
     <button
+      {...props}
       className={styles.button}
-    >{title}</button>
+    >{children}</button>
   )
 };
 
-export default Button;
+export default BasicButton;
