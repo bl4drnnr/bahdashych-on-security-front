@@ -1,9 +1,18 @@
+import { NextPage } from "next";
 import React from 'react';
 import Link from "next/link";
 import BasicInput from "../components/BasicInput";
 import BasicButton from "../components/BasicButton";
+import { useForgotPasswordService } from "../services/user/useForgotPassword.service";
 
-const ForgotPassword = () => {
+const ForgotPassword: NextPage = () => {
+  const [email, setEmail] = React.useState();
+  const { forgotPassword, loading } = useForgotPasswordService();
+
+  const handleForgotPassword = async () => {
+
+  };
+
   return (
     <>
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
@@ -28,7 +37,9 @@ const ForgotPassword = () => {
             />
           </div>
 
-          <BasicButton>
+          <BasicButton
+            onClick={() => handleForgotPassword()}
+          >
             Restore email
           </BasicButton>
         </div>

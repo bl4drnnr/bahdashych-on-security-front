@@ -1,9 +1,19 @@
 import { NextPage } from 'next';
+import React from "react";
+import Link from 'next/link';
 import BasicButton from '../components/BasicButton';
 import BasicInput from '../components/BasicInput';
-import Link from 'next/link';
+import { useSignInService } from "../services/user/useSignIn.service";
 
 const SignIn: NextPage = () => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const { signIn, loading } = useSignInService();
+
+  const handleSignIn = async () => {
+
+  };
+
   return (
     <>
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
@@ -42,7 +52,9 @@ const SignIn: NextPage = () => {
             </Link>
           </div>
 
-          <BasicButton>
+          <BasicButton
+            onClick={() => handleSignIn()}
+          >
             Sign in
           </BasicButton>
         </div>

@@ -1,9 +1,21 @@
-import React from 'react';
+import { NextPage } from 'next';
+import React  from "react";
 import Link from "next/link";
 import BasicInput from "../components/BasicInput";
 import BasicButton from "../components/BasicButton";
+import { useSignUpService } from "../services/user/useSignUp.service";
 
-const SignUp = () => {
+const SignUp: NextPage = () => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [passwordRepeat, setPasswordRepeat] = React.useState('');
+
+  const { signUp, loading } = useSignUpService();
+
+  const handleSignUp = async () => {
+
+  };
+
   return (
     <>
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
@@ -40,7 +52,9 @@ const SignUp = () => {
             />
           </div>
 
-          <BasicButton>
+          <BasicButton
+            onClick={() => handleSignUp()}
+          >
             Sign up
           </BasicButton>
         </div>
