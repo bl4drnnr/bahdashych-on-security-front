@@ -16,32 +16,22 @@ const SignIn: NextPage = () => {
                 alt='Workflow'
               />
             </Link>
-            <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>Sign in to your account</h2>
+            <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>Welcome back!</h2>
           </div>
 
           <div className='rounded-md shadow-sm -space-y-px'>
-            <div>
-              <label htmlFor='email-address' className='sr-only'>
-                Email address
-              </label>
-              <BasicInput
-                type='email'
-                autoComplete='email'
-                placeholder='Email address'
-                className={'w-full rounded-t-md'}
-              />
-            </div>
-            <div>
-              <label htmlFor='password' className='sr-only'>
-                Password
-              </label>
-              <BasicInput
-                type='password'
-                autoComplete='current-password'
-                placeholder='Password'
-                className={'w-full rounded-b-md'}
-              />
-            </div>
+            <BasicInput
+              type='email'
+              autoComplete='email'
+              placeholder='Email address'
+              className={'w-full rounded-t-md'}
+            />
+            <BasicInput
+              type='password'
+              autoComplete='current-password'
+              placeholder='Password'
+              className={'w-full rounded-b-md'}
+            />
           </div>
 
           <div className='flex items-center justify-between'>
