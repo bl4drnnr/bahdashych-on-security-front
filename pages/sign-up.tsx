@@ -4,6 +4,7 @@ import Link from "next/link";
 import BasicInput from "../components/BasicInput";
 import BasicButton from "../components/BasicButton";
 import { useSignUpService } from "../services/user/useSignUp.service";
+import Image from "next/image";
 
 const SignUp: NextPage = () => {
   const [email, setEmail] = React.useState('');
@@ -22,7 +23,7 @@ const SignUp: NextPage = () => {
         <div className='max-w-md w-full space-y-8'>
           <div>
             <Link href={'/'}>
-              <img
+              <Image
                 className='mx-auto h-12 w-auto hover:cursor-pointer'
                 src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
                 alt='Workflow'

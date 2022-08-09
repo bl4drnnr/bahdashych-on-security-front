@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import BasicInput from './BasicInput';
+import Image from "next/image";
 
 const Header = () => {
   return (
@@ -8,7 +9,7 @@ const Header = () => {
         <div className='flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10'>
           <div className='flex justify-start lg:w-0 lg:flex-1'>
             <span className='sr-only'>Workflow</span>
-            <img
+            <Image
               className='h-8 w-auto sm:h-10'
               src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
               alt=''
