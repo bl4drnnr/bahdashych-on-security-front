@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Slug = () => {
+const SignUp = () => {
   return (
     <div>
 
@@ -8,4 +8,4 @@ const Slug = () => {
   );
 };
 
-export default Slug;
+export default SignUp;
