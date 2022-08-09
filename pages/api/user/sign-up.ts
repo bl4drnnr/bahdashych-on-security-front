@@ -5,9 +5,9 @@ import { api } from "../../../api/api";
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
-): Promise<void> => {
+) => {
   try {
-    const { data } = await api.get('/user/sign-up', req.body)
+    const { data } = await api.post('/user/sign-up', req.body)
 
     return res.json(data)
   } catch (error) {
