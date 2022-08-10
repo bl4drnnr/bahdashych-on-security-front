@@ -11,9 +11,6 @@ export default async (
 
     return res.json(data)
   } catch (error) {
-    console.log('-------------------------------')
-    console.log('error', error);
-    console.log('-------------------------------')
     return res
       .status((error as AxiosError).response?.status as number)
       .json((error as AxiosError).response?.data);

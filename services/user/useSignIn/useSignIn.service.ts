@@ -5,6 +5,7 @@ import { ISignIn } from "../../../interface/signIn.interface";
 export const useSignInService = () => {
   try {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const signIn = async (signInPayload: ISignIn) => {
       try {
@@ -12,13 +13,13 @@ export const useSignInService = () => {
         const { data } = await ApiClient.post('/user/sign-in', signInPayload);
         return data
       } catch (error: any) {
-        throw error?.response?.data
+        setError(error?.response?.data)
       } finally {
         setLoading(false)
       }
     }
 
-    return { signIn, loading };
+    return { signIn, loading, error };
   } catch (error: any) {
     throw Error(error?.message as string)
   }

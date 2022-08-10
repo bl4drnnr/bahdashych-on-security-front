@@ -10,7 +10,7 @@ const SignUp: NextPage = () => {
   const [signUpPayload, setSignUpPayload] = React.useState({
     email: '', username: '', password: '', passwordRepeat: ''
   });
-  const { signUp, loading } = useSignUpService()
+  const { signUp, loading, error } = useSignUpService();
 
   const handleSignUp = async () => {
     await signUp(signUpPayload);

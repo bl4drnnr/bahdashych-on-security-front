@@ -5,6 +5,7 @@ import { ISignUp } from "../../../interface/signUp.interface";
 export const useSignUpService = () => {
   try {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const signUp = async (signUpPayload: ISignUp) => {
       setLoading(true);
@@ -12,13 +13,13 @@ export const useSignUpService = () => {
         const { data } = await ApiClient.post('/user/sign-up', signUpPayload);
         return data
       } catch (error: any) {
-        throw error?.response?.data
+        setError(error?.response?.data)
       } finally {
         setLoading(false)
       }
     }
 
-    return { signUp, loading };
+    return { signUp, loading, error };
   } catch (error: any) {
     throw Error(error?.message as string)
   }

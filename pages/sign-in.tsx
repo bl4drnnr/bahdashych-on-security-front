@@ -9,7 +9,7 @@ import { useSignInService } from "../services/user/useSignIn/useSignIn.service";
 const SignIn: NextPage = () => {
   const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })
 
-  const { signIn, loading } = useSignInService();
+  const { signIn, loading, error } = useSignInService();
 
   const handleSignIn = async () => {
     await signIn(signInPayload);
