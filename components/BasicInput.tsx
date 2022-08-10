@@ -2,10 +2,14 @@ import React from 'react';
 
 interface IBasicInput {
   className: string;
+  type: string;
+  placeholder: string;
+  value: any;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-// eslint-disable-next-line react/display-name
-const BasicInput = React.forwardRef(({ ...props }: IBasicInput, ref) => {
+const BasicInput: React.FC<IBasicInput> =
+  React.forwardRef(({ ...props }: IBasicInput, ref) => {
   return (
     <>
       <input
@@ -15,5 +19,7 @@ const BasicInput = React.forwardRef(({ ...props }: IBasicInput, ref) => {
     </>
   );
 });
+
+BasicInput.displayName = "BasicInput";
 
 export default BasicInput;

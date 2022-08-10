@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import BasicInput from './BasicInput';
+import React from "react";
 
 const Header = () => {
+  const [search, setSearch] = React.useState('')
+
   return (
     <>
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
@@ -19,6 +22,10 @@ const Header = () => {
             type='text'
             placeholder='Search...'
             className={'w-1/5 rounded-lg'}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setSearch(e.target.value)
+            }}
+            value={search}
           />
 
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>

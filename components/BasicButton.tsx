@@ -1,11 +1,12 @@
 import React from 'react';
 
 interface IBasicButton {
-  children: JSX.Element
+  children: string;
+  onClick: () => Promise<void>;
 }
 
-// eslint-disable-next-line react/display-name
-const BasicButton = React.forwardRef(({children, ...props}: IBasicButton, ref) => {
+const BasicButton: React.FC<IBasicButton> =
+  React.forwardRef(({children, ...props}: IBasicButton) => {
   return (
     <>
       <button
@@ -15,5 +16,7 @@ const BasicButton = React.forwardRef(({children, ...props}: IBasicButton, ref) =
     </>
   )
 });
+
+BasicButton.displayName = "BasicButton"
 
 export default BasicButton;

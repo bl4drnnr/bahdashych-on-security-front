@@ -35,7 +35,6 @@ const SignIn: NextPage = () => {
           <div className='rounded-md shadow-sm -space-y-px'>
             <BasicInput
               type='email'
-              autoComplete='email'
               placeholder='Email address'
               value={signInPayload.email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -44,7 +43,6 @@ const SignIn: NextPage = () => {
             />
             <BasicInput
               type='password'
-              autoComplete='current-password'
               placeholder='Password'
               value={signInPayload.password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

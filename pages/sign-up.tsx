@@ -36,7 +36,6 @@ const SignUp: NextPage = () => {
           <div className='rounded-md shadow-sm -space-y-px'>
             <BasicInput
               type='email'
-              autoComplete='email'
               placeholder='Email address'
               value={signUpPayload.email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -53,7 +52,6 @@ const SignUp: NextPage = () => {
             />
             <BasicInput
               type='password'
-              autoComplete='current-password'
               placeholder='Password'
               value={signUpPayload.password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -62,7 +60,6 @@ const SignUp: NextPage = () => {
             />
             <BasicInput
               type='password'
-              autoComplete='current-password'
               placeholder='Password repeat'
               value={signUpPayload.passwordRepeat}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
