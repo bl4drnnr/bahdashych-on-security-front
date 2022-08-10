@@ -1,29 +1,26 @@
 import React from "react";
 import { ApiClient } from "../../api.api-client";
-import { ISignUp } from "../../../interfaces/signUp.interface";
 import { IError } from "../../../interfaces/error.interface";
+import { IPost } from "../../../interfaces/post.interface";
 
-export const useSignUpService = () => {
+export const useCreatePostService = () => {
   try {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<IError>({ message: '', statusCode: 0 });
 
-    const signUp = async (signUpPayload: ISignUp) => {
+    const createPost = async (post: IPost) => {
       setLoading(true);
       try {
-        const { data } = await ApiClient.post('/user/sign-up', signUpPayload);
+        const { data } = await ApiClient.post('/post', post)
         return data
       } catch (error: any) {
         setError(error?.response?.data)
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    const splitMessage = error.message.split('-').join(' ')
-    error.message = splitMessage.charAt(0).toUpperCase() + splitMessage.slice(1)
-
-    return { signUp, loading, error };
+    return { createPost, loading, error };
   } catch (error: any) {
     throw Error(error?.message as string)
   }
