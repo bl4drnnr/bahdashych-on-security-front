@@ -70,6 +70,18 @@ const SignUp: NextPage = () => {
             />
           </div>
 
+          {error.message
+          ? (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong className="font-bold">Error!&nbsp;</strong>
+                <span className="block sm:inline">{
+                  error.message.split('-').join(' ').charAt(0).toUpperCase() +
+                  error.message.split('-').join(' ').slice(1)
+                }.</span>
+              </div>
+            )
+          : null}
+
           <BasicButton
             onClick={() => handleSignUp()}
           >
