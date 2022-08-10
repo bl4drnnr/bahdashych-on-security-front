@@ -5,7 +5,7 @@ import BasicInput from "../components/BasicInput";
 import BasicButton from "../components/BasicButton";
 import Loader from "../components/Loader";
 import ErrorBox from "../components/ErrorBox";
-import { useSignUpService } from "../services/user/useSignUp/useSignUp.service";
+import { useSignUpService } from "../services/user/useSignUp.service";
 
 const SignUp: NextPage = () => {
   const [signUpPayload, setSignUpPayload] = React.useState({

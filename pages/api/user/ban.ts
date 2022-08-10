@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { AxiosError } from "axios";
-import { api } from "../../../../api";
+import { api } from "../../../api";
 
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.delete(`/post/${req.query.id}`)
+    const { data } = await api.post('/user/ban', req.body)
 
     return res.json(data)
   } catch (error) {

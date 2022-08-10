@@ -1,7 +1,7 @@
 import React from "react";
-import { ApiClient } from "../../api.api-client";
-import { IError } from "../../../interfaces/error.interface";
-import { IComment } from "../../../interfaces/comment.interface";
+import { ApiClient } from "../api.api-client";
+import { IError } from "../../interfaces/error.interface";
+import { IComment } from "../../interfaces/comment.interface";
 
 export const useCommentPostService = () => {
   try {

@@ -1,7 +1,7 @@
 import React from "react";
-import { ApiClient } from "../../api.api-client";
-import { ISignUp } from "../../../interfaces/signUp.interface";
-import { IError } from "../../../interfaces/error.interface";
+import { ApiClient } from "../api.api-client";
+import { ISignUp } from "../../interfaces/signUp.interface";
+import { IError } from "../../interfaces/error.interface";
 
 export const useSignUpService = () => {
   try {

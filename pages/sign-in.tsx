@@ -5,7 +5,7 @@ import BasicButton from '../components/BasicButton';
 import BasicInput from '../components/BasicInput';
 import Loader from "../components/Loader";
 import ErrorBox from "../components/ErrorBox";
-import { useSignInService } from "../services/user/useSignIn/useSignIn.service";
+import { useSignInService } from "../services/user/useSignIn.service";
 
 const SignIn: NextPage = () => {
   const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })

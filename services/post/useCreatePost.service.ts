@@ -1,16 +1,17 @@
 import React from "react";
-import { ApiClient } from "../../api.api-client";
-import { IError } from "../../../interfaces/error.interface";
+import { ApiClient } from "../api.api-client";
+import { IError } from "../../interfaces/error.interface";
+import { IPost } from "../../interfaces/post.interface";
 
-export const useGetPostService = () => {
+export const useCreatePostService = () => {
   try {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<IError>({ message: '', statusCode: 0 });
 
-    const getPost = async (slug: string) => {
+    const createPost = async (post: IPost) => {
       setLoading(true);
       try {
-        const { data } = await ApiClient.get(`/post/${slug}`);
+        const { data } = await ApiClient.post('/post/create', post)
         return data
       } catch (error: any) {
         setError(error?.response?.data)
@@ -19,7 +20,7 @@ export const useGetPostService = () => {
       }
     }
 
-    return { getPost, loading, error };
+    return { createPost, loading, error };
   } catch (error: any) {
     throw Error(error?.message as string)
   }
