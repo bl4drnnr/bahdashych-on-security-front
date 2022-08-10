@@ -1,7 +1,11 @@
 import React from 'react';
 
+interface IBasicButton {
+  children: JSX.Element
+}
+
 // eslint-disable-next-line react/display-name
-const BasicButton = React.forwardRef(({children, ...props}: any, ref) => {
+const BasicButton = React.forwardRef(({children, ...props}: IBasicButton, ref) => {
   return (
     <>
       <button

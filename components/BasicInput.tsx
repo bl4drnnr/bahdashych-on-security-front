@@ -1,7 +1,11 @@
 import React from 'react';
 
+interface IBasicInput {
+  className: string;
+}
+
 // eslint-disable-next-line react/display-name
-const BasicInput = React.forwardRef(({ ...props }: any, ref) => {
+const BasicInput = React.forwardRef(({ ...props }: IBasicInput, ref) => {
   return (
     <>
       <input
