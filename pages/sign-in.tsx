@@ -4,6 +4,7 @@ import Link from 'next/link';
 import BasicButton from '../components/BasicButton';
 import BasicInput from '../components/BasicInput';
 import Loader from "../components/Loader";
+import ErrorBox from "../components/ErrorBox";
 import { useSignInService } from "../services/user/useSignIn/useSignIn.service";
 
 const SignIn: NextPage = () => {
@@ -51,6 +52,8 @@ const SignIn: NextPage = () => {
               className={'w-full rounded-b-md'}
             />
           </div>
+
+          {error.message ? (<ErrorBox error={error.message} />) : null}
 
           <BasicButton
             onClick={() => handleSignIn()}

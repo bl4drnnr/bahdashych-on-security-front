@@ -20,6 +20,9 @@ export const useSignUpService = () => {
       }
     }
 
+    const splitMessage = error.message.split('-').join(' ')
+    error.message = splitMessage.charAt(0).toUpperCase() + splitMessage.slice(1)
+
     return { signUp, loading, error };
   } catch (error: any) {
     throw Error(error?.message as string)
