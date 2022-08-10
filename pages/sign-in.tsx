@@ -3,20 +3,21 @@ import React from "react";
 import Link from 'next/link';
 import BasicButton from '../components/BasicButton';
 import BasicInput from '../components/BasicInput';
-import { useSignInService } from "../services/user/useSignIn.service";
+import Loader from "../components/Loader";
+import { useSignInService } from "../services/user/useSignIn/useSignIn.service";
 
 const SignIn: NextPage = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })
 
   const { signIn, loading } = useSignInService();
 
   const handleSignIn = async () => {
-
+    await signIn(signInPayload);
   };
 
   return (
     <>
+      {loading ? <Loader/> : null}
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div>
@@ -35,12 +36,18 @@ const SignIn: NextPage = () => {
               type='email'
               autoComplete='email'
               placeholder='Email address'
+              value={signInPayload.email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignInPayload({ ...signInPayload, email: e.target.value })}
               className={'w-full rounded-t-md'}
             />
             <BasicInput
               type='password'
               autoComplete='current-password'
               placeholder='Password'
+              value={signInPayload.password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignInPayload({ ...signInPayload, password: e.target.value })}
               className={'w-full rounded-b-md'}
             />
           </div>

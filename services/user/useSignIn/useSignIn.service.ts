@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { ApiClient } from "../api.api-client";
-import { ISignIn } from "../../interface/signIn.interface";
+import { ApiClient } from "../../api.api-client";
+import { ISignIn } from "../../../interface/signIn.interface";
 
 export const useSignInService = () => {
   try {
     const [loading, setLoading] = useState(false);
 
     const signIn = async (signInPayload: ISignIn) => {
-      setLoading(true);
       try {
-        const { data } = await ApiClient.post(`/user/sign-in`, signInPayload);
+        setLoading(true);
+        const { data } = await ApiClient.post('/user/sign-in', signInPayload);
         return data
       } catch (error: any) {
         throw error?.response?.data

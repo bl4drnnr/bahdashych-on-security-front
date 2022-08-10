@@ -3,21 +3,22 @@ import React  from "react";
 import Link from "next/link";
 import BasicInput from "../components/BasicInput";
 import BasicButton from "../components/BasicButton";
-import { useSignUpService } from "../services/user/useSignUp.service";
+import Loader from "../components/Loader";
+import { useSignUpService } from "../services/user/useSignUp/useSignUp.service";
 
 const SignUp: NextPage = () => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [passwordRepeat, setPasswordRepeat] = React.useState('');
-
-  const { signUp, loading } = useSignUpService();
+  const [signUpPayload, setSignUpPayload] = React.useState({
+    email: '', username: '', password: '', passwordRepeat: ''
+  });
+  const { signUp, loading } = useSignUpService()
 
   const handleSignUp = async () => {
-
+    await signUp(signUpPayload);
   };
 
   return (
     <>
+      {loading ? <Loader/> : null}
       <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div>
@@ -36,18 +37,35 @@ const SignUp: NextPage = () => {
               type='email'
               autoComplete='email'
               placeholder='Email address'
+              value={signUpPayload.email}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignUpPayload({ ...signUpPayload, email: e.target.value })}
               className={'w-full rounded-t-md'}
+            />
+            <BasicInput
+              type='text'
+              placeholder='Username'
+              value={signUpPayload.username}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignUpPayload({ ...signUpPayload, username: e.target.value })}
+              className={'w-full'}
             />
             <BasicInput
               type='password'
               autoComplete='current-password'
               placeholder='Password'
+              value={signUpPayload.password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignUpPayload({ ...signUpPayload, password: e.target.value })}
               className={'w-full'}
             />
             <BasicInput
               type='password'
               autoComplete='current-password'
               placeholder='Password repeat'
+              value={signUpPayload.passwordRepeat}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignUpPayload({ ...signUpPayload, passwordRepeat: e.target.value })}
               className={'w-full rounded-b-md'}
             />
           </div>

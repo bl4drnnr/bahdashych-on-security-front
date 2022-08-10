@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { AxiosError } from "axios";
-import { api } from "../../../api/api";
+import { api } from "../../../api";
 
 export default async (
   req: NextApiRequest,
