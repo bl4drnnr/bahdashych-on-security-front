@@ -6,7 +6,6 @@ import BasicInput from '../components/BasicInput';
 import Loader from "../components/Loader";
 import ErrorBox from "../components/ErrorBox";
 import { useSignInService } from "../services/user/useSignIn.service";
-import errorBox from "../components/ErrorBox";
 
 const SignIn: NextPage = () => {
   const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })
@@ -16,10 +15,6 @@ const SignIn: NextPage = () => {
   const handleSignIn = async () => {
     await signIn(signInPayload);
   };
-
-  const closeErrorBox = () => {
-    setError({ ...error, message: '' })
-  }
 
   return (
     <>
@@ -58,7 +53,7 @@ const SignIn: NextPage = () => {
 
           {error.message ? (
             <ErrorBox
-              close={closeErrorBox}
+              close={() => setError({ ...error, message: '' })}
               error={error.message}
             />
           ) : null}

@@ -9,17 +9,13 @@ import { useSignUpService } from "../services/user/useSignUp.service";
 
 const SignUp: NextPage = () => {
   const [signUpPayload, setSignUpPayload] = React.useState({
-    email: '', username: '', password: '', passwordRepeat: ''
+    email: '', username: '', password: '', passwordRepeat: '', firstName: '', lastName: ''
   });
   const { signUp, loading, error, setError } = useSignUpService();
 
   const handleSignUp = async () => {
     await signUp(signUpPayload);
   };
-
-  const closeErrorBox = () => {
-    setError({ ...error, message: '' })
-  }
 
   return (
     <>
@@ -72,9 +68,28 @@ const SignUp: NextPage = () => {
             />
           </div>
 
+          <div className='rounded-md shadow-sm -space-y-px'>
+            <BasicInput
+              type='text'
+              placeholder='First name (optional)'
+              value={signUpPayload.firstName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignUpPayload({ ...signUpPayload, firstName: e.target.value })}
+              className={'w-full rounded-t-md'}
+            />
+            <BasicInput
+              type='text'
+              placeholder='Last name (optional)'
+              value={signUpPayload.lastName}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSignUpPayload({ ...signUpPayload, lastName: e.target.value })}
+              className={'w-full rounded-b-md'}
+            />
+          </div>
+
           {error.message ? (
             <ErrorBox
-              close={closeErrorBox}
+              close={() => setError({ ...error, message: '' })}
               error={error.message}
             />
           ) : null}
