@@ -6,7 +6,7 @@ interface IBasicButton {
 }
 
 const BasicButton: React.FC<IBasicButton> =
-  React.forwardRef(({children, ...props}: IBasicButton) => {
+  React.forwardRef(({children, ...props}: IBasicButton, ref) => {
   return (
     <>
       <button

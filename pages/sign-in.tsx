@@ -6,15 +6,20 @@ import BasicInput from '../components/BasicInput';
 import Loader from "../components/Loader";
 import ErrorBox from "../components/ErrorBox";
 import { useSignInService } from "../services/user/useSignIn.service";
+import errorBox from "../components/ErrorBox";
 
 const SignIn: NextPage = () => {
   const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })
 
-  const { signIn, loading, error } = useSignInService();
+  const { signIn, loading, error, setError } = useSignInService();
 
   const handleSignIn = async () => {
     await signIn(signInPayload);
   };
+
+  const closeErrorBox = () => {
+    setError({ ...error, message: '' })
+  }
 
   return (
     <>
@@ -51,7 +56,12 @@ const SignIn: NextPage = () => {
             />
           </div>
 
-          {error.message ? (<ErrorBox error={error.message} />) : null}
+          {error.message ? (
+            <ErrorBox
+              close={closeErrorBox}
+              error={error.message}
+            />
+          ) : null}
 
           <BasicButton
             onClick={() => handleSignIn()}

@@ -11,11 +11,15 @@ const SignUp: NextPage = () => {
   const [signUpPayload, setSignUpPayload] = React.useState({
     email: '', username: '', password: '', passwordRepeat: ''
   });
-  const { signUp, loading, error } = useSignUpService();
+  const { signUp, loading, error, setError } = useSignUpService();
 
   const handleSignUp = async () => {
     await signUp(signUpPayload);
   };
+
+  const closeErrorBox = () => {
+    setError({ ...error, message: '' })
+  }
 
   return (
     <>
@@ -68,7 +72,12 @@ const SignUp: NextPage = () => {
             />
           </div>
 
-          {error.message ? (<ErrorBox error={error.message} />) : null}
+          {error.message ? (
+            <ErrorBox
+              close={closeErrorBox}
+              error={error.message}
+            />
+          ) : null}
 
           <BasicButton
             onClick={() => handleSignUp()}

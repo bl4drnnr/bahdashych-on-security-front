@@ -20,7 +20,7 @@ export const useSignInService = () => {
       }
     }
 
-    return { signIn, loading, error };
+    return { signIn, loading, error, setError };
   } catch (error: any) {
     throw Error(error?.message as string)
   }

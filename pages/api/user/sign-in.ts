@@ -7,7 +7,7 @@ export default async (
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.post('/user/sign-ip', req.body)
+    const { data } = await api.post('/user/sign-in', req.body)
 
     return res.json(data)
   } catch (error) {
