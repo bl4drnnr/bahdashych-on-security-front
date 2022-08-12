@@ -87,15 +87,15 @@ const SignUp: NextPage = () => {
             />
           </div>
 
-          {error.message ? (
+          {error.message.length ? (
             <ErrorBox
-              close={() => setError({ ...error, message: '' })}
+              close={() => setError({ ...error, message: [] })}
               error={error.message}
             />
           ) : null}
 
           <BasicButton
-            onClick={() => handleSignUp()}
+            onClick={handleSignUp}
           >
             Sign up
           </BasicButton>

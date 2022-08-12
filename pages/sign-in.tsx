@@ -53,13 +53,13 @@ const SignIn: NextPage = () => {
 
           {error.message ? (
             <ErrorBox
-              close={() => setError({ ...error, message: '' })}
+              close={() => setError({ ...error, message: [] })}
               error={error.message}
             />
           ) : null}
 
           <BasicButton
-            onClick={() => handleSignIn()}
+            onClick={handleSignIn}
           >
             Sign in
           </BasicButton>
