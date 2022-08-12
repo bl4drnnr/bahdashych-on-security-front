@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { AxiosError } from "axios";
 import { api } from "../../../api";
-import { serialize } from 'cookie'
 
 export default async (
   req: NextApiRequest,
