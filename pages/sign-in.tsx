@@ -51,7 +51,7 @@ const SignIn: NextPage = () => {
             />
           </div>
 
-          {error.message ? (
+          {error.message.length ? (
             <ErrorBox
               close={() => setError({ ...error, message: [] })}
               error={error.message}

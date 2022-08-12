@@ -2,7 +2,7 @@ import React from 'react';
 
 interface IBasicButton {
   children: string;
-  onClick: () => Promise<void>;
+  onClick: () => Promise<any>;
 }
 
 const BasicButton: React.FC<IBasicButton> =
