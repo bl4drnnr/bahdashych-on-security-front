@@ -12,7 +12,7 @@ const SignUp: NextPage = () => {
   const [signUpPayload, setSignUpPayload] = React.useState({
     email: '', username: '', password: '', passwordRepeat: '', firstName: '', lastName: ''
   });
-  const [successSignUp, setSuccessSignUp] = React.useState(true);
+  const [successSignUp, setSuccessSignUp] = React.useState(false);
   const router = useRouter()
   const { signUp, loading, error, setError } = useSignUpService();
 
