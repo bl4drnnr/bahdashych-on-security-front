@@ -8,14 +8,14 @@ export default async (
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.post('/user/sign-in', req.body)
+    const { data, headers } = await api.post('/user/sign-in', req.body)
 
-    res.setHeader('Set-Cookie', serialize(
-      '_rt',
-      data._rt,
-      { path: '/', httpOnly: true })
-    );
-    delete data._rt
+    if (headers["set-cookie"]) {
+      const refreshToken = headers["set-cookie"][0].split('=')[1];
+      res.setHeader('Set-Cookie', serialize(
+        '_rt', refreshToken, { path: '/', httpOnly: true })
+      );
+    }
 
     return res.json(data)
   } catch (error) {
