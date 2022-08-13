@@ -11,6 +11,7 @@ export const useBanService = () => {
     try {
       setLoading(true);
       const { data } = await ApiClient.post('/user/ban', banUser)
+      setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
       setError(error?.response?.message || error?.response?.data)

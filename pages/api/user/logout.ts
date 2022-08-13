@@ -7,7 +7,9 @@ export default async (
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.post('/user/logout')
+    const { data } = await api.post('/user/logout', {}, {
+      headers: { 'Authorization': req.headers.authorization || '' }
+    })
 
     return res.json(data)
   } catch (error) {

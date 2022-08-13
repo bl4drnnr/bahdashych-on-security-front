@@ -6,15 +6,20 @@ import BasicInput from '../components/BasicInput';
 import Loader from "../components/Loader";
 import ErrorBox from "../components/ErrorBox";
 import { useSignInService } from "../services/user/useSignIn.service";
+import { useRouter } from "next/router";
 
 const SignIn: NextPage = () => {
   const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })
 
   const { signIn, loading, error, setError } = useSignInService();
+  const router = useRouter()
 
   const handleSignIn = async () => {
-    const data = await signIn(signInPayload);
-    console.log('data', data)
+    const token = await signIn(signInPayload);
+    if (token) {
+      sessionStorage.setItem("_at", token);
+      return router.push("/");
+    }
   };
 
   return (

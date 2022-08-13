@@ -1,6 +1,7 @@
 import React from 'react';
 
 interface IBasicButton {
+  className?: string;
   children: string;
   onClick: () => Promise<any>;
 }
@@ -11,7 +12,7 @@ const BasicButton: React.FC<IBasicButton> =
     <>
       <button
         {...props}
-        className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none'
+        className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none ${props.className}`}
       >{children}</button>
     </>
   )

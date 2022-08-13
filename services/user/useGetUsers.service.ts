@@ -8,7 +8,9 @@ export const useGetUsersService = () => {
 
   const getUsers = async () => {
     try {
+      setLoading(true);
       const { data } = await ApiClient.get('/user/list')
+      setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
       setError(error?.response?.message || error?.response?.data)

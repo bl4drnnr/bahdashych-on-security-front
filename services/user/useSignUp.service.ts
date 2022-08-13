@@ -8,9 +8,10 @@ export const useSignUpService = () => {
   const [error, setError] = React.useState<IError>({ message: [], statusCode: 0 });
 
   const signUp = async (signUpPayload: ISignUp) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { data } = await ApiClient.post('/user/sign-up', signUpPayload);
+      setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
       setError(error?.response?.message || error?.response?.data)
