@@ -15,6 +15,7 @@ export default async (
       data._rt,
       { path: '/', httpOnly: true })
     );
+    delete data._rt
 
     return res.json(data)
   } catch (error) {
