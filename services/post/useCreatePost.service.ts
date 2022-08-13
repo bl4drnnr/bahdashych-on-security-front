@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
-import { IPost } from "../../interfaces/post.interface";
+import { IPost } from "../../interfaces/request/post.interface";
 
 export const useCreatePostService = () => {
   try {

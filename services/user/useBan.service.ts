@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
-import { IBan } from "../../interfaces/ban.interface";
+import { IBan } from "../../interfaces/request/ban.interface";
 
 export const useBanService = () => {
   const [loading, setLoading] = useState(false);

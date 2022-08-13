@@ -9,7 +9,7 @@ export const useLogoutService = () => {
   const logout = async (accessToken: string | null) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post('/user/logout', {}, {
+      const { data } = await ApiClient.post<number>('/user/logout', {}, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       setError({ message: [], statusCode: 0 })

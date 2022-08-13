@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignIn } from "../../interfaces/signIn.interface";
+import { ISignIn } from "../../interfaces/request/signIn.interface";
 import { IError } from "../../interfaces/error.interface";
 
 export const useSignInService = () => {
@@ -10,7 +10,7 @@ export const useSignInService = () => {
   const signIn = async (signInPayload: ISignIn) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post('/user/sign-in', signInPayload);
+      const { data } = await ApiClient.post<string>('/user/sign-in', signInPayload);
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
