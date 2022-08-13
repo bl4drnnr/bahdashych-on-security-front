@@ -5,7 +5,7 @@ import { IError } from "../../interfaces/error.interface";
 export const useDeletePostService = () => {
   try {
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<IError>({ message: '', statusCode: 0 });
+    const [error, setError] = React.useState<IError>({ message: [], statusCode: 0 });
 
     const deletePost = async (id: string) => {
       setLoading(true);
@@ -13,7 +13,7 @@ export const useDeletePostService = () => {
         const { data } = await ApiClient.get(`/post/delete/${id}`)
         return data
       } catch (error: any) {
-        setError(error?.response?.data)
+        setError(error?.response?.message || error?.response?.data)
       } finally {
         setLoading(false)
       }

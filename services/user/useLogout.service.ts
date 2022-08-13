@@ -9,8 +9,9 @@ export const useLogoutService = () => {
   const logout = async () => {
     try {
       const { data } = await ApiClient.post('/user/logout')
+      return data
     } catch (error: any) {
-      setError(error?.response?.data)
+      setError(error?.response?.message || error?.response?.data)
     } finally {
       setLoading(false)
     }

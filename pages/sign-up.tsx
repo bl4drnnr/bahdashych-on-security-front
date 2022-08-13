@@ -107,7 +107,7 @@ const SignUp: NextPage = () => {
         ) : null}
 
 
-        {error.message.length ? (
+        {error.message && error.message.length ? (
           <ErrorBox
             close={() => setError({ ...error, message: [] })}
             error={error.message}

@@ -13,7 +13,7 @@ export const useSignInService = () => {
       const { data } = await ApiClient.post('/user/sign-in', signInPayload);
       return data
     } catch (error: any) {
-      setError(error?.response?.data)
+      setError(error?.response?.message || error?.response?.data)
     } finally {
       setLoading(false)
     }

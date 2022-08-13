@@ -6,7 +6,7 @@ import { IComment } from "../../interfaces/comment.interface";
 export const useCommentPostService = () => {
   try {
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState<IError>({ message: '', statusCode: 0 });
+    const [error, setError] = React.useState<IError>({ message: [], statusCode: 0 });
 
     const commentPost = async (comment: IComment) => {
       setLoading(true);
@@ -14,7 +14,7 @@ export const useCommentPostService = () => {
         const { data } = await ApiClient.post('/post/comment', comment)
         return data
       } catch (error: any) {
-        setError(error?.response?.data)
+        setError(error?.response?.message || error?.response?.data)
       } finally {
         setLoading(false);
       }

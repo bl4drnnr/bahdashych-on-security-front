@@ -13,7 +13,8 @@ const SignIn: NextPage = () => {
   const { signIn, loading, error, setError } = useSignInService();
 
   const handleSignIn = async () => {
-    await signIn(signInPayload);
+    const data = await signIn(signInPayload);
+    console.log('data', data)
   };
 
   return (
@@ -51,7 +52,7 @@ const SignIn: NextPage = () => {
             />
           </div>
 
-          {error.message.length ? (
+          {error.message && error.message.length ? (
             <ErrorBox
               close={() => setError({ ...error, message: [] })}
               error={error.message}
