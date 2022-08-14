@@ -1,23 +1,14 @@
 import React from "react";
-import MainLayout from "../layouts/main.layout";
-import { IPost } from "../interfaces/post.interface";
-import { GetServerSideProps } from "next";
+import { IPostPreview } from "../interfaces/post-preview.interface";
 
-const Post: React.FC<IPost> =
-  React.forwardRef(({ ...props }: IPost, ref) => {
+const Post: React.FC<IPostPreview> =
+  React.forwardRef(({ ...props }: IPostPreview, ref) => {
   return (
-    <MainLayout>
-      <></>
-    </MainLayout>
+    <>
+    </>
   );
 });
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const slug = context.query.slug;
-  return {
-    props: {}
-  }
-}
 
 Post.displayName = "Post";
 

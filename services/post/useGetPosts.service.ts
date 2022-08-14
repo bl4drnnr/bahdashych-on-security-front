@@ -1,5 +1,5 @@
 import { ApiClient } from "../api.api-client";
-import { IPost } from "../../interfaces/post.interface";
+import { IPosts } from "../../interfaces/posts.interface";
 
 export const useGetPostsService = () => {
   try {
@@ -11,7 +11,7 @@ export const useGetPostsService = () => {
       { offset: string, limit: string, from: string, to: string }
     ) => {
       try {
-        const { data } = await ApiClient.get<IPost[] | null>(`/post/list/${offset}/${limit}/${from}/${to}`)
+        const { data } = await ApiClient.get<IPosts>(`/post/list/${offset}/${limit}/${from}/${to}`)
         return data;
       } catch (error: any) {
         // setError(error?.response?.message || error?.response?.data)

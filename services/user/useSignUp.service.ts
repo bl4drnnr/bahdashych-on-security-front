@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignUp } from "../../interfaces/signUp.interface";
+import { ISignUp } from "../../interfaces/sign-up.interface";
 import { IError } from "../../interfaces/error.interface";
 import { IUser } from "../../interfaces/user.interface";
 

@@ -3,13 +3,12 @@ import dayjs from "dayjs";
 import MainLayout from "../layouts/main.layout";
 import Loader from "../components/Loader.component";
 import Posts from "../components/Posts.component";
-import { IPost } from "../interfaces/post.interface";
 import { IError } from "../interfaces/error.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";
+import { IPosts } from "../interfaces/posts.interface";
 
-const Home = ({ posts }: { posts: IPost[] | null }) => {
-  // const [posts, setPosts] = React.useState<IPost[] | undefined>([]);
+const Home = ({ posts }: { posts: IPosts }) => {
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
   const [page, setPage] = React.useState(0);
@@ -19,8 +18,8 @@ const Home = ({ posts }: { posts: IPost[] | null }) => {
     <MainLayout>
       <>
         {/*{loading ? <Loader/> : null}*/}
-        {posts?.length ? (
-          <Posts posts={posts} />
+        {posts.rows.length ? (
+          <Posts rows={posts.rows} count={posts.count} />
         ) : (
           <h1>No posts yet.</h1>
         )}
@@ -29,7 +28,7 @@ const Home = ({ posts }: { posts: IPost[] | null }) => {
   );
 };
 
-const fetchData = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const { getPosts } = UseGetPostsService();
   const posts = await getPosts({
     offset: '1',
@@ -37,15 +36,8 @@ const fetchData = async () => {
     from: dayjs().subtract(7, 'days').format('YYYY-MM-DD'),
     to: dayjs().format('YYYY-MM-DD')
   })
-  console.log('postspostsposts', posts)
-  return posts;
-}
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await fetchData()
-  console.log('datadatadatadatadatadatadatadata', data);
-
-  return { props: { posts: data } }
+  return { props: { posts } }
 }
 
 export default Home;

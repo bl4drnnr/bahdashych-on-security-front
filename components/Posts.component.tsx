@@ -1,15 +1,19 @@
 import React from "react";
-import { IPost } from "../interfaces/post.interface";
-
-interface IPosts {
-  posts: IPost[]
-}
+import { IPosts } from "../interfaces/posts.interface";
+import Post from "./Post.component";
 
 const Posts: React.FC<IPosts> =
-  React.forwardRef(({ posts }: IPosts, ref) => {
+  React.forwardRef(({ rows, count }: IPosts, ref) => {
     return (
       <>
-        {JSON.stringify(posts)}
+        {rows.map(post => (
+          <>
+            <Post
+              slug={post.slug}
+              title={post.title}
+            />
+          </>
+        ))}
       </>
     )
   })
