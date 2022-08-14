@@ -31,8 +31,10 @@ const Header = () => {
   React.useEffect(() => {
     if (sessionStorage.getItem('_at')) {
       handleRefreshToken().then((res) => {
-        const token = sessionStorage.getItem('_at')
-        if (token) setAccessToken(token)
+        if (res) {
+          sessionStorage.setItem('_at', res)
+          setAccessToken(res)
+        }
       })
     }
   }, [])
