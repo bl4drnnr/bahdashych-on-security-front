@@ -7,12 +7,13 @@ const Posts: React.FC<IPosts> =
     return (
       <>
         {rows.map(post => (
-          <>
+          <div key={post.slug}>
             <Post
+              description={post.description}
               slug={post.slug}
               title={post.title}
             />
-          </>
+          </div>
         ))}
       </>
     )

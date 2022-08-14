@@ -31,11 +31,11 @@ const Home = ({ posts }: { posts: IPosts }) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   const { getPosts } = UseGetPostsService();
   const posts = await getPosts({
-    offset: '1',
+    offset: '0',
     limit: '10',
     from: dayjs().subtract(7, 'days').format('YYYY-MM-DD'),
-    to: dayjs().format('YYYY-MM-DD')
-  })
+    to: dayjs().endOf('day').format('YYYY-MM-DD')
+  });
 
   return { props: { posts } }
 }
