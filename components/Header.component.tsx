@@ -1,13 +1,16 @@
 import Link from 'next/link';
+import React from "react";
 import BasicInput from './BasicInput.component';
 import BasicButton from "./BasicButton.component";
 import Loader from "./Loader.component";
-import React from "react";
 import { useLogoutService } from "../services/user/useLogout.service";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [accessToken, setAccessToken] = React.useState<string | null>('')
   const [search, setSearch] = React.useState('')
+
+  const router = useRouter()
 
   const { logout, loading, error } = useLogoutService()
 
@@ -32,9 +35,10 @@ const Header = () => {
           <div className='flex justify-start lg:w-0 lg:flex-1'>
             <span className='sr-only'>Workflow</span>
             <img
-              className='h-8 w-auto sm:h-10'
+              className='h-8 w-auto sm:h-10 cursor-pointer'
               src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
               alt=''
+              onClick={() => {return router.push('/')}}
             />
           </div>
 

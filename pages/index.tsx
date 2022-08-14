@@ -5,12 +5,19 @@ import Posts from "../components/Posts.component";
 import { IPosts } from "../interfaces/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";
+import { verifyToken } from "../utils/verify-token.util";
 
 const Home = ({ posts }: { posts: IPosts }) => {
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  React.useEffect(() => {
+    console.log(sessionStorage.getItem('_at'));
+    const t = verifyToken(sessionStorage.getItem('_at') as string)
+    console.log('ttttt', t)
+  }, [])
 
   return (
     <MainLayout>

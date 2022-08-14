@@ -7,8 +7,12 @@ import { GetServerSideProps } from "next";
 const Slug = ({ post }: { post: IPost }) => {
   return (
     <MainLayout>
-      <>
-      </>
+      <div className={'w-full'}>
+        <div className={'w-1/2 m-auto mt-12'}>
+          <h1 className={'text-5xl font-extrabold'}>{post.title}</h1>
+          <p className={'mt-12'}>{post.content}</p>
+        </div>
+      </div>
     </MainLayout>
   );
 };
