@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import BasicInput from './BasicInput';
-import BasicButton from "./BasicButton";
-import Loader from "../components/Loader";
+import BasicInput from './BasicInput.component';
+import BasicButton from "./BasicButton.component";
+import Loader from "./Loader.component";
 import React from "react";
 import { useLogoutService } from "../services/user/useLogout.service";
 

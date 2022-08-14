@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../components/Header";
+import Header from "../components/Header.component";
 
 const MainLayout = ({ children }: { children: JSX.Element }) => {
   return (
