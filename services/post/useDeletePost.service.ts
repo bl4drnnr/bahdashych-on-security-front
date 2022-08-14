@@ -10,7 +10,7 @@ export const useDeletePostService = () => {
     const deletePost = async (id: string) => {
       setLoading(true);
       try {
-        const { data } = await ApiClient.get(`/post/delete/${id}`)
+        const { data } = await ApiClient.get<number>(`/post/delete/${id}`)
         return data
       } catch (error: any) {
         setError(error?.response?.message || error?.response?.data)

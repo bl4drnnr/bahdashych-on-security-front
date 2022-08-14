@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignIn } from "../../interfaces/request/signIn.interface";
+import { ISignIn } from "../../interfaces/signIn.interface";
 import { IError } from "../../interfaces/error.interface";
 
 export const useSignInService = () => {

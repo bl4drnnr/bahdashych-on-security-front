@@ -1,7 +1,8 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignUp } from "../../interfaces/request/signUp.interface";
+import { ISignUp } from "../../interfaces/signUp.interface";
 import { IError } from "../../interfaces/error.interface";
+import { IUser } from "../../interfaces/user.interface";
 
 export const useSignUpService = () => {
   const [loading, setLoading] = React.useState(false);
@@ -10,7 +11,7 @@ export const useSignUpService = () => {
   const signUp = async (signUpPayload: ISignUp) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post('/user/sign-up', signUpPayload);
+      const { data } = await ApiClient.post<IUser>('/user/sign-up', signUpPayload);
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {

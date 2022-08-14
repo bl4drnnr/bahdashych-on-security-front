@@ -1,6 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
+import { IPost } from "../../interfaces/post.interface";
 
 export const useGetPostService = () => {
   try {
@@ -10,7 +11,7 @@ export const useGetPostService = () => {
     const getPost = async (slug: string) => {
       setLoading(true);
       try {
-        const { data } = await ApiClient.get(`/post/${slug}`);
+        const { data } = await ApiClient.get<IPost>(`/post/${slug}`);
         return data
       } catch (error: any) {
         setError(error?.response?.message || error?.response?.data)

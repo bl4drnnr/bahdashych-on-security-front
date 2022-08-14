@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
-import { IComment } from "../../interfaces/request/comment.interface";
+import { IComment } from "../../interfaces/comment.interface";
 
 export const useCommentPostService = () => {
   try {
@@ -11,7 +11,7 @@ export const useCommentPostService = () => {
     const commentPost = async (comment: IComment) => {
       setLoading(true);
       try {
-        const { data } = await ApiClient.post('/post/comment', comment)
+        const { data } = await ApiClient.post<IComment>('/post/comment', comment)
         return data
       } catch (error: any) {
         setError(error?.response?.message || error?.response?.data)

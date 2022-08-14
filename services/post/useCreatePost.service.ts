@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
-import { IPost } from "../../interfaces/request/post.interface";
+import { IPost } from "../../interfaces/post.interface";
 
 export const useCreatePostService = () => {
   try {
@@ -11,7 +11,7 @@ export const useCreatePostService = () => {
     const createPost = async (post: IPost) => {
       setLoading(true);
       try {
-        const { data } = await ApiClient.post('/post/create', post)
+        const { data } = await ApiClient.post<IPost>('/post/create', post)
         return data
       } catch (error: any) {
         setError(error?.response?.message || error?.response?.data)

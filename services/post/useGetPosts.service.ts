@@ -1,6 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
+import { IPost } from "../../interfaces/post.interface";
 
 export const useGetPostsService = () => {
   try {
@@ -12,7 +13,7 @@ export const useGetPostsService = () => {
       { offset: number, limit: number, from: string, to: string }
     ) => {
       try {
-        const { data } = await ApiClient.get(`/post/list/${offset}/${limit}/${from}/${to}`)
+        const { data } = await ApiClient.get<IPost[] | undefined>(`/post/list/${offset}/${limit}/${from}/${to}`)
         return data
       } catch (error: any) {
         setError(error?.response?.message || error?.response?.data)

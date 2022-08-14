@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../interfaces/error.interface";
+import { IUser } from "../../interfaces/user.interface";
 
 export const useGetUsersService = () => {
   const [loading, setLoading] = useState(false);
@@ -9,7 +10,7 @@ export const useGetUsersService = () => {
   const getUsers = async () => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.get('/user/list')
+      const { data } = await ApiClient.get<IUser[]>('/user/list')
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
