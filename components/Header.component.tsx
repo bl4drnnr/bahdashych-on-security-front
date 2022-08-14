@@ -10,11 +10,12 @@ import { useRefreshTokenService } from "../services/auth/useRefreshToken.service
 const Header = () => {
   const [accessToken, setAccessToken] = React.useState<string | null>('')
   const [search, setSearch] = React.useState('')
+  const [isAdmin, setIsAdmin] = React.useState(false)
 
   const router = useRouter()
-  const { refreshToken } = useRefreshTokenService()
+  const { refreshToken, loading, error } = useRefreshTokenService()
 
-  const { logout, loading, error } = useLogoutService()
+  const { logout, logoutLoading } = useLogoutService()
 
   const handleLogout = async () => {
     const data = await logout(sessionStorage.getItem('_at'))
@@ -25,23 +26,20 @@ const Header = () => {
   }
 
   const handleRefreshToken = async () => {
-    return await refreshToken();
+    await refreshToken();
+    if (error.message) {
+      await logout(sessionStorage.getItem('_at'))
+      sessionStorage.removeItem('_at')
+    }
   }
 
   React.useEffect(() => {
-    if (sessionStorage.getItem('_at')) {
-      handleRefreshToken().then((res) => {
-        if (res) {
-          sessionStorage.setItem('_at', res)
-          setAccessToken(res)
-        }
-      })
-    }
+    if (sessionStorage.getItem('_at')) handleRefreshToken().then()
   }, [])
 
   return (
     <>
-      {loading ? <Loader/> : null}
+      {loading || logoutLoading ? <Loader/> : null}
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
         <div className='flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10'>
           <div className='flex justify-start lg:w-0 lg:flex-1'>

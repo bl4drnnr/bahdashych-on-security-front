@@ -21,5 +21,5 @@ export const useLogoutService = () => {
     }
   }
 
-  return { logout, loading, error };
+  return { logout, logoutLoading: loading, error };
 }
