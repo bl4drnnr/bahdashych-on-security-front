@@ -1,11 +1,11 @@
-import { useState } from "react";
+import React from "react";
 import { ApiClient } from "../api.api-client";
 import { ISignIn } from "../../interfaces/sign-in.interface";
 import { IError } from "../../interfaces/error.interface";
 
 export const useSignInService = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<IError>({ message: [], statusCode: 0 });
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<IError>({ message: [], statusCode: 0 });
 
   const signIn = async (signInPayload: ISignIn) => {
     try {

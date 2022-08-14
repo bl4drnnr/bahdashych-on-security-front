@@ -17,7 +17,6 @@ const Home = ({ posts }: { posts: IPosts }) => {
   return (
     <MainLayout>
       <>
-        {/*{loading ? <Loader/> : null}*/}
         <h1 className={'mt-3 text-center text-3xl font-extrabold text-gray-900'}>
           {posts.rows.length ? (<>List of posts</>) : (<>No posts yet</>)}
         </h1>
