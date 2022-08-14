@@ -1,10 +1,10 @@
-import React from 'react';
-import type { NextPage } from 'next';
-import Header from '../components/Header';
-import Loader from "../components/Loader";
-import { useGetPostsService } from "../services/post/useGetPosts.service";
-import dayjs from 'dayjs';
+import React from "react";
+import type { NextPage } from "next";
+import dayjs from "dayjs";
 import { IPost } from "../interfaces/post.interface";
+import { useGetPostsService } from "../services/post/useGetPosts.service";
+import Loader from "../components/Loader";
+import MainLayout from "../layouts/main.layout";
 
 const Home: NextPage = () => {
   const [posts, setPosts] = React.useState<IPost[] | undefined>([]);
@@ -30,10 +30,24 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-    <>
-      {loading ? <Loader/> : null}
-      <Header/>
-    </>
+    <MainLayout>
+      <>
+        {loading ? <Loader/> : null}
+        {posts?.length ? (
+          <div>
+            {posts.map(post => (
+              <>
+                <div>{post.slug}</div>
+                <div>{post.content}</div>
+                <div>{post.title}</div>
+              </>
+            ))}
+          </div>
+        ) : (
+          <h1>No posts yet.</h1>
+        )}
+      </>
+    </MainLayout>
   );
 };
 
