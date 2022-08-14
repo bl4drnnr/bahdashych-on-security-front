@@ -5,12 +5,14 @@ import BasicButton from "./BasicButton.component";
 import Loader from "./Loader.component";
 import { useLogoutService } from "../services/user/useLogout.service";
 import { useRouter } from "next/router";
+import { useRefreshTokenService } from "../services/auth/useRefreshToken.service";
 
 const Header = () => {
   const [accessToken, setAccessToken] = React.useState<string | null>('')
   const [search, setSearch] = React.useState('')
 
   const router = useRouter()
+  const { refreshToken } = useRefreshTokenService()
 
   const { logout, loading, error } = useLogoutService()
 
@@ -22,9 +24,17 @@ const Header = () => {
     }
   }
 
+  const handleRefreshToken = async () => {
+    return await refreshToken();
+  }
+
   React.useEffect(() => {
-    const token = sessionStorage.getItem('_at')
-    if (token) setAccessToken(token)
+    if (sessionStorage.getItem('_at')) {
+      handleRefreshToken().then((res) => {
+        const token = sessionStorage.getItem('_at')
+        if (token) setAccessToken(token)
+      })
+    }
   }, [])
 
   return (

@@ -39,7 +39,7 @@ const SignUp: NextPage = () => {
             ): (
               <>
                 <h3 className="mt-6 mb-6 text-center text-2xl font-extrabold text-gray-900">Welcome, @username, here you go!</h3>
-                <BasicButton onClick={() => {return router.push("/")}}>Sign in</BasicButton>
+                <BasicButton onClick={() => {return router.push("/sign-in")}}>Sign in</BasicButton>
               </>
             )}
           </div>
