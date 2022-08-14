@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import MainLayout from "../layouts/main.layout";
 import Loader from "../components/Loader.component";
 import Posts from "../components/Posts.component";
+import { IPosts } from "../interfaces/posts.interface";
 import { IError } from "../interfaces/error.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";
-import { IPosts } from "../interfaces/posts.interface";
 
 const Home = ({ posts }: { posts: IPosts }) => {
   const [from, setFrom] = React.useState('');
@@ -18,11 +18,12 @@ const Home = ({ posts }: { posts: IPosts }) => {
     <MainLayout>
       <>
         {/*{loading ? <Loader/> : null}*/}
+        <h1 className={'mt-3 text-center text-3xl font-extrabold text-gray-900'}>
+          {posts.rows.length ? (<>List of posts</>) : (<>No posts yet</>)}
+        </h1>
         {posts.rows.length ? (
           <Posts rows={posts.rows} count={posts.count} />
-        ) : (
-          <h1>No posts yet.</h1>
-        )}
+        ) : null}
       </>
     </MainLayout>
   );
