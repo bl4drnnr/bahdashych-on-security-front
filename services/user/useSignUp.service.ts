@@ -11,7 +11,7 @@ export const useSignUpService = () => {
   const signUp = async (signUpPayload: ISignUp) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post<IUser>('/user/sign-up', signUpPayload);
+      const { data } = await ApiClient.post<IUser>('/api/user/sign-up', signUpPayload);
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {

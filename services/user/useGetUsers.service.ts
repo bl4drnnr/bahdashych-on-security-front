@@ -10,7 +10,7 @@ export const useGetUsersService = () => {
   const getUsers = async () => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.get<IUser[]>('/user/list')
+      const { data } = await ApiClient.get<IUser[]>('/api/user/list')
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
