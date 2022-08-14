@@ -35,6 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 .idea
-.env
+.env.local
 
 package-lock.json

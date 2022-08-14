@@ -6,6 +6,7 @@ import Loader from "./Loader.component";
 import { useLogoutService } from "../services/user/useLogout.service";
 import { useRouter } from "next/router";
 import { useRefreshTokenService } from "../services/auth/useRefreshToken.service";
+import { verifyToken } from "../utils/verify-token.util";
 
 const Header = () => {
   const [accessToken, setAccessToken] = React.useState<string | null>('')
@@ -27,10 +28,8 @@ const Header = () => {
 
   const handleRefreshToken = async () => {
     await refreshToken();
-    if (error.message) {
-      await logout(sessionStorage.getItem('_at'))
-      sessionStorage.removeItem('_at')
-    }
+    if (error.message.length) sessionStorage.removeItem('_at')
+    else console.log(verifyToken(sessionStorage.getItem('_at') as string))
   }
 
   React.useEffect(() => {
