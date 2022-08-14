@@ -6,9 +6,11 @@ interface IPosts {
 }
 
 const Posts: React.FC<IPosts> =
-  React.forwardRef(({ ...props }: IPosts, ref) => {
+  React.forwardRef(({ posts }: IPosts, ref) => {
     return (
-      <></>
+      <>
+        {JSON.stringify(posts)}
+      </>
     )
   })
 

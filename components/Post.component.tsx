@@ -1,6 +1,7 @@
 import React from "react";
-import { IPost } from "../interfaces/post.interface";
 import MainLayout from "../layouts/main.layout";
+import { IPost } from "../interfaces/post.interface";
+import { GetServerSideProps } from "next";
 
 const Post: React.FC<IPost> =
   React.forwardRef(({ ...props }: IPost, ref) => {
@@ -10,6 +11,13 @@ const Post: React.FC<IPost> =
     </MainLayout>
   );
 });
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const slug = context.query.slug;
+  return {
+    props: {}
+  }
+}
 
 Post.displayName = "Post";
 

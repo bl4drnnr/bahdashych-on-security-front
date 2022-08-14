@@ -8,13 +8,10 @@ export default async (
 ) => {
   try {
     const { data } = await api.get(
-      `/post/
-    ${req.query.offset}/
-    ${req.query.limit}/
-    ${req.query.from}/
-    ${req.query.to}`
+      `/post/${req.query.offset}/${req.query.limit}/${req.query.from}/${req.query.to}`
     )
-    
+
+    return res.json(data);
   } catch (error) {
     return res
       .status((error as AxiosError).response?.status as number)
