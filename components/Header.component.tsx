@@ -33,13 +33,15 @@ const Header = () => {
   }
 
   const handleRefreshToken = async () => {
+    if (!sessionStorage.getItem('_at')) return;
+
     await refreshToken();
     if (error.message.length) sessionStorage.removeItem('_at')
     else setLoggedData(parseJwt(sessionStorage.getItem('_at') as string))
   }
 
   React.useEffect(() => {
-    if (sessionStorage.getItem('_at')) handleRefreshToken().then()
+    handleRefreshToken().then()
   }, [])
 
   return (
