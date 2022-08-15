@@ -7,8 +7,9 @@ import { useCommentPostService } from "../../services/post/useCommentPost.servic
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
 import BasicButton from "../../components/BasicButton.component";
+import { ILeavedComment } from "../../interfaces/comment.interface";
 
-const Slug = ({ post }: { post: IPost }) => {
+const Slug = ({ post, postComments }: { post: IPost, postComments: ILeavedComment[] }) => {
   const [isValidToken, setIsValidToken] = React.useState(false)
   const [comment, setComment] = React.useState('')
 
@@ -40,10 +41,20 @@ const Slug = ({ post }: { post: IPost }) => {
         <div className={'w-1/2 m-auto mt-12'}>
           <h1 className={'text-5xl font-extrabold'}>{post.title}</h1>
           <p className={'mt-12'}>{post.content}</p>
+          <div className={'mt-10'}>
+            {postComments.length ? (
+              <div>
+              </div>
+            ) :
+            <h1
+              className={'w-full text-center font-bold'}
+            >No comments yet. Wanna tell something? Go on, then!
+            </h1>}
+          </div>
           {isValidToken ? (
             <>
               <BasicInput
-                className={'w-full rounded mt-10 mb-3'}
+                className={'w-full rounded mt-3 mb-3'}
                 type={'text'}
                 placeholder={'Comment...'}
                 value={comment}
@@ -66,9 +77,9 @@ const Slug = ({ post }: { post: IPost }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const slug: string = context.query.slug as string;
   const { getPost } = UseGetPostService();
-  const post = await getPost(slug);
+  const { post, postComments } = await getPost(slug);
 
-  return { props: { post } }
+  return { props: { post, postComments } }
 }
 
 export default Slug;
