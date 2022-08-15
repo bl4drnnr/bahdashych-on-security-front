@@ -2,6 +2,7 @@ import React from "react";
 import dayjs from "dayjs";
 import MainLayout from "../layouts/main.layout";
 import Posts from "../components/Posts.component";
+import Pagination from "../components/Pagination.component";
 import { IPosts } from "../interfaces/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";
@@ -21,6 +22,7 @@ const Home = ({ posts }: { posts: IPosts }) => {
         {posts.rows.length ? (
           <Posts rows={posts.rows} count={posts.count} />
         ) : null}
+        <Pagination total={30} />
       </>
     </MainLayout>
   );
