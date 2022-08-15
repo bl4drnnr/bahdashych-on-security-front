@@ -20,6 +20,10 @@ const Header = () => {
 
   const { logout, logoutLoading } = useLogoutService()
 
+  const handleRedirect = (path: string) => {
+    return router.push(path)
+  }
+
   const handleLogout = async () => {
     const data = await logout(sessionStorage.getItem('_at'))
     if (data === 1) {
@@ -49,7 +53,7 @@ const Header = () => {
               className='h-8 w-auto sm:h-10 cursor-pointer'
               src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
               alt=''
-              onClick={() => {return router.push('/')}}
+              onClick={() => handleRedirect('/')}
             />
           </div>
 
@@ -62,8 +66,16 @@ const Header = () => {
             }}
             value={search}
           />
-          
+
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
+          {loggedData.roles.find((role) => role.value === 'ADMIN') ? (
+            <BasicButton
+              onClick={() => handleRedirect('/admin')}
+              className="bg-green-600 hover:bg-green-700 w-20 mr-5"
+            >
+              Admin
+            </BasicButton>
+          ) : null}
           {!loggedData.userId ? (
             <>
               <Link href={"/sign-in"}>
@@ -81,7 +93,7 @@ const Header = () => {
           ) : (
             <BasicButton
               onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-600 w-20"
+              className="bg-red-600 hover:bg-red-900 w-20"
             >
               Logout
             </BasicButton>
