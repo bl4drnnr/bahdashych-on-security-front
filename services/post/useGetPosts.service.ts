@@ -5,7 +5,7 @@ export const useGetPostsService = () => {
   try {
     const getPosts = async (
       { offset, limit, from, to } :
-      { offset: string, limit: string, from: string, to: string }
+      { offset: number, limit: number, from: string, to: string }
     ) => {
       const { data } = await ApiClient.get<IPosts>(`/post/list/${offset}/${limit}/${from}/${to}`)
       return data;
