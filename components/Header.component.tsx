@@ -94,7 +94,7 @@ const Header = () => {
             </>
           ) : (
             <BasicButton
-              onClick={handleLogout}
+              onClick={() => handleLogout()}
               className="bg-red-600 hover:bg-red-900 w-20"
             >
               Logout

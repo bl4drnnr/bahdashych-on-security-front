@@ -65,7 +65,7 @@ const SignIn: NextPage = () => {
           ) : null}
 
           <BasicButton
-            onClick={handleSignIn}
+            onClick={() => handleSignIn()}
           >
             Sign in
           </BasicButton>

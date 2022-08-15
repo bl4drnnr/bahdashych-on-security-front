@@ -116,7 +116,7 @@ const SignUp: NextPage = () => {
 
         {!successSignUp ? (
           <BasicButton
-            onClick={handleSignUp}
+            onClick={() => handleSignUp()}
           >
             Sign up
           </BasicButton>

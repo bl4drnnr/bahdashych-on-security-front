@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IBasicInput {
-  className: string;
+  className?: string;
   type: string;
   placeholder: string;
   value: any;
