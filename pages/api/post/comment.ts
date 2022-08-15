@@ -7,7 +7,9 @@ export default async (
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.post('/post/comment', req.body)
+    const { data } = await api.post('/post/comment', req.body, {
+      headers: { 'Authorization': req.headers.authorization || '' }
+    })
 
     return res.json(data)
   } catch (error) {

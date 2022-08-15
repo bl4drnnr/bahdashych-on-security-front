@@ -25,11 +25,9 @@ const Header = () => {
   }
 
   const handleLogout = async () => {
-    const data = await logout(sessionStorage.getItem('_at'))
-    if (data === 1) {
-      sessionStorage.removeItem('_at')
-      setLoggedData({ roles: [], type: '', userId: '', username: '' })
-    }
+    await logout(sessionStorage.getItem('_at'))
+    sessionStorage.removeItem('_at')
+    setLoggedData({ roles: [], type: '', userId: '', username: '' })
   }
 
   const handleRefreshToken = async () => {

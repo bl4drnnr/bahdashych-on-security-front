@@ -15,7 +15,9 @@ const Slug = ({ post }: { post: IPost }) => {
   const { commentPost } = useCommentPostService()
 
   const leaveComment = async () => {
-    const response = await commentPost({ comment, postId: post.id });
+    await commentPost({
+      comment, postId: post.id
+    }, sessionStorage.getItem('_at'));
   }
 
   const checkForPermissions = () => {

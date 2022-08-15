@@ -3,8 +3,10 @@ import { IComment } from "../../interfaces/comment.interface";
 
 export const useCommentPostService = () => {
   try {
-    const commentPost = async (comment: IComment) => {
-      const { data } = await ApiClient.post<IComment>('/post/comment', comment)
+    const commentPost = async (comment: IComment, accessToken: string | null) => {
+      const { data } = await ApiClient.post<IComment>('/post/comment', comment, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      })
       return data
     }
 
