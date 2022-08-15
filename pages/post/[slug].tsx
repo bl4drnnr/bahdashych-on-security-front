@@ -1,15 +1,14 @@
 import React from 'react';
 import MainLayout from "../../layouts/main.layout";
 import BasicInput from "../../components/BasicInput.component";
-import { IPost } from "../../interfaces/post.interface";
 import { useGetPostService as UseGetPostService } from "../../services/post/useGetPost.service";
 import { useCommentPostService } from "../../services/post/useCommentPost.service";
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
 import BasicButton from "../../components/BasicButton.component";
-import { ILeavedComment } from "../../interfaces/comment.interface";
+import { IFullPost } from "../../interfaces/full-post.interface";
 
-const Slug = ({ post, postComments }: { post: IPost, postComments: ILeavedComment[] }) => {
+const Slug = ({ post, postComments }: IFullPost) => {
   const [isValidToken, setIsValidToken] = React.useState(false)
   const [comment, setComment] = React.useState('')
 

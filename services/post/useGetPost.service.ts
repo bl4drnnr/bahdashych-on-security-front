@@ -1,11 +1,10 @@
 import { ApiClient } from "../api.api-client";
-import { IPost } from "../../interfaces/post.interface";
-import { ILeavedComment } from "../../interfaces/comment.interface";
+import { IFullPost } from "../../interfaces/full-post.interface";
 
 export const useGetPostService = () => {
   try {
     const getPost = async (slug: string) => {
-      const { data } = await ApiClient.get<{ post: IPost; postComments: ILeavedComment[]; }>(`/post/${slug}`);
+      const { data } = await ApiClient.get<IFullPost>(`/post/${slug}`);
       return data
     }
 
