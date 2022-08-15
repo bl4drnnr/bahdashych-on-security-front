@@ -1,14 +1,8 @@
-import * as jwt from 'jsonwebtoken';
+const parseJwt = (token: string) => {
+  if (!token) { return; }
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(window.atob(base64));
+}
 
-const verifyToken = (token: string) => {
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET as string);
-  } catch (e) {
-    if (e instanceof jwt.TokenExpiredError)
-      return { message: 'token-expired' }
-    else if (e instanceof jwt.JsonWebTokenError)
-      return { message: 'invalid-token' }
-  }
-};
-
-export { verifyToken };
+export { parseJwt };

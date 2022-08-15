@@ -6,12 +6,11 @@ import Loader from "./Loader.component";
 import { useLogoutService } from "../services/user/useLogout.service";
 import { useRouter } from "next/router";
 import { useRefreshTokenService } from "../services/auth/useRefreshToken.service";
-import { verifyToken } from "../utils/verify-token.util";
+import { parseJwt } from "../utils/verify-token.util";
 
 const Header = () => {
-  const [accessToken, setAccessToken] = React.useState<string | null>('')
   const [search, setSearch] = React.useState('')
-  const [isAdmin, setIsAdmin] = React.useState(false)
+  const [loggedData, setLoggedData] = React.useState(null)
 
   const router = useRouter()
   const { refreshToken, loading, error } = useRefreshTokenService()
@@ -22,14 +21,14 @@ const Header = () => {
     const data = await logout(sessionStorage.getItem('_at'))
     if (data === 1) {
       sessionStorage.removeItem('_at')
-      setAccessToken('')
+      setLoggedData(null)
     }
   }
 
   const handleRefreshToken = async () => {
     await refreshToken();
     if (error.message.length) sessionStorage.removeItem('_at')
-    else console.log(verifyToken(sessionStorage.getItem('_at') as string))
+    else setLoggedData(parseJwt(sessionStorage.getItem('_at') as string))
   }
 
   React.useEffect(() => {
@@ -62,7 +61,7 @@ const Header = () => {
           />
 
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
-          {!accessToken ? (
+          {!loggedData ? (
             <>
               <Link href={"/sign-in"}>
                 <a className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">

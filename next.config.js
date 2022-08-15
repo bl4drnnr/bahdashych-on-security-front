@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   env: {
-    JWT_SECRET: process.env.JWT_SECRET
+    FRONT_API_URL: process.env.FRONT_API_URL
   }
 }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: `${process.env.API_URL}/api`,
+  baseURL: process.env.API_URL,
   withCredentials: true
 });

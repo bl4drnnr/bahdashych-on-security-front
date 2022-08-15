@@ -9,7 +9,7 @@ export const useRefreshTokenService = () => {
   const refreshToken = async () => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.get<string>('/api/auth/refresh-token');
+      const { data } = await ApiClient.get<string>('/auth/refresh-token');
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {

@@ -10,7 +10,7 @@ export const useBanService = () => {
   const banUser = async (banUser: IBan) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post<IBan>('/api/user/ban', banUser)
+      const { data } = await ApiClient.post<IBan>('/user/ban', banUser)
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {

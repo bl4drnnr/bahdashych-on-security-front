@@ -10,7 +10,7 @@ export const useSignInService = () => {
   const signIn = async (signInPayload: ISignIn) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post<string>('/api/user/sign-in', signInPayload);
+      const { data } = await ApiClient.post<string>('/user/sign-in', signInPayload);
       setError({ message: [], statusCode: 0 })
       return data
     } catch (error: any) {
