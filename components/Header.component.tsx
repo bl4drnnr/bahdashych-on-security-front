@@ -7,10 +7,13 @@ import { useLogoutService } from "../services/user/useLogout.service";
 import { useRouter } from "next/router";
 import { useRefreshTokenService } from "../services/auth/useRefreshToken.service";
 import { parseJwt } from "../utils/verify-token.util";
+import { IToken } from "../interfaces/token.interface";
 
 const Header = () => {
   const [search, setSearch] = React.useState('')
-  const [loggedData, setLoggedData] = React.useState(null)
+  const [loggedData, setLoggedData] = React.useState<IToken>({
+    roles: [], type: '', userId: '', username: ''
+  })
 
   const router = useRouter()
   const { refreshToken, loading, error } = useRefreshTokenService()
@@ -21,7 +24,7 @@ const Header = () => {
     const data = await logout(sessionStorage.getItem('_at'))
     if (data === 1) {
       sessionStorage.removeItem('_at')
-      setLoggedData(null)
+      setLoggedData({ roles: [], type: '', userId: '', username: '' })
     }
   }
 
@@ -59,9 +62,9 @@ const Header = () => {
             }}
             value={search}
           />
-
+          
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
-          {!loggedData ? (
+          {!loggedData.userId ? (
             <>
               <Link href={"/sign-in"}>
                 <a className="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
