@@ -13,7 +13,7 @@ import AdminUser from "../components/admin/AdminUser.component";
 import { IUser } from "../models/user.interface";
 
 const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
-  const [currentSection, setCurrentSection] = React.useState('post');
+  const [currentSection, setCurrentSection] = React.useState('posts');
   const router = useRouter()
 
   const handleRedirect = (path: string) => {
@@ -36,7 +36,10 @@ const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
   return (
     <MainLayout>
       <>
-        <AdminHeader setSection={setCurrentSection} />
+        <AdminHeader
+          setSection={setCurrentSection}
+          activeSection={currentSection}
+        />
         {currentSection === 'posts' ? (
           <AdminPost />
         ) : (
