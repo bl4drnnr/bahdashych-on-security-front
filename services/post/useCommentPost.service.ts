@@ -1,5 +1,5 @@
 import { ApiClient } from "../api.api-client";
-import { IComment } from "../../interfaces/comment.interface";
+import { IComment } from "../../models/request/comment.interface";
 
 export const useCommentPostService = () => {
   try {

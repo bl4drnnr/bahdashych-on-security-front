@@ -1,6 +1,6 @@
 import React from "react";
 import Post from "./Post.component";
-import { IPosts } from "../interfaces/posts.interface";
+import { IPosts } from "../models/response/posts.interface";
 
 const Posts: React.FC<IPosts> =
   React.forwardRef(({ rows, count }: IPosts, ref) => {

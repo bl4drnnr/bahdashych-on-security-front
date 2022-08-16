@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignIn } from "../../interfaces/sign-in.interface";
-import { IError } from "../../interfaces/error.interface";
+import { ISignIn } from "../../models/request/sign-in.interface";
+import { IError } from "../../models/response/error.interface";
 
 export const useSignInService = () => {
   const [loading, setLoading] = React.useState(false);

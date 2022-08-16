@@ -1,5 +1,5 @@
 import { ApiClient } from "../api.api-client";
-import { IPostPreview } from "../../interfaces/post-preview.interface";
+import { IPostPreview } from "../../models/response/post-preview.interface";
 
 export const useCreatePostService = () => {
   try {

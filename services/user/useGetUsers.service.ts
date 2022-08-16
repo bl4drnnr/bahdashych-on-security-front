@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { IError } from "../../interfaces/error.interface";
-import { IUser } from "../../interfaces/user.interface";
+import { IError } from "../../models/response/error.interface";
+import { IUser } from "../../models/user.interface";
 
 export const useGetUsersService = () => {
   const [loading, setLoading] = React.useState(false);

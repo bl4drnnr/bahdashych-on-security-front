@@ -6,7 +6,7 @@ import { useCommentPostService } from "../../services/post/useCommentPost.servic
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
 import BasicButton from "../../components/BasicButton.component";
-import { IFullPost } from "../../interfaces/full-post.interface";
+import { IFullPost } from "../../models/response/full-post.interface";
 
 const Slug = ({ post, postComments }: IFullPost) => {
   const [isValidToken, setIsValidToken] = React.useState(false)

@@ -1,5 +1,5 @@
 import { ApiClient } from "../api.api-client";
-import { IFullPost } from "../../interfaces/full-post.interface";
+import { IFullPost } from "../../models/response/full-post.interface";
 
 export const useGetPostService = () => {
   try {

@@ -1,8 +1,8 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignUp } from "../../interfaces/sign-up.interface";
-import { IError } from "../../interfaces/error.interface";
-import { IUser } from "../../interfaces/user.interface";
+import { ISignUp } from "../../models/request/sign-up.interface";
+import { IError } from "../../models/response/error.interface";
+import { IUser } from "../../models/user.interface";
 
 export const useSignUpService = () => {
   const [loading, setLoading] = React.useState(false);
