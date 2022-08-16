@@ -3,8 +3,9 @@ import BasicInput from "../ui/BasicInput.component";
 import BasicTextarea from "../ui/BasicTextarea.component";
 import BasicButton from "../ui/BasicButton.component";
 import { useCreatePostService } from "../../services/post/useCreatePost.service";
+import { IPosts } from "../../models/response/posts.interface";
 
-const AdminPost = () => {
+const AdminPost = ({ posts }: { posts: IPosts }) => {
   const [postTitle, setPostTitle] = React.useState('')
   const [postDescription, setPostDescription] = React.useState('')
   const [postContent, setPostContent] = React.useState('')

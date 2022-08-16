@@ -41,7 +41,9 @@ const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
           activeSection={currentSection}
         />
         {currentSection === 'posts' ? (
-          <AdminPost />
+          <AdminPost
+            posts={posts}
+          />
         ) : (
           <AdminUser />
         )}
