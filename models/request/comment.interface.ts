@@ -1,4 +1,4 @@
 export interface IComment {
-  readonly postId: string;
+  readonly postId: string | undefined;
   readonly comment: string;
 }

@@ -7,7 +7,9 @@ export default async (
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.post('/post', req.body)
+    const { data } = await api.post('/post', req.body, {
+      headers: { 'Authorization': `Bearer ${req.headers.authorization}` }
+    })
 
     return res.json(data)
   } catch (error) {

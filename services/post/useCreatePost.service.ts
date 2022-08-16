@@ -1,10 +1,13 @@
 import { ApiClient } from "../api.api-client";
-import { IPostPreview } from "../../models/response/post-preview.interface";
+import { IPost } from "../../models/post.interface";
 
 export const useCreatePostService = () => {
   try {
-    const createPost = async (post: IPostPreview) => {
-      const { data } = await ApiClient.post<IPostPreview>('/post/create', post)
+    const createPost = async (post: IPost, accessToken: string | null) => {
+      const { data } = await ApiClient.post<IPost>('/post/create', post, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      })
+
       return data
     }
 
