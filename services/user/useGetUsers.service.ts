@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
 import { IError } from "../../models/response/error.interface";
-import { IUser } from "../../models/user.interface";
+import { IUsers } from "../../models/response/users.interface";
 
 export const useGetUsersService = () => {
   const [loading, setLoading] = React.useState(false);
@@ -14,7 +14,7 @@ export const useGetUsersService = () => {
   ) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.get<IUser[]>(`/user/list/${offset}/${limit}`, {
+      const { data } = await ApiClient.get<IUsers>(`/user/list/${offset}/${limit}`, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       setError({ message: [] })

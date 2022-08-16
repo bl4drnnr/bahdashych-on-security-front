@@ -1,7 +1,7 @@
 import React from "react";
-import { IUser } from "../../models/user.interface";
+import { IUsers } from "../../models/response/users.interface";
 
-const AdminUser = ({ users }: { users: IUser[] | undefined }) => {
+const AdminUser = ({ users }: { users: IUsers }) => {
   return (
     <div>
 

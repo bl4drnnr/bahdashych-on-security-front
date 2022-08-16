@@ -9,12 +9,12 @@ import dayjs from "dayjs";
 import AdminHeader from "../components/admin/AdminHeader.component";
 import AdminPost from "../components/admin/AdminPost.component";
 import AdminUser from "../components/admin/AdminUser.component";
-import { IUser } from "../models/user.interface";
 import { useGetUsersService } from "../services/user/useGetUsers.service";
+import { IUsers } from "../models/response/users.interface";
 
 const Admin = ({ posts }: { posts: IPosts }) => {
   const [currentSection, setCurrentSection] = React.useState('posts');
-  const [users, setUsers] = React.useState<IUser[] | undefined>([]);
+  const [users, setUsers] = React.useState<IUsers>({ count: 0, rows: [] });
 
   const { getUsers } = useGetUsersService()
   const router = useRouter()
