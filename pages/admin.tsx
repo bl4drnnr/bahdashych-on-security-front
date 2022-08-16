@@ -5,19 +5,30 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { IPosts } from "../models/response/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
-import { useGetUsersService as UseGetUsersService } from "../services/user/useGetUsers.service";
 import dayjs from "dayjs";
 import AdminHeader from "../components/admin/AdminHeader.component";
 import AdminPost from "../components/admin/AdminPost.component";
 import AdminUser from "../components/admin/AdminUser.component";
 import { IUser } from "../models/user.interface";
+import { useGetUsersService } from "../services/user/useGetUsers.service";
 
-const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
+const Admin = ({ posts }: { posts: IPosts }) => {
   const [currentSection, setCurrentSection] = React.useState('posts');
+  const [users, setUsers] = React.useState<IUser[] | undefined>([]);
+
+  const { getUsers } = useGetUsersService()
   const router = useRouter()
 
   const handleRedirect = (path: string) => {
     return router.push(path)
+  }
+
+  const getListOfUsers = async () => {
+    const listOfUsers = await getUsers({
+      offset: 0,
+      limit: 10
+    }, sessionStorage.getItem('_at'))
+    setUsers(listOfUsers)
   }
 
   const checkForPermissions = async () => {
@@ -30,7 +41,9 @@ const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
   }
 
   React.useEffect(() => {
-    checkForPermissions().then()
+    checkForPermissions().then(() => {
+      getListOfUsers().then()
+    })
   }, [])
 
   return (
@@ -45,7 +58,9 @@ const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
             posts={posts}
           />
         ) : (
-          <AdminUser />
+          <AdminUser
+            users={users}
+          />
         )}
       </>
     </MainLayout>
@@ -54,7 +69,6 @@ const Admin = ({ posts, users }: { posts: IPosts, users: IUser[] }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { getPosts } = UseGetPostsService();
-  const { getUsers } = UseGetUsersService();
 
   const posts = await getPosts({
     offset: 0,
@@ -62,12 +76,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
     from: dayjs().subtract(7, 'days').format('YYYY-MM-DD'),
     to: dayjs().endOf('day').format('YYYY-MM-DD')
   });
-  const users = await getUsers({
-    offset: 0,
-    limit: 10
-  })
 
-  return { props: { posts, users } }
+  return { props: { posts } }
 }
 
 export default Admin;
