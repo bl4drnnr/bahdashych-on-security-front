@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
 import React from "react";
 import Link from 'next/link';
-import BasicButton from '../components/BasicButton.component';
-import BasicInput from '../components/BasicInput.component';
-import Loader from "../components/Loader.component";
-import ErrorBox from "../components/ErrorBox.component";
+import BasicButton from '../components/ui/BasicButton.component';
+import BasicInput from '../components/ui/BasicInput.component';
+import Loader from "../components/ui/Loader.component";
+import ErrorBox from "../components/ui/ErrorBox.component";
 import { useSignInService } from "../services/user/useSignIn.service";
 import { useRouter } from "next/router";
 

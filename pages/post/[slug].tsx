@@ -1,11 +1,11 @@
 import React from 'react';
 import MainLayout from "../../layouts/main.layout";
-import BasicInput from "../../components/BasicInput.component";
+import BasicInput from "../../components/ui/BasicInput.component";
 import { useGetPostService as UseGetPostService } from "../../services/post/useGetPost.service";
 import { useCommentPostService } from "../../services/post/useCommentPost.service";
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
-import BasicButton from "../../components/BasicButton.component";
+import BasicButton from "../../components/ui/BasicButton.component";
 import { IFullPost } from "../../models/response/full-post.interface";
 
 const Slug = ({ post, postComments }: IFullPost) => {

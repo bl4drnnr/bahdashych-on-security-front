@@ -3,11 +3,11 @@ import React from "react";
 import BasicInput from './BasicInput.component';
 import BasicButton from "./BasicButton.component";
 import Loader from "./Loader.component";
-import { useLogoutService } from "../services/user/useLogout.service";
+import { useLogoutService } from "../../services/user/useLogout.service";
 import { useRouter } from "next/router";
-import { useRefreshTokenService } from "../services/auth/useRefreshToken.service";
-import { parseJwt } from "../utils/verify-token.util";
-import { IToken } from "../models/request/token.interface";
+import { useRefreshTokenService } from "../../services/auth/useRefreshToken.service";
+import { parseJwt } from "../../utils/verify-token.util";
+import { IToken } from "../../models/request/token.interface";
 
 const Header = () => {
   const [search, setSearch] = React.useState('')

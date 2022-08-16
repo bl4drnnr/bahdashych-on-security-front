@@ -1,8 +1,8 @@
 import React from "react";
 import dayjs from "dayjs";
 import MainLayout from "../layouts/main.layout";
-import Posts from "../components/Posts.component";
-import Pagination from "../components/Pagination.component";
+import Posts from "../components/post/Posts.component";
+import Pagination from "../components/post/Pagination.component";
 import { IPosts } from "../models/response/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";

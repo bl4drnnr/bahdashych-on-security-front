@@ -1,6 +1,6 @@
 import React from "react";
 
-const AdminHeader = () => {
+const AdminUser = () => {
   return (
     <div>
 
@@ -8,4 +8,4 @@ const AdminHeader = () => {
   );
 };
 
-export default AdminHeader;
+export default AdminUser;
