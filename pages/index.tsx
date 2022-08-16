@@ -20,9 +20,11 @@ const Home = ({ posts }: { posts: IPosts }) => {
           {posts.rows.length ? (<>List of posts</>) : (<>No posts yet</>)}
         </h1>
         {posts.rows.length ? (
-          <Posts rows={posts.rows} count={posts.count} />
+          <>
+            <Posts rows={posts.rows} count={posts.count} />
+            <Pagination total={30} />
+          </>
         ) : null}
-        <Pagination total={30} />
       </>
     </MainLayout>
   );

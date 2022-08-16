@@ -17,6 +17,9 @@ const SignUp: NextPage = () => {
   const { signUp, loading, error, setError } = useSignUpService();
 
   const handleSignUp = async () => {
+    if (signUpPayload.password !== signUpPayload.passwordRepeat)
+      setError({ ...error, message: ['Password mismatch'] })
+
     const data = await signUp(signUpPayload);
     if (data) setSuccessSignUp(true)
   };
