@@ -10,8 +10,16 @@ import { GetServerSideProps } from "next";
 const Home = ({ posts }: { posts: IPosts }) => {
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const changeRowsPerPage = (rows: number) => {
+    setRowsPerPage(rows)
+  }
+
+  const changePage = (page: number) => {
+    setPage(page)
+  }
 
   return (
     <MainLayout>
@@ -24,8 +32,11 @@ const Home = ({ posts }: { posts: IPosts }) => {
             <Posts rows={posts.rows} count={posts.count} />
             <Pagination
               count={posts.count}
-              items={[10, 20, 30]}
-              value={10}
+              currentPage={page}
+              setPage={changePage}
+              rowsPerPageItems={[5, 10, 15]}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageChange={changeRowsPerPage}
             />
           </>
         ) : null}

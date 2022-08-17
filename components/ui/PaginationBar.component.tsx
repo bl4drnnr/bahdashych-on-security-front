@@ -1,10 +1,13 @@
 import React from "react";
 
 interface IPaginationBar {
-  count: number
+  count: number;
+  currentPage: number;
+  pages: number;
+  setPage: (page: number) => void
 }
 
-const PaginationBar = ({ count }: IPaginationBar) => {
+const PaginationBar = ({ count, currentPage, pages, setPage }: IPaginationBar) => {
   return (
     <nav>
       <ul className="inline-flex items-center -space-x-px">
@@ -19,23 +22,17 @@ const PaginationBar = ({ count }: IPaginationBar) => {
             </svg>
           </a>
         </li>
+        {Array.from(Array(pages), (e, i) => {
+          return (
+            <li key={i}>
+              <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400">
+                {i + 1}
+              </a>
+            </li>
+          )
+        })}
         <li>
-          <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white">1</a>
-        </li>
-        <li>
-          <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white">2</a>
-        </li>
-        <li>
-          <a className="z-10 py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white">3</a>
-        </li>
-        <li>
-          <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white">4</a>
-        </li>
-        <li>
-          <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white">5</a>
-        </li>
-        <li>
-          <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg bg-indigo-600 hover:bg-indigo-700 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white">
+          <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg bg-indigo-600 hover:bg-indigo-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
             <span className="sr-only">Next</span>
             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">

@@ -4,21 +4,30 @@ import DropDown from "../ui/DropDown.component";
 
 interface IPagination {
   count: number;
-  items: Array<string | number>
-  value: string | number
+  currentPage: number;
+  setPage: (page: number) => void;
+  rowsPerPageItems: Array<number>;
+  rowsPerPage: number;
+  rowsPerPageChange: (rows: number) => void;
 }
 
 const Pagination: React.FC<IPagination> =
-  React.forwardRef(({ count, items, value }: IPagination, ref) => {
+  React.forwardRef((
+    { count, currentPage, setPage, rowsPerPageItems, rowsPerPage, rowsPerPageChange }: IPagination, ref
+  ) => {
   return (
-    <div className={'w-full flex'}>
+    <div className={'w-full flex mb-10'}>
       <div className={'m-auto'}>
         <PaginationBar
           count={count}
+          currentPage={currentPage}
+          pages={Math.ceil(count / rowsPerPage)}
+          setPage={setPage}
         />
         <DropDown
-          items={items}
-          value={value}
+          rowsPerPageItems={rowsPerPageItems}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageChange={rowsPerPageChange}
         />
       </div>
     </div>
