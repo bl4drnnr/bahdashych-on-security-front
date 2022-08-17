@@ -1,16 +1,23 @@
 import React from 'react';
 import MainLayout from "../../layouts/main.layout";
 import BasicInput from "../../components/ui/BasicInput.component";
+import BasicButton from "../../components/ui/BasicButton.component";
 import { useGetPostService as UseGetPostService } from "../../services/post/useGetPost.service";
 import { useCommentPostService } from "../../services/post/useCommentPost.service";
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
-import BasicButton from "../../components/ui/BasicButton.component";
 import { IFullPost } from "../../models/response/full-post.interface";
+import { useRouter } from "next/router";
 
 const Slug = ({ post, postComments }: IFullPost) => {
   const [isValidToken, setIsValidToken] = React.useState(false)
   const [comment, setComment] = React.useState('')
+
+  const router = useRouter()
+
+  const handleRedirect = (path: string) => {
+    return router.push(path)
+  }
 
   const { commentPost } = useCommentPostService()
 
@@ -49,6 +56,17 @@ const Slug = ({ post, postComments }: IFullPost) => {
               className={'w-full text-center font-bold'}
             >No comments yet. Wanna tell something? Go on, then!
             </h1>}
+            {!isValidToken ? (
+              <h1 className={'w-full text-center font-bold'}>But&nbsp;
+                <span
+                  className={'text-indigo-600 hover:underline hover:cursor-pointer'}
+                  onClick={() => handleRedirect('/sign-in')}
+                >sign in</span> or&nbsp;
+                <span
+                  className={'text-indigo-600 hover:underline hover:cursor-pointer'}
+                  onClick={() => handleRedirect('/sign-up')}
+                >sign up</span> first!</h1>
+            ) : null}
           </div>
           {isValidToken ? (
             <>

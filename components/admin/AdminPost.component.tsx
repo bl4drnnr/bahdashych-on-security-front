@@ -1,58 +1,38 @@
 import React from "react";
-import BasicInput from "../ui/BasicInput.component";
-import BasicTextarea from "../ui/BasicTextarea.component";
-import BasicButton from "../ui/BasicButton.component";
 import { useCreatePostService } from "../../services/post/useCreatePost.service";
+import { useGetPostsService } from "../../services/post/useGetPosts.service";
 import { IPosts } from "../../models/response/posts.interface";
+import CreatePost from "./post/CreatePost.component";
+import GetPosts from "./post/GetPosts.component";
+import { IPost } from "../../models/post.interface";
 
-const AdminPost = ({ posts }: { posts: IPosts }) => {
-  const [postTitle, setPostTitle] = React.useState('')
-  const [postDescription, setPostDescription] = React.useState('')
-  const [postContent, setPostContent] = React.useState('')
+const AdminPost = () => {
+  const [posts, setPosts] = React.useState<IPosts>({ count: 0, rows: [] });
 
+  const { getPosts } = useGetPostsService()
   const { createPost } = useCreatePostService()
 
-  const post = async () => {
-    await createPost({
-      title: postTitle,
-      description: postDescription,
-      content: postContent
-    }, sessionStorage.getItem('_at'))
+  const fetchPosts = async (offset: number, limit: number) => {
+    const listOfPosts = await getPosts({ offset, limit })
+    setPosts(listOfPosts)
   }
 
+  const post = async (post: IPost) => {
+    await createPost(post, sessionStorage.getItem('_at'))
+  }
+
+  React.useEffect(() => {
+    fetchPosts(0, 10).then()
+  })
+
   return (
-    <div className={'w-full mt-10'}>
-      <BasicInput
-        className={'w-1/3 m-auto rounded'}
-        type={'text'}
-        placeholder={'Post title'}
-        value={postTitle}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setPostTitle(e.target.value)}
+    <>
+      <CreatePost createPost={post} />
+      <GetPosts
+        posts={posts}
+        fetchPosts={fetchPosts}
       />
-      <BasicInput
-        className={'w-1/3 m-auto rounded mt-3'}
-        type={'text'}
-        placeholder={'Post description'}
-        value={postDescription}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setPostDescription(e.target.value)}
-      />
-      <div className={'w-1/3 m-auto mt-3'}>
-        <BasicTextarea
-          value={postContent}
-          placeholder={'Content'}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setPostContent(e.target.value)}
-        />
-      </div>
-      <BasicButton
-        onClick={() => post()}
-        className={'w-1/3 m-auto mt-3'}
-      >
-        Post
-      </BasicButton>
-    </div>
+    </>
   );
 };
 

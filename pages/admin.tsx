@@ -2,32 +2,17 @@ import React from "react";
 import MainLayout from "../layouts/main.layout";
 import { parseJwt } from "../utils/verify-token.util";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
-import { IPosts } from "../models/response/posts.interface";
-import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import AdminHeader from "../components/admin/AdminHeader.component";
 import AdminPost from "../components/admin/AdminPost.component";
 import AdminUser from "../components/admin/AdminUser.component";
-import { useGetUsersService } from "../services/user/useGetUsers.service";
-import { IUsers } from "../models/response/users.interface";
 
-const Admin = ({ posts }: { posts: IPosts }) => {
+const Admin = () => {
   const [currentSection, setCurrentSection] = React.useState('posts');
-  const [users, setUsers] = React.useState<IUsers | undefined>({ count: 0, rows: [] });
 
-  const { getUsers } = useGetUsersService()
   const router = useRouter()
 
   const handleRedirect = (path: string) => {
     return router.push(path)
-  }
-
-  const getListOfUsers = async () => {
-    const listOfUsers = await getUsers({
-      offset: 0,
-      limit: 10
-    }, sessionStorage.getItem('_at'))
-    setUsers(listOfUsers)
   }
 
   const checkForPermissions = async () => {
@@ -40,9 +25,7 @@ const Admin = ({ posts }: { posts: IPosts }) => {
   }
 
   React.useEffect(() => {
-    checkForPermissions().then(() => {
-      getListOfUsers().then()
-    })
+    checkForPermissions().then()
   }, [])
 
   return (
@@ -52,29 +35,10 @@ const Admin = ({ posts }: { posts: IPosts }) => {
           setSection={setCurrentSection}
           activeSection={currentSection}
         />
-        {currentSection === 'posts' ? (
-          <AdminPost
-            posts={posts}
-          />
-        ) : (
-          <AdminUser
-            users={users}
-          />
-        )}
+        {currentSection === 'posts' ? (<AdminPost />) : (<AdminUser />)}
       </>
     </MainLayout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { getPosts } = UseGetPostsService();
-
-  const posts = await getPosts({
-    offset: 0,
-    limit: 10
-  });
-
-  return { props: { posts } }
-}
 
 export default Admin;
