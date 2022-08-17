@@ -14,7 +14,7 @@ import { IUsers } from "../models/response/users.interface";
 
 const Admin = ({ posts }: { posts: IPosts }) => {
   const [currentSection, setCurrentSection] = React.useState('posts');
-  const [users, setUsers] = React.useState<IUsers>({ count: 0, rows: [] });
+  const [users, setUsers] = React.useState<IUsers | undefined>({ count: 0, rows: [] });
 
   const { getUsers } = useGetUsersService()
   const router = useRouter()

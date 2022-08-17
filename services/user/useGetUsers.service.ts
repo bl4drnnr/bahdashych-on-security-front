@@ -14,7 +14,7 @@ export const useGetUsersService = () => {
   ) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.get<IUsers>(`/user/list/${offset}/${limit}`, {
+      const { data } = await ApiClient.get<IUsers | undefined>(`/user/list/${offset}/${limit}`, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       setError({ message: [] })
