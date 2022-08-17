@@ -10,7 +10,7 @@ import { GetServerSideProps } from "next";
 const Home = ({ posts }: { posts: IPosts }) => {
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const changeRowsPerPage = (rows: number) => {
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const posts = await getPosts({
     offset: 0,
     limit: 10,
-    from: dayjs().subtract(7, 'days').format('YYYY-MM-DD'),
+    from: dayjs().subtract(10, 'days').format('YYYY-MM-DD'),
     to: dayjs().endOf('day').format('YYYY-MM-DD')
   });
 

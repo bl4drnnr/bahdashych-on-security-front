@@ -19,7 +19,6 @@ const Pagination: React.FC<IPagination> =
     <div className={'w-full flex mb-10'}>
       <div className={'m-auto'}>
         <PaginationBar
-          count={count}
           currentPage={currentPage}
           pages={Math.ceil(count / rowsPerPage)}
           setPage={setPage}

@@ -1,18 +1,21 @@
 import React from "react";
 
 interface IPaginationBar {
-  count: number;
   currentPage: number;
   pages: number;
   setPage: (page: number) => void
 }
 
-const PaginationBar = ({ count, currentPage, pages, setPage }: IPaginationBar) => {
+const PaginationBar = ({ currentPage, pages, setPage }: IPaginationBar) => {
   return (
     <nav>
+      {pages > 1 ? (
       <ul className="inline-flex items-center -space-x-px">
         <li>
-          <a className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg bg-indigo-600 hover:bg-indigo-700 hover:text-gray-700 dark:text-gray-400  dark:hover:text-white">
+          <a
+            className="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg bg-indigo-600 hover:bg-indigo-700 hover:text-gray-700 dark:text-gray-400  dark:hover:text-white"
+            onClick={() => setPage(currentPage - 1)}
+          >
             <span className="sr-only">Previous</span>
             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -25,14 +28,23 @@ const PaginationBar = ({ count, currentPage, pages, setPage }: IPaginationBar) =
         {Array.from(Array(pages), (e, i) => {
           return (
             <li key={i}>
-              <a className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400">
+              <a
+                className={`
+                py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 cursor-pointer
+                ${currentPage === i ? 'bg-gray-300 hover:bg-gray-300': ''}
+                `}
+                onClick={() => setPage(i)}
+              >
                 {i + 1}
               </a>
             </li>
           )
         })}
         <li>
-          <a className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg bg-indigo-600 hover:bg-indigo-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+          <a
+            className="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg bg-indigo-600 hover:bg-indigo-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+            onClick={() => setPage(currentPage + 1)}
+          >
             <span className="sr-only">Next</span>
             <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                  xmlns="http://www.w3.org/2000/svg">
@@ -43,6 +55,7 @@ const PaginationBar = ({ count, currentPage, pages, setPage }: IPaginationBar) =
           </a>
         </li>
       </ul>
+      ) : null}
     </nav>
   );
 };
