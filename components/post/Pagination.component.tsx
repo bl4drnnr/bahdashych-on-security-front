@@ -3,16 +3,23 @@ import PaginationBar from "../ui/PaginationBar.component";
 import DropDown from "../ui/DropDown.component";
 
 interface IPagination {
-  total: number;
+  count: number;
+  items: Array<string | number>
+  value: string | number
 }
 
 const Pagination: React.FC<IPagination> =
-  React.forwardRef(({ ...props }: IPagination, ref) => {
+  React.forwardRef(({ count, items, value }: IPagination, ref) => {
   return (
     <div className={'w-full flex'}>
       <div className={'m-auto'}>
-        <PaginationBar />
-        <DropDown />
+        <PaginationBar
+          count={count}
+        />
+        <DropDown
+          items={items}
+          value={value}
+        />
       </div>
     </div>
   )

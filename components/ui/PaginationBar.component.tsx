@@ -1,6 +1,10 @@
 import React from "react";
 
-const PaginationBar = () => {
+interface IPaginationBar {
+  count: number
+}
+
+const PaginationBar = ({ count }: IPaginationBar) => {
   return (
     <nav>
       <ul className="inline-flex items-center -space-x-px">

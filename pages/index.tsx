@@ -22,7 +22,11 @@ const Home = ({ posts }: { posts: IPosts }) => {
         {posts.rows.length ? (
           <>
             <Posts rows={posts.rows} count={posts.count} />
-            <Pagination total={30} />
+            <Pagination
+              count={posts.count}
+              items={[10, 20, 30]}
+              value={10}
+            />
           </>
         ) : null}
       </>
