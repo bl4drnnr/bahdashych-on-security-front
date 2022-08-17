@@ -9,6 +9,7 @@ import { GetServerSideProps } from "next";
 
 const Home = ({ posts }: { posts: IPosts }) => {
   const [loading, setLoading] = React.useState(false);
+  const [filteredPosts, setFilteredPosts] = React.useState<IPosts>({ count: 0, rows: [] })
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -26,7 +27,8 @@ const Home = ({ posts }: { posts: IPosts }) => {
 
   const fetchPosts = async (offset: number, limit: number) => {
     setLoading(true)
-    posts = await getPosts({ offset, limit })
+    const listOfPosts = await getPosts({ offset, limit })
+    setFilteredPosts(listOfPosts)
     setLoading(false)
   }
 
@@ -35,21 +37,43 @@ const Home = ({ posts }: { posts: IPosts }) => {
       <>
         {loading ? (<Loader/>) : null}
         <h1 className={'mt-3 text-center text-3xl font-extrabold text-gray-900'}>
-          {posts.rows.length ? (<>List of posts</>) : (<>No posts yet</>)}
+          {filteredPosts.rows.length ?
+            (<>List of posts</>) :
+            (posts.rows.length ?
+              (<>List of posts</>) :
+              (<>No posts yet</>))
+          }
         </h1>
-        {posts.rows.length ? (
-          <>
-            <Posts rows={posts.rows} count={posts.count} />
-            <Pagination
-              count={posts.count}
-              currentPage={page}
-              setPage={changePage}
-              rowsPerPageItems={[5, 10, 15]}
-              rowsPerPage={rowsPerPage}
-              rowsPerPageChange={changeRowsPerPage}
-            />
-          </>
-        ) : null}
+        {filteredPosts.rows.length ?
+          (<>
+            <>
+              <Posts rows={filteredPosts.rows} count={filteredPosts.count} />
+              <Pagination
+                count={filteredPosts.count}
+                currentPage={page}
+                setPage={changePage}
+                rowsPerPageItems={[5, 10, 15]}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageChange={changeRowsPerPage}
+              />
+            </>
+          </>) : (
+          (posts.rows.length) ?
+            (
+              <>
+                <Posts rows={posts.rows} count={posts.count} />
+                <Pagination
+                  count={posts.count}
+                  currentPage={page}
+                  setPage={changePage}
+                  rowsPerPageItems={[5, 10, 15]}
+                  rowsPerPage={rowsPerPage}
+                  rowsPerPageChange={changeRowsPerPage}
+                />
+              </>
+            ) :
+            null )
+        }
       </>
     </MainLayout>
   );
