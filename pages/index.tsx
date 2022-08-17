@@ -16,13 +16,13 @@ const Home = ({ posts }: { posts: IPosts }) => {
   const { getPosts } = UseGetPostsService();
 
   const changeRowsPerPage = async (rows: number) => {
+    await fetchPosts(rows * page, rows)
     setRowsPerPage(rows)
-    await fetchPosts(rowsPerPage * page, rowsPerPage)
   }
 
   const changePage = async (page: number) => {
-    setPage(page)
     await fetchPosts(rowsPerPage * page, rowsPerPage)
+    setPage(page)
   }
 
   const fetchPosts = async (offset: number, limit: number) => {
