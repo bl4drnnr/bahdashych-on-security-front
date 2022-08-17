@@ -1,5 +1,4 @@
 import React from "react";
-import dayjs from "dayjs";
 import MainLayout from "../layouts/main.layout";
 import Posts from "../components/post/Posts.component";
 import Pagination from "../components/post/Pagination.component";
@@ -8,17 +7,26 @@ import { useGetPostsService as UseGetPostsService } from "../services/post/useGe
 import { GetServerSideProps } from "next";
 
 const Home = ({ posts }: { posts: IPosts }) => {
-  const [from, setFrom] = React.useState('');
-  const [to, setTo] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const { getPosts } = UseGetPostsService();
+
   const changeRowsPerPage = (rows: number) => {
     setRowsPerPage(rows)
+    fetchPosts().then()
   }
 
   const changePage = (page: number) => {
     setPage(page)
+    fetchPosts().then()
+  }
+
+  const fetchPosts = async () => {
+    posts = await getPosts({
+      offset: 0,
+      limit: rowsPerPage
+    })
   }
 
   return (
@@ -49,9 +57,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const { getPosts } = UseGetPostsService();
   const posts = await getPosts({
     offset: 0,
-    limit: 10,
-    from: dayjs().subtract(10, 'days').format('YYYY-MM-DD'),
-    to: dayjs().endOf('day').format('YYYY-MM-DD')
+    limit: 10
   });
 
   return { props: { posts } }

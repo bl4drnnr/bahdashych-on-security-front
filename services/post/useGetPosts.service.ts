@@ -4,10 +4,10 @@ import { IPosts } from "../../models/response/posts.interface";
 export const useGetPostsService = () => {
   try {
     const getPosts = async (
-      { offset, limit, from, to } :
-      { offset: number, limit: number, from: string, to: string }
+      { offset, limit } :
+      { offset: number, limit: number }
     ) => {
-      const { data } = await ApiClient.get<IPosts>(`/post/list/${offset}/${limit}/${from}/${to}`)
+      const { data } = await ApiClient.get<IPosts>(`/post/list/${offset}/${limit}`)
       return data;
     }
 

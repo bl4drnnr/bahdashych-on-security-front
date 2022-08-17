@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { IPosts } from "../models/response/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
-import dayjs from "dayjs";
 import AdminHeader from "../components/admin/AdminHeader.component";
 import AdminPost from "../components/admin/AdminPost.component";
 import AdminUser from "../components/admin/AdminUser.component";
@@ -72,9 +71,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const posts = await getPosts({
     offset: 0,
-    limit: 10,
-    from: dayjs().subtract(7, 'days').format('YYYY-MM-DD'),
-    to: dayjs().endOf('day').format('YYYY-MM-DD')
+    limit: 10
   });
 
   return { props: { posts } }
