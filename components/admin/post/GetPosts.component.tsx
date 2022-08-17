@@ -1,7 +1,7 @@
 import React from "react";
 import { IPosts } from "../../../models/response/posts.interface";
-import Posts from "../../post/Posts.component";
 import Pagination from "../../post/Pagination.component";
+import AdminPosts from "./AdminPosts.component";
 
 interface IAdminGetPosts {
   posts: IPosts;
@@ -24,7 +24,7 @@ const GetPosts = ({ posts, fetchPosts }: IAdminGetPosts) => {
 
   return (
     <>
-      <Posts count={posts.count} rows={posts.rows} />
+      <AdminPosts count={posts.count} rows={posts.rows} />
       <Pagination
         count={posts.count}
         currentPage={page}

@@ -3,7 +3,7 @@ import Post from "./Post.component";
 import { IPosts } from "../../models/response/posts.interface";
 
 const Posts: React.FC<IPosts> =
-  React.forwardRef(({ rows, count }: IPosts, ref) => {
+  React.forwardRef(({ rows }: IPosts, ref) => {
     return (
       <>
         {rows.map(post => (
