@@ -7,7 +7,9 @@ export default async (
   res: NextApiResponse
 ) => {
   try {
-    const { data } = await api.delete(`/post/${req.query.id}`)
+    const { data } = await api.delete(`/post/${req.query.id}`, {
+      headers: { 'Authorization': `Bearer ${req.headers.authorization}` }
+    })
 
     return res.json(data)
   } catch (error) {

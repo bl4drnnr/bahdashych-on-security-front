@@ -5,7 +5,7 @@ import BasicButton from "../../ui/BasicButton.component";
 import { IPost } from "../../../models/post.interface";
 
 interface IAdminCreatePost {
-  createPost: (post: IPost) => Promise<void>
+  createPost: (post: IPost) => Promise<any>
 }
 
 const CreatePost = ({ createPost }: IAdminCreatePost) => {

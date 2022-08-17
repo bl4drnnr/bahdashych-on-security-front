@@ -1,9 +1,10 @@
 import React from "react";
 import { IUsers } from "../../models/response/users.interface";
 import { useGetUsersService } from "../../services/user/useGetUsers.service";
+import GetUsers from "./user/GetUsers.component";
 
 const AdminUser = () => {
-  const [users, setUsers] = React.useState<IUsers | undefined>({ count: 0, rows: [] });
+  const [users, setUsers] = React.useState<IUsers>({ count: 0, rows: [] });
 
   const { getUsers } = useGetUsersService()
 
@@ -15,9 +16,12 @@ const AdminUser = () => {
     setUsers(listOfUsers)
   }
   return (
-    <div>
-
-    </div>
+    <>
+      <GetUsers
+        count={users?.count}
+        rows={users?.rows}
+      />
+    </>
   );
 };
 

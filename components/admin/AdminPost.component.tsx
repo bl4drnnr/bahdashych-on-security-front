@@ -1,6 +1,7 @@
 import React from "react";
 import { useCreatePostService } from "../../services/post/useCreatePost.service";
 import { useGetPostsService } from "../../services/post/useGetPosts.service";
+import { useDeletePostService } from "../../services/post/useDeletePost.service";
 import { IPosts } from "../../models/response/posts.interface";
 import CreatePost from "./post/CreatePost.component";
 import GetPosts from "./post/GetPosts.component";
@@ -11,6 +12,7 @@ const AdminPost = () => {
 
   const { getPosts } = useGetPostsService()
   const { createPost } = useCreatePostService()
+  const { deletePost } = useDeletePostService()
 
   const fetchPosts = async (offset: number, limit: number) => {
     const listOfPosts = await getPosts({ offset, limit })
@@ -21,6 +23,10 @@ const AdminPost = () => {
     await createPost(post, sessionStorage.getItem('_at'))
   }
 
+  const removePost = async (post: IPost) => {
+    await deletePost(post.id as string, sessionStorage.getItem('_at'))
+  }
+
   React.useEffect(() => {
     fetchPosts(0, 10).then()
   })
@@ -29,6 +35,7 @@ const AdminPost = () => {
     <>
       <CreatePost createPost={post} />
       <GetPosts
+        removePost={removePost}
         posts={posts}
         fetchPosts={fetchPosts}
       />
