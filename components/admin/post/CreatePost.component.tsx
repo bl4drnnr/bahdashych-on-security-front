@@ -9,9 +9,18 @@ interface IAdminCreatePost {
 }
 
 const CreatePost = ({ createPost }: IAdminCreatePost) => {
-  const [title, setTitle] = React.useState('')
-  const [description, setDescription] = React.useState('')
-  const [content, setContent] = React.useState('')
+  const [post, setPost] = React.useState<IPost>(
+    { content: '', description: '', title: '' }
+  )
+
+  const handleCreatePost = async (post: IPost) => {
+    setPost({ content: '', description: '', title: '' })
+    await createPost({
+      title: post.title,
+      content: post.content,
+      description: post.description
+    })
+  }
 
   return (
     <div className={'w-full mt-10'}>
@@ -19,28 +28,32 @@ const CreatePost = ({ createPost }: IAdminCreatePost) => {
         className={'w-1/3 m-auto rounded'}
         type={'text'}
         placeholder={'Post title'}
-        value={title}
+        value={post.title}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setTitle(e.target.value)}
+          setPost({ ...post, title: e.target.value })}
       />
       <BasicInput
         className={'w-1/3 m-auto rounded mt-3'}
         type={'text'}
         placeholder={'Post description'}
-        value={description}
+        value={post.description}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setDescription(e.target.value)}
+          setPost({ ...post, description: e.target.value })}
       />
       <div className={'w-1/3 m-auto mt-3'}>
         <BasicTextarea
-          value={content}
+          value={post.content}
           placeholder={'Content'}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setContent(e.target.value)}
+            setPost({ ...post, content: e.target.value })}
         />
       </div>
       <BasicButton
-        onClick={() => createPost({ title, content, description })}
+        onClick={() => handleCreatePost({
+          title: post.title,
+          content: post.content,
+          description: post.description
+        })}
         className={'w-1/3 m-auto mt-3'}
       >
         Post

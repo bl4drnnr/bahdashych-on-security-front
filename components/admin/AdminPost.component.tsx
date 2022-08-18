@@ -21,6 +21,7 @@ const AdminPost = () => {
 
   const post = async (post: IPost) => {
     await createPost(post, sessionStorage.getItem('_at'))
+    await fetchPosts(0, 10).then()
   }
 
   const removePost = async (postId: string) => {
