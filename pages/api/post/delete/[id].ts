@@ -8,7 +8,7 @@ export default async (
 ) => {
   try {
     const { data } = await api.delete(`/post/${req.query.id}`, {
-      headers: { 'Authorization': `Bearer ${req.headers.authorization}` }
+      headers: { 'Authorization': `${req.headers.authorization}` }
     })
 
     return res.json(data)

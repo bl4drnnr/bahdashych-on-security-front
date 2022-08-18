@@ -2,9 +2,8 @@ import React from "react";
 import { IPosts } from "../../../models/response/posts.interface";
 import BasicButton from "../../ui/BasicButton.component";
 import { useRouter } from "next/router";
-import { IPost } from "../../../models/post.interface";
 
-const AdminPosts = ({ rows, removePost }: IPosts) => {
+const AdminPosts = ({ removePost, rows }: IPosts) => {
   const router = useRouter()
   return (
     <div className={'w-full flex'}>
@@ -14,12 +13,12 @@ const AdminPosts = ({ rows, removePost }: IPosts) => {
             <h1
               onClick={async () => {return await router.push(`/post/${post.slug}`)}}
             >Post title: {post.title}</h1>
-            {/*<BasicButton*/}
-            {/*  className={'bg-red-600 hover:bg-red-800'}*/}
-            {/*  onClick={() => {}}*/}
-            {/*>*/}
-            {/*  DELETE POST*/}
-            {/*</BasicButton>*/}
+            <BasicButton
+              className={'bg-red-600 hover:bg-red-800'}
+              onClick={async () => removePost ? removePost(post.id as string) : {}}
+            >
+              Delete post
+            </BasicButton>
           </div>
         ))}
       </div>

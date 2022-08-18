@@ -16,8 +16,8 @@ const Header = () => {
   })
 
   const router = useRouter()
-  const { refreshToken, loading, error } = useRefreshTokenService()
 
+  const { refreshToken, loading, error } = useRefreshTokenService()
   const { logout, logoutLoading } = useLogoutService()
 
   const handleRedirect = (path: string) => {
@@ -27,7 +27,7 @@ const Header = () => {
   const handleLogout = async () => {
     await logout(sessionStorage.getItem('_at'))
     sessionStorage.removeItem('_at')
-    setLoggedData({ roles: [], type: '', userId: '', username: '' })
+    await router.push('/')
   }
 
   const handleRefreshToken = async () => {

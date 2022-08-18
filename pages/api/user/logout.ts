@@ -9,7 +9,7 @@ export default async (
 ) => {
   try {
     const { data, headers } = await api.post('/user/logout', {}, {
-      headers: { 'Authorization': req.headers.authorization || '' }
+      headers: { 'Authorization': `${req.headers.authorization}` }
     })
 
     if (headers['set-cookie']) {

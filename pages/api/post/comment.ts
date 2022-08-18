@@ -8,7 +8,7 @@ export default async (
 ) => {
   try {
     const { data } = await api.post('/post/comment', req.body, {
-      headers: { 'Authorization': req.headers.authorization || '' }
+      headers: { 'Authorization': `${req.headers.authorization}` }
     })
 
     return res.json(data)

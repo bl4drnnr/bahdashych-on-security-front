@@ -23,13 +23,13 @@ const AdminPost = () => {
     await createPost(post, sessionStorage.getItem('_at'))
   }
 
-  const removePost = async (post: IPost) => {
-    await deletePost(post.id as string, sessionStorage.getItem('_at'))
+  const removePost = async (postId: string) => {
+    await deletePost(postId, sessionStorage.getItem('_at'))
   }
 
   React.useEffect(() => {
     fetchPosts(0, 10).then()
-  })
+  }, [])
 
   return (
     <>

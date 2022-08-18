@@ -2,12 +2,11 @@ import React from "react";
 import { IPosts } from "../../../models/response/posts.interface";
 import Pagination from "../../post/Pagination.component";
 import AdminPosts from "./AdminPosts.component";
-import { IPost } from "../../../models/post.interface";
 
 interface IAdminGetPosts {
   posts: IPosts;
   fetchPosts: (offset: number, limit: number) => Promise<any>
-  removePost?: (post: IPost) => Promise<any>
+  removePost?: (postId: string) => Promise<void>
 }
 
 const GetPosts = ({ posts, fetchPosts, removePost }: IAdminGetPosts) => {
