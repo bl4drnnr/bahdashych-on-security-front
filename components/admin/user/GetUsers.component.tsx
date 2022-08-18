@@ -6,7 +6,7 @@ const GetUsers = ({ banUser, rows }: IUsers) => {
     <div>
       {rows.map(user => (
         <>
-          {JSON.stringify(user)}
+
         </>
       ))}
     </div>

@@ -6,8 +6,10 @@ import { IPosts } from "../../models/response/posts.interface";
 import CreatePost from "./post/CreatePost.component";
 import GetPosts from "./post/GetPosts.component";
 import { IPost } from "../../models/post.interface";
+import Loader from "../ui/Loader.component";
 
 const AdminPost = () => {
+  const [loading, setLoading] = React.useState(false)
   const [posts, setPosts] = React.useState<IPosts>({ count: 0, rows: [] });
 
   const { getPosts } = useGetPostsService()
@@ -15,8 +17,10 @@ const AdminPost = () => {
   const { deletePost } = useDeletePostService()
 
   const fetchPosts = async (offset: number, limit: number) => {
+    setLoading(true)
     const listOfPosts = await getPosts({ offset, limit })
     setPosts(listOfPosts)
+    setLoading(false)
   }
 
   const post = async (post: IPost) => {
@@ -35,6 +39,7 @@ const AdminPost = () => {
 
   return (
     <>
+      {loading ? <Loader /> : null}
       <CreatePost createPost={post} />
       <GetPosts
         removePost={removePost}

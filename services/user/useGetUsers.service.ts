@@ -11,6 +11,7 @@ export const useGetUsersService = () => {
     const { data } = await ApiClient.get<IUsers>(`/user/list/${offset}/${limit}`, {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     })
+
     return data
   }
 
