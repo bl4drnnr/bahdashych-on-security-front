@@ -7,10 +7,15 @@ export const useBanService = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<IError>({ message: [] });
 
-  const banUser = async (banUser: IBan) => {
+  const banUser = async (
+    banUser: IBan,
+    accessToken: string | null
+  ) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post<IBan>('/user/ban', banUser)
+      const { data } = await ApiClient.post<IBan>('/user/ban', banUser, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      })
       setError({ message: [] })
       return data
     } catch (error: any) {

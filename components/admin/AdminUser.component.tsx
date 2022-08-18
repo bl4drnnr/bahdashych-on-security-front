@@ -6,6 +6,7 @@ import Pagination from "../post/Pagination.component";
 import Loader from "../ui/Loader.component";
 import BasicInput from "../ui/BasicInput.component";
 import { useGetUsersByNicknameService } from "../../services/user/useGetUsersByNickname.service";
+import { useBanService } from "../../services/user/useBan.service";
 
 const AdminUser = () => {
   const [loading, setLoading] = React.useState(false);
@@ -15,6 +16,7 @@ const AdminUser = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { getUsers } = useGetUsersService()
+  const { banUser } = useBanService()
   const { getUsersByNickname } = useGetUsersByNicknameService()
 
   const changeRowsPerPage = async (rows: number) => {
@@ -25,6 +27,12 @@ const AdminUser = () => {
   const changePage = async (page: number) => {
     await fetchUsers(rowsPerPage * page, rowsPerPage);
     setPage(page)
+  }
+
+  const blockUser = async (userId: string) => {
+    setLoading(true)
+    // await banUser(userId, sessionStorage.getItem('_at'))
+    setLoading(false)
   }
 
   const fetchUsers = async (offset: number, limit: number) => {
@@ -67,6 +75,7 @@ const AdminUser = () => {
       <GetUsers
         count={users.count}
         rows={users.rows}
+        banUser={blockUser}
       />
       <Pagination
         count={users.count}
