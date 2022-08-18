@@ -28,13 +28,20 @@ const AdminUser = () => {
   }
 
   const fetchUsers = async (offset: number, limit: number) => {
-    // setLoading(true)
+    setLoading(true)
     const listOfUsers = await getUsers(
       { offset, limit },
       sessionStorage.getItem('_at')
     )
     setUsers(listOfUsers)
-    // setLoading(false)
+    setLoading(false)
+  }
+
+  const fetchFilteredUsers = async () => {
+    setLoading(true)
+    const filteredUsers = await getUsersByNickname(searchQuery, sessionStorage.getItem('_at'))
+    setUsers(filteredUsers)
+    setLoading(false)
   }
 
   React.useEffect(() => {
@@ -42,13 +49,8 @@ const AdminUser = () => {
   }, [])
 
   React.useEffect(() => {
-    getUsersByNickname(
-      searchQuery,
-      sessionStorage.getItem('_at')
-    ).then((result) => {
-      setUsers(result)
-    })
-  }, [getUsersByNickname, searchQuery])
+    if (searchQuery.length) fetchFilteredUsers().then()
+  }, [searchQuery])
 
   return (
     <div className={'w-full'}>
