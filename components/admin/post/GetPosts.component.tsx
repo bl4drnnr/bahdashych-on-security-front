@@ -6,7 +6,7 @@ import AdminPosts from "./AdminPosts.component";
 interface IAdminGetPosts {
   posts: IPosts;
   fetchPosts: (offset: number, limit: number) => Promise<any>
-  removePost?: (postId: string) => Promise<void>
+  removePost: (postId: string) => Promise<void>
 }
 
 const GetPosts = ({ posts, fetchPosts, removePost }: IAdminGetPosts) => {

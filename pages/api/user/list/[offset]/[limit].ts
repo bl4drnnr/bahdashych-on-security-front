@@ -8,7 +8,8 @@ export default async (
 ) => {
   try {
     const { data } = await api.get(
-      `/user/${req.query.offset}/${req.query.limit}`
+      `/user/${req.query.offset}/${req.query.limit}`,
+      { headers: {'Authorization': `${req.headers.authorization}`} }
     )
 
     return res.json(data)
