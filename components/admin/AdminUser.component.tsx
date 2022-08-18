@@ -50,6 +50,7 @@ const AdminUser = () => {
 
   React.useEffect(() => {
     if (searchQuery.length) fetchFilteredUsers().then()
+    else fetchUsers(0, 10).then()
   }, [searchQuery])
 
   return (
