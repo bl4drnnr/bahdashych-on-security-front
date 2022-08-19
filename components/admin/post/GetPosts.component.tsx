@@ -1,15 +1,15 @@
 import React from "react";
 import { IPosts } from "../../../models/response/posts.interface";
 import Pagination from "../../post/Pagination.component";
-import AdminPosts from "./AdminPosts.component";
+import AdminPosts from "./PostList.component";
 
-interface IAdminGetPosts {
+interface IGetPosts {
   posts: IPosts;
   fetchPosts: (offset: number, limit: number) => Promise<any>
   removePost: (postId: string) => Promise<void>
 }
 
-const GetPosts = ({ posts, fetchPosts, removePost }: IAdminGetPosts) => {
+const GetPosts = ({ posts, fetchPosts, removePost }: IGetPosts) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
