@@ -84,7 +84,8 @@ const AdminUser = () => {
           setSearchQuery(e.target.value)}
       />
       <GetUsers
-        users={users}
+        count={users.count}
+        rows={users.rows}
         banUser={blockUser}
         unbanUser={unblockUser}
       />
