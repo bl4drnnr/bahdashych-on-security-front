@@ -6,21 +6,15 @@ import { IUser } from "../../../models/user.interface";
 
 const UserList = ({ banUser, rows }: IUsers) => {
   const [showModal, setShowModal] = React.useState(false);
-  const [userToBan, setUserToBan] = React.useState<IUser>({
-    email: "",
-    firstName: "",
-    id: "",
-    lastName: "",
-    username: ""
-  })
+  const [userToBan, setUserToBan] = React.useState('')
 
-  const provideReasonToBan = (user: IUser) => {
-    setUserToBan(user)
+  const provideReasonToBan = (userEmail: string) => {
+    setUserToBan(userEmail)
     setShowModal(true)
   }
 
-  const blockUser = () => {
-
+  const blockUser = async (reason: string) => {
+    if (banUser) await banUser({ email: userToBan, reason });
   }
 
   return (
@@ -39,7 +33,7 @@ const UserList = ({ banUser, rows }: IUsers) => {
                   </div>
                   <BasicButton
                     className={'w-16 bg-red-600 hover:bg-red-800 h-9'}
-                    onClick={async () => provideReasonToBan(user)}
+                    onClick={async () => provideReasonToBan(user.email)}
                   >
                     Ban
                   </BasicButton>
@@ -53,7 +47,7 @@ const UserList = ({ banUser, rows }: IUsers) => {
         <ModalWindow
           close={() => setShowModal(!showModal)}
           title={'You are about to ban user'}
-          text={`You are about to ban user ${userToBan.email}. Please, provide the reason`}
+          text={`You are about to ban user ${userToBan}. Please, provide the reason`}
           action={blockUser}
         />) : null}
     </>

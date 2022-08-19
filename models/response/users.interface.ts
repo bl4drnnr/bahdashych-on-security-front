@@ -1,7 +1,8 @@
 import { IUser } from "../user.interface";
+import { IBan } from "../request/ban.interface";
 
 export interface IUsers {
   count: number;
   rows: IUser[];
-  banUser?: (userId: string) => Promise<void>;
+  banUser?: (userBan: IBan) => Promise<void>;
 }

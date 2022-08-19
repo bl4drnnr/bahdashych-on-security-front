@@ -7,6 +7,7 @@ import Loader from "../ui/Loader.component";
 import BasicInput from "../ui/BasicInput.component";
 import { useGetUsersByNicknameService } from "../../services/user/useGetUsersByNickname.service";
 import { useBanService } from "../../services/user/useBan.service";
+import { IBan } from "../../models/request/ban.interface";
 
 const AdminUser = () => {
   const [loading, setLoading] = React.useState(false);
@@ -29,9 +30,9 @@ const AdminUser = () => {
     setPage(page)
   }
 
-  const blockUser = async (userId: string) => {
+  const blockUser = async (userBan: IBan) => {
     setLoading(true)
-    // await banUser(userId, sessionStorage.getItem('_at'))
+    await banUser(userBan, sessionStorage.getItem('_at'))
     setLoading(false)
   }
 
