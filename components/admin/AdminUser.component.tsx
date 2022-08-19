@@ -8,6 +8,7 @@ import BasicInput from "../ui/BasicInput.component";
 import { useGetUsersByNicknameService } from "../../services/user/useGetUsersByNickname.service";
 import { useBanService } from "../../services/user/useBan.service";
 import { IBan } from "../../models/request/ban.interface";
+import { useUnbanService } from "../../services/user/useUnban.service";
 
 const AdminUser = () => {
   const [loading, setLoading] = React.useState(false);
@@ -18,6 +19,7 @@ const AdminUser = () => {
 
   const { getUsers } = useGetUsersService()
   const { banUser } = useBanService()
+  const { unbanUser } = useUnbanService()
   const { getUsersByNickname } = useGetUsersByNicknameService()
 
   const changeRowsPerPage = async (rows: number) => {
@@ -33,6 +35,13 @@ const AdminUser = () => {
   const blockUser = async (userBan: IBan) => {
     setLoading(true)
     await banUser(userBan, sessionStorage.getItem('_at'))
+    await fetchUsers(0, 10)
+    setLoading(false)
+  }
+
+  const unblockUser = async (email: string) => {
+    setLoading(true)
+    await unbanUser(email, sessionStorage.getItem('_at'))
     await fetchUsers(0, 10)
     setLoading(false)
   }
@@ -77,6 +86,7 @@ const AdminUser = () => {
       <GetUsers
         users={users}
         banUser={blockUser}
+        unbanUser={unblockUser}
       />
       <Pagination
         count={users.count}

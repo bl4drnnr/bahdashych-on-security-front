@@ -6,15 +6,17 @@ import { IBan } from "../../../models/request/ban.interface";
 interface IGetUsers {
   users: IUsers;
   banUser: (userBan: IBan) => Promise<void>;
+  unbanUser: (email: string) => Promise<void>;
 }
 
-const GetUsers = ({ users, banUser }: IGetUsers) => {
+const GetUsers = ({ users, banUser, unbanUser }: IGetUsers) => {
   return (
     <>
       <UserList
         rows={users.rows}
         count={users.count}
         banUser={banUser}
+        unbanUser={unbanUser}
       />
     </>
   );

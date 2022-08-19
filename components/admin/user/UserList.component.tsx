@@ -3,7 +3,7 @@ import BasicButton from "../../ui/BasicButton.component";
 import { IUsers } from "../../../models/response/users.interface";
 import ModalWindow from "../../ui/ModalWindow.component";
 
-const UserList = ({ banUser, rows }: IUsers) => {
+const UserList = ({ banUser, rows, unbanUser }: IUsers) => {
   const [showModal, setShowModal] = React.useState(false);
   const [userToBan, setUserToBan] = React.useState('')
 
@@ -15,6 +15,10 @@ const UserList = ({ banUser, rows }: IUsers) => {
   const blockUser = async (reason: string) => {
     if (banUser) await banUser({ email: userToBan, reason });
     setShowModal(false)
+  }
+
+  const unblockUser = async (email: string) => {
+    if (unbanUser) await unbanUser(email)
   }
 
   return (
@@ -39,7 +43,14 @@ const UserList = ({ banUser, rows }: IUsers) => {
                     >
                       Ban
                     </BasicButton>
-                  ) : null}
+                  ) : (
+                    <BasicButton
+                      className={'w-16 bg-green-600 hover:bg-green-800 h-9'}
+                      onClick={() => unblockUser(user.email)}
+                    >
+                      Unban
+                    </BasicButton>
+                  )}
                 </div>
               </div>
             ))}
