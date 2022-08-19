@@ -25,6 +25,7 @@ const Slug = ({ post, postComments }: IFullPost) => {
     await commentPost({
       comment, postId: post.id
     }, sessionStorage.getItem('_at'));
+    router.reload()
   }
 
   const checkForPermissions = () => {
@@ -49,8 +50,17 @@ const Slug = ({ post, postComments }: IFullPost) => {
           <p className={'mt-12'}>{post.content}</p>
           <div className={'mt-10'}>
             {postComments.length ? (
-              <div>
-              </div>
+              <>
+                {postComments.map(post => (
+                  <div
+                    className={'border rounded p-3'}
+                    key={post.comment}
+                  >
+                    <p>By <span className={'font-bold'}>{post["user.email"]}</span></p>
+                    <p>{post.comment}</p>
+                  </div>
+                ))}
+              </>
             ) :
             <h1
               className={'w-full text-center font-bold'}
