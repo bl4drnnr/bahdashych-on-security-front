@@ -33,6 +33,7 @@ const AdminUser = () => {
   const blockUser = async (userBan: IBan) => {
     setLoading(true)
     await banUser(userBan, sessionStorage.getItem('_at'))
+    await fetchUsers(0, 10)
     setLoading(false)
   }
 

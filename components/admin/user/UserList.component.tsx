@@ -2,7 +2,6 @@ import React from "react";
 import BasicButton from "../../ui/BasicButton.component";
 import { IUsers } from "../../../models/response/users.interface";
 import ModalWindow from "../../ui/ModalWindow.component";
-import { IUser } from "../../../models/user.interface";
 
 const UserList = ({ banUser, rows }: IUsers) => {
   const [showModal, setShowModal] = React.useState(false);
@@ -15,6 +14,7 @@ const UserList = ({ banUser, rows }: IUsers) => {
 
   const blockUser = async (reason: string) => {
     if (banUser) await banUser({ email: userToBan, reason });
+    setShowModal(false)
   }
 
   return (
@@ -28,15 +28,18 @@ const UserList = ({ banUser, rows }: IUsers) => {
                   <div>
                     <p>Username: {user.username}</p>
                     <p>Email: {user.email}</p>
+                    {user['ban.reason'] ? (<p>User banned: {user['ban.reason']}</p>) : null}
                     {user.firstName ? (<p>First name: {user.firstName}</p>) : null}
-                    {user.firstName ? (<p>Last name: {user.lastName}</p>) : null}
+                    {user.lastName ? (<p>Last name: {user.lastName}</p>) : null}
                   </div>
-                  <BasicButton
-                    className={'w-16 bg-red-600 hover:bg-red-800 h-9'}
-                    onClick={async () => provideReasonToBan(user.email)}
-                  >
-                    Ban
-                  </BasicButton>
+                  {!user['ban.reason'] ? (
+                    <BasicButton
+                      className={'w-16 bg-red-600 hover:bg-red-800 h-9'}
+                      onClick={async () => provideReasonToBan(user.email)}
+                    >
+                      Ban
+                    </BasicButton>
+                  ) : null}
                 </div>
               </div>
             ))}
