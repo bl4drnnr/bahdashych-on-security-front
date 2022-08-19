@@ -6,14 +6,18 @@ import Loader from "../components/ui/Loader.component";
 import { IPosts } from "../models/response/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";
+import { useGetPostByQueryService } from "../services/post/useGetPostByQuery.service";
+import BasicInput from "../components/ui/BasicInput.component";
 
 const Home = ({ posts }: { posts: IPosts }) => {
+  const [query, setQuery] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [filteredPosts, setFilteredPosts] = React.useState<IPosts>({ count: 0, rows: [] })
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { getPosts } = UseGetPostsService();
+  const { getPostByQuery } = useGetPostByQueryService()
 
   const changeRowsPerPage = async (rows: number) => {
     await fetchPosts(rows * page, rows)
@@ -25,12 +29,24 @@ const Home = ({ posts }: { posts: IPosts }) => {
     setPage(page)
   }
 
+  const fetchPostsByQuery = async () => {
+    setLoading(true)
+    const filteredPosts = await getPostByQuery(query)
+    setFilteredPosts(filteredPosts)
+    setLoading(false)
+  }
+
   const fetchPosts = async (offset: number, limit: number) => {
     setLoading(true)
     const listOfPosts = await getPosts({ offset, limit })
     setFilteredPosts(listOfPosts)
     setLoading(false)
   }
+
+  React.useEffect(() => {
+    if (query.length) fetchPostsByQuery().then()
+    else fetchPosts(10, 0).then()
+  }, [query])
 
   return (
     <MainLayout>
@@ -44,6 +60,27 @@ const Home = ({ posts }: { posts: IPosts }) => {
               (<>No posts yet</>))
           }
         </h1>
+        {filteredPosts.rows.length ? (
+          <BasicInput
+            className={'m-auto w-1/3 rounded mt-2 mb-2'}
+            type={'text'}
+            placeholder={'Search...'}
+            value={query}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setQuery(e.target.value)}
+          />
+        ) : (
+          posts.rows.length ? (
+            <BasicInput
+              className={'m-auto w-1/3 rounded mt-2 mb-2'}
+              type={'text'}
+              placeholder={'Search...'}
+              value={query}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setQuery(e.target.value)}
+            />
+          ) : null
+        )}
         {filteredPosts.rows.length ?
           (<>
             <>

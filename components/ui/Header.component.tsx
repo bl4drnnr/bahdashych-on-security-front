@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React from "react";
-import BasicInput from './BasicInput.component';
 import BasicButton from "./BasicButton.component";
 import Loader from "./Loader.component";
 import { useLogoutService } from "../../services/user/useLogout.service";
@@ -10,7 +9,6 @@ import { parseJwt } from "../../utils/verify-token.util";
 import { IToken } from "../../models/request/token.interface";
 
 const Header = () => {
-  const [search, setSearch] = React.useState('')
   const [loggedData, setLoggedData] = React.useState<IToken>({
     roles: [], type: '', userId: '', username: ''
   })
@@ -56,16 +54,6 @@ const Header = () => {
               onClick={() => handleRedirect('/')}
             />
           </div>
-
-          <BasicInput
-            type='text'
-            placeholder='Search...'
-            className={'w-1/5 rounded-lg'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setSearch(e.target.value)
-            }}
-            value={search}
-          />
 
           <div className='hidden md:flex items-center justify-end md:flex-1 lg:w-0'>
           {loggedData.roles.find((role) => role.value === 'ADMIN') ? (
