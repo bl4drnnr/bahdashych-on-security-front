@@ -49,12 +49,12 @@ const CreatePost = ({ createPost }: IAdminCreatePost) => {
         />
       </div>
       <BasicButton
+        className={'w-24 m-auto mt-3'}
         onClick={() => handleCreatePost({
           title: post.title,
           content: post.content,
           description: post.description
         })}
-        className={'w-1/3 m-auto mt-3'}
       >
         Post
       </BasicButton>
