@@ -1,4 +1,4 @@
-export interface IComment {
+export interface CommentDto {
   readonly postId: string | undefined;
   readonly comment: string;
 }

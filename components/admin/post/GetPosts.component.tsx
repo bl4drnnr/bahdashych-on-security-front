@@ -1,5 +1,5 @@
 import React from "react";
-import { IPosts } from "../../../models/response/posts.interface";
+import { IPosts } from "../../../interface/posts.interface";
 import Pagination from "../../post/Pagination.component";
 import AdminPosts from "./PostList.component";
 

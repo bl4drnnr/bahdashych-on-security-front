@@ -1,10 +1,10 @@
 import { ApiClient } from "../api.api-client";
-import { IComment } from "../../models/request/comment.interface";
+import { CommentDto } from "../../dto/comment.dto";
 
 export const useCommentPostService = () => {
   try {
-    const commentPost = async (comment: IComment, accessToken: string | null) => {
-      const { data } = await ApiClient.post<IComment>('/post/comment', comment, {
+    const commentPost = async (comment: CommentDto, accessToken: string | null) => {
+      const { data } = await ApiClient.post('/post/comment', comment, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       return data

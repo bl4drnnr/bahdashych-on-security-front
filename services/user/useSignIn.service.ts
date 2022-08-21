@@ -1,13 +1,13 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { ISignIn } from "../../models/request/sign-in.interface";
-import { IError } from "../../models/response/error.interface";
+import { SignInDto } from "../../dto/sign-in.dto";
+import { IError } from "../../interface/error.interface";
 
 export const useSignInService = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<IError>({ message: [] });
 
-  const signIn = async (signInPayload: ISignIn) => {
+  const signIn = async (signInPayload: SignInDto) => {
     try {
       setLoading(true);
       const { data } = await ApiClient.post<string>('/user/sign-in', signInPayload);

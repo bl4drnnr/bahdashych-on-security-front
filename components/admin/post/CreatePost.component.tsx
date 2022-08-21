@@ -2,18 +2,18 @@ import React from "react";
 import BasicInput from "../../ui/BasicInput.component";
 import BasicTextarea from "../../ui/BasicTextarea.component";
 import BasicButton from "../../ui/BasicButton.component";
-import { IPost } from "../../../models/post.interface";
+import { PostDto } from "../../../dto/post.dto";
 
 interface IAdminCreatePost {
-  createPost: (post: IPost) => Promise<any>
+  createPost: (post: PostDto) => Promise<any>
 }
 
 const CreatePost = ({ createPost }: IAdminCreatePost) => {
-  const [post, setPost] = React.useState<IPost>(
+  const [post, setPost] = React.useState<PostDto>(
     { content: '', description: '', title: '' }
   )
 
-  const handleCreatePost = async (post: IPost) => {
+  const handleCreatePost = async (post: PostDto) => {
     setPost({ content: '', description: '', title: '' })
     await createPost({
       title: post.title,

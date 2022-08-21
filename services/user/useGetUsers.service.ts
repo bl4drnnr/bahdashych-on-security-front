@@ -1,5 +1,5 @@
 import { ApiClient } from "../api.api-client";
-import { IUsers } from "../../models/response/users.interface";
+import { IUsers } from "../../interface/users.interface";
 
 export const useGetUsersService = () => {
 

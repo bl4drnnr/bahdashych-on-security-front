@@ -1,5 +1,5 @@
 import React from "react";
-import { IUsers } from "../../../models/response/users.interface";
+import { IUsers } from "../../../interface/users.interface";
 import BasicButton from "../../ui/BasicButton.component";
 import ModalWindow from "../../ui/ModalWindow.component";
 

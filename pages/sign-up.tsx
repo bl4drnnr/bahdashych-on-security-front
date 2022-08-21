@@ -7,9 +7,10 @@ import Loader from "../components/ui/Loader.component";
 import ErrorBox from "../components/ui/ErrorBox.component";
 import { useSignUpService } from "../services/user/useSignUp.service";
 import { useRouter } from 'next/router'
+import { SignUpDto } from "../dto/sign-up.dto";
 
 const SignUp: NextPage = () => {
-  const [signUpPayload, setSignUpPayload] = React.useState({
+  const [signUpPayload, setSignUpPayload] = React.useState<SignUpDto>({
     email: '', username: '', password: '', passwordRepeat: '', firstName: '', lastName: ''
   });
   const [successSignUp, setSuccessSignUp] = React.useState(false);

@@ -1,4 +1,4 @@
-import { IToken } from "../models/request/token.interface";
+import { IToken } from "../dto/token.interface";
 
 const parseJwt = (token: string): IToken => {
   const base64Url = token.split('.')[1];

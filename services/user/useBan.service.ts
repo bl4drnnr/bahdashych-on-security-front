@@ -1,13 +1,13 @@
 import { ApiClient } from "../api.api-client";
-import { IBan } from "../../models/request/ban.interface";
+import { BanDto } from "../../dto/ban.dto";
 
 export const useBanService = () => {
 
   const banUser = async (
-    banUser: IBan,
+    banUser: BanDto,
     accessToken: string | null
   ) => {
-    const { data } = await ApiClient.post<IBan>('/user/ban', banUser, {
+    const { data } = await ApiClient.post('/user/ban', banUser, {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     })
 

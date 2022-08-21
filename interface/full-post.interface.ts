@@ -1,7 +1,7 @@
-import { IPost } from "../post.interface";
+import { IPost } from "./post.interface";
 
 interface ILeavedComment {
-  readonly comment: string;
+  comment: string;
   'user.email': string;
 }
 

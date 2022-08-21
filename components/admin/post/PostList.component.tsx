@@ -1,5 +1,5 @@
 import React from "react";
-import { IPosts } from "../../../models/response/posts.interface";
+import { IPosts } from "../../../interface/posts.interface";
 import BasicButton from "../../ui/BasicButton.component";
 import { useRouter } from "next/router";
 

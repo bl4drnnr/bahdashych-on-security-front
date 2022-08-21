@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiClient } from "../api.api-client";
-import { IError } from "../../models/response/error.interface";
+import { IError } from "../../interface/error.interface";
 
 export const useLogoutService = () => {
   const [loading, setLoading] = React.useState(false);

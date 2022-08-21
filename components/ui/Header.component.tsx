@@ -6,7 +6,7 @@ import { useLogoutService } from "../../services/user/useLogout.service";
 import { useRouter } from "next/router";
 import { useRefreshTokenService } from "../../services/auth/useRefreshToken.service";
 import { parseJwt } from "../../utils/verify-token.util";
-import { IToken } from "../../models/request/token.interface";
+import { IToken } from "../../dto/token.interface";
 
 const Header = () => {
   const [loggedData, setLoggedData] = React.useState<IToken>({

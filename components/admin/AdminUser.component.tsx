@@ -1,5 +1,5 @@
 import React from "react";
-import { IUsers } from "../../models/response/users.interface";
+import { IUsers } from "../../interface/users.interface";
 import { useGetUsersService } from "../../services/user/useGetUsers.service";
 import GetUsers from "./user/GetUsers.component";
 import Pagination from "../post/Pagination.component";
@@ -7,7 +7,7 @@ import Loader from "../ui/Loader.component";
 import BasicInput from "../ui/BasicInput.component";
 import { useGetUsersByNicknameService } from "../../services/user/useGetUsersByNickname.service";
 import { useBanService } from "../../services/user/useBan.service";
-import { IBan } from "../../models/request/ban.interface";
+import { BanDto } from "../../dto/ban.dto";
 import { useUnbanService } from "../../services/user/useUnban.service";
 
 const AdminUser = () => {
@@ -32,7 +32,7 @@ const AdminUser = () => {
     setPage(page)
   }
 
-  const blockUser = async (userBan: IBan) => {
+  const blockUser = async (userBan: BanDto) => {
     setLoading(true)
     await banUser(userBan, sessionStorage.getItem('_at'))
     await fetchUsers(0, 10)

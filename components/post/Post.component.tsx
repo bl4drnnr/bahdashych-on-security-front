@@ -1,5 +1,5 @@
 import React from "react";
-import { IPostPreview } from "../../models/response/post-preview.interface";
+import { IPostPreview } from "../../interface/post-preview.interface";
 import { useRouter } from "next/router";
 
 const Post: React.FC<IPostPreview> =

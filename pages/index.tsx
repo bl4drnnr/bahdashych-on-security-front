@@ -3,7 +3,7 @@ import MainLayout from "../layouts/main.layout";
 import Posts from "../components/post/Posts.component";
 import Pagination from "../components/post/Pagination.component";
 import Loader from "../components/ui/Loader.component";
-import { IPosts } from "../models/response/posts.interface";
+import { IPosts } from "../interface/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
 import { GetServerSideProps } from "next";
 import { useGetPostByQueryService } from "../services/post/useGetPostByQuery.service";

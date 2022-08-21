@@ -6,7 +6,7 @@ import { useGetPostService as UseGetPostService } from "../../services/post/useG
 import { useCommentPostService } from "../../services/post/useCommentPost.service";
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
-import { IFullPost } from "../../models/response/full-post.interface";
+import { IFullPost } from "../../interface/full-post.interface";
 import { useRouter } from "next/router";
 
 const Slug = ({ post, postComments }: IFullPost) => {

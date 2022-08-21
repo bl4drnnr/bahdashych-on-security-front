@@ -1,5 +1,5 @@
 import { ApiClient } from "../api.api-client";
-import { IPosts } from "../../models/response/posts.interface";
+import { IPosts } from "../../interface/posts.interface";
 
 export const useGetPostsService = () => {
   try {
