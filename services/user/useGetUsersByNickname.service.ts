@@ -1,4 +1,5 @@
 import { ApiClient } from "../api.api-client";
+import { IUsers } from "../../interface/users.interface";
 
 export const useGetUsersByNicknameService = () => {
 
@@ -6,7 +7,7 @@ export const useGetUsersByNicknameService = () => {
     searchQuery: string,
     accessToken: string | null
   ) => {
-    const { data } = await ApiClient.get(`/user/one/${searchQuery}`, {
+    const { data } = await ApiClient.get<IUsers>(`/user/one/${searchQuery}`, {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     })
 
