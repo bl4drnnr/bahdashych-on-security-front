@@ -1,15 +1,24 @@
 import { ApiClient } from "../../api.api-client";
-import { IFullPost } from "../../../interface/full-post.interface";
+import { GetPostPayload, GetPostResponse } from "@services/post/one/getPost.interface";
+import React from "react";
+import { handleApiException } from "@exceptions/api/handleApiException";
 
 export const useGetPostService = () => {
-  try {
-    const getPost = async (slug: string) => {
-      const { data } = await ApiClient.get<IFullPost>(`/post/${slug}`);
-      return data
-    }
+  const [loading, setLoading] = React.useState(false);
 
-    return { getPost };
-  } catch (error: any) {
-    throw Error(error?.message as string)
+  const getPost = async (payload: GetPostPayload)
+    : Promise<GetPostResponse> => {
+    try {
+      setLoading(true)
+      const { data } = await ApiClient.get<GetPostResponse>(`/post/${payload.slug}`);
+
+      return data
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
+    }
   }
+
+  return { getPost, loading };
 }

@@ -1,16 +1,24 @@
 import { ApiClient } from "../../api.api-client";
-import { IPosts } from "../../../interface/posts.interface";
+import React from "react";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { GetPostByQueryPayload, GetPostByQueryResponse } from "@services/post/find/getPostByQuery.interface";
 
 export const useGetPostByQueryService = () => {
-  try {
-    const getPostByQuery = async (query: string) => {
-      const { data } = await ApiClient.get<IPosts>(`/post/one/${query}`)
+  const [loading, setLoading] = React.useState(false);
+
+  const getPostByQuery = async (payload: GetPostByQueryPayload)
+    : Promise<GetPostByQueryResponse> => {
+    try {
+      setLoading(true)
+      const { data } = await ApiClient.get<GetPostByQueryResponse>(`/post/one/${payload.query}`)
 
       return data
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
     }
-
-    return { getPostByQuery }
-  } catch (error: any) {
-    throw Error(error?.message as string)
   }
+
+  return { getPostByQuery, loading };
 }

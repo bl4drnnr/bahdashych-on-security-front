@@ -1,17 +1,27 @@
 import { ApiClient } from "../../api.api-client";
+import React from "react";
+import { DeletePostPayload, DeletePostResponse } from "@services/post/delete/deletePost.interface";
+import { handleApiException } from "@exceptions/api/handleApiException";
 
 export const useDeletePostService = () => {
-  try {
-    const deletePost = async (id: string, accessToken: string | null) => {
-      const { data } = await ApiClient.get(`/post/delete/${id}`, {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
+  const [loading, setLoading] = React.useState(false)
+
+  const deletePost = async (payload: DeletePostPayload)
+    : Promise<DeletePostResponse> => {
+    try {
+      setLoading(true)
+      const { data } = await ApiClient.get<DeletePostResponse>(
+        `/post/delete/${payload.id}`, {
+        headers: { 'Authorization': `Bearer ${payload.accessToken}` }
       });
 
       return data;
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
     }
-
-    return { deletePost };
-  } catch (error: any) {
-    throw Error(error?.message as string)
   }
+
+  return { deletePost, loading }
 }

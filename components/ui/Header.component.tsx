@@ -16,7 +16,7 @@ const Header = () => {
   const router = useRouter()
 
   const { refreshToken, loading, error } = useRefreshTokenService()
-  const { logout, logoutLoading } = useLogoutService()
+  const { logout, loading: logoutLoading } = useLogoutService()
 
   const handleRedirect = (path: string) => {
     return router.push(path)

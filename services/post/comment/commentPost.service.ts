@@ -1,17 +1,24 @@
 import { ApiClient } from "../../api.api-client";
-import { CommentDto } from "../../../dto/comment.dto";
+import React from "react";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { CommentPostPayload } from "@services/post/comment/commentPost.interface";
 
 export const useCommentPostService = () => {
-  try {
-    const commentPost = async (comment: CommentDto, accessToken: string | null) => {
-      const { data } = await ApiClient.post('/post/comment', comment, {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-      })
-      return data
-    }
+  const [loading, setLoading] = React.useState(false)
 
-    return { commentPost };
-  } catch (error: any) {
-    throw Error(error?.message as string)
+  const commentPost = async (payload: CommentPostPayload) => {
+    try {
+      const { data } = await ApiClient.post('/post/comment', payload.comment, {
+        headers: { 'Authorization': `Bearer ${payload.accessToken}` }
+      })
+
+      return data
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
+    }
   }
+
+  return { commentPost, loading }
 }
