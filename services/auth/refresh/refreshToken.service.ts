@@ -1,23 +1,24 @@
 import React from "react";
 import { ApiClient } from "../../api.api-client";
-import { IError } from "../../../interface/error.interface";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { RefreshTokenResponse } from "@services/auth/refresh/refreshToken.interface";
 
 export const useRefreshTokenService = () => {
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<IError>({ message: [] });
 
-  const refreshToken = async () => {
+  const refreshToken = async ()
+    : Promise<RefreshTokenResponse> => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.get<string>('/auth/refresh-token');
-      setError({ message: [] })
+      const { data } = await ApiClient.get<RefreshTokenResponse>('/auth/refresh-token');
+
       return data
-    } catch (error: any) {
-      setError(error?.response?.message || error?.response?.data)
+    } catch (error) {
+      handleApiException(error)
     } finally {
       setLoading(false)
     }
   }
 
-  return { refreshToken, loading, error }
+  return { refreshToken, loading }
 }
