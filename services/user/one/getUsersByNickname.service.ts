@@ -1,18 +1,27 @@
 import { ApiClient } from "../../api.api-client";
-import { IUsers } from "../../../interface/users.interface";
+import React from "react";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { GetUsersByNicknamePayload, GetUsersByNicknameResponse } from "@services/user/one/getUsersByNickname.interface";
 
 export const useGetUsersByNicknameService = () => {
+  const [loading, setLoading] = React.useState(false);
 
-  const getUsersByNickname = async (
-    searchQuery: string,
-    accessToken: string | null
-  ) => {
-    const { data } = await ApiClient.get<IUsers>(`/user/one/${searchQuery}`, {
-      headers: { 'Authorization': `Bearer ${accessToken}` }
-    })
+  const getUsersByNickname = async (payload: GetUsersByNicknamePayload)
+    : Promise<GetUsersByNicknameResponse> => {
+    try {
+      setLoading(true)
+      const { data } = await ApiClient.get<GetUsersByNicknameResponse>(
+        `/user/one/${payload.searchQuery}`, {
+        headers: { 'Authorization': `Bearer ${payload.accessToken}` }
+      })
 
-    return data
+      return data
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return { getUsersByNickname }
+  return { getUsersByNickname, loading }
 }

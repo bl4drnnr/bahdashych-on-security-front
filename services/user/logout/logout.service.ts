@@ -1,25 +1,26 @@
 import React from "react";
 import { ApiClient } from "../../api.api-client";
-import { IError } from "../../../interface/error.interface";
+import { LogoutPayload, LogoutResponse } from "@services/user/logout/logout.interface";
+import { handleApiException } from "@exceptions/api/handleApiException";
 
 export const useLogoutService = () => {
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<IError>({ message: [] });
 
-  const logout = async (accessToken: string | null) => {
+  const logout = async (payload: LogoutPayload)
+    : Promise<LogoutResponse> => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post<string>('/user/logout', {}, {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
+      const { data } = await ApiClient.post<LogoutResponse>('/user/logout', {}, {
+        headers: { 'Authorization': `Bearer ${payload.accessToken}` }
       })
-      setError({ message: [] })
+
       return data
     } catch (error: any) {
-      setError(error?.response?.message || error?.response?.data)
+      handleApiException(error)
     } finally {
       setLoading(false)
     }
   }
 
-  return { logout, logoutLoading: loading, error };
+  return { logout, loading };
 }

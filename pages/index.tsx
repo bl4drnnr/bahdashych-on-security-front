@@ -6,7 +6,7 @@ import Loader from "../components/ui/Loader.component";
 import { IPosts } from "../interface/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "../services/post/list/getPosts.service";
 import { GetServerSideProps } from "next";
-import { useGetPostByQueryService } from "../services/post/find/getPostByQuery.service";
+import { useGetPostByQueryService } from "@services/post/find/getPostByQuery.service";
 import BasicInput from "../components/ui/BasicInput.component";
 
 const Home = ({ posts }: { posts: IPosts }) => {

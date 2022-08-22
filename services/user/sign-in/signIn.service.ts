@@ -1,24 +1,24 @@
 import React from "react";
 import { ApiClient } from "../../api.api-client";
-import { SignInDto } from "../../../dto/sign-in.dto";
-import { IError } from "../../../interface/error.interface";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { SignInPayload, SignInResponse } from "@services/user/sign-in/signIn.interface";
 
 export const useSignInService = () => {
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<IError>({ message: [] });
 
-  const signIn = async (signInPayload: SignInDto) => {
+  const signIn = async (payload: SignInPayload)
+    :Promise<SignInResponse> => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post<string>('/user/sign-in', signInPayload);
-      setError({ message: [] })
+      const { data } = await ApiClient.post<SignInResponse>('/user/sign-in', payload);
+
       return data
-    } catch (error: any) {
-      setError(error?.response?.message || error?.response?.data)
+    } catch (error) {
+      handleApiException(error)
     } finally {
       setLoading(false)
     }
   }
 
-  return { signIn, loading, error, setError };
+  return { signIn, loading };
 }

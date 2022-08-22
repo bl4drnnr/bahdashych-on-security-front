@@ -1,19 +1,27 @@
 import { ApiClient } from "../../api.api-client";
-import { IUsers } from "../../../interface/users.interface";
+import React from "react";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { GetUsersPayload, GetUsersResponse } from "@services/user/list/getUsers.interface";
 
 export const useGetUsersService = () => {
+  const [loading, setLoading] = React.useState(false);
 
-  const getUsers = async (
-    { offset, limit }:
-    { offset: number, limit: number },
-    accessToken: string | null
-  ) => {
-    const { data } = await ApiClient.get<IUsers>(`/user/list/${offset}/${limit}`, {
-      headers: { 'Authorization': `Bearer ${accessToken}` }
-    })
+  const getUsers = async (payload: GetUsersPayload)
+    : Promise<GetUsersResponse> => {
+    try {
+      setLoading(true)
+      const { data } = await ApiClient.get<GetUsersResponse>(
+        `/user/list/${payload.offset}/${payload.limit}`, {
+        headers: { 'Authorization': `Bearer ${payload.accessToken}` }
+      })
 
-    return data
+      return data
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return { getUsers };
+  return { getUsers, loading };
 }

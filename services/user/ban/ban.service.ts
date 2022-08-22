@@ -1,18 +1,29 @@
 import { ApiClient } from "../../api.api-client";
-import { BanDto } from "../../../dto/ban.dto";
+import React from "react";
+import { handleApiException } from "@exceptions/api/handleApiException";
+import { BanPayload, BanResponse } from "@services/user/ban/ban.interface";
 
 export const useBanService = () => {
+  const [loading, setLoading] = React.useState(false);
 
-  const banUser = async (
-    banUser: BanDto,
-    accessToken: string | null
-  ) => {
-    const { data } = await ApiClient.post<string>('/user/ban', banUser, {
-      headers: { 'Authorization': `Bearer ${accessToken}` }
-    })
+  const banUser = async (payload: BanPayload)
+    : Promise<BanResponse> => {
+    try {
+      setLoading(true)
+      const { data } = await ApiClient.post<BanResponse>('/user/ban', {
+        email: payload.email,
+        reason: payload.reason
+      }, {
+        headers: { 'Authorization': `Bearer ${payload.accessToken}` }
+      })
 
-    return data
+      return data
+    } catch (error) {
+      handleApiException(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return { banUser };
+  return { banUser, loading };
 }
