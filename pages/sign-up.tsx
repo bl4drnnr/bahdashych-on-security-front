@@ -1,11 +1,10 @@
 import { NextPage } from 'next';
 import React  from "react";
 import Link from "next/link";
-import BasicInput from "../components/ui/BasicInput.component";
-import BasicButton from "../components/ui/BasicButton.component";
-import Loader from "../components/ui/Loader.component";
-import ErrorBox from "../components/ui/ErrorBox.component";
-import { useSignUpService } from "../services/user/sign-up/signUp.service";
+import BasicInput from "@components/ui/BasicInput.component";
+import BasicButton from "@components/ui/BasicButton.component";
+import Loader from "@components/ui/Loader.component";
+import { useSignUpService } from "@services/user/sign-up/signUp.service";
 import { useRouter } from 'next/router'
 import { SignUpDto } from "../dto/sign-up.dto";
 
@@ -15,11 +14,11 @@ const SignUp: NextPage = () => {
   });
   const [successSignUp, setSuccessSignUp] = React.useState(false);
   const router = useRouter()
-  const { signUp, loading, error, setError } = useSignUpService();
+  const { signUp, loading } = useSignUpService();
 
   const handleSignUp = async () => {
     if (signUpPayload.password !== signUpPayload.passwordRepeat)
-      setError({ ...error, message: ['Password mismatch'] })
+      return
 
     const data = await signUp(signUpPayload);
     if (data) setSuccessSignUp(true)
@@ -108,14 +107,6 @@ const SignUp: NextPage = () => {
                 className={"w-full rounded-b-md"} />
             </div>
           </>
-        ) : null}
-
-
-        {error.message && error.message.length ? (
-          <ErrorBox
-            close={() => setError({ ...error, message: [] })}
-            error={error.message}
-          />
         ) : null}
 
         {!successSignUp ? (

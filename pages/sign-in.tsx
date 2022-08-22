@@ -4,20 +4,19 @@ import Link from 'next/link';
 import BasicButton from '../components/ui/BasicButton.component';
 import BasicInput from '../components/ui/BasicInput.component';
 import Loader from "../components/ui/Loader.component";
-import ErrorBox from "../components/ui/ErrorBox.component";
-import { useSignInService } from "../services/user/sign-in/signIn.service";
+import { useSignInService } from "@services/user/sign-in/signIn.service";
 import { useRouter } from "next/router";
 
 const SignIn: NextPage = () => {
   const [signInPayload, setSignInPayload] = React.useState({ email: '', password: '' })
 
-  const { signIn, loading, error, setError } = useSignInService();
+  const { signIn, loading } = useSignInService();
   const router = useRouter()
 
   const handleSignIn = async () => {
-    const token = await signIn(signInPayload);
-    if (token) {
-      sessionStorage.setItem("_at", token);
+    const { _at } = await signIn(signInPayload);
+    if (_at) {
+      sessionStorage.setItem("_at", _at);
       return router.push("/");
     }
   };
@@ -56,13 +55,6 @@ const SignIn: NextPage = () => {
               className={'w-full rounded-b-md'}
             />
           </div>
-
-          {error.message && error.message.length ? (
-            <ErrorBox
-              close={() => setError({ ...error, message: [] })}
-              error={error.message}
-            />
-          ) : null}
 
           <BasicButton
             onClick={() => handleSignIn()}

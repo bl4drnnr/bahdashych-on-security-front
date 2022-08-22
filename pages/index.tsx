@@ -31,7 +31,7 @@ const Home = ({ posts }: { posts: IPosts }) => {
 
   const fetchPostsByQuery = async () => {
     setLoading(true)
-    const filteredPosts = await getPostByQuery(query)
+    const filteredPosts = await getPostByQuery({ query })
     setFilteredPosts(filteredPosts)
     setLoading(false)
   }

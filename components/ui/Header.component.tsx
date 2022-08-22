@@ -2,10 +2,9 @@ import Link from 'next/link';
 import React from "react";
 import BasicButton from "./BasicButton.component";
 import Loader from "./Loader.component";
-import { useLogoutService } from "../../services/user/logout/logout.service";
+import { useLogoutService } from "@services/user/logout/logout.service";
 import { useRouter } from "next/router";
-import { useRefreshTokenService } from "../../services/auth/refresh/refreshToken.service";
-import { parseJwt } from "../../utils/verify-token.util";
+import { useRefreshTokenService } from "@services/auth/refresh/refreshToken.service";
 import { IToken } from "../../dto/token.interface";
 
 const Header = () => {
@@ -15,7 +14,7 @@ const Header = () => {
 
   const router = useRouter()
 
-  const { refreshToken, loading, error } = useRefreshTokenService()
+  const { refreshToken, loading } = useRefreshTokenService()
   const { logout, loading: logoutLoading } = useLogoutService()
 
   const handleRedirect = (path: string) => {
@@ -23,7 +22,7 @@ const Header = () => {
   }
 
   const handleLogout = async () => {
-    await logout(sessionStorage.getItem('_at'))
+    await logout({ accessToken: sessionStorage.getItem("_at") })
     sessionStorage.removeItem('_at')
     await router.push('/')
   }
@@ -32,8 +31,6 @@ const Header = () => {
     if (!sessionStorage.getItem('_at')) return;
 
     await refreshToken();
-    if (error.message.length) sessionStorage.removeItem('_at')
-    else setLoggedData(parseJwt(sessionStorage.getItem('_at') as string))
   }
 
   React.useEffect(() => {

@@ -1,9 +1,9 @@
 import React from 'react';
-import MainLayout from "../../layouts/main.layout";
-import BasicInput from "../../components/ui/BasicInput.component";
-import BasicButton from "../../components/ui/BasicButton.component";
-import { useGetPostService as UseGetPostService } from "../../services/post/one/getPost.service";
-import { useCommentPostService } from "../../services/post/comment/commentPost.service";
+import MainLayout from "@layouts/main.layout";
+import BasicInput from "@components/ui/BasicInput.component";
+import BasicButton from "@components/ui/BasicButton.component";
+import { useGetPostService as UseGetPostService } from "@services/post/one/getPost.service";
+import { useCommentPostService } from "@services/post/comment/commentPost.service";
 import { GetServerSideProps } from "next";
 import { parseJwt } from "../../utils/verify-token.util";
 import { IFullPost } from "../../interface/full-post.interface";
@@ -23,8 +23,11 @@ const Slug = ({ post, postComments }: IFullPost) => {
 
   const leaveComment = async () => {
     await commentPost({
-      comment, postId: post.id
-    }, sessionStorage.getItem('_at'));
+      comment: {
+        postId: post.id,
+        comment
+      }, accessToken: sessionStorage.getItem('_at')
+    });
     router.reload()
   }
 
@@ -104,7 +107,7 @@ const Slug = ({ post, postComments }: IFullPost) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const slug: string = context.query.slug as string;
   const { getPost } = UseGetPostService();
-  const { post, postComments } = await getPost(slug);
+  const { post, postComments } = await getPost({ slug });
 
   return { props: { post, postComments } }
 }
