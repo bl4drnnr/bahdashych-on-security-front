@@ -5,7 +5,7 @@ import BasicButton from '../components/ui/BasicButton.component';
 import BasicInput from '../components/ui/BasicInput.component';
 import Loader from "../components/ui/Loader.component";
 import ErrorBox from "../components/ui/ErrorBox.component";
-import { useSignInService } from "../services/user/useSignIn.service";
+import { useSignInService } from "../services/user/sign-in/signIn.service";
 import { useRouter } from "next/router";
 
 const SignIn: NextPage = () => {

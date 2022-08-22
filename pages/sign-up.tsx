@@ -5,7 +5,7 @@ import BasicInput from "../components/ui/BasicInput.component";
 import BasicButton from "../components/ui/BasicButton.component";
 import Loader from "../components/ui/Loader.component";
 import ErrorBox from "../components/ui/ErrorBox.component";
-import { useSignUpService } from "../services/user/useSignUp.service";
+import { useSignUpService } from "../services/user/sign-up/signUp.service";
 import { useRouter } from 'next/router'
 import { SignUpDto } from "../dto/sign-up.dto";
 

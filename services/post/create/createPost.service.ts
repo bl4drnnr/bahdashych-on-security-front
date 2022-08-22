@@ -1,5 +1,5 @@
-import { ApiClient } from "../api.api-client";
-import { PostDto } from "../../dto/post.dto";
+import { ApiClient } from "../../api.api-client";
+import { PostDto } from "../../../dto/post.dto";
 
 export const useCreatePostService = () => {
   try {

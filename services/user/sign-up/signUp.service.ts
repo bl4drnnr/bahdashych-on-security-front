@@ -1,8 +1,8 @@
 import React from "react";
-import { ApiClient } from "../api.api-client";
-import { SignUpDto } from "../../dto/sign-up.dto";
-import { IError } from "../../interface/error.interface";
-import { IUser } from "../../interface/user.interface";
+import { ApiClient } from "../../api.api-client";
+import { SignUpDto } from "../../../dto/sign-up.dto";
+import { IError } from "../../../interface/error.interface";
+import { IUser } from "../../../interface/user.interface";
 
 export const useSignUpService = () => {
   const [loading, setLoading] = React.useState(false);

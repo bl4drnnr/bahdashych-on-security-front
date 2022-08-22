@@ -1,5 +1,5 @@
-import { ApiClient } from "../api.api-client";
-import { IPosts } from "../../interface/posts.interface";
+import { ApiClient } from "../../api.api-client";
+import { IPosts } from "../../../interface/posts.interface";
 
 export const useGetPostByQueryService = () => {
   try {

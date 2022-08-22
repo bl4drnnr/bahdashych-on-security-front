@@ -1,12 +1,14 @@
-import { ApiClient } from "../api.api-client";
+import { ApiClient } from "../../api.api-client";
+import React from "react";
 
 export const useUnbanService = () => {
+  const [loading, setLoading] = React.useState(false);
 
   const unbanUser = async (
     email: string,
     accessToken: string | null
   ) => {
-    const { data } = await ApiClient.post('/user/unban', { email }, {
+    const { data } = await ApiClient.post<string>('/user/unban', { email }, {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     })
 

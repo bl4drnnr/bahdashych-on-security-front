@@ -1,7 +1,7 @@
 import React from "react";
-import { useCreatePostService } from "../../services/post/useCreatePost.service";
-import { useGetPostsService } from "../../services/post/useGetPosts.service";
-import { useDeletePostService } from "../../services/post/useDeletePost.service";
+import { useCreatePostService } from "../../services/post/create/createPost.service";
+import { useGetPostsService } from "../../services/post/list/getPosts.service";
+import { useDeletePostService } from "../../services/post/delete/deletePost.service";
 import { IPosts } from "../../interface/posts.interface";
 import CreatePost from "./post/CreatePost.component";
 import GetPosts from "./post/GetPosts.component";

@@ -4,9 +4,9 @@ import Posts from "../components/post/Posts.component";
 import Pagination from "../components/post/Pagination.component";
 import Loader from "../components/ui/Loader.component";
 import { IPosts } from "../interface/posts.interface";
-import { useGetPostsService as UseGetPostsService } from "../services/post/useGetPosts.service";
+import { useGetPostsService as UseGetPostsService } from "../services/post/list/getPosts.service";
 import { GetServerSideProps } from "next";
-import { useGetPostByQueryService } from "../services/post/useGetPostByQuery.service";
+import { useGetPostByQueryService } from "../services/post/find/getPostByQuery.service";
 import BasicInput from "../components/ui/BasicInput.component";
 
 const Home = ({ posts }: { posts: IPosts }) => {

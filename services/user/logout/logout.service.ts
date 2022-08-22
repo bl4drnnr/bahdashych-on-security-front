@@ -1,6 +1,6 @@
 import React from "react";
-import { ApiClient } from "../api.api-client";
-import { IError } from "../../interface/error.interface";
+import { ApiClient } from "../../api.api-client";
+import { IError } from "../../../interface/error.interface";
 
 export const useLogoutService = () => {
   const [loading, setLoading] = React.useState(false);
@@ -9,7 +9,7 @@ export const useLogoutService = () => {
   const logout = async (accessToken: string | null) => {
     try {
       setLoading(true);
-      const { data } = await ApiClient.post('/user/logout', {}, {
+      const { data } = await ApiClient.post<string>('/user/logout', {}, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       setError({ message: [] })

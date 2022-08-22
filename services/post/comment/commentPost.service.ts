@@ -1,5 +1,5 @@
-import { ApiClient } from "../api.api-client";
-import { CommentDto } from "../../dto/comment.dto";
+import { ApiClient } from "../../api.api-client";
+import { CommentDto } from "../../../dto/comment.dto";
 
 export const useCommentPostService = () => {
   try {

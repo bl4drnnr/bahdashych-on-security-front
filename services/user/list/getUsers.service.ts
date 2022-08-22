@@ -1,5 +1,5 @@
-import { ApiClient } from "../api.api-client";
-import { IUsers } from "../../interface/users.interface";
+import { ApiClient } from "../../api.api-client";
+import { IUsers } from "../../../interface/users.interface";
 
 export const useGetUsersService = () => {
 

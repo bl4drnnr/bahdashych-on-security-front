@@ -1,6 +1,6 @@
 import React from "react";
-import { ApiClient } from "../api.api-client";
-import { IError } from "../../interface/error.interface";
+import { ApiClient } from "../../api.api-client";
+import { IError } from "../../../interface/error.interface";
 
 export const useRefreshTokenService = () => {
   const [loading, setLoading] = React.useState(false);
