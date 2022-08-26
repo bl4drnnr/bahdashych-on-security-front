@@ -14,7 +14,7 @@ const AdminPosts = ({ removePost, rows }: IPosts) => {
               onClick={async () => {return await router.push(`/post/${post.slug}`)}}
             >Post title: {post.title}</h1>
             <BasicButton
-              className={'bg-red-600 hover:bg-red-800'}
+              className={'bg-sl hover:bg-red-800'}
               onClick={async () => removePost ? removePost(post.id as string) : {}}
             >
               Delete post
