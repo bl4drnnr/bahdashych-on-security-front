@@ -4,21 +4,20 @@ import { handleApiException } from "@exceptions/api/handleApiException";
 import { GetPostsPayload, GetPostsResponse } from "@services/post/list/getPosts.interface";
 
 export const useGetPostsService = () => {
-  const [loading, setLoading] = React.useState(false)
+  // const [loading, setLoading] = React.useState(false)
 
   const getPosts = async (payload: GetPostsPayload)
     : Promise<GetPostsResponse> => {
     try {
-      setLoading(true)
+      // setLoading(true)
       const { data } = await ApiClient.get<GetPostsResponse>(`/post/list/${payload.offset}/${payload.limit}`)
 
       return data;
     } catch (error) {
-      handleApiException(error)
-    } finally {
-      setLoading(false)
+      console.log(error)
+      // handleApiException(error)
     }
   }
 
-  return { getPosts, loading };
+  return { getPosts };
 }
