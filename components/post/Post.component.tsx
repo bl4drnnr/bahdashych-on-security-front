@@ -12,10 +12,9 @@ const Post: React.FC<IPostPreview> =
 
     return (
       <div
-        className={'border-solid border-2 border-indigo-700 p-4 w-1/2 m-2 rounded-2xl hover:scale-105 cursor-pointer transition'}
         onClick={() => redirectToPost(slug)}
       >
-        <p className={'text-xl font-extrabold'}>{title}</p>
+        <p>{title}</p>
         <p>{description}</p>
       </div>
     );

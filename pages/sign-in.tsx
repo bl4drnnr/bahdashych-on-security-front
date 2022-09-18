@@ -37,7 +37,6 @@ const SignIn: NextPage = () => {
               value={signInPayload.email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSignInPayload({ ...signInPayload, email: e.target.value })}
-              className={'w-full rounded-t-md'}
             />
             <BasicInput
               type='password'
@@ -45,7 +44,6 @@ const SignIn: NextPage = () => {
               value={signInPayload.password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSignInPayload({ ...signInPayload, password: e.target.value })}
-              className={'w-full rounded-b-md'}
             />
           </div>
 

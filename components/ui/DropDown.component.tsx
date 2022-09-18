@@ -36,7 +36,6 @@ const DropDown = ({ rowsPerPageItems, rowsPerPage, rowsPerPageChange }: IDropDow
                 key={item}
               >
                 <a
-                  className={'cursor-pointer dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100'}
                   onClick={() => rowsPerPageHandler(item)}
               >{item}</a>
               </li>

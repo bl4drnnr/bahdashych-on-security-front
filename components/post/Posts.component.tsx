@@ -7,7 +7,7 @@ const Posts: React.FC<IPosts> =
     return (
       <>
         {rows.map(post => (
-          <div key={post.slug} className={'w-full flex justify-center'}>
+          <div key={post.slug}>
             <Post
               description={post.description}
               slug={post.slug}

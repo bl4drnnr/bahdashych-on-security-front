@@ -47,36 +47,32 @@ const Slug = ({ post, postComments }: IFullPost) => {
 
   return (
     <MainLayout>
-      <div className={'w-full'}>
-        <div className={'w-1/2 m-auto mt-12'}>
-          <h1 className={'text-5xl font-extrabold'}>{post.title}</h1>
-          <p className={'mt-12'}>{post.content}</p>
-          <div className={'mt-10'}>
+      <div>
+        <div>
+          <h1>{post.title}</h1>
+          <p>{post.content}</p>
+          <div>
             {postComments.length ? (
               <>
                 {postComments.map(post => (
                   <div
-                    className={'border rounded p-3'}
                     key={post.comment}
                   >
-                    <p>By <span className={'font-bold'}>{post["user.email"]}</span></p>
+                    <p>By <span>{post["user.email"]}</span></p>
                     <p>{post.comment}</p>
                   </div>
                 ))}
               </>
             ) :
             <h1
-              className={'w-full text-center font-bold'}
             >No comments yet. Wanna tell something? Go on, then!
             </h1>}
             {!isValidToken ? (
-              <h1 className={'w-full text-center font-bold'}>But&nbsp;
+              <h1>But&nbsp;
                 <span
-                  className={'text-indigo-600 hover:underline hover:cursor-pointer'}
                   onClick={() => handleRedirect('/sign-in')}
                 >sign in</span> or&nbsp;
                 <span
-                  className={'text-indigo-600 hover:underline hover:cursor-pointer'}
                   onClick={() => handleRedirect('/sign-up')}
                 >sign up</span> first!</h1>
             ) : null}
