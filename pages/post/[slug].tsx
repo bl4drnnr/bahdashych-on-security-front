@@ -84,15 +84,13 @@ const Slug = ({ post, postComments }: IFullPost) => {
           {isValidToken ? (
             <>
               <BasicInput
-                className={'w-full rounded mt-3 mb-3'}
                 type={'text'}
                 placeholder={'Comment...'}
                 value={comment}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setComment(e.target.value)}
               />
-              <div className={'w-full flex'}>
+              <div>
                 <BasicButton
-                  className={'w-1/3 m-auto'}
                   onClick={() => leaveComment()}
                 >Leave comment</BasicButton>
               </div>

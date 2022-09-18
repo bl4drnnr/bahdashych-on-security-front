@@ -20,7 +20,9 @@
       "@pages/*": ["./pages/*"],
       "@layouts/*": ["layouts/*"],
       "@components/*": ["components/*"],
-      "@exceptions/*": ["exceptions/*"]
+      "@exceptions/*": ["exceptions/*"],
+      "@dto/*": ["dto/*"],
+      "@styles/*": ["styles/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

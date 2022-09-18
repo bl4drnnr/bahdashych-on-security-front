@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/ui/Header.component";
-import styles from "../styles/main-layout.module.scss"
+import Header from "@components/ui/Header.component";
+import styles from "@styles/layouts/main-layout.module.scss"
 
 const MainLayout = ({ children }: { children: JSX.Element }) => {
   return (

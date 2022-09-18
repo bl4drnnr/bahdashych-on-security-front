@@ -41,7 +41,6 @@ const ModalWindow = ({ text, title, action, close }: IModalWindow) => {
           </div>
           <BasicInput
             type={'text'}
-            className={'w-1/2 mb-3 m-auto rounded'}
             value={reason}
             placeholder={'Reason'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

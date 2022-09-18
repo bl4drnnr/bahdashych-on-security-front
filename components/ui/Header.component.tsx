@@ -2,12 +2,12 @@ import Link from 'next/link';
 import React from "react";
 import BasicButton from "./BasicButton.component";
 import Loader from "./Loader.component";
-import styles from '../../styles/components/Header.module.scss';
+import styles from '@styles/components/Header.module.scss';
 import classNames from "classnames";
 import { useLogoutService } from "@services/user/logout/logout.service";
 import { useRouter } from "next/router";
 import { useRefreshTokenService } from "@services/auth/refresh/refreshToken.service";
-import { IToken } from "../../dto/token.interface";
+import { IToken } from "@dto/token.interface";
 
 const Header = () => {
   const [loggedData, setLoggedData] = React.useState<IToken>({
