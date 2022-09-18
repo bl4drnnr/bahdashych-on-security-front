@@ -5,8 +5,8 @@ import BasicButton from "@components/ui/BasicButton.component";
 import { useGetPostService as UseGetPostService } from "@services/post/one/getPost.service";
 import { useCommentPostService } from "@services/post/comment/commentPost.service";
 import { GetServerSideProps } from "next";
-import { parseJwt } from "../../utils/verify-token.util";
-import { IFullPost } from "../../interface/full-post.interface";
+import { parseJwt } from "@utils/verify-token.util";
+import { IFullPost } from "@interfaces/full-post.interface";
 import { useRouter } from "next/router";
 
 const Slug = ({ post, postComments }: IFullPost) => {

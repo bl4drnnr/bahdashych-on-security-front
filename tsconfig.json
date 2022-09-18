@@ -23,7 +23,9 @@
       "@exceptions/*": ["exceptions/*"],
       "@dto/*": ["dto/*"],
       "@styles/*": ["styles/*"],
-      "@interfaces/*": ["interface/*"]
+      "@interfaces/*": ["interface/*"],
+      "@utils/*": ["utils/*"],
+      "@api/*": ["api/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

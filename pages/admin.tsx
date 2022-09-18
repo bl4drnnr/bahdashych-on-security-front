@@ -1,10 +1,10 @@
 import React from "react";
-import MainLayout from "../layouts/main.layout";
-import { parseJwt } from "../utils/verify-token.util";
+import MainLayout from "@layouts/main.layout";
+import { parseJwt } from "@utils/verify-token.util";
 import { useRouter } from "next/router";
-import AdminHeader from "../components/admin/AdminHeader.component";
-import AdminPost from "../components/admin/AdminPost.component";
-import AdminUser from "../components/admin/AdminUser.component";
+import AdminHeader from "@components/admin/AdminHeader.component";
+import AdminPost from "@components/admin/AdminPost.component";
+import AdminUser from "@components/admin/AdminUser.component";
 
 const Admin = () => {
   const [currentSection, setCurrentSection] = React.useState('posts');

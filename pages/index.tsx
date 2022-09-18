@@ -1,12 +1,12 @@
 import React from "react";
-import MainLayout from "../layouts/main.layout";
-import Posts from "../components/post/Posts.component";
-import Pagination from "../components/post/Pagination.component";
-import Loader from "../components/ui/Loader.component";
-import { IPosts } from "../interface/posts.interface";
-import { useGetPostsService as UseGetPostsService } from "../services/post/list/getPosts.service";
+import MainLayout from "@layouts/main.layout";
+import Posts from "@components/post/Posts.component";
+import Pagination from "@components/post/Pagination.component";
+import Loader from "@components/ui/Loader.component";
+import { IPosts } from "@interfaces/posts.interface";
+import { useGetPostsService as UseGetPostsService } from "@services/post/list/getPosts.service";
 import { useGetPostByQueryService } from "@services/post/find/getPostByQuery.service";
-import BasicInput from "../components/ui/BasicInput.component";
+import BasicInput from "@components/ui/BasicInput.component";
 
 const Home = () => {
   const [query, setQuery] = React.useState('');
