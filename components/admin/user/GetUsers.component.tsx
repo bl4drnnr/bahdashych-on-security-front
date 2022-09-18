@@ -24,11 +24,11 @@ const GetUsers = ({ banUser, rows, unbanUser }: IUsers) => {
   return (
     <>
       {rows ? (
-        <div className={'w-full flex'}>
-          <div className={'m-auto w-full w-2/4'}>
+        <div>
+          <div>
             {rows.map(user => (
               <div key={user.id}>
-                <div className={'flex justify-between border-solid border p-4 m-2 rounded cursor-pointer'}>
+                <div>
                   <div>
                     <p>Username: {user.username}</p>
                     <p>Email: {user.email}</p>
@@ -38,14 +38,12 @@ const GetUsers = ({ banUser, rows, unbanUser }: IUsers) => {
                   </div>
                   {!user['ban.reason'] ? (
                     <BasicButton
-                      className={'w-16 bg-red-600 hover:bg-red-800 h-9'}
                       onClick={async () => provideReasonToBan(user.email)}
                     >
                       Ban
                     </BasicButton>
                   ) : (
                     <BasicButton
-                      className={'w-16 bg-green-600 hover:bg-green-800 h-9'}
                       onClick={() => unblockUser(user.email)}
                     >
                       Unban

@@ -51,15 +51,14 @@ const Home = () => {
     <MainLayout>
       <>
         {loading ? (<Loader/>) : null}
-        <h1 className={'mt-3 text-center text-3xl font-extrabold text-gray-900'}>
-          {posts.rows.length ?
+        <h1>
+          {posts?.rows.length ?
             (<>List of posts</>) :
             (<>No posts yet</>)
           }
         </h1>
-        {posts.rows.length ? (
+        {posts?.rows.length ? (
           <BasicInput
-            className={'m-auto w-1/3 rounded mt-2 mb-2'}
             type={'text'}
             placeholder={'Search...'}
             value={query}
@@ -67,7 +66,7 @@ const Home = () => {
               setQuery(e.target.value)}
           />
         ) : null}
-        {posts.rows.length ?
+        {posts?.rows.length ?
           (
             <>
               <Posts rows={posts.rows} count={posts.count} />

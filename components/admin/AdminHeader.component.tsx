@@ -5,26 +5,14 @@ const AdminHeader = (
   { setSection: (e: string) => void, activeSection: string }
 ) => {
   return (
-    <div className="flex w-full mt-2">
-      <div className="m-auto">
-        <ul className="flex border-b">
-          <li
-            className="mr-1 cursor-pointer"
-            onClick={() => setSection('posts')}
-          >
-            <a className={`bg-white inline-block py-2 px-4 font-semibold 
-            ${activeSection === 'posts' ? 'border-l border-t border-r rounded-t text-blue-700' : 'text-blue-500 hover:text-blue-800'}
-             `}
-            >Posts</a>
+    <div>
+      <div>
+        <ul>
+          <li onClick={() => setSection('posts')}>
+            <a>Posts</a>
           </li>
-          <li
-            className="mr-1 cursor-pointer"
-            onClick={() => setSection('users')}
-          >
-            <a className={`bg-white inline-block py-2 px-4 font-semibold 
-            ${activeSection === 'users' ? 'border-l border-t border-r rounded-t text-blue-700' : 'text-blue-500 hover:text-blue-800'}
-             `}
-            >Users</a>
+          <li onClick={() => setSection('users')}>
+            <a>Users</a>
           </li>
         </ul>
       </div>

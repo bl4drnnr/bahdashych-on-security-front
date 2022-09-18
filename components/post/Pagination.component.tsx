@@ -16,8 +16,8 @@ const Pagination: React.FC<IPagination> =
     { count, currentPage, setPage, rowsPerPageItems, rowsPerPage, rowsPerPageChange }: IPagination, ref
   ) => {
   return (
-    <div className={'w-full flex mb-10 mt-5'}>
-      <div className={'m-auto'}>
+    <div>
+      <div>
         <PaginationBar
           currentPage={currentPage}
           pages={Math.ceil(count / rowsPerPage)}

@@ -6,15 +6,14 @@ import { useRouter } from "next/router";
 const AdminPosts = ({ removePost, rows }: IPosts) => {
   const router = useRouter()
   return (
-    <div className={'w-full flex'}>
-      <div className={'m-auto'}>
+    <div>
+      <div>
         {rows.map(post => (
-          <div key={post.slug} className={'border-solid border p-4 m-2 rounded cursor-pointer'}>
+          <div key={post.slug}>
             <h1
               onClick={async () => {return await router.push(`/post/${post.slug}`)}}
             >Post title: {post.title}</h1>
             <BasicButton
-              className={'bg-sl hover:bg-red-800'}
               onClick={async () => removePost ? removePost(post.id as string) : {}}
             >
               Delete post

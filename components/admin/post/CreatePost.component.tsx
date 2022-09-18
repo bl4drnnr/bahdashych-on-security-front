@@ -23,9 +23,8 @@ const CreatePost = ({ createPost }: IAdminCreatePost) => {
   }
 
   return (
-    <div className={'w-full mt-10'}>
+    <div>
       <BasicInput
-        className={'w-1/3 m-auto rounded'}
         type={'text'}
         placeholder={'Post title'}
         value={post.title}
@@ -33,14 +32,13 @@ const CreatePost = ({ createPost }: IAdminCreatePost) => {
           setPost({ ...post, title: e.target.value })}
       />
       <BasicInput
-        className={'w-1/3 m-auto rounded mt-3'}
         type={'text'}
         placeholder={'Post description'}
         value={post.description}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setPost({ ...post, description: e.target.value })}
       />
-      <div className={'w-1/3 m-auto mt-3'}>
+      <div>
         <BasicTextarea
           value={post.content}
           placeholder={'Content'}
@@ -49,7 +47,6 @@ const CreatePost = ({ createPost }: IAdminCreatePost) => {
         />
       </div>
       <BasicButton
-        className={'w-24 m-auto mt-3'}
         onClick={() => handleCreatePost({
           title: post.title,
           content: post.content,
