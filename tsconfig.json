@@ -22,7 +22,8 @@
       "@components/*": ["components/*"],
       "@exceptions/*": ["exceptions/*"],
       "@dto/*": ["dto/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@interfaces/*": ["interface/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

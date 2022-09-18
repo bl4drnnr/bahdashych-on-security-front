@@ -1,5 +1,5 @@
 import React from "react";
-import { IUsers } from "../../interface/users.interface";
+import { IUsers } from "@interfaces/users.interface";
 import { useGetUsersService } from "@services/user/list/getUsers.service";
 import GetUsers from "./user/GetUsers.component";
 import Pagination from "../post/Pagination.component";
@@ -7,7 +7,7 @@ import Loader from "../ui/Loader.component";
 import BasicInput from "../ui/BasicInput.component";
 import { useGetUsersByNicknameService } from "@services/user/one/getUsersByNickname.service";
 import { useBanService } from "@services/user/ban/ban.service";
-import { BanDto } from "../../dto/ban.dto";
+import { BanDto } from "@dto/ban.dto";
 import { useUnbanService } from "@services/user/unban/unban.service";
 
 const AdminUser = () => {
@@ -34,14 +34,14 @@ const AdminUser = () => {
 
   const blockUser = async (userBan: BanDto) => {
     setLoading(true)
-    await banUser(userBan, sessionStorage.getItem('_at'))
+    await banUser({ ...userBan, accessToken: sessionStorage.getItem('_at') })
     await fetchUsers(0, 10)
     setLoading(false)
   }
 
   const unblockUser = async (email: string) => {
     setLoading(true)
-    await unbanUser(email, sessionStorage.getItem('_at'))
+    await unbanUser({ email, accessToken: sessionStorage.getItem("_at") })
     await fetchUsers(0, 10)
     setLoading(false)
   }
@@ -49,8 +49,7 @@ const AdminUser = () => {
   const fetchUsers = async (offset: number, limit: number) => {
     setLoading(true)
     const listOfUsers = await getUsers(
-      { offset, limit },
-      sessionStorage.getItem('_at')
+      { offset, limit, accessToken: sessionStorage.getItem("_at") }
     )
     setUsers(listOfUsers)
     setLoading(false)
@@ -58,7 +57,9 @@ const AdminUser = () => {
 
   const fetchFilteredUsers = async () => {
     setLoading(true)
-    const filteredUsers = await getUsersByNickname(searchQuery, sessionStorage.getItem('_at'))
+    const filteredUsers = await getUsersByNickname({
+      searchQuery, accessToken: sessionStorage.getItem('_at')
+    })
     setUsers(filteredUsers)
     setLoading(false)
   }

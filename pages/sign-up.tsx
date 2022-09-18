@@ -32,7 +32,7 @@ const SignUp: NextPage = () => {
         <div className={styles.wrapper}>
           {!successSignUp ? (
             <h2 className={styles.text}>New one? Welcome!</h2>
-          ): (
+          ) : (
             <>
               <h3 className={styles.text}>Welcome, @username, here you go!</h3>
               <BasicButton onClick={() => {return router.push("/sign-in")}}>Sign in</BasicButton>

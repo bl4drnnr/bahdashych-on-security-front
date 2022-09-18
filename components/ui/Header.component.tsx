@@ -10,7 +10,7 @@ import { useRefreshTokenService } from "@services/auth/refresh/refreshToken.serv
 import { IToken } from "@dto/token.interface";
 
 const Header = () => {
-  const [loggedData, setLoggedData] = React.useState<IToken>({
+  const [loggedData, ] = React.useState<IToken>({
     roles: [], type: '', userId: '', username: ''
   })
 
@@ -58,10 +58,14 @@ const Header = () => {
           {!loggedData.userId ? (
             <>
               <Link href={"/sign-in"}>
-                <a className={styles.link}>Sign in</a>
+                <a className={styles.link}>
+                  <span className={styles.text}>Sign in</span>
+                </a>
               </Link>
               <Link href={"/sign-up"}>
-                <a className={classNames(styles.link, styles.fill)}>Sign up</a>
+                <a className={classNames(styles.link, styles.fill)}>
+                  Sign up
+                </a>
               </Link>
             </>
           ) : (

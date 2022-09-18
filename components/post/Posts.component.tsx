@@ -1,6 +1,6 @@
 import React from "react";
 import Post from "./Post.component";
-import { IPosts } from "../../interface/posts.interface";
+import { IPosts } from "@interfaces/posts.interface";
 
 const Posts: React.FC<IPosts> =
   React.forwardRef(({ rows }: IPosts, ref) => {
@@ -9,6 +9,7 @@ const Posts: React.FC<IPosts> =
         {rows.map(post => (
           <div key={post.slug}>
             <Post
+              id={post.id}
               description={post.description}
               slug={post.slug}
               title={post.title}
