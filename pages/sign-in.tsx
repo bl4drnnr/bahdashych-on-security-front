@@ -1,9 +1,10 @@
 import { NextPage } from 'next';
 import React from "react";
-import Link from 'next/link';
-import BasicButton from '../components/ui/BasicButton.component';
-import BasicInput from '../components/ui/BasicInput.component';
-import Loader from "../components/ui/Loader.component";
+import styles from "@styles/pages/sign-in.module.scss"
+import BasicButton from '@components/ui/BasicButton.component';
+import BasicInput from '@components/ui/BasicInput.component';
+import Loader from "@components/ui/Loader.component";
+import AuthLayout from "@layouts/auth.layout";
 import { useSignInService } from "@services/user/sign-in/signIn.service";
 import { useRouter } from "next/router";
 
@@ -22,22 +23,14 @@ const SignIn: NextPage = () => {
   };
 
   return (
-    <>
-      {loading ? <Loader/> : null}
-      <div className='min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
-        <div className='max-w-md w-full space-y-8'>
-          <div>
-            <Link href={'/'}>
-              <img
-                className='mx-auto h-12 w-auto hover:cursor-pointer'
-                src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
-                alt='Workflow'
-              />
-            </Link>
-            <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>Welcome back!</h2>
-          </div>
+    <AuthLayout>
+      <>
+        {loading ? <Loader/> : null}
+        <div className={styles.wrapper}>
 
-          <div className='rounded-md shadow-sm -space-y-px'>
+          <h2 className={styles.text}>Welcome back!</h2>
+
+          <div className={styles.inputs}>
             <BasicInput
               type='email'
               placeholder='Email address'
@@ -61,9 +54,10 @@ const SignIn: NextPage = () => {
           >
             Sign in
           </BasicButton>
+
         </div>
-      </div>
-    </>
+      </>
+    </AuthLayout>
   )
 }
 

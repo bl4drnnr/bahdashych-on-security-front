@@ -7,7 +7,7 @@ const AuthHeader = () => {
     <div className={styles.authHeader}>
       <div className={styles.authHeaderContainer}>
         <Link href={'/'}>
-          <h1>MB</h1>
+          <h1 className={styles.logo}>MB</h1>
         </Link>
       </div>
     </div>

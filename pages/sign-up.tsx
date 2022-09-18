@@ -39,46 +39,45 @@ const SignUp: NextPage = () => {
             </>
           )}
           {!successSignUp ? (
-            <div>
-              <div>
-                <BasicInput
-                  type="email"
-                  placeholder="Email address"
-                  value={signUpPayload.email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
-                    ...signUpPayload,
-                    email: e.target.value
-                  })}
-                />
-                <BasicInput
-                  type="text"
-                  placeholder="Username"
-                  value={signUpPayload.username}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
-                    ...signUpPayload,
-                    username: e.target.value
-                  })}
-                />
-                <BasicInput
-                  type="password"
-                  placeholder="Password"
-                  value={signUpPayload.password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
-                    ...signUpPayload,
-                    password: e.target.value
-                  })}
-                />
-                <BasicInput
-                  type="password"
-                  placeholder="Password repeat"
-                  value={signUpPayload.passwordRepeat}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
-                    ...signUpPayload,
-                    passwordRepeat: e.target.value
-                  })}
-                />
-              </div>
-              <div>
+            <div className={styles.inputs}>
+              <BasicInput
+                type="email"
+                placeholder="Email address"
+                value={signUpPayload.email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
+                  ...signUpPayload,
+                  email: e.target.value
+                })}
+              />
+              <BasicInput
+                type="text"
+                placeholder="Username"
+                value={signUpPayload.username}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
+                  ...signUpPayload,
+                  username: e.target.value
+                })}
+              />
+              <BasicInput
+                type="password"
+                placeholder="Password"
+                value={signUpPayload.password}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
+                  ...signUpPayload,
+                  password: e.target.value
+                })}
+              />
+              <BasicInput
+                type="password"
+                placeholder="Password repeat"
+                value={signUpPayload.passwordRepeat}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSignUpPayload({
+                  ...signUpPayload,
+                  passwordRepeat: e.target.value
+                })}
+              />
+
+              <div className={styles.optionalInputs}>
                 <BasicInput
                   type="text"
                   placeholder="First name (optional)"
@@ -108,6 +107,7 @@ const SignUp: NextPage = () => {
               Sign up
             </BasicButton>
           ) : null}
+
         </div>
       </>
     </AuthLayout>
