@@ -4,7 +4,7 @@ import AuthHeader from "@components/ui/AuthHeader.component";
 const AuthLayout = ({ children }: { children: JSX.Element }) => {
   return (
     <>
-      <AuthHeader signInRoute={location.pathname !== '/sign-in'} />
+      <AuthHeader signInRoute={true} />
       {children}
     </>
   );

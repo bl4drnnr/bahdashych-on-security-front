@@ -8,7 +8,7 @@ interface IBasicButton {
   onClick: () => Promise<any>;
 }
 
-const BasicButton = ({ className, children, onClick, ...props }: IBasicButton) => {
+const BasicButton = ({ children, ...props }: IBasicButton) => {
   return (
     <button {...props} className={classNames(styles.basicButton)}>{children}</button>
   )
