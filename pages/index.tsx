@@ -3,10 +3,11 @@ import MainLayout from "@layouts/main.layout";
 import Posts from "@components/post/Posts.component";
 import Pagination from "@components/post/Pagination.component";
 import Loader from "@components/ui/Loader.component";
+import BasicInput from "@components/ui/BasicInput.component";
+import styles from "@styles/pages/homepage.module.scss"
 import { IPosts } from "@interfaces/posts.interface";
 import { useGetPostsService as UseGetPostsService } from "@services/post/list/getPosts.service";
 import { useGetPostByQueryService } from "@services/post/find/getPostByQuery.service";
-import BasicInput from "@components/ui/BasicInput.component";
 
 const Home = () => {
   const [query, setQuery] = React.useState('');
@@ -49,39 +50,47 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <>
-        {loading ? (<Loader/>) : null}
-        <h1>
-          {posts?.rows.length ?
-            (<>List of posts</>) :
-            (<>No posts yet</>)
-          }
-        </h1>
-        {posts?.rows.length ? (
-          <BasicInput
-            type={'text'}
-            placeholder={'Search...'}
-            value={query}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setQuery(e.target.value)}
-          />
-        ) : null}
-        {posts?.rows.length ?
-          (
-            <>
-              <Posts rows={posts.rows} count={posts.count} />
-              <Pagination
-                count={posts.count}
-                currentPage={page}
-                setPage={changePage}
-                rowsPerPageItems={[5, 10, 15]}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageChange={changeRowsPerPage}
-              />
-            </>
-          ) :
-          null }
-      </>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <h1>Mikhail Bahdashych</h1>
+          <h1>Full stack web developer / Security operations specialist</h1>
+          <p>Welcome, my name is Mikhail Bahdashych and here I write about things I like - modern web development, cybersecurity and trading.</p>
+          <p>Actually, you can think that this is just my diary, but I hope, you&apos;ll be able to find something interesting for your and about my projects.</p>
+        </div>
+      </div>
+      {/*<>*/}
+      {/*  {loading ? (<Loader/>) : null}*/}
+      {/*  <h1>*/}
+      {/*    {posts?.rows.length ?*/}
+      {/*      (<>List of posts</>) :*/}
+      {/*      (<>No posts yet</>)*/}
+      {/*    }*/}
+      {/*  </h1>*/}
+      {/*  {posts?.rows.length ? (*/}
+      {/*    <BasicInput*/}
+      {/*      type={'text'}*/}
+      {/*      placeholder={'Search...'}*/}
+      {/*      value={query}*/}
+      {/*      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>*/}
+      {/*        setQuery(e.target.value)}*/}
+      {/*    />*/}
+      {/*  ) : null}*/}
+      {/*  {posts?.rows.length ?*/}
+      {/*    (*/}
+      {/*      <>*/}
+      {/*        <Posts rows={posts.rows} count={posts.count} />*/}
+      {/*        <Pagination*/}
+      {/*          count={posts.count}*/}
+      {/*          currentPage={page}*/}
+      {/*          setPage={changePage}*/}
+      {/*          rowsPerPageItems={[5, 10, 15]}*/}
+      {/*          rowsPerPage={rowsPerPage}*/}
+      {/*          rowsPerPageChange={changeRowsPerPage}*/}
+      {/*        />*/}
+      {/*      </>*/}
+      {/*    ) :*/}
+      {/*    null }*/}
+      {/*</>*/}
     </MainLayout>
   );
 };
