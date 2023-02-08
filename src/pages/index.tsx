@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Typewriter from 'typewriter-effect';
 
 import DefaultLayout from '@layouts/Default.layout';
-import {Container, IntroTextBox, IntroTextWrapper, TypewritingText} from '@styles/home.style';
+import { Container, IntroTextBox, IntroTextWrapper, TypewritingText } from '@styles/home.style';
 
 const Home = () => {
 

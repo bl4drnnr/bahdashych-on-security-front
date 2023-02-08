@@ -33,7 +33,6 @@ export const Header = () => {
         <Link>Home</Link>
         <Link>Blog</Link>
         <Link>About</Link>
-        <Link>Contact</Link>
       </Box>
     </Container>
   );
