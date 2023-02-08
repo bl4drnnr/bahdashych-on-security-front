@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 
 import { HeaderProps } from '@components/Header/Header.interace';
 import { theme } from '@store/global/global.state';
+import { Box, Container, Link } from '@styles/Header.style';
 
 export const Header = () => {
   const router = useRouter();
@@ -27,6 +28,13 @@ export const Header = () => {
   }, []);
 
   return (
-    <></>
+    <Container>
+      <Box>
+        <Link>Home</Link>
+        <Link>Blog</Link>
+        <Link>About</Link>
+        <Link>Contact</Link>
+      </Box>
+    </Container>
   );
 };

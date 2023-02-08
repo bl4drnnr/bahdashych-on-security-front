@@ -1,17 +1,13 @@
 import React from 'react';
 
 import DefaultLayout from '@layouts/Default.layout';
-import { Container } from '@styles/home.style';
 
-const Home = () => {
-
+const Contact = () => {
   return (
     <DefaultLayout>
-      <Container>
 
-      </Container>
     </DefaultLayout>
   );
 };
 
-export default Home;
+export default Contact;

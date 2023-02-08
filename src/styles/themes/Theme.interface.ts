@@ -1,9 +1,9 @@
 export interface ThemeProps {
   colors: {
-    primary: string;
+    primaryLight: string;
+    primaryDark: string;
     lightBackground: string;
     darkBackground: string;
     textColor: string;
-    disableColor: string;
   }
 }
