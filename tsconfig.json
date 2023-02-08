@@ -15,18 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "./",
-    "paths": {
-      "@services/*": ["services/*"],
-      "@pages/*": ["./pages/*"],
-      "@layouts/*": ["layouts/*"],
-      "@components/*": ["components/*"],
-      "@exceptions/*": ["exceptions/*"],
-      "@dto/*": ["dto/*"],
-      "@styles/*": ["styles/*"],
-      "@interfaces/*": ["interface/*"],
-      "@utils/*": ["utils/*"],
-      "@api/*": ["api/*"]
-    }
+    "paths": {}
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
