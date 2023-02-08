@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2021",
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -14,9 +14,34 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "./",
-    "paths": {}
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "src/components/basic-components/*",
+        "src/components/layout-components/*",
+        "src/components/page-components/*"
+      ],
+      "@styles/*": [
+        "src/styles/basic-components/*",
+        "src/styles/layout-components/*",
+        "src/styles/page-components/*",
+        "src/styles/themes/*",
+        "src/styles/layouts/*",
+        "src/styles/pages/*",
+        "src/styles/*"
+      ],
+      "@layouts/*": ["src/layouts/*"],
+      "@services/*": [],
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@api-client": ["src/services/api.client.ts"],
+      "@api": ["src/api/api.ts"],
+      "@lib/*": ["src/lib/*"],
+      "@i18config": ["next-i18next.config.js"],
+      "@exceptions/*": ["src/api/exceptions/*"],
+      "@exception-handler": ["src/api/ExceptionHandler.ts"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src"],
   "exclude": ["node_modules"]
 }
