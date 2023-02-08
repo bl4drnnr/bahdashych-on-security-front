@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  swcMinify: true,
-  env: {
-    FRONT_API_URL: process.env.FRONT_API_URL
-  }
-}
+  reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
+  swcMinify: true
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
