@@ -11,6 +11,7 @@ export const useGetPostsService = () => {
   const getPosts = async ({ search, sort, page, limit } : GetPostsPayload)
     : Promise<GetPostsResponse> => {
     try {
+      setLoading(true);
       const { data } = await ApiClient.get<GetPostsResponse>(`/posts/${page}/${limit}/${sort}/${search}`);
 
       return data;
