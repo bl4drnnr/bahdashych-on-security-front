@@ -1,12 +1,26 @@
 import React from 'react';
 
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
 import DefaultLayout from '@layouts/Default.layout';
-import { Container, IntroTextBox, IntroTextWrapper, TypewritingText } from '@styles/home.style';
+import {
+  BlogPostDescription,
+  BlogPostPreview,
+  BlogPostsContainer, BlogPostTitle,
+  Container,
+  IntroTextBox,
+  IntroTextWrapper,
+  TypewritingText
+} from '@styles/home.style';
 
 const Home = () => {
+  const router = useRouter();
+
+  const handleRedirect = async (path: string) => {
+    await router.push(path);
+  };
 
   return (
     <DefaultLayout>
@@ -51,6 +65,21 @@ const Home = () => {
           </IntroTextWrapper>
 
         </IntroTextBox>
+
+        <BlogPostsContainer>
+          <BlogPostPreview>
+            <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
+            <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
+          </BlogPostPreview>
+          <BlogPostPreview>
+            <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
+            <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
+          </BlogPostPreview>
+          <BlogPostPreview>
+            <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
+            <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
+          </BlogPostPreview>
+        </BlogPostsContainer>
       </Container>
     </DefaultLayout>
   );
