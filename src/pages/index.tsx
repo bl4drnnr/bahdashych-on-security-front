@@ -36,6 +36,18 @@ const Home = () => {
                 }}
               />
             </TypewritingText>
+
+            <TypewritingText className={classNames('smaller')}>
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .pauseFor(2750)
+                    .changeDelay(25)
+                    .typeString('Web Development, WEB3, Network Technologies, DevOps & Cybersecurity.')
+                    .start();
+                }}
+              />
+            </TypewritingText>
           </IntroTextWrapper>
 
         </IntroTextBox>

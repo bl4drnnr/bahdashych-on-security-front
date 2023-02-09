@@ -21,4 +21,8 @@ export const TypewritingText = styled.h1`
   &.small {
     font-size: 36px;
   }
+  &.smaller {
+    font-size: 22px;
+    padding-top: 15px;
+  }
 `;
