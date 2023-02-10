@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import DefaultLayout from '@layouts/Default.layout';
@@ -20,15 +21,20 @@ const About = ({ locale }: AboutProps) => {
   };
 
   return (
-    <DefaultLayout locale={locale} translation={t}>
-      <Container>
-        <Box></Box>
-      </Container>
-    </DefaultLayout>
+    <>
+      <Head>
+        <title>About</title>
+      </Head>
+      <DefaultLayout locale={locale} translation={t}>
+        <Container>
+          <Box></Box>
+        </Container>
+      </DefaultLayout>
+    </>
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'placeholders']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common']);
 export { getStaticPaths, getStaticProps };
 
 export default About;

@@ -13,9 +13,17 @@ export const Container = styled.div`
 `;
 
 export const Box = styled.div`
-  width: 90%;
-  height: 50%;
+  width: 45%;
+  height: 100%;
+  border-top: 1px solid rgba(255, 255, 255, .25);
+  margin: 0 auto;
+  text-align: center;
+  align-items: center;
   display: flex;
-  justify-content: space-between;
 `;
 
+export const Text = styled.p`
+  color: rgba(${(props) => props.theme.colors.textColor});
+  font-weight: 200;
+  width: 100%;
+`;

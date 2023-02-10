@@ -23,7 +23,7 @@ export const Header = ({ locale, translation }: HeaderProps) => {
   };
 
   const handleRedirect = async (path: string) => {
-    await router.push(path);
+    await router.push(`/${locale}${path}`);
   };
 
   React.useEffect(() => {

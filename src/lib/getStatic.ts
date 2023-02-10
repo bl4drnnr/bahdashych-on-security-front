@@ -15,7 +15,7 @@ export const getStaticPaths = () => ({
   paths: getI18nPaths()
 });
 
-export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors', 'placeholders']) {
+export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors']) {
   const locale = await ctx?.params?.locale;
 
   return {
