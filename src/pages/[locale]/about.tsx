@@ -39,7 +39,10 @@ const About = ({ locale }: AboutProps) => {
           </Box>
           <Box>
             <AboutParagraph>
-              The blog you are reading at the moment was created to share the knowledge that I have acquired during my entire professional career. I sincerely believe that the best way to learn anything is to start teaching other people, sharing your knowledge with them. And I have several reasons for this:
+              The blog you are reading at the moment was created to share the knowledge that I have acquired during my entire professional career. This simple static blog is my knowledge diary for me. Here I write down everything that I managed to learn and try to explain here to the misguided people in the simplest possible way.
+            </AboutParagraph>
+            <AboutParagraph>
+              I sincerely believe that the best way to learn anything is to start teaching other people, sharing your knowledge with them. And I have several reasons for this:
             </AboutParagraph>
             <AboutParagraph>
               <b>Personal Growth:</b> Sharing your knowledge with others helps you to better understand and articulate your own thoughts and ideas, which can lead to personal growth and development.
@@ -62,6 +65,14 @@ const About = ({ locale }: AboutProps) => {
             <AboutParagraph>
               Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience.
             </AboutParagraph>
+          </Box>
+          <Box>
+            <AboutTitle>
+              Something about me?
+            </AboutTitle>
+            <AboutTitle className={classNames('description')}>
+              Oh, how sweet! Nah... Just kidding, well, how to start?
+            </AboutTitle>
           </Box>
         </Container>
       </DefaultLayout>
