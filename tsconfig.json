@@ -30,14 +30,11 @@
         "src/styles/pages/*",
         "src/styles/*"
       ],
+      "@lib/*": ["src/lib/*"],
+      "@i18config": ["next-i18next.config.js"],
       "@layouts/*": ["src/layouts/*"],
-      "@services/*": [],
       "@store/*": ["src/store/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@api-client": ["src/services/api.client.ts"],
-      "@api": ["src/api/api.ts"],
-      "@exceptions/*": ["src/api/exceptions/*"],
-      "@exception-handler": ["src/api/ExceptionHandler.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src"],
