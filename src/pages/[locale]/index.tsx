@@ -1,10 +1,12 @@
 import React from 'react';
 
 import classNames from 'classnames';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
 import DefaultLayout from '@layouts/Default.layout';
+import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
   BlogPostDescription,
   BlogPostPreview,
@@ -15,15 +17,20 @@ import {
   TypewritingText
 } from '@styles/home.style';
 
-const Home = () => {
+interface HomeProps {
+  locale: string;
+}
+
+const Home = ({ locale }: HomeProps) => {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const handleRedirect = async (path: string) => {
-    await router.push(path);
+    await router.push(`/${locale}${path}`);
   };
 
   return (
-    <DefaultLayout>
+    <DefaultLayout locale={locale} translation={t}>
       <Container>
         <IntroTextBox>
 
@@ -84,5 +91,8 @@ const Home = () => {
     </DefaultLayout>
   );
 };
+
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'placeholders']);
+export { getStaticPaths, getStaticProps };
 
 export default Home;
