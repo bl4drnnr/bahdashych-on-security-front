@@ -3,6 +3,7 @@ import React from 'react';
 import { Footer } from '@components/Footer/Footer.component';
 import { Header } from '@components/Header/Header.component';
 import GlobalLayout from '@layouts/Global.layout';
+import { MainBox, MainWrapper } from '@styles/layout/default.style';
 
 interface DefaultLayoutProps {
   children: React.ReactElement | React.ReactElement[];
@@ -12,10 +13,12 @@ interface DefaultLayoutProps {
 const DefaultLayout = ({ loading, children }: DefaultLayoutProps) => {
   return (
     <GlobalLayout loading={loading}>
-      <Header />
-      <main>
-        {children}
-      </main>
+      <MainWrapper>
+        <Header />
+        <MainBox>
+          {children}
+        </MainBox>
+      </MainWrapper>
       <Footer />
     </GlobalLayout>
   );

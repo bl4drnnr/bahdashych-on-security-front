@@ -22,6 +22,10 @@ export const Header = () => {
     else setTheme('dark');
   };
 
+  const handleRedirect = async (path: string) => {
+    await router.push(path);
+  };
+
   React.useEffect(() => {
     const theme = localStorage.getItem('theme') as 'dark' | 'light';
     if (['dark', 'light'].includes(theme)) setTheme(theme);
@@ -30,9 +34,15 @@ export const Header = () => {
   return (
     <Container>
       <Box>
-        <Link>Home</Link>
-        <Link>Blog</Link>
-        <Link>About</Link>
+        <Link
+          onClick={() => handleRedirect('/')}
+        >Home</Link>
+        <Link
+          onClick={() => handleRedirect('/blog')}
+        >Blog</Link>
+        <Link
+          onClick={() => handleRedirect('/about')}
+        >About</Link>
       </Box>
     </Container>
   );

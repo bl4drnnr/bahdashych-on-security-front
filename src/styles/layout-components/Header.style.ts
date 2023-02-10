@@ -4,6 +4,8 @@ export const Container = styled.div`
   width: 100%;
   height: 65px;
   background-color: rgb(${(props) => props.theme.colors.darkBackground});
+  position: fixed;
+  z-index: 998;
 `;
 
 export const Box = styled.div`
@@ -22,4 +24,10 @@ export const Link = styled.h3`
   color: rgba(${(props) => props.theme.colors.textColor});
   font-family: "Roboto", sans-serif;
   font-weight: 100;
+  transition: .2s;
+  cursor: pointer;
+  
+  &:hover {
+    color: rgba(${(props) => props.theme.colors.primaryLight});
+  }
 `;
