@@ -91,6 +91,10 @@ const Home = ({ locale }: HomeProps) => {
               <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
               <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
             </BlogPostPreview>
+            <BlogPostPreview>
+              <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
+              <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
+            </BlogPostPreview>
           </BlogPostsContainer>
         </Container>
       </DefaultLayout>
