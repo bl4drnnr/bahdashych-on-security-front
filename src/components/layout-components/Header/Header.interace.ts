@@ -1,1 +1,5 @@
-export interface HeaderProps {}
+export interface HeaderProps {
+  locale: string;
+  translation: any;
+}
+

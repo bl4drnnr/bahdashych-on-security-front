@@ -8,18 +8,20 @@ import { MainBox, MainWrapper } from '@styles/layout/default.style';
 interface DefaultLayoutProps {
   children: React.ReactElement | React.ReactElement[];
   loading?: boolean;
+  locale: string;
+  translation: any;
 }
 
-const DefaultLayout = ({ loading, children }: DefaultLayoutProps) => {
+const DefaultLayout = ({ loading, children, locale, translation }: DefaultLayoutProps) => {
   return (
     <GlobalLayout loading={loading}>
       <MainWrapper>
-        <Header />
+        <Header locale={locale} translation={translation} />
         <MainBox>
           {children}
         </MainBox>
       </MainWrapper>
-      <Footer />
+      <Footer locale={locale} translation={translation} />
     </GlobalLayout>
   );
 };

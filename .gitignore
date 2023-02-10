@@ -38,3 +38,6 @@ yarn-error.log*
 
 package-lock.json
 next-env.d.ts
+
+*.key
+*.pub

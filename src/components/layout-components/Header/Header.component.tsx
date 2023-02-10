@@ -8,7 +8,7 @@ import { HeaderProps } from '@components/Header/Header.interace';
 import { theme } from '@store/global/global.state';
 import { Box, Container, Link } from '@styles/Header.style';
 
-export const Header = () => {
+export const Header = ({ locale, translation }: HeaderProps) => {
   const router = useRouter();
   const [currentTheme, setCurrentTheme] = useRecoilState(theme);
 
@@ -23,7 +23,7 @@ export const Header = () => {
   };
 
   const handleRedirect = async (path: string) => {
-    await router.push(path);
+    await router.push(`/${locale}${path}`);
   };
 
   React.useEffect(() => {
@@ -40,6 +40,9 @@ export const Header = () => {
         <Link
           onClick={() => handleRedirect('/blog')}
         >Blog</Link>
+        <Link
+          onClick={() => handleRedirect('/projects')}
+        >Projects</Link>
         <Link
           onClick={() => handleRedirect('/about')}
         >About</Link>
