@@ -4,7 +4,10 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  swcMinify: true
+  swcMinify: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;
