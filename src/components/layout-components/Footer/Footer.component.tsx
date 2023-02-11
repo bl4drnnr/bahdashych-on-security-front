@@ -9,7 +9,7 @@ export const Footer = ({ locale, translation }: FooterProps) => {
   return (
     <Container>
       <Box>
-        <Text>All Right Reserved &copy; 2023</Text>
+        <Text>{translation('components:footer.rights')} &copy; 2023</Text>
       </Box>
     </Container>
   );

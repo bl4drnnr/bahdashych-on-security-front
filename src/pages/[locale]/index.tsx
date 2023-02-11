@@ -79,17 +79,11 @@ const Home = ({ locale }: HomeProps) => {
           </IntroTextBox>
 
           <BlogPostsContainer>
-            <BlogPostPreview>
-              <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
-              <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
-            </BlogPostPreview>
-            <BlogPostPreview>
-              <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
-              <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
-            </BlogPostPreview>
-            <BlogPostPreview>
-              <BlogPostTitle>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae, velit.</BlogPostTitle>
-              <BlogPostDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid autem corporis dicta dolores magnam mollitia nisi officiis, ratione soluta.</BlogPostDescription>
+            <BlogPostPreview
+              onClick={() => handleRedirect('/blog/present-and-future-of-web3')}
+            >
+              <BlogPostTitle>{t('articles:presentAndFutureWeb3.title')}</BlogPostTitle>
+              <BlogPostDescription>{t('articles:presentAndFutureWeb3.pageDescription')}</BlogPostDescription>
             </BlogPostPreview>
           </BlogPostsContainer>
         </Container>
@@ -98,7 +92,7 @@ const Home = ({ locale }: HomeProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
 export { getStaticPaths, getStaticProps };
 
 export default Home;

@@ -32,7 +32,7 @@ const Projects = ({ locale }: ProjectsProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
 export { getStaticPaths, getStaticProps };
 
 export default Projects;

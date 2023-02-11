@@ -4,9 +4,11 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 
+import ChangeLanguage from '@components/ChangeLanguage/ChangeLanguage.component';
+import ChangeTheme from '@components/ChangeTheme/ChangeTheme.component';
 import { HeaderProps } from '@components/Header/Header.interace';
 import { theme } from '@store/global/global.state';
-import { Box, Container, Link } from '@styles/Header.style';
+import { Box, Container, LanguageContainer, Link, ThemeContainer } from '@styles/Header.style';
 
 export const Header = ({ locale, translation }: HeaderProps) => {
   const router = useRouter();
@@ -36,17 +38,31 @@ export const Header = ({ locale, translation }: HeaderProps) => {
       <Box>
         <Link
           onClick={() => handleRedirect('/')}
-        >Home</Link>
+        >{translation('components:header.home')}</Link>
         <Link
           onClick={() => handleRedirect('/blog')}
-        >Blog</Link>
+        >{translation('components:header.blog')}</Link>
         <Link
           onClick={() => handleRedirect('/projects')}
-        >Projects</Link>
+        >{translation('components:header.projects')}</Link>
         <Link
           onClick={() => handleRedirect('/about')}
-        >About</Link>
+        >{translation('components:header.about')}</Link>
       </Box>
+
+      <LanguageContainer>
+        <ChangeLanguage
+          path={router.asPath}
+          defaultLanguage={locale}
+        />
+      </LanguageContainer>
+
+      <ThemeContainer>
+        <ChangeTheme
+          theme={currentTheme}
+          onClick={() => toggleTheme()}
+        />
+      </ThemeContainer>
     </Container>
   );
 };

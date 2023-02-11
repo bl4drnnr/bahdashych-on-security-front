@@ -31,3 +31,15 @@ export const Link = styled.h3`
     color: rgba(${(props) => props.theme.colors.primaryLight});
   }
 `;
+
+export const LanguageContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 50px;
+`;
+
+export const ThemeContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 20px;
+`;

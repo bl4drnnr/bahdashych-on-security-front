@@ -32,7 +32,7 @@ const Blog = ({ locale }: BlogProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
 export { getStaticPaths, getStaticProps };
 
 export default Blog;

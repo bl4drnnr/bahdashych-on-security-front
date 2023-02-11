@@ -1,0 +1,25 @@
+{
+  "home": {},
+  "about": {
+    "title": "About",
+    "thanks": "Thank you!",
+    "appreciating": "I really appreciate you are interested in what I am doing.",
+    "reasonForReading": "The blog you are reading at the moment was created to share the knowledge that I have acquired during my entire professional career. This simple static blog is my knowledge diary for me. Here I write down everything that I managed to learn and try to explain here to the misguided people in the simplest possible way.",
+    "teachingOther": "I sincerely believe that the best way to learn anything is to start teaching other people, sharing your knowledge with them. And I have several reasons for this:",
+    "personalGrowthTitle": "Personal Growth:",
+    "personalGrowthDescription": "Sharing your knowledge with others helps you to better understand and articulate your own thoughts and ideas, which can lead to personal growth and development.",
+    "relationshipsTitle": "Building Relationships:",
+    "relationshipsDescription": "Sharing knowledge with others can foster strong relationships, as it shows that you value their opinions and are willing to help them grow and learn.",
+    "influenceTitle": "Increased Influence:",
+    "influenceDescription": "By sharing your knowledge and expertise with others, you can establish yourself as a thought leader in your field and increase your influence and credibility.",
+    "problemsTitle": "Improved Problem-Solving:",
+    "problemsDescription": "When you share knowledge with others, you can receive new perspectives and ideas that can help you tackle challenges and find solutions to problems more effectively.",
+    "careerTitle": "Career Advancement:",
+    "careerDescription": "Sharing your knowledge can lead to new opportunities and recognition, which can help you advance in your career.",
+    "givingBackTitle": "Giving Back:",
+    "givingBackDescription": "Sharing your knowledge can be a way of giving back to others and making a positive impact on their lives.",
+    "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience.",
+    "aboutMe": "Something about me?",
+    "kidding": "Oh, how sweet! Nah... Just kidding, well, how to start?"
+  }
+}

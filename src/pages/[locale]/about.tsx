@@ -25,53 +25,53 @@ const About = ({ locale }: AboutProps) => {
   return (
     <>
       <Head>
-        <title>About</title>
+        <title>Mikhail Bahdashych | {t('pages:about.title')}</title>
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <Container>
           <Box>
             <AboutTitle>
-              Thank you!
+              {t('pages:about.thanks')}
             </AboutTitle>
             <AboutTitle className={classNames('description')}>
-              I really appreciate you are interested in what I am doing.
+              {t('pages:about.appreciating')}
             </AboutTitle>
           </Box>
           <Box>
             <AboutParagraph>
-              The blog you are reading at the moment was created to share the knowledge that I have acquired during my entire professional career. This simple static blog is my knowledge diary for me. Here I write down everything that I managed to learn and try to explain here to the misguided people in the simplest possible way.
+              {t('pages:about.reasonForReading')}
             </AboutParagraph>
             <AboutParagraph>
-              I sincerely believe that the best way to learn anything is to start teaching other people, sharing your knowledge with them. And I have several reasons for this:
+              {t('pages:about.teachingOther')}
             </AboutParagraph>
             <AboutParagraph>
-              <b>Personal Growth:</b> Sharing your knowledge with others helps you to better understand and articulate your own thoughts and ideas, which can lead to personal growth and development.
+              <b>{t('pages:about.personalGrowthTitle')}</b> {t('pages:about.personalGrowthDescription')}
             </AboutParagraph>
             <AboutParagraph>
-              <b>Building Relationships:</b> Sharing knowledge with others can foster strong relationships, as it shows that you value their opinions and are willing to help them grow and learn.
+              <b>{t('pages:about.relationshipsTitle')}</b> {t('pages:about.relationshipsDescription')}
             </AboutParagraph>
             <AboutParagraph>
-              <b>Increased Influence:</b> By sharing your knowledge and expertise with others, you can establish yourself as a thought leader in your field and increase your influence and credibility.
+              <b>{t('pages:about.influenceTitle')}</b> {t('pages:about.influenceDescription')}
             </AboutParagraph>
             <AboutParagraph>
-              <b>Improved Problem-Solving:</b> When you share knowledge with others, you can receive new perspectives and ideas that can help you tackle challenges and find solutions to problems more effectively.
+              <b>{t('pages:about.problemsTitle')}</b> {t('pages:about.problemsDescription')}
             </AboutParagraph>
             <AboutParagraph>
-              <b>Career Advancement:</b> Sharing your knowledge can lead to new opportunities and recognition, which can help you advance in your career.
+              <b>{t('pages:about.careerTitle')}</b> {t('pages:about.careerDescription')}
             </AboutParagraph>
             <AboutParagraph>
-              <b>Giving Back:</b> Sharing your knowledge can be a way of giving back to others and making a positive impact on their lives.
+              <b>{t('pages:about.givingBackTitle')}</b> {t('pages:about.givingBackDescription')}
             </AboutParagraph>
             <AboutParagraph>
-              Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience.
+              {t('pages:about.overall')}
             </AboutParagraph>
           </Box>
           <Box>
             <AboutTitle>
-              Something about me?
+              {t('pages:about.aboutMe')}
             </AboutTitle>
             <AboutTitle className={classNames('description')}>
-              Oh, how sweet! Nah... Just kidding, well, how to start?
+              {t('pages:about.kidding')}
             </AboutTitle>
           </Box>
         </Container>
@@ -80,7 +80,7 @@ const About = ({ locale }: AboutProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
 export { getStaticPaths, getStaticProps };
 
 export default About;

@@ -1,0 +1,11 @@
+{
+  "header": {
+    "home": "Domowa",
+    "blog": "Blog",
+    "projects": "Projekty",
+    "about": "O projekcie"
+  },
+  "footer": {
+    "rights": "Wszelkie prawa zastrzeżone"
+  }
+}
