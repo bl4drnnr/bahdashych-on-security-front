@@ -11,24 +11,48 @@ export const IntroTextBox = styled.div`
 export const IntroTextWrapper = styled.div`
   width: 45%;
   margin: 0 auto;
+
+  @media only screen and (max-width: 780px) {
+    width: 90%;
+  }
 `;
 
 export const TypewritingText = styled.h1`
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 72px;
   font-weight: 100;
+  
   &.small {
     font-size: 36px;
+    
+    @media only screen and (max-width: 780px) {
+      font-size: 24px;
+    }
   }
+  
   &.smaller {
     font-size: 22px;
     padding-top: 15px;
+
+    @media only screen and (max-width: 780px) {
+      font-size: 18px;
+    }
+  }
+
+  @media only screen and (max-width: 780px) {
+    font-size: 52px;
+    text-align: center;
   }
 `;
 
 export const BlogPostsContainer = styled.div`
   width: 45%;
   margin: 150px auto 0 auto;
+
+  @media only screen and (max-width: 780px) {
+    width: 90%;
+    margin: 50px auto 0 auto;
+  }
 `;
 
 export const BlogPostPreview = styled.div`
