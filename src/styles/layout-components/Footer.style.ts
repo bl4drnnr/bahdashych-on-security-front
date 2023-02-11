@@ -6,10 +6,6 @@ export const Container = styled.div`
   background-color: rgb(${(props) => props.theme.colors.darkBackground});
   bottom: 0;
   margin-top: auto;
-
-  @media only screen and (max-width: 780px) {
-    display: none;
-  }
 `;
 
 export const Box = styled.div`
@@ -20,6 +16,10 @@ export const Box = styled.div`
   text-align: center;
   align-items: center;
   display: flex;
+
+  @media only screen and (max-width: 780px) {
+    width: 100%;
+  }
 `;
 
 export const Text = styled.p`
