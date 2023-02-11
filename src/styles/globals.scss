@@ -28,3 +28,31 @@ select:focus,
 textarea:focus {
   outline: none;
 }
+
+@font-face {
+  font-family: 'Charter';
+  src: local('Charter'), url(./../../public/fonts/CharterRegular.otf) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Charter';
+  src: local('Charter'), url(./../../public/fonts/CharterItalic.otf) format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Charter';
+  src: local('Charter'), url(./../../public/fonts/CharterBold.otf) format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Charter';
+  src: local('Charter'), url(./../../public/fonts/CharterBoldItalic.otf) format('woff');
+  font-weight: bold;
+  font-style: italic;
+}
