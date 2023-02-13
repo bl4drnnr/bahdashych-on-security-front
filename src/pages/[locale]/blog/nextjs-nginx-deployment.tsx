@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
@@ -21,7 +22,6 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   return (
     <>
       <DefaultLayout locale={locale} translation={t}>
-        <></>
       </DefaultLayout>
     </>
   );
