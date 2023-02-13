@@ -7,16 +7,39 @@ import Typewriter from 'typewriter-effect';
 
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
-import { BlogIntroWrapper, BlogPostsDescription, BlogPostsTitle } from '@styles/blog.style';
+import {
+  BlogIntroWrapper,
+  BlogPostsDescription,
+  BlogPostsTitle,
+  PostDescription,
+  PostPreview,
+  PostTitle
+} from '@styles/blog.style';
 
 
 interface BlogProps {
   locale: string;
 }
 
+interface PostProps {
+  title: string;
+  description: string;
+  link: string;
+}
+
 const Blog = ({ locale }: BlogProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+
+  const [allPosts,] = React.useState<PostProps[]>([{
+    title: t('articles:presentAndFutureWeb3.title'),
+    description: t('articles:presentAndFutureWeb3.pageDescription'),
+    link: '/blog/present-and-future-of-web3'
+  }, {
+    title: t('articles:nextjsNginxDeployment.title'),
+    description: t('articles:nextjsNginxDeployment.pageDescription'),
+    link: '/blog/nextjs-nginx-deployment'
+  }]);
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
@@ -25,7 +48,7 @@ const Blog = ({ locale }: BlogProps) => {
   return (
     <>
       <Head>
-        <title>{t('pages:home.name')} | {t('articles:blog.title')}</title>
+        <title>{t('pages:home.name')} | {t('pages:blog.title')}</title>
       </Head>
       <DefaultLayout locale={locale} translation={t}>
 
@@ -41,14 +64,20 @@ const Blog = ({ locale }: BlogProps) => {
             />
           </BlogPostsTitle>
 
-          <BlogPostsDescription>
-            Here you will find the collection of knowledge that has been grabbed by me for the entire my career (or at least part of it). The best way to learn something is to start teach others, right? Ok, here you are!
+          <BlogPostsDescription className={'margins'}>
+            {t('pages:blog.description')}
           </BlogPostsDescription>
-          <BlogPostsDescription>
-            Meanwhile, hang around here and try to find some cool stuff.
+          <BlogPostsDescription className={'margins'}>
+            {t('pages:blog.description2')}
           </BlogPostsDescription>
-        </BlogIntroWrapper>
 
+          {allPosts.map((post, key) => (
+            <PostPreview key={key} onClick={() => handleRedirect(post.link)}>
+              <PostTitle>{post.title}</PostTitle>
+              <PostDescription>{post.description}</PostDescription>
+            </PostPreview>
+          ))}
+        </BlogIntroWrapper>
       </DefaultLayout>
     </>
   );

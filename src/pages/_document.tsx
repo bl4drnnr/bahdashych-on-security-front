@@ -11,6 +11,7 @@ class AppDocument extends Document {
           <link rel="icon" type="image/png" href="/favicon.ico"/>
           <meta name={'keywords'} content={'Mikhail Bahdashych,blog,cybersecurity,portfolio'} />
           <meta name={'description'} content={'Mikhail Bahdashych personal blog and portfolio page'} />
+          <meta httpEquiv={'Content-Type'} content="text/html; charset=utf-8" />
           <meta charSet={'utf-8'} />
         </Head>
         <body>

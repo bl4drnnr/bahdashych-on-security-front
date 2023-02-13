@@ -36,6 +36,18 @@ export const PostParagraph = styled.p`
   padding-top: 30px;
   text-indent: 50px;
   font-weight: 400;
+
+  &.title {
+    text-indent: 0;
+    margin-top: 30px;
+    font-size: 32px;
+  }
+  
+  &.subtitle {
+    text-indent: 0;
+    font-size: 24px;
+  }
+  
   &:last-child {
     margin-bottom: 200px;
   }

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Typewriter from 'typewriter-effect';
 
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
@@ -31,10 +32,24 @@ const About = ({ locale }: AboutProps) => {
         <Container>
           <Box>
             <AboutTitle>
-              {t('pages:about.thanks')}
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.thanks'))
+                    .start();
+                }}
+              />
             </AboutTitle>
             <AboutTitle className={classNames('description')}>
-              {t('pages:about.appreciating')}
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.appreciating'))
+                    .start();
+                }}
+              />
             </AboutTitle>
           </Box>
           <Box>
@@ -68,10 +83,24 @@ const About = ({ locale }: AboutProps) => {
           </Box>
           <Box>
             <AboutTitle>
-              {t('pages:about.aboutMe')}
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.aboutMe'))
+                    .start();
+                }}
+              />
             </AboutTitle>
             <AboutTitle className={classNames('description')}>
-              {t('pages:about.kidding')}
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.kidding'))
+                    .start();
+                }}
+              />
             </AboutTitle>
           </Box>
         </Container>

@@ -20,4 +20,40 @@ export const BlogPostsTitle = styled.h1`
   }
 `;
 
-export const BlogPostsDescription = styled.p``;
+export const BlogPostsDescription = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  font-size: 18px;
+  font-weight: 200;
+  
+  &.margins {
+    margin: 25px 0;
+  }
+`;
+
+export const PostPreview = styled.div`
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid rgba(${(props) => props.theme.colors.primaryDark}, .5);
+  border-radius: 5px;
+  transition: .2s;
+  cursor: pointer;
+  margin-bottom: 20px;
+  padding: 15px;
+  
+  &:hover {
+    border: 1px solid rgb(${(props) => props.theme.colors.primaryDark});
+  }
+`;
+
+export const PostTitle = styled.h3`
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  color: rgb(${(props) => props.theme.colors.textColor});
+`;
+
+export const PostDescription = styled.p`
+  font-weight: 300;
+  color: rgb(${(props) => props.theme.colors.textColor}, .5);
+`;
