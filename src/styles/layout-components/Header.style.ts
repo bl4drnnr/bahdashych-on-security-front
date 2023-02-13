@@ -11,7 +11,7 @@ export const Container = styled.div`
 export const Box = styled.div`
   width: 45%;
   height: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, .25);
+  border-bottom: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
   margin: 0 auto;
   padding: 0 30px;
   display: flex;
@@ -27,7 +27,7 @@ export const Box = styled.div`
 export const Link = styled.h3`
   color: rgba(${(props) => props.theme.colors.textColor});
   font-family: "Roboto", sans-serif;
-  font-weight: 100;
+  font-weight: 900;
   transition: .2s;
   cursor: pointer;
   
@@ -64,7 +64,7 @@ export const Hamburger = styled.div`
   }
   
   .color {
-    filter: invert(99%) sepia(77%) saturate(2%) hue-rotate(145deg) brightness(112%) contrast(101%);
+    filter: ${(props) => props.theme.colors.svgColor}
   }
 `;
 
@@ -76,7 +76,7 @@ export const ImageWrapper = styled.div`
 
 export const MobileMenuContainer = styled.div`
   position: absolute;
-  border-bottom: 1px solid rgba(255, 255, 255, .25);
+  border-bottom: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
   background-color: rgb(${(props) => props.theme.colors.darkBackground});
   right: 0;
   left: 0;

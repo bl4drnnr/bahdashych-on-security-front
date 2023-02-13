@@ -5,5 +5,6 @@ export interface ThemeProps {
     lightBackground: string;
     darkBackground: string;
     textColor: string;
+    svgColor: string;
   }
 }
