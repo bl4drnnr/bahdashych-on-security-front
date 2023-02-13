@@ -12,6 +12,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <RecoilRoot>
         <Head>
           <link rel="icon" type="image/png" href="/favicon.ico"/>
+          <meta name={'keywords'} content={'Mikhail Bahdashych,blog,cybersecurity,portfolio'} />
+          <meta name={'description'} content={'Mikhail Bahdashych personal blog and portfolio page'} />
+          <meta charSet={'utf-8'} />
         </Head>
         <Component {...pageProps} />
       </RecoilRoot>
