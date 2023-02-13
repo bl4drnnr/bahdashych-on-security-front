@@ -42,7 +42,10 @@ const Blog = ({ locale }: BlogProps) => {
           </BlogPostsTitle>
 
           <BlogPostsDescription>
-            Here you will find the collection of knowledge that has been grabbed by me for the entire my career (or at least part of it). Meanwhile, hang around here and try to find some cool stuff.
+            Here you will find the collection of knowledge that has been grabbed by me for the entire my career (or at least part of it). The best way to learn something is to start teach others, right? Ok, here you are!
+          </BlogPostsDescription>
+          <BlogPostsDescription>
+            Meanwhile, hang around here and try to find some cool stuff.
           </BlogPostsDescription>
         </BlogIntroWrapper>
 
