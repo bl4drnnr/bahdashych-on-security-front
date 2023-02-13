@@ -7,9 +7,6 @@ const nextConfig = {
   swcMinify: true,
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  env: {
-    FRONT_URL: process.env.FRONT_URL,
   }
 };
 
