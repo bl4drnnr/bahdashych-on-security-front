@@ -6,6 +6,16 @@
     "interests": "Web Development, WEB3, Network Technologies, DevOps & Cybersecurity.",
     "interestingPosts": "Most interesting posts \uD83D\uDD25 :"
   },
+  "blog": {
+    "title": "Blog",
+    "description": "Here you will find the collection of knowledge that has been grabbed by me for the entire my career (or at least part of it). The best way to learn something is to start teach others, right? Ok, here you are! Anyway, I really appreciate you are interested in that and hope that you will be able to find something interesting/useful here. Thank you!",
+    "description2": "Meanwhile, hang around here and try to find some cool stuff."
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "The way I create",
+    "description2": "Here is the list of projects that have been created by me. There, you will find documentation, source code, general idea and/or my inspiration and implementation."
+  },
   "about": {
     "title": "About",
     "thanks": "Thank you!",
