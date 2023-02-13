@@ -41,9 +41,11 @@ const PresentAndFutureOfWeb3 = ({ locale }: PresentAndFutureOfWeb3Props) => {
               }}
             />
           </ArticleTitle>
+
           <ArticleTitle className={'intro'}>
             {t('articles:presentAndFutureWeb3.intro')}
           </ArticleTitle>
+
           {[...Array(10)].map((x, i) =>
             <PostParagraph key={i}>
               {t(`articles:presentAndFutureWeb3.a${i + 1}`)}

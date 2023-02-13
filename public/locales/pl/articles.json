@@ -20,7 +20,7 @@
     "title": "NextJS Nginx Deployment",
     "tags": "",
     "description": "",
-    "pageDescription": "",
+    "pageDescription": "Proces wdrażania jest zawsze dość stresujący, zwłaszcza jeśli jesteś programistą i nie znasz się na tym, czym zajmuje się zespół DevOps. Cóż, oto najłatwiejsze rozwiązanie, w jaki sposób możesz wdrożyć aplikację Next.js przy użyciu Nginx i Letsencrypt do bezpiecznej komunikacji HTTPS. Twoja ściągawka.",
     "intro": ""
   }
 }
