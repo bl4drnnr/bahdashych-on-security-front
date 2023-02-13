@@ -1,5 +1,11 @@
 {
-  "home": {},
+  "home": {
+    "title": "Home",
+    "name": "Mikhail Bahdashych",
+    "workTitles": "Software Engineer / Security Operations Specialist",
+    "interests": "Web Development, WEB3, Network Technologies, DevOps & Cybersecurity.",
+    "interestingPosts": "Most interesting posts \uD83D\uDD25 :"
+  },
   "about": {
     "title": "About",
     "thanks": "Thank you!",
@@ -20,6 +26,6 @@
     "givingBackDescription": "Sharing your knowledge can be a way of giving back to others and making a positive impact on their lives.",
     "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience.",
     "aboutMe": "Something about me?",
-    "kidding": "Oh, how sweet! Nah... Just kidding, well, how to start?"
+    "kidding": "Oh, how sweet! Nah... Just kidding!"
   }
 }

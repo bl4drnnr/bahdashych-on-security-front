@@ -44,10 +44,10 @@ const ChangeLanguage = ({ defaultLanguage, path }: ChangeLanguageProps) => {
   }, []);
 
   const handleRedirect = async (item: LanguageItem) => {
-    if (path.split('/').length === 2) await router.push(`/${item.prefix}`);
-    else await router.push(`/${item.prefix}/${path.substring(4)}`);
     setShowLanguages(false);
     setPickedLanguage(item.flag);
+    if (path.split('/').length === 2) window.location.href = `${process.env.FRONT_URL}${item.prefix}`;
+    else window.location.href = `${process.env.FRONT_URL}${item.prefix}/${path.substring(4)}`;
   };
 
   return (

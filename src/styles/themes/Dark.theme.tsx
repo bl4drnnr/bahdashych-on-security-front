@@ -6,7 +6,8 @@ export const DarkTheme: ThemeProps = {
     primaryDark: '69, 162, 158',
     lightBackground: '31, 40, 51',
     darkBackground: '11, 12, 16',
-    textColor: '197, 198, 199'
+    textColor: '197, 198, 199',
+    svgColor: 'invert(99%) sepia(77%) saturate(2%) hue-rotate(145deg) brightness(112%) contrast(101%)'
   }
 };
 

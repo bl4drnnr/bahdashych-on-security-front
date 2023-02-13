@@ -12,7 +12,7 @@ import {
   BlogPostDescription,
   BlogPostPreview,
   BlogPostsContainer, BlogPostTitle,
-  Container,
+  Container, InterestingPosts,
   IntroTextBox,
   IntroTextWrapper,
   TypewritingText
@@ -33,7 +33,7 @@ const Home = ({ locale }: HomeProps) => {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>{t('pages:home.name')} | {t('pages:home.title')}</title>
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <Container>
@@ -45,7 +45,7 @@ const Home = ({ locale }: HomeProps) => {
                   onInit={(typewriter) => {
                     typewriter
                       .changeDelay(75)
-                      .typeString('Mikhail Bahdashych')
+                      .typeString(t('pages:home.name'))
                       .start();
                   }}
                 />
@@ -57,7 +57,7 @@ const Home = ({ locale }: HomeProps) => {
                     typewriter
                       .pauseFor(1250)
                       .changeDelay(35)
-                      .typeString('Software Engineer / Security Operations Specialist')
+                      .typeString(t('pages:home.workTitles'))
                       .start();
                   }}
                 />
@@ -69,7 +69,7 @@ const Home = ({ locale }: HomeProps) => {
                     typewriter
                       .pauseFor(2750)
                       .changeDelay(25)
-                      .typeString('Web Development, WEB3, Network Technologies, DevOps & Cybersecurity.')
+                      .typeString(t('pages:home.interests'))
                       .start();
                   }}
                 />
@@ -79,6 +79,9 @@ const Home = ({ locale }: HomeProps) => {
           </IntroTextBox>
 
           <BlogPostsContainer>
+            <InterestingPosts>
+              {t('pages:home.interestingPosts')}
+            </InterestingPosts>
             <BlogPostPreview
               onClick={() => handleRedirect('/blog/present-and-future-of-web3')}
             >

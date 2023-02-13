@@ -1,5 +1,11 @@
 {
-  "home": {},
+  "home": {
+    "title": "Domowa",
+    "name": "Mikhail Bahdashych",
+    "workTitles": "Inżynier oprogramowania / Specjalista ds. operacji bezpieczeństwa",
+    "interests": "Web development, WEB3, technologie sieciowe, DevOps & cyberbezpieczeństwo.",
+    "interestingPosts": "Najciekawsze wpisy \uD83D\uDD25 :"
+  },
   "about": {
     "title": "O projekcie",
     "thanks": "Dziękuję!",
@@ -20,6 +26,6 @@
     "givingBackDescription": "Dzielenie się swoją wiedzą może być sposobem na odwdzięczenie się innym i wywarcie pozytywnego wpływu na ich życie.",
     "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie.",
     "aboutMe": "Coś o mnie?",
-    "kidding": "O, jak miło! Spoko... Żartuję, no, jak zacząć?"
+    "kidding": "O, jak miło! Spoko... Żartuję!"
   }
 }

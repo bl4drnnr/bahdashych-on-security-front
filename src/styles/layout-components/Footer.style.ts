@@ -11,7 +11,7 @@ export const Container = styled.div`
 export const Box = styled.div`
   width: 45%;
   height: 100%;
-  border-top: 1px solid rgba(255, 255, 255, .25);
+  border-top: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
   margin: 0 auto;
   text-align: center;
   align-items: center;

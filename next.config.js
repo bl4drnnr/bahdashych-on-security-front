@@ -8,6 +8,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  env: {
+    FRONT_URL: process.env.FRONT_URL,
+  }
 };
 
 module.exports = nextConfig;

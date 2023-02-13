@@ -24,7 +24,7 @@ const PresentAndFutureOfWeb3 = ({ locale }: PresentAndFutureOfWeb3Props) => {
   return (
     <>
       <Head>
-        <title>Mikhail Bahdashych | {t('articles:presentAndFutureWeb3.title')}</title>
+        <title>{t('pages:home.name')} | {t('articles:presentAndFutureWeb3.title')}</title>
         <meta name={'keywords'} content={t('articles:presentAndFutureWeb3.tags') as string} />
         <meta name={'description'} content={t('articles:presentAndFutureWeb3.description') as string} />
         <meta charSet={'utf-8'} />
