@@ -72,6 +72,7 @@ export const ImageWrapper = styled.div`
   display: flex;
   align-items: center;
   height: 60px;
+  cursor: pointer;
 `;
 
 export const MobileMenuContainer = styled.div`
@@ -102,11 +103,16 @@ export const MobileMenuWrapper = styled.div`
 
 export const MobileLink = styled.h3`
   color: rgba(${(props) => props.theme.colors.textColor});
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
   display: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  cursor: pointer;
 
   @media only screen and (max-width: 780px) {
     display: block;
+  }
+
+  &:hover {
+    color: rgba(${(props) => props.theme.colors.primaryLight});
   }
 `;

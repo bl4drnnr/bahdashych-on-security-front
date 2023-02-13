@@ -23,7 +23,7 @@ const Projects = ({ locale }: ProjectsProps) => {
   return (
     <>
       <Head>
-        <title>Projects</title>
+        <title>{t('pages:home.name')} | {t('pages:projects.title')}</title>
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <></>

@@ -10,7 +10,7 @@ export const IntroTextBox = styled.div`
 
 export const IntroTextWrapper = styled.div`
   width: 45%;
-  margin: 0 auto;
+  margin: 100px auto 0 auto;
 
   @media only screen and (max-width: 780px) {
     width: 90%;
@@ -47,7 +47,7 @@ export const TypewritingText = styled.h1`
 
 export const BlogPostsContainer = styled.div`
   width: 45%;
-  margin: 150px auto 0 auto;
+  margin: 100px auto 0 auto;
 
   @media only screen and (max-width: 780px) {
     width: 90%;
@@ -81,4 +81,8 @@ export const BlogPostTitle = styled.h3`
 export const BlogPostDescription = styled.p`
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .5);
+`;
+
+export const InterestingPosts = styled.h1`
+  margin-bottom: 15px;
 `;

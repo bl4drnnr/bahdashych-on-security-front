@@ -25,7 +25,7 @@ const About = ({ locale }: AboutProps) => {
   return (
     <>
       <Head>
-        <title>Mikhail Bahdashych | {t('pages:about.title')}</title>
+        <title>{t('pages:home.name')} | {t('pages:about.title')}</title>
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <Container>

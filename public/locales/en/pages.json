@@ -1,5 +1,11 @@
 {
-  "home": {},
+  "home": {
+    "title": "Home",
+    "name": "Mikhail Bahdashych",
+    "workTitles": "Software Engineer / Security Operations Specialist",
+    "interests": "Web Development, WEB3, Network Technologies, DevOps & Cybersecurity.",
+    "interestingPosts": "Most interesting posts \uD83D\uDD25 :"
+  },
   "about": {
     "title": "About",
     "thanks": "Thank you!",
