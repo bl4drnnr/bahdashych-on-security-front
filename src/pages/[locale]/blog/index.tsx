@@ -32,10 +32,6 @@ const Blog = ({ locale }: BlogProps) => {
   const router = useRouter();
 
   const [allPosts,] = React.useState<PostProps[]>([{
-    title: t('articles:presentAndFutureWeb3.title'),
-    description: t('articles:presentAndFutureWeb3.pageDescription'),
-    link: '/blog/present-and-future-of-web3'
-  }, {
     title: t('articles:nextjsNginxDeployment.title'),
     description: t('articles:nextjsNginxDeployment.pageDescription'),
     link: '/blog/nextjs-nginx-deployment'
