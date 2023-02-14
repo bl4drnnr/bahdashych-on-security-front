@@ -11,6 +11,7 @@ const CodeHighlighter = ({ code, language }: CodeHighlighterProps) => {
     <CodeHighlighterWrapper>
       <CustomCodeHighlighter
         language={language}
+        wrapLines={true}
       >
         {code}
       </CustomCodeHighlighter>
