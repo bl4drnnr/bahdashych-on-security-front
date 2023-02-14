@@ -26,6 +26,10 @@ export const ArticleBodyWrapper = styled.div`
   @media only screen and (max-width: 780px) {
     width: 90%;
   }
+
+  .codeBlock {
+    color: red;
+  }
 `;
 
 export const PostParagraph = styled.p`

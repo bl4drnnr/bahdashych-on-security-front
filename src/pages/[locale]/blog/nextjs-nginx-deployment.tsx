@@ -74,39 +74,36 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
           <TableOfContentsContainer>
             <TableOfContentsTitle>
-              {t('articles:nextjsNginxDeployment.toc.title')}
+              {t('common:tocTitle')}
             </TableOfContentsTitle>
             <TableOfContentsOl>
-              <TableOFContentsLi onClick={() => scrollTo(introRef)}>
-                {t('articles:nextjsNginxDeployment.toc.intro')}
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(whyNginxRef)}>
-                {t('articles:nextjsNginxDeployment.toc.whyNginx')}
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(preparationsRef)}>
-                {t('articles:nextjsNginxDeployment.toc.preps')}
-              </TableOFContentsLi>
-              <TableOFContentsLi
-                onClick={() => scrollTo(httpsConfigRef)}
-              >{t('articles:nextjsNginxDeployment.toc.httpsConfig')}
-                <TableOfContentsOl>
-                  <TableOFContentsLi onClick={() => scrollTo(certGenRef)}>
-                    {t('articles:nextjsNginxDeployment.toc.certGen')}
-                  </TableOFContentsLi>
-                  <TableOFContentsLi onClick={() => scrollTo(nginxSecRef)}>
-                    {t('articles:nextjsNginxDeployment.toc.nginxSec')}
-                  </TableOFContentsLi>
-                </TableOfContentsOl>
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(nginxConfRef)}>
-                {t('articles:nextjsNginxDeployment.toc.nginxConfig')}
-              </TableOFContentsLi>
-              <TableOFContentsLi  onClick={() => scrollTo(appConfRef)}>
-                {t('articles:nextjsNginxDeployment.toc.appConfig')}
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(conclusionRef)}>
-                {t('articles:nextjsNginxDeployment.toc.conclusion')}
-              </TableOFContentsLi>
+              {
+                Object.entries(t('articles:nextjsNginxDeployment.toc', { returnObjects: true })).map(([value, key]) => (
+                  <div key={value}>
+                    {typeof key === 'string' ? (
+                      <TableOFContentsLi
+                        onClick={() => scrollTo(introRef)}
+                      >
+                        {t(`articles:nextjsNginxDeployment.toc.${value}`)}
+                      </TableOFContentsLi>
+                    ) : (
+                      <TableOFContentsLi>
+                        {value}
+                        <TableOfContentsOl>
+                          {Object.entries(key).map(([nValue, nKey]) => (
+                            <TableOFContentsLi
+                              key={nValue}
+                              onClick={() => scrollTo(introRef)}
+                            >
+                              {t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)}
+                            </TableOFContentsLi>
+                          ))}
+                        </TableOfContentsOl>
+                      </TableOFContentsLi>
+                    )}
+                  </div>
+                ))
+              }
             </TableOfContentsOl>
           </TableOfContentsContainer>
 
@@ -138,32 +135,14 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             language={'shell'}
             code={'$ sudo ufw allow \'Nginx Full\''}
           />
-          <PostParagraph>{t('articles:nextjsNginxDeployment.p10')}</PostParagraph>
+          <PostParagraph dangerouslySetInnerHTML={{ __html: t('articles:nextjsNginxDeployment.p10') }} />
           <CodeHighlighter
             language={'bash'}
             code={'$ sudo vim /etc/nginx/sites-available/default'}
           />
           <CodeHighlighter
             language={'nginx'}
-            code={'' +
-              'server {\n' +
-              '  listen 80 default_server;\n' +
-              '  listen [::]:80 default_server;\n' +
-              '\n' +
-              '  root /var/www/html;\n' +
-              '  index index.html index.htm index.nginx-debian.html;\n' +
-              '\n' +
-              '  server_name q*;\n' +
-              '\n' +
-              '  location / {\n' +
-              '    try_files $uri $uri/ =404;\n' +
-              '  }\n' +
-              '\n' +
-              '  # letsencrypt\n' +
-              '  location ~ /.well-known {\n' +
-              '    allow all;\n' +
-              '  }\n' +
-              '}'}
+            code={t('articles:nextjsNginxDeployment.code1')}
           />
           <PostParagraph>{t('articles:nextjsNginxDeployment.p11')}</PostParagraph>
           <CodeHighlighter
