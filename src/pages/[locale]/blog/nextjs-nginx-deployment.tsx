@@ -74,7 +74,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
           <TableOfContentsContainer>
             <TableOfContentsTitle>
-              Table of contents
+              {t('common:tocTitle')}
             </TableOfContentsTitle>
             <TableOfContentsOl>
               {

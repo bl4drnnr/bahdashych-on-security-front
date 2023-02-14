@@ -6,13 +6,13 @@
     "pageDescription": "Proces wdrażania jest zawsze dość stresujący, zwłaszcza jeśli jesteś programistą i nie jesteś zaznajomiony z tym, czym zajmuje się zespół DevOps. Oto najłatwiejsze rozwiązanie, jak wdrożyć aplikację Next.js przy użyciu Nginx i Letsencrypt do bezpiecznej komunikacji HTTPS. Twoja ściągawka.",
     "intro": "O Boże, nie masz pojęcia, jak bałam się wszystkiego poza pisaniem kodu. Kiedyś myślałam, że to coś nierealnego, ukończonego i niebezpiecznego, ponieważ twój błąd może zniszczyć dosłownie wszystko, ale potem spróbowałam i ty wiesz, brzmi to o wiele bardziej przerażająco niż jest w rzeczywistości. Jedyne, co musisz zrobić, to zacząć od podstaw.",
     "toc": {
-      "title": "Spis treści",
       "intro": "Wstęp",
       "whyNginx": "Dlaczego Nginx?",
       "preps": "Przygotowania",
-      "httpsConfig": "Konfiguracja HTTPS",
-      "certGen": "Generowanie certyfikatu",
-      "nginxSec": "Konfiguracja zabezpieczeń Nginx",
+      "Konfiguracja HTTPS": {
+        "certGen": "Generowanie certyfikatu",
+        "nginxSec": "Konfiguracja zabezpieczeń Nginx"
+      },
       "nginxConfig": "Konfiguracja Nginx",
       "appConfig": "Konfiguracja aplikacji przy użyciu pm2",
       "conclusion": "Wnioski i ściągawka"
