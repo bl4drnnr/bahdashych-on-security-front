@@ -50,10 +50,6 @@ export const PostParagraph = styled.p`
     font-size: 24px;
   }
   
-  &:last-child {
-    margin-bottom: 200px;
-  }
-
   @media only screen and (max-width: 780px) {
     font-size: 18px;
     text-indent: 25px;

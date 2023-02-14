@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
 import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
+import PostFooter from '@components/PostFooter/PostFooter.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import { ArticleBodyWrapper, ArticleTitle, PostParagraph } from '@styles/post.style';
@@ -52,8 +53,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
           <PostParagraph className={'title'}>Intro</PostParagraph>
           <PostParagraph>The process of deployment of the application is always kind of stress, especially when you are a developer, who has no idea of what DevOps staff does (trust me, I know what I am talking about). Therefore, the only thing you really want is to as fast as possible deploy your application in a more or less secure way.</PostParagraph>
-          <PostParagraph>Well, congratulations, you have come to the right place! This article will explain how you can deploy your Next.js application using Nginx in a secure manner and HTTPS encryption.</PostParagraph>
-          <PostParagraph>Let’s start!</PostParagraph>
+          <PostParagraph>Well, congratulations, you have come to the right place! This article will explain how you can deploy your Next.js application using Nginx in a secure manner and HTTPS encryption. So, let’s start!</PostParagraph>
 
           <PostParagraph className={'title'}>Why Nginx?</PostParagraph>
           <PostParagraph>
@@ -88,8 +88,12 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             code={'$ sudo ufw allow \'Nginx Full\''}
           />
           <PostParagraph>
-            Very last step here is checking if our nginx sever is working correctly. In order to do that go to  /etc/nginx/sites-available/default and paste next content (*q is our domain):
+            Very last step here is checking if our nginx sever is working correctly. In order to do that go to /etc/nginx/sites-available/default and paste next content (*q is our domain):
           </PostParagraph>
+          <CodeHighlighter
+            language={'bash'}
+            code={'$ sudo vim /etc/nginx/sites-available/default'}
+          />
           <CodeHighlighter
             language={'nginx'}
             code={'' +
@@ -189,6 +193,10 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
           <PostParagraph>
             Let&apos;s start with configuration out Nginx as a reverse proxy. Basically, here we need to edit out nginx file and paste next content (remember, *q is for your domain name):
           </PostParagraph>
+          <CodeHighlighter
+            language={'shell'}
+            code={'$ sudo vim /etc/nginx/sites-available/default'}
+          />
           <CodeHighlighter
             language={'nginx'}
             code={
@@ -296,12 +304,28 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             code={'$ pm2 restart 0 --name "new-name"'}
           />
           <PostParagraph>
-            Thanks for reading! Cheatsheet specially for you:
+            Cheatsheet specially for you:
           </PostParagraph>
           <CodeHighlighter
-            language={'shell'}
-            code={'$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt\n\n' +
-              '$ sudo ufw allow \'Nginx Full\'\n\n' +
+            language={'bash'}
+            code={'# Update and upgrade all packages and install required programs\n' +
+              '$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt'
+              }
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Also enable nginx in ufw\n' +
+              '$ sudo ufw allow \'Nginx Full\''
+            }
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Paste next content in sites-available/default file and test the server\n' +
+              '$ sudo vim /etc/nginx/sites-available/default'}
+          />
+          <CodeHighlighter
+            language={'nginx'}
+            code={'# Replace *q with your domain name\n' +
               'server {\n' +
               '  listen 80 default_server;\n' +
               '  listen [::]:80 default_server;\n' +
@@ -319,15 +343,34 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '  location ~ /.well-known {\n' +
               '    allow all;\n' +
               '  }\n' +
-              '}\n\n' +
+              '}'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Check for syntax error and restart the server\n' +
               '$ sudo nginx -t\n' +
               'nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\n' +
               'nginx: configuration file /etc/nginx/nginx.conf test is successful\n' +
-              '$ sudo systemctl restart nginx\n\n' +
-              '$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q\n\n' +
-              '$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048\n\n' +
-              '$ sudo vim /etc/nginx/snippets/ssl-params.conf\n\n' +
-              'ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\n' +
+              '$ sudo systemctl restart nginx'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Generate the TLS certificate (replace *q with your domain name)\n' +
+              '$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Generate Diffie-Hellman (DH) params\n' +
+              '$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Secure our Nginx server by pasting next into config file\n' +
+              '$ sudo vim /etc/nginx/snippets/ssl-params.conf'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\n' +
               'ssl_prefer_server_ciphers on;\n' +
               'ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";\n' +
               'ssl_ecdh_curve secp384r1;\n' +
@@ -343,8 +386,17 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               'add_header X-Frame-Options DENY;\n' +
               'add_header X-Content-Type-Options nosniff;\n' +
               '\n' +
-              'ssl_dhparam /etc/ssl/certs/dhparam.pem;\n\n' +
-              '# redirect http to https\n' +
+              'ssl_dhparam /etc/ssl/certs/dhparam.pem;'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Paste next config into file\n' +
+              '# Remember about port of localhost and replacing *q with domain name\n' +
+              '$ sudo vim /etc/nginx/sites-available/default'}
+          />
+          <CodeHighlighter
+            language={'nginx'}
+            code={
               'server {\n' +
               '  listen 80 default_server;\n' +
               '  listen [::]:80 default_server;\n' +
@@ -353,7 +405,6 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '}\n' +
               '\n' +
               'server {\n' +
-              '  # listen on *:443 -> ssl; instead of *:80\n' +
               '  listen 443 ssl http2 default_server;\n' +
               '  listen [::]:443 ssl http2 default_server;\n' +
               '\n' +
@@ -364,31 +415,32 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '  include snippets/ssl-params.conf;\n' +
               '\n' +
               '  location / {\n' +
-              '    # reverse proxy for next server\n\n' +
-              '    # It is important to mention that you need to change port\n' +
-              '    # for application on port application uses when is started\n' +
-              '    # after build.\n' +
               '    proxy_pass http://localhost:8080;\n' +
               '    proxy_http_version 1.1;\n' +
               '    proxy_set_header Upgrade $http_upgrade;\n' +
               '    proxy_set_header Connection \'upgrade\';\n' +
               '    proxy_set_header Host $host;\n' +
               '    proxy_cache_bypass $http_upgrade;\n' +
-              '\n' +
-              '    # we need to remove this 404 handling\n' +
-              '    # because next\'s _next folder and own handling\n' +
-              '    # try_files $uri $uri/ =404;\n' +
               '  }\n' +
               '\n' +
               '  location ~ /.well-known {\n' +
               '    allow all;\n' +
               '  }\n' +
-              '}\n\n' +
-              '$ sudo service nginx restart' +
+              '}'}
+          />
+          <CodeHighlighter
+            language={'bash'}
+            code={'# Restart the service\n' +
+              '$ sudo service nginx restart'}
+          />
+          <CodeHighlighter
+            language={'shell'}
+            code={'# Build and start the application\n' +
               '$ npm run build # build our app for production (npm build script: next build)\n' +
               '$ npm i -g pm2 # install pm2 to keep next app alive forever*\n' +
               '$ pm2 start npm --name "next" -- start # start next app (npm start script: next start)\n'}
           />
+          <PostFooter message={'Thank you for reading! I hope you found it useful.'} />
         </ArticleBodyWrapper>
       </DefaultLayout>
     </>
