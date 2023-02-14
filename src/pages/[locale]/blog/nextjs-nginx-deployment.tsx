@@ -74,39 +74,36 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
           <TableOfContentsContainer>
             <TableOfContentsTitle>
-              {t('articles:nextjsNginxDeployment.toc.title')}
+              Table of contents
             </TableOfContentsTitle>
             <TableOfContentsOl>
-              <TableOFContentsLi onClick={() => scrollTo(introRef)}>
-                {t('articles:nextjsNginxDeployment.toc.intro')}
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(whyNginxRef)}>
-                {t('articles:nextjsNginxDeployment.toc.whyNginx')}
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(preparationsRef)}>
-                {t('articles:nextjsNginxDeployment.toc.preps')}
-              </TableOFContentsLi>
-              <TableOFContentsLi
-                onClick={() => scrollTo(httpsConfigRef)}
-              >{t('articles:nextjsNginxDeployment.toc.httpsConfig')}
-                <TableOfContentsOl>
-                  <TableOFContentsLi onClick={() => scrollTo(certGenRef)}>
-                    {t('articles:nextjsNginxDeployment.toc.certGen')}
-                  </TableOFContentsLi>
-                  <TableOFContentsLi onClick={() => scrollTo(nginxSecRef)}>
-                    {t('articles:nextjsNginxDeployment.toc.nginxSec')}
-                  </TableOFContentsLi>
-                </TableOfContentsOl>
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(nginxConfRef)}>
-                {t('articles:nextjsNginxDeployment.toc.nginxConfig')}
-              </TableOFContentsLi>
-              <TableOFContentsLi  onClick={() => scrollTo(appConfRef)}>
-                {t('articles:nextjsNginxDeployment.toc.appConfig')}
-              </TableOFContentsLi>
-              <TableOFContentsLi onClick={() => scrollTo(conclusionRef)}>
-                {t('articles:nextjsNginxDeployment.toc.conclusion')}
-              </TableOFContentsLi>
+              {
+                Object.entries(t('articles:nextjsNginxDeployment.toc', { returnObjects: true })).map(([value, key]) => (
+                  <div key={value}>
+                    {typeof key === 'string' ? (
+                      <TableOFContentsLi
+                        onClick={() => scrollTo(introRef)}
+                      >
+                        {t(`articles:nextjsNginxDeployment.toc.${value}`)}
+                      </TableOFContentsLi>
+                    ) : (
+                      <TableOFContentsLi>
+                        {value}
+                        <TableOfContentsOl>
+                          {Object.entries(key).map(([nValue, nKey]) => (
+                            <TableOFContentsLi
+                              key={nValue}
+                              onClick={() => scrollTo(introRef)}
+                            >
+                              {t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)}
+                            </TableOFContentsLi>
+                          ))}
+                        </TableOfContentsOl>
+                      </TableOFContentsLi>
+                    )}
+                  </div>
+                ))
+              }
             </TableOfContentsOl>
           </TableOfContentsContainer>
 

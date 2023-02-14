@@ -6,13 +6,13 @@
     "pageDescription": "The process of deployment is always quite stressful, especially if you are developer and kind of not familiar with what DevOps team is doing. Well, here is the easiest solution on how you can deploy your Next.js application using Nginx and Letsencrypt for HTTPS secure communication. Your cheatsheet.",
     "intro": "Oh God, you have no clue how I used to be scared of everything beyond writing code. I used to think that it's something unreal completed and dangerous since your mistake can destroy literally everything, but then I tried, and you know, it sounds much scary then it is in really. The only thing you need to do is to start from the basics.",
     "toc": {
-      "title": "Table of contents",
       "intro": "Intro",
       "whyNginx": "Why Nginx?",
       "preps": "Preparations",
-      "httpsConfig": "HTTPS Configuration",
-      "certGen": "Certificate generating",
-      "nginxSec": "Nginx security configuration",
+      "HTTPS Configuration": {
+        "certGen": "Certificate generating",
+        "nginxSec": "Nginx security configuration"
+      },
       "nginxConfig": "Nginx configuration",
       "appConfig": "Application setup using pm2",
       "conclusion": "Conclusions and cheatsheet"
