@@ -26,7 +26,7 @@
     "p7": "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Letsencrypt, as our CA provider, considering you already have an instance for deployment.",
     "p8": "Using next 2 commands you will update all packages on your machine and installed required nginx and Letsencrypt.",
     "p9": "Also enable nginx in ufw:",
-    "p10": "Very last step here is checking if our nginx sever is working correctly. In order to do that go to /etc/nginx/sites-available/default and paste next content (*q is our domain):",
+    "p10": "Very last step here is checking if our nginx sever is working correctly. In order to do that go to <span class='codeBlock'>/etc/nginx/sites-available/default</span> and paste next content (*q is our domain):",
     "p11": "Check for syntax errors and restart nginx:",
     "p12": "Let's Encrypt is a free, open-source, and automated certificate authority (CA) that provides digital certificates for Transport Layer Security (TLS) encryption. These certificates are used to secure web traffic and ensure that sensitive information, such as passwords and credit card numbers, are transmitted securely over the internet.",
     "p13": "The main goal of Let's Encrypt is to make encryption more accessible to the general public by offering free and easy-to-use certificates. Prior to Let's Encrypt, obtaining a certificate could be a complicated and expensive process. With Let's Encrypt, anyone can obtain a certificate with just a few clicks, making it possible to secure a website or web application with minimal effort.",
@@ -48,6 +48,7 @@
     "p29": "The very first thing you need to do is to go to your server and go to folder with your project. There, pull the master (main) branch or whatever branch you use in production mode, install all packages, build the project (using npm in this particular example) and restart the pm2 process:",
     "p30": "By the way, I guess you want to change the name of the application on something more human-readable. Here is how you can do that. First of all type next command to get list of all processes handled by pm2:",
     "p31": "As a result you will see pretty looking table, take a look at the id column, at this moment, I guess, you will see 0 value, but if not, just replace it on your value and type next to change the name of the process:",
-    "p32": "Cheatsheet specially for you:"
+    "p32": "Cheatsheet specially for you:",
+    "code1": "server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\troot /var/www/html;\n\tindex index.html index.htm index.nginx-debian.html;\n\n\tserver_name q*;\n\n\tlocation / {\n\t\ttry_files $uri $uri/ =404;\n\t}\n\n\t# letsencrypt\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
   }
 }

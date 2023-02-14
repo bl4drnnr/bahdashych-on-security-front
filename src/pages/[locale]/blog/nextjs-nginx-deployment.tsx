@@ -138,32 +138,14 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             language={'shell'}
             code={'$ sudo ufw allow \'Nginx Full\''}
           />
-          <PostParagraph>{t('articles:nextjsNginxDeployment.p10')}</PostParagraph>
+          <PostParagraph dangerouslySetInnerHTML={{ __html: t('articles:nextjsNginxDeployment.p10') }} />
           <CodeHighlighter
             language={'bash'}
             code={'$ sudo vim /etc/nginx/sites-available/default'}
           />
           <CodeHighlighter
             language={'nginx'}
-            code={'' +
-              'server {\n' +
-              '  listen 80 default_server;\n' +
-              '  listen [::]:80 default_server;\n' +
-              '\n' +
-              '  root /var/www/html;\n' +
-              '  index index.html index.htm index.nginx-debian.html;\n' +
-              '\n' +
-              '  server_name q*;\n' +
-              '\n' +
-              '  location / {\n' +
-              '    try_files $uri $uri/ =404;\n' +
-              '  }\n' +
-              '\n' +
-              '  # letsencrypt\n' +
-              '  location ~ /.well-known {\n' +
-              '    allow all;\n' +
-              '  }\n' +
-              '}'}
+            code={t('articles:nextjsNginxDeployment.code1')}
           />
           <PostParagraph>{t('articles:nextjsNginxDeployment.p11')}</PostParagraph>
           <CodeHighlighter
