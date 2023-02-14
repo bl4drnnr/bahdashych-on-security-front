@@ -74,81 +74,71 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
           <TableOfContentsContainer>
             <TableOfContentsTitle>
-              Table of contents
+              {t('articles:nextjsNginxDeployment.toc.title')}
             </TableOfContentsTitle>
             <TableOfContentsOl>
               <TableOFContentsLi onClick={() => scrollTo(introRef)}>
-                Intro
+                {t('articles:nextjsNginxDeployment.toc.intro')}
               </TableOFContentsLi>
               <TableOFContentsLi onClick={() => scrollTo(whyNginxRef)}>
-                Why Nginx?
+                {t('articles:nextjsNginxDeployment.toc.whyNginx')}
               </TableOFContentsLi>
               <TableOFContentsLi onClick={() => scrollTo(preparationsRef)}>
-                Preparations
+                {t('articles:nextjsNginxDeployment.toc.preps')}
               </TableOFContentsLi>
               <TableOFContentsLi
                 onClick={() => scrollTo(httpsConfigRef)}
-              >HTTPS Configuration
+              >{t('articles:nextjsNginxDeployment.toc.httpsConfig')}
                 <TableOfContentsOl>
                   <TableOFContentsLi onClick={() => scrollTo(certGenRef)}>
-                    Certificate generating
+                    {t('articles:nextjsNginxDeployment.toc.certGen')}
                   </TableOFContentsLi>
                   <TableOFContentsLi onClick={() => scrollTo(nginxSecRef)}>
-                    Nginx security configuration
+                    {t('articles:nextjsNginxDeployment.toc.nginxSec')}
                   </TableOFContentsLi>
                 </TableOfContentsOl>
               </TableOFContentsLi>
               <TableOFContentsLi onClick={() => scrollTo(nginxConfRef)}>
-                Nginx configuration
+                {t('articles:nextjsNginxDeployment.toc.nginxConfig')}
               </TableOFContentsLi>
               <TableOFContentsLi  onClick={() => scrollTo(appConfRef)}>
-                Application setup using pm2
+                {t('articles:nextjsNginxDeployment.toc.appConfig')}
               </TableOFContentsLi>
               <TableOFContentsLi onClick={() => scrollTo(conclusionRef)}>
-                Conclusions and cheatsheet
+                {t('articles:nextjsNginxDeployment.toc.conclusion')}
               </TableOFContentsLi>
             </TableOfContentsOl>
           </TableOfContentsContainer>
 
-          <PostParagraph className={'title'} ref={introRef}>Intro</PostParagraph>
-          <PostParagraph>The process of deployment of the application is always kind of stress, especially when you are a developer, who has no idea of what DevOps staff does (trust me, I know what I am talking about). Therefore, the only thing you really want is to as fast as possible deploy your application in a more or less secure way.</PostParagraph>
-          <PostParagraph>Well, congratulations, you have come to the right place! This article will explain how you can deploy your Next.js application using Nginx in a secure manner and HTTPS encryption. So, let’s start!</PostParagraph>
+          <PostParagraph className={'title'} ref={introRef}>
+            {t('articles:nextjsNginxDeployment.toc.intro')}
+          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p1')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p2')}</PostParagraph>
 
-          <PostParagraph className={'title'} ref={whyNginxRef}>Why Nginx?</PostParagraph>
-          <PostParagraph>
-            Nginx (pronounced &quot;engine-x&quot;) is a high-performance, open-source web server. It is a reverse proxy server, which means it is designed to pass incoming requests from clients to other servers for further processing. This can be useful in a variety of situations, such as serving static files, proxying requests to a backend server, or handling SSL encryption.
+          <PostParagraph className={'title'} ref={whyNginxRef}>
+            {t('articles:nextjsNginxDeployment.toc.whyNginx')}
           </PostParagraph>
-          <PostParagraph>
-            Nginx is known for its stability, robustness, and low resource usage, making it a popular choice for web administrators and hosting providers. It can handle a large number of concurrent connections, making it well-suited for high-traffic websites and web applications. It also has a wide range of features and configuration options, including load balancing, caching, and access control.
-          </PostParagraph>
-          <PostParagraph>
-            In addition to its use as a web server, Nginx can also be used as a reverse proxy, load balancer, and HTTP cache. This versatility, combined with its performance and stability, has made Nginx a popular choice among web developers and system administrators.
-          </PostParagraph>
-          <PostParagraph>
-            Overall, Nginx is a powerful and flexible web server that is well-suited for a wide range of applications and use cases. Whether you are serving a simple website, running a large web application, or anything in between, Nginx is a great choice for your needs.
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p3')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p4')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p5')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p6')}</PostParagraph>
 
-          <PostParagraph className={'title'} ref={preparationsRef}>Preparations</PostParagraph>
-          <PostParagraph>
-            We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Letsencrypt, as our CA provider, considering you already have an instance for deployment.
+          <PostParagraph className={'title'} ref={preparationsRef}>
+            {t('articles:nextjsNginxDeployment.toc.preps')}
           </PostParagraph>
-          <PostParagraph>
-            Using next 2 commands you will update all packages on your machine and installed required nginx and Letsencrypt.
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p7')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p8')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt'}
           />
-          <PostParagraph>
-            Also enable nginx in ufw:
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p9')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo ufw allow \'Nginx Full\''}
           />
-          <PostParagraph>
-            Very last step here is checking if our nginx sever is working correctly. In order to do that go to /etc/nginx/sites-available/default and paste next content (*q is our domain):
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p10')}</PostParagraph>
           <CodeHighlighter
             language={'bash'}
             code={'$ sudo vim /etc/nginx/sites-available/default'}
@@ -169,15 +159,13 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '    try_files $uri $uri/ =404;\n' +
               '  }\n' +
               '\n' +
-              '  # for letsencrypt\n' +
+              '  # letsencrypt\n' +
               '  location ~ /.well-known {\n' +
               '    allow all;\n' +
               '  }\n' +
               '}'}
           />
-          <PostParagraph>
-            Check for syntax errors and restart nginx:
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p11')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo nginx -t\n' +
@@ -186,40 +174,32 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '$ sudo systemctl restart nginx'}
           />
 
-          <PostParagraph className={'title'} ref={httpsConfigRef}>HTTPS Configuration</PostParagraph>
-          <PostParagraph>
-            Let&apos;s Encrypt is a free, open-source, and automated certificate authority (CA) that provides digital certificates for Transport Layer Security (TLS) encryption. These certificates are used to secure web traffic and ensure that sensitive information, such as passwords and credit card numbers, are transmitted securely over the internet.
+          <PostParagraph className={'title'} ref={httpsConfigRef}>
+            {t('articles:nextjsNginxDeployment.toc.httpsConfig')}
           </PostParagraph>
-          <PostParagraph>
-            The main goal of Let&apos;s Encrypt is to make encryption more accessible to the general public by offering free and easy-to-use certificates. Prior to Let&apos;s Encrypt, obtaining a certificate could be a complicated and expensive process. With Let&apos;s Encrypt, anyone can obtain a certificate with just a few clicks, making it possible to secure a website or web application with minimal effort.
-          </PostParagraph>
-          <PostParagraph>
-            Let&apos;s Encrypt is also notable for its automated certificate issuance and renewal process. This means that once you have obtained a certificate, you don&apos;t need to worry about manually renewing it in the future. The certificate will automatically renew itself as long as the domain remains active and under your control.
-          </PostParagraph>
-          <PostParagraph>
-            In summary, Let&apos;s Encrypt is a game-changing CA that is making encryption more accessible and affordable for everyone. With its free and easy-to-use certificates, automated renewal process, and commitment to open-source software, Let&apos;s Encrypt is a great choice for anyone looking to secure their website or web application.
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p12')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p13')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p14')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p15')}</PostParagraph>
 
-          <PostParagraph className={'subtitle'} ref={certGenRef}>Certificate generating</PostParagraph>
-          <PostParagraph>
-            It&apos;s time to generate some TLS certificates. In this example we are going to use Let&apos;s Encrypt, but you can use any other CA provider you want. As it was mentioned previously, replace *q by your domain name:
+          <PostParagraph className={'subtitle'} ref={certGenRef}>
+            {t('articles:nextjsNginxDeployment.toc.certGen')}
           </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p16')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q'}
           />
-          <PostParagraph>
-            Next command will generated DH Parameters. These parameters define how OpenSSL performs the Diffie-Hellman (DH) key-exchange. Basically, additional layer of security for your HTTPS connection:
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p17')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048'}
           />
 
-          <PostParagraph className={'subtitle'} ref={nginxSecRef}>Nginx security configuration</PostParagraph>
-          <PostParagraph>
-            The thing we need to do is to secure our Nginx server by putting next configuration to ssl-params.conf config file. By using your favorite text editor (vim here) copy and paste next content:
+          <PostParagraph className={'subtitle'} ref={nginxSecRef}>
+            {t('articles:nextjsNginxDeployment.toc.nginxSec')}
           </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p18')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo vim /etc/nginx/snippets/ssl-params.conf'}
@@ -245,13 +225,11 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               'ssl_dhparam /etc/ssl/certs/dhparam.pem;'}
           />
 
-          <PostParagraph className={'title'} ref={nginxConfRef}>Nginx configuration</PostParagraph>
-          <PostParagraph>
-            We are almost done with the configuration. The 2 very last things we need to do is to configure our Nginx server as a reverse proxy server and start application.
+          <PostParagraph className={'title'} ref={nginxConfRef}>
+            {t('articles:nextjsNginxDeployment.toc.nginxConfig')}
           </PostParagraph>
-          <PostParagraph>
-            Let&apos;s start with configuration out Nginx as a reverse proxy. Basically, here we need to edit out nginx file and paste next content (remember, *q is for your domain name):
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p19')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p20')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo vim /etc/nginx/sites-available/default'}
@@ -300,47 +278,33 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '  }\n' +
               '}'}
           />
-          <PostParagraph>
-            Restart the nginx service and the only thing we need to do is to set up our application as a daemon using pm2 process manager.
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p21')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ sudo service nginx restart'}
           />
 
-          <PostParagraph className={'title'} ref={appConfRef}>Application setup using pm2</PostParagraph>
-          <PostParagraph>
-            PM2 is a production process manager for Node.js applications. It is designed to keep your Node.js applications running and be able to recover from unexpected errors or crashes. PM2 provides features such as automatic restart, automatic log management, and process monitoring.
+          <PostParagraph className={'title'} ref={appConfRef}>
+            {t('articles:nextjsNginxDeployment.toc.appConfig')}
           </PostParagraph>
-          <PostParagraph>
-            PM2 makes it easy to run Node.js applications in the background as a daemon, without having to worry about the process being terminated or restarted. This is particularly useful for long-running Node.js applications, such as web servers or background workers, as it ensures that they are always available and can recover from any issues that may arise.
-          </PostParagraph>
-          <PostParagraph>
-            In addition to its process management features, PM2 also provides powerful process monitoring capabilities. This includes detailed information about the status and performance of your Node.js applications, such as CPU and memory usage, as well as the ability to manage and inspect log files.
-          </PostParagraph>
-          <PostParagraph>
-            PM2 is a popular tool for managing Node.js applications in production environments, as it makes it easy to keep your applications running and provides a wealth of information about their status and performance. Whether you are running a single Node.js application or multiple applications in a cluster, PM2 is a great tool for managing and monitoring your applications.
-          </PostParagraph>
-          <PostParagraph>
-            Basically, here, we need to just build our application, install pm2 application globally and start the process of executed production build as a daemon in the background:
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p22')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p23')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p24')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p25')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p26')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ npm run build # build our app for production (npm build script: next build)\n' +
               '$ npm i -g pm2 # install pm2 to keep next app alive forever*\n' +
               '$ pm2 start npm --name "next" -- start # start next app (npm start script: next start)\n'}
           />
-          <PostParagraph>
-            Enjoy your application in production mode and secured HTTPS connection! Below you will also find a couple afterwords and small guidebook on how you can manage your application using this process manager.
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p27')}</PostParagraph>
 
-          <PostParagraph className={'title'} ref={conclusionRef}>Conclusions and cheatsheet</PostParagraph>
-          <PostParagraph>
-            Was quite easy, huh? This is the easiest way to configure, deploy and secure your Next.js application using Nginx. But maybe you have a question like: &#34;Okay, that&apos;s fine, but what about CI/CD pipeline?&#34;. Well, that is on yours. You can either configure it using GitHub Actions or Jenkins or whatever CI/CD pipeline tool you prefer. But if you want to know, how you can do deployment manually, here you go.
+          <PostParagraph className={'title'} ref={conclusionRef}>
+            {t('articles:nextjsNginxDeployment.toc.conclusion')}
           </PostParagraph>
-          <PostParagraph>
-            The very first thing you need to do is to go to your server and go to folder with your project. There, pull the master (main) branch or whatever branch you use in production mode, install all packages, build the project (using npm in this particular example) and restart the pm2 process:
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p28')}</PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p29')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ git pull origin master\n' +
@@ -348,22 +312,18 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '$ npm run build\n' +
               '$ pm2 restart blog'}
           />
-          <PostParagraph>
-            By the way, I guess you want to change the name of the application on something more human-readable. Here is how you can do that. First of all type next command to get list of all processes handled by pm2:
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p30')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ pm2 list'}
           />
-          <PostParagraph>
-            As a result you will see pretty looking table, take a look at the id column, at this moment, I guess, you will see 0 value, but if not, just replace it on your value and type next to change the name of the process
-          </PostParagraph>
+          <PostParagraph>{t('articles:nextjsNginxDeployment.p31')}</PostParagraph>
           <CodeHighlighter
             language={'shell'}
             code={'$ pm2 restart 0 --name "new-name"'}
           />
           <PostParagraph>
-            Cheatsheet specially for you:
+            {t('articles:nextjsNginxDeployment.p32')}
           </PostParagraph>
           <CodeHighlighter
             language={'bash'}
