@@ -80,13 +80,10 @@ const Home = ({ locale }: HomeProps) => {
 
           <BlogPostsContainer>
             <InterestingPosts>
-              {t('pages:home.interestingPosts')}
             </InterestingPosts>
-            <BlogPostPreview
-              onClick={() => handleRedirect('/blog/present-and-future-of-web3')}
-            >
-              <BlogPostTitle>{t('articles:presentAndFutureWeb3.title')}</BlogPostTitle>
-              <BlogPostDescription>{t('articles:presentAndFutureWeb3.pageDescription')}</BlogPostDescription>
+            <BlogPostPreview>
+              <BlogPostTitle></BlogPostTitle>
+              <BlogPostDescription></BlogPostDescription>
             </BlogPostPreview>
           </BlogPostsContainer>
         </Container>
