@@ -38,12 +38,14 @@ export const PostParagraph = styled.p`
   font-weight: 400;
 
   &.title {
+    font-weight: 900;
     text-indent: 0;
     margin-top: 30px;
     font-size: 32px;
   }
   
   &.subtitle {
+    font-weight: 700;
     text-indent: 0;
     font-size: 24px;
   }
