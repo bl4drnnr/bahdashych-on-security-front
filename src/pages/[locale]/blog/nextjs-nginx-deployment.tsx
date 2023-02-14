@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
@@ -9,7 +9,15 @@ import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.compone
 import PostFooter from '@components/PostFooter/PostFooter.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
-import { ArticleBodyWrapper, ArticleTitle, PostParagraph } from '@styles/post.style';
+import {
+  ArticleBodyWrapper,
+  ArticleTitle,
+  PostParagraph,
+  TableOfContentsContainer,
+  TableOfContentsOl,
+  TableOFContentsLi,
+  TableOfContentsTitle
+} from '@styles/post.style';
 
 interface NextjsNginxDeploymentProps {
   locale: string;
@@ -23,8 +31,21 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
     await router.push(`/${locale}${path}`);
   };
 
+  const introRef = useRef(null);
+  const whyNginxRef = useRef(null);
+  const preparationsRef = useRef(null);
+  const httpsConfigRef = useRef(null);
+  const certGenRef = useRef(null);
+  const nginxSecRef = useRef(null);
+  const nginxConfRef = useRef(null);
+  const appConfRef = useRef(null);
+  const conclusionRef = useRef(null);
 
-
+  const scrollTo = (ref: any) => {
+    if (ref && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <>
@@ -51,11 +72,49 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             {t('articles:nextjsNginxDeployment.intro')}
           </ArticleTitle>
 
-          <PostParagraph className={'title'}>Intro</PostParagraph>
+          <TableOfContentsContainer>
+            <TableOfContentsTitle>
+              Table of contents
+            </TableOfContentsTitle>
+            <TableOfContentsOl>
+              <TableOFContentsLi onClick={() => scrollTo(introRef)}>
+                Intro
+              </TableOFContentsLi>
+              <TableOFContentsLi onClick={() => scrollTo(whyNginxRef)}>
+                Why Nginx?
+              </TableOFContentsLi>
+              <TableOFContentsLi onClick={() => scrollTo(preparationsRef)}>
+                Preparations
+              </TableOFContentsLi>
+              <TableOFContentsLi
+                onClick={() => scrollTo(httpsConfigRef)}
+              >HTTPS Configuration
+                <TableOfContentsOl>
+                  <TableOFContentsLi onClick={() => scrollTo(certGenRef)}>
+                    Certificate generating
+                  </TableOFContentsLi>
+                  <TableOFContentsLi onClick={() => scrollTo(nginxSecRef)}>
+                    Nginx security configuration
+                  </TableOFContentsLi>
+                </TableOfContentsOl>
+              </TableOFContentsLi>
+              <TableOFContentsLi onClick={() => scrollTo(nginxConfRef)}>
+                Nginx configuration
+              </TableOFContentsLi>
+              <TableOFContentsLi  onClick={() => scrollTo(appConfRef)}>
+                Application setup using pm2
+              </TableOFContentsLi>
+              <TableOFContentsLi onClick={() => scrollTo(conclusionRef)}>
+                Conclusions and cheatsheet
+              </TableOFContentsLi>
+            </TableOfContentsOl>
+          </TableOfContentsContainer>
+
+          <PostParagraph className={'title'} ref={introRef}>Intro</PostParagraph>
           <PostParagraph>The process of deployment of the application is always kind of stress, especially when you are a developer, who has no idea of what DevOps staff does (trust me, I know what I am talking about). Therefore, the only thing you really want is to as fast as possible deploy your application in a more or less secure way.</PostParagraph>
           <PostParagraph>Well, congratulations, you have come to the right place! This article will explain how you can deploy your Next.js application using Nginx in a secure manner and HTTPS encryption. So, let’s start!</PostParagraph>
 
-          <PostParagraph className={'title'}>Why Nginx?</PostParagraph>
+          <PostParagraph className={'title'} ref={whyNginxRef}>Why Nginx?</PostParagraph>
           <PostParagraph>
             Nginx (pronounced &quot;engine-x&quot;) is a high-performance, open-source web server. It is a reverse proxy server, which means it is designed to pass incoming requests from clients to other servers for further processing. This can be useful in a variety of situations, such as serving static files, proxying requests to a backend server, or handling SSL encryption.
           </PostParagraph>
@@ -69,7 +128,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             Overall, Nginx is a powerful and flexible web server that is well-suited for a wide range of applications and use cases. Whether you are serving a simple website, running a large web application, or anything in between, Nginx is a great choice for your needs.
           </PostParagraph>
 
-          <PostParagraph className={'title'}>Preparations</PostParagraph>
+          <PostParagraph className={'title'} ref={preparationsRef}>Preparations</PostParagraph>
           <PostParagraph>
             We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Letsencrypt, as our CA provider, considering you already have an instance for deployment.
           </PostParagraph>
@@ -127,7 +186,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '$ sudo systemctl restart nginx'}
           />
 
-          <PostParagraph className={'title'}>HTTPS Configuration</PostParagraph>
+          <PostParagraph className={'title'} ref={httpsConfigRef}>HTTPS Configuration</PostParagraph>
           <PostParagraph>
             Let&apos;s Encrypt is a free, open-source, and automated certificate authority (CA) that provides digital certificates for Transport Layer Security (TLS) encryption. These certificates are used to secure web traffic and ensure that sensitive information, such as passwords and credit card numbers, are transmitted securely over the internet.
           </PostParagraph>
@@ -141,7 +200,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             In summary, Let&apos;s Encrypt is a game-changing CA that is making encryption more accessible and affordable for everyone. With its free and easy-to-use certificates, automated renewal process, and commitment to open-source software, Let&apos;s Encrypt is a great choice for anyone looking to secure their website or web application.
           </PostParagraph>
 
-          <PostParagraph className={'subtitle'}>Certificate generating</PostParagraph>
+          <PostParagraph className={'subtitle'} ref={certGenRef}>Certificate generating</PostParagraph>
           <PostParagraph>
             It&apos;s time to generate some TLS certificates. In this example we are going to use Let&apos;s Encrypt, but you can use any other CA provider you want. As it was mentioned previously, replace *q by your domain name:
           </PostParagraph>
@@ -157,7 +216,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             code={'$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048'}
           />
 
-          <PostParagraph className={'subtitle'}>Nginx security configuration</PostParagraph>
+          <PostParagraph className={'subtitle'} ref={nginxSecRef}>Nginx security configuration</PostParagraph>
           <PostParagraph>
             The thing we need to do is to secure our Nginx server by putting next configuration to ssl-params.conf config file. By using your favorite text editor (vim here) copy and paste next content:
           </PostParagraph>
@@ -186,7 +245,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               'ssl_dhparam /etc/ssl/certs/dhparam.pem;'}
           />
 
-          <PostParagraph className={'title'}>Nginx configuration</PostParagraph>
+          <PostParagraph className={'title'} ref={nginxConfRef}>Nginx configuration</PostParagraph>
           <PostParagraph>
             We are almost done with the configuration. The 2 very last things we need to do is to configure our Nginx server as a reverse proxy server and start application.
           </PostParagraph>
@@ -249,7 +308,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             code={'$ sudo service nginx restart'}
           />
 
-          <PostParagraph className={'title'}>Application setup using pm2</PostParagraph>
+          <PostParagraph className={'title'} ref={appConfRef}>Application setup using pm2</PostParagraph>
           <PostParagraph>
             PM2 is a production process manager for Node.js applications. It is designed to keep your Node.js applications running and be able to recover from unexpected errors or crashes. PM2 provides features such as automatic restart, automatic log management, and process monitoring.
           </PostParagraph>
@@ -275,7 +334,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             Enjoy your application in production mode and secured HTTPS connection! Below you will also find a couple afterwords and small guidebook on how you can manage your application using this process manager.
           </PostParagraph>
 
-          <PostParagraph className={'title'}>Conclusions and cheatsheet</PostParagraph>
+          <PostParagraph className={'title'} ref={conclusionRef}>Conclusions and cheatsheet</PostParagraph>
           <PostParagraph>
             Was quite easy, huh? This is the easiest way to configure, deploy and secure your Next.js application using Nginx. But maybe you have a question like: &#34;Okay, that&apos;s fine, but what about CI/CD pipeline?&#34;. Well, that is on yours. You can either configure it using GitHub Actions or Jenkins or whatever CI/CD pipeline tool you prefer. But if you want to know, how you can do deployment manually, here you go.
           </PostParagraph>
