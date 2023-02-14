@@ -3,9 +3,9 @@ import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import Typewriter from 'typewriter-effect';
 
+import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import { ArticleBodyWrapper, ArticleTitle, PostParagraph } from '@styles/post.style';
@@ -73,20 +73,23 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
           <PostParagraph>
             Using next 2 commands you will update all packages on your machine and installed required nginx and Letsencrypt.
           </PostParagraph>
-          <SyntaxHighlighter language={'bash'}>
-            {'$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt'}
-          </SyntaxHighlighter>
+          <CodeHighlighter
+            language={'shell'}
+            code={'$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt'}
+          />
           <PostParagraph>
             Also enable nginx in ufw:
           </PostParagraph>
-          <SyntaxHighlighter language={'bash'}>
-            {'$ sudo ufw allow \'Nginx Full\''}
-          </SyntaxHighlighter>
+          <CodeHighlighter
+            language={'shell'}
+            code={'$ sudo ufw allow \'Nginx Full\''}
+          />
           <PostParagraph>
-            Very last step here is checking if our nginx sever is working correctly. In order to do that go to  /etc/nginx/sites-available/default and paste next content:
+            Very last step here is checking if our nginx sever is working correctly. In order to do that go to  /etc/nginx/sites-available/default and paste next content (*q is our domain):
           </PostParagraph>
-          <SyntaxHighlighter language={'bash'}>
-            {'# *q is our domain\n' +
+          <CodeHighlighter
+            language={'bash'}
+            code={'' +
               'server {\n' +
               '  listen 80 default_server;\n' +
               '  listen [::]:80 default_server;\n' +
@@ -105,16 +108,17 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               '    allow all;\n' +
               '  }\n' +
               '}'}
-          </SyntaxHighlighter>
+          />
           <PostParagraph>
             Check for syntax errors and restart nginx:
           </PostParagraph>
-          <SyntaxHighlighter language={'bash'}>
-            {'$ sudo nginx -t\n' +
+          <CodeHighlighter
+            language={'shell'}
+            code={'$ sudo nginx -t\n' +
               'nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\n' +
               'nginx: configuration file /etc/nginx/nginx.conf test is successful\n' +
               '$ sudo systemctl restart nginx'}
-          </SyntaxHighlighter>
+          />
 
           <PostParagraph className={'title'}>HTTPS Configuration</PostParagraph>
           <PostParagraph>
