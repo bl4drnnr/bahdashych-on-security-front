@@ -66,7 +66,7 @@ export const PostParagraph = styled.p`
 
 
 export const TableOfContentsContainer = styled.div`
-  h1, ol, li {
+  h1, ol, li, span {
     font-family: 'Charter', sans-serif;
   }
 `;

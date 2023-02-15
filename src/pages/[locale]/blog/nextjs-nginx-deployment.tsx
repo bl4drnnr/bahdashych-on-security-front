@@ -53,7 +53,10 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
     Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }))
       .forEach(([key, value]) => {
-        if (typeof value !== 'string' && (value['type'] === 'title' || value['type'] === 'subtitle')) {
+        if (
+          typeof value !== 'string' &&
+          (value['type'] === 'title' || value['type'] === 'subtitle')
+        ) {
           quantityOfTitles += 1;
           allRefs.push(value['content']);
         }
@@ -96,24 +99,24 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             <TableOfContentsOl>
               {
                 Object.entries(t('articles:nextjsNginxDeployment.toc', { returnObjects: true }))
-                  .map(([value, key], index) => (
-                  <div key={value}>
-                    {typeof key === 'string' ? (
+                  .map(([key, value]) => (
+                  <div key={key}>
+                    {typeof value === 'string' ? (
                       <TableOFContentsLi
-                        onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${value}`)))}
+                        onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${key}`)))}
                       >
-                        {t(`articles:nextjsNginxDeployment.toc.${value}`)}
+                        {t(`articles:nextjsNginxDeployment.toc.${key}`)}
                       </TableOFContentsLi>
                     ) : (
                       <TableOFContentsLi>
-                        <span onClick={() => scrollTo(getRefByName(value))}>{value}</span>
+                        <span onClick={() => scrollTo(getRefByName(key))}>{key}</span>
                         <TableOfContentsOl>
-                          {Object.entries(key).map(([nValue, nKey]) => (
+                          {Object.entries(value).map(([nKey, nValue]) => (
                             <TableOFContentsLi
-                              key={nValue}
-                              onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)))}
+                              key={nKey}
+                              onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${key}.${nKey}`)))}
                             >
-                              {t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)}
+                              {t(`articles:nextjsNginxDeployment.toc.${key}.${nKey}`)}
                             </TableOFContentsLi>
                           ))}
                         </TableOfContentsOl>
