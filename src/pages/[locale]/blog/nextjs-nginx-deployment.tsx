@@ -35,17 +35,13 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   const [refNames, setRefNames] = React.useState<Array<string>>([]);
 
   const scrollTo = (ref: any) => {
-    if (ref && ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const getRefByName = (refName: string): any => {
     let matchingRef = null;
     refNames.forEach((item, index) => {
-      if (item === refName) {
-        matchingRef = listRefs[index];
-      }
+      if (item === refName) matchingRef = listRefs[index];
     });
     return matchingRef;
   };
@@ -57,15 +53,13 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
     Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }))
       .forEach(([key, value]) => {
-        if (typeof value !== 'string' && value['type'] === 'title') {
+        if (typeof value !== 'string' && (value['type'] === 'title' || value['type'] === 'subtitle')) {
           quantityOfTitles += 1;
           allRefs.push(value['content']);
         }
       });
 
-    setListRefs(Array(quantityOfTitles)
-      .fill(null)
-      .map(() => React.createRef()));
+    setListRefs(Array(quantityOfTitles).fill(null).map(() => React.createRef()));
 
     setRefNames(allRefs);
   }, [t]);
@@ -101,22 +95,23 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             </TableOfContentsTitle>
             <TableOfContentsOl>
               {
-                Object.entries(t('articles:nextjsNginxDeployment.toc', { returnObjects: true })).map(([value, key], index) => (
+                Object.entries(t('articles:nextjsNginxDeployment.toc', { returnObjects: true }))
+                  .map(([value, key], index) => (
                   <div key={value}>
                     {typeof key === 'string' ? (
                       <TableOFContentsLi
-                        onClick={() => scrollTo(listRefs[index])}
+                        onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${value}`)))}
                       >
                         {t(`articles:nextjsNginxDeployment.toc.${value}`)}
                       </TableOFContentsLi>
                     ) : (
                       <TableOFContentsLi>
-                        {value}
+                        <span onClick={() => scrollTo(getRefByName(value))}>{value}</span>
                         <TableOfContentsOl>
                           {Object.entries(key).map(([nValue, nKey]) => (
                             <TableOFContentsLi
                               key={nValue}
-                              onClick={() => scrollTo(listRefs[index])}
+                              onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)))}
                             >
                               {t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)}
                             </TableOFContentsLi>
@@ -131,13 +126,14 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
           </TableOfContentsContainer>
 
           {
-            Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true })).map(([value, key], index) => (
+            Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }))
+              .map(([value, key], index) => (
               <div key={value}>
                 {typeof key === 'string' ? (
                   <PostParagraph
                     dangerouslySetInnerHTML={{ __html: t(`articles:nextjsNginxDeployment.content.p${index}`) }}
                   />
-                ) : (key['type'] === 'title') ? (
+                ) : (key['type'] === 'title' || key['type'] === 'subtitle') ? (
                   <PostParagraph
                     className={key['type']}
                     ref={getRefByName(key['content'])}
