@@ -1,4 +1,4 @@
-import React, { createRef, useRef } from 'react';
+import React, { RefObject } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
@@ -31,7 +31,8 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
     await router.push(`/${locale}${path}`);
   };
 
-  const listRefs = useRef([]);
+  const [listRefs, setListRefs] = React.useState<RefObject<unknown>[]>([]);
+  const [refNames, setRefNames] = React.useState<Array<string>>([]);
 
   const scrollTo = (ref: any) => {
     if (ref && ref.current) {
@@ -39,19 +40,34 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
     }
   };
 
+  const getRefByName = (refName: string): any => {
+    let matchingRef = null;
+    refNames.forEach((item, index) => {
+      if (item === refName) {
+        matchingRef = listRefs[index];
+      }
+    });
+    return matchingRef;
+  };
+
+
   React.useEffect(() => {
     let quantityOfTitles = 0;
+    const allRefs: Array<string> = [];
+
     Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }))
       .forEach(([key, value]) => {
         if (typeof value !== 'string' && value['type'] === 'title') {
           quantityOfTitles += 1;
+          allRefs.push(value['content']);
         }
       });
 
-    listRefs.current = Array(quantityOfTitles)
-      // @ts-ignore
-      .fill()
-      .map((_, i) => listRefs.current[i] || React.createRef());
+    setListRefs(Array(quantityOfTitles)
+      .fill(null)
+      .map(() => React.createRef()));
+
+    setRefNames(allRefs);
   }, [t]);
 
   return (
@@ -89,7 +105,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
                   <div key={value}>
                     {typeof key === 'string' ? (
                       <TableOFContentsLi
-                        onClick={() => scrollTo(listRefs.current[index])}
+                        onClick={() => scrollTo(listRefs[index])}
                       >
                         {t(`articles:nextjsNginxDeployment.toc.${value}`)}
                       </TableOFContentsLi>
@@ -100,7 +116,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
                           {Object.entries(key).map(([nValue, nKey]) => (
                             <TableOFContentsLi
                               key={nValue}
-                              onClick={() => scrollTo(listRefs.current[index])}
+                              onClick={() => scrollTo(listRefs[index])}
                             >
                               {t(`articles:nextjsNginxDeployment.toc.${value}.${nValue}`)}
                             </TableOFContentsLi>
@@ -122,7 +138,10 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
                     dangerouslySetInnerHTML={{ __html: t(`articles:nextjsNginxDeployment.content.p${index}`) }}
                   />
                 ) : (key['type'] === 'title') ? (
-                  <PostParagraph className={key['type']} ref={listRefs.current[2]}>{key['content']}</PostParagraph>
+                  <PostParagraph
+                    className={key['type']}
+                    ref={getRefByName(key['content'])}
+                  >{key['content']}</PostParagraph>
                 ) : ((key['type'] === 'code') ? (
                     <CodeHighlighter language={key['lang']} code={key['content']} />
                   ) : (
