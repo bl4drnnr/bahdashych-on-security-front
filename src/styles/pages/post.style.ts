@@ -28,7 +28,11 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .codeBlock {
-    color: red;
+    font-size: 16px;
+    font-family: 'Hack', sans-serif;
+    padding: 2px;
+    border-radius: 5px;
+    background: rgb(${(props) => props.theme.colors.lightBackground});
   }
 `;
 
@@ -62,7 +66,7 @@ export const PostParagraph = styled.p`
 
 
 export const TableOfContentsContainer = styled.div`
-  h1, ol, li {
+  h1, ol, li, span {
     font-family: 'Charter', sans-serif;
   }
 `;
