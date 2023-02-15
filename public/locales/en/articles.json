@@ -49,7 +49,7 @@
         "lang": "shell",
         "content": "$ sudo ufw allow 'Nginx Full'"
       },
-      "p14": "Very last step here is checking if our nginx sever is working correctly. In order to do that go to <span class='codeBlock'>/etc/nginx/sites-available/default</span> and paste next content (*q is our domain):",
+      "p14": "Very last step here is checking if our nginx sever is working correctly. In order to do that go to <span class='codeBlock'>/etc/nginx/sites-available/default</span> and paste next content (<span class='codeBlock'>*q</span> is our domain):",
       "p15": {
         "type": "code",
         "lang": "bash",
@@ -78,7 +78,7 @@
         "type": "subtitle",
         "content": "Certificate generating"
       },
-      "p25": "It's time to generate some TLS certificates. In this example we are going to use Let's Encrypt, but you can use any other CA provider you want. As it was mentioned previously, replace *q by your domain name:",
+      "p25": "It's time to generate some TLS certificates. In this example we are going to use Let's Encrypt, but you can use any other CA provider you want. As it was mentioned previously, replace <span class='codeBlock'>*q</span> by your domain name:",
       "p26": {
         "type": "code",
         "lang": "shell",
@@ -110,7 +110,7 @@
         "content": "Nginx configuration"
       },
       "p34": "We are almost done with the configuration. The 2 very last things we need to do is to configure our Nginx server as a reverse proxy server and start application.",
-      "p35": "Let's start with configuration out Nginx as a reverse proxy. Basically, here we need to edit out nginx file and paste next content (remember, *q is for your domain name):",
+      "p35": "Let's start with configuration out Nginx as a reverse proxy. Basically, here we need to edit out nginx file and paste next content (remember, <span class='codeBlock'>*q</span> is for your domain name):",
       "p36": {
         "type": "code",
         "lang": "bash",

@@ -28,7 +28,11 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .codeBlock {
-    color: red;
+    font-size: 16px;
+    font-family: 'Hack', sans-serif;
+    padding: 2px;
+    border-radius: 5px;
+    background: rgb(${(props) => props.theme.colors.lightBackground});
   }
 `;
 
