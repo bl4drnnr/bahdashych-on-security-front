@@ -7,9 +7,26 @@ export const Container = styled.div`
 `;
 
 export const Message = styled.p`
-  font-family: 'Charter', sans-serif;
   color: rgb(${(props) => props.theme.colors.textColor});
+  font-family: 'Charter', sans-serif;
   font-size: 20px;
   padding-top: 30px;
   font-weight: 400;
+  display: flex;
+  
+  &.link {
+    .img {
+      margin: 0 10px;
+      filter: ${(props) => props.theme.colors.svgColor}
+    }
+  }
+`;
+
+export const HrefLink = styled.a`
+  font-family: 'Charter', sans-serif;
+  color: rgb(${(props) => props.theme.colors.primaryDark});
+  text-decoration: underline;
+  :hover {
+    cursor: pointer;
+  }
 `;
