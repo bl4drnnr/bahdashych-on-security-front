@@ -23,6 +23,21 @@ interface NextjsNginxDeploymentProps {
   locale: string;
 }
 
+interface IArticleTitle {
+  type: string;
+  content: string;
+}
+
+interface IArticleCode {
+  type: string;
+  lang?: string;
+  content: string;
+}
+
+interface ArticleContentObject {
+  [key: string]: string | IArticleCode | IArticleTitle;
+}
+
 const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -46,19 +61,23 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
     return matchingRef;
   };
 
+  const isArticleCode = (object: any): object is IArticleCode => {
+    return 'lang' in object;
+  };
 
   React.useEffect(() => {
     let quantityOfTitles = 0;
     const allRefs: Array<string> = [];
 
-    Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }))
-      .forEach(([key, value]) => {
+    const contentObj: ArticleContentObject = t('articles:nextjsNginxDeployment.content', { returnObjects: true });
+
+    Object.entries(contentObj).forEach(([key, value]) => {
         if (
           typeof value !== 'string' &&
-          (value['type'] === 'title' || value['type'] === 'subtitle')
+          (value.type === 'title' || value.type === 'subtitle')
         ) {
           quantityOfTitles += 1;
-          allRefs.push(value['content']);
+          allRefs.push(value.content);
         }
       });
 
@@ -129,20 +148,20 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
           </TableOfContentsContainer>
 
           {
-            Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }))
+            Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }) as ArticleContentObject)
               .map(([value, key], index) => (
               <div key={value}>
                 {typeof key === 'string' ? (
                   <PostParagraph
                     dangerouslySetInnerHTML={{ __html: t(`articles:nextjsNginxDeployment.content.p${index}`) }}
                   />
-                ) : (key['type'] === 'title' || key['type'] === 'subtitle') ? (
+                ) : (key.type === 'title' || key.type === 'subtitle') ? (
                   <PostParagraph
-                    className={key['type']}
-                    ref={getRefByName(key['content'])}
-                  >{key['content']}</PostParagraph>
-                ) : ((key['type'] === 'code') ? (
-                    <CodeHighlighter language={key['lang']} code={key['content']} />
+                    className={key.type}
+                    ref={getRefByName(key.content)}
+                  >{key.content}</PostParagraph>
+                ) : ((isArticleCode(key)) ? (
+                    <CodeHighlighter language={key.lang} code={key.content} />
                   ) : (
                     <></>
                   ))}
