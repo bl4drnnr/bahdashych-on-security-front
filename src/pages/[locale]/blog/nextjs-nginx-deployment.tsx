@@ -129,7 +129,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
         <meta charSet={'utf-8'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
-        <ArticleBodyWrapper>
+        <ArticleBodyWrapper className={locale === 'en' ? 'en' : 'non-en'}>
           <ArticleTitle>
             <Typewriter
               onInit={(typewriter) => {
@@ -145,7 +145,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             {t('articles:nextjsNginxDeployment.intro')}
           </ArticleTitle>
 
-          <TableOfContentsContainer>
+          <TableOfContentsContainer className={locale === 'en' ? 'en' : 'non-en'}>
             <TableOfContentsTitle>
               {t('common:tocTitle')}
             </TableOfContentsTitle>
