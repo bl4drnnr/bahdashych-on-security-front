@@ -1,14 +1,14 @@
-import React, {RefObject} from 'react';
+import React, { RefObject } from 'react';
 
-import {useTranslation} from 'next-i18next';
+import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
 import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
 import PostFooter from '@components/PostFooter/PostFooter.component';
 import DefaultLayout from '@layouts/Default.layout';
-import {getStaticPaths, makeStaticProps} from '@lib/getStatic';
+import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
   ArticleBodyWrapper,
   ArticleTitle,
@@ -47,19 +47,20 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   const [listRefs, setListRefs] = React.useState<RefObject<unknown>[]>([]);
   const [refNames, setRefNames] = React.useState<Array<string>>([]);
 
-  const generateTableOfContents = (toc: any, keyName?: string) => {
-    const CreateTableOfContents = ({ toc, keyName }: { toc: any, keyName?: string }): JSX.Element => {
+  const generateTableOfContents = (toc: any, parentKeyName?: string) => {
+    const CreateTableOfContents = ({ toc, parentKeyName }: { toc: any, parentKeyName?: string }): JSX.Element => {
       return (
         <ol className={'blogPostOl'}>
           {Object.entries(toc).map(([key, value]: any) => {
+            const keyName = parentKeyName ? `${parentKeyName}.${key}` : key;
             if (typeof value === 'string') {
               return (
                 <li
                   className={'blogPostLi'}
                   key={key}
-                  onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${keyName || ''}${key}`)))}
+                  onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${keyName}`)))}
                 >
-                  {t(`articles:nextjsNginxDeployment.toc.${keyName || ''}${key}`)}
+                  {t(`articles:nextjsNginxDeployment.toc.${keyName}`)}
                 </li>
               );
             } else {
@@ -68,8 +69,8 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
                   className={'blogPostLi'}
                   key={key}
                 >
-                  <span onClick={() => scrollTo(getRefByName(key))}>{key}</span>
-                  {generateTableOfContents(value, `${key}.`)}
+                  <span onClick={() => scrollTo(getRefByName(keyName))}>{key}</span>
+                  {generateTableOfContents(value, keyName)}
                 </li>
               );
             }
@@ -78,7 +79,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
       );
     };
 
-    return <CreateTableOfContents toc={toc} keyName={keyName} />;
+    return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
   };
 
 
