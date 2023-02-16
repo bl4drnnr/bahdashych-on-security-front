@@ -8,7 +8,7 @@ import Typewriter from 'typewriter-effect';
 import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
 import PostFooter from '@components/PostFooter/PostFooter.component';
 import DefaultLayout from '@layouts/Default.layout';
-import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
+import { makeStaticProps } from '@lib/getStatic';
 import {
   ArticleBodyWrapper,
   ArticleTitle,
@@ -17,8 +17,9 @@ import {
   TableOfContentsTitle
 } from '@styles/post.style';
 
-interface NextjsNginxDeploymentProps {
+interface PostProps {
   locale: string;
+  postName: string;
 }
 
 interface IArticleTitle {
@@ -36,7 +37,7 @@ interface ArticleContentObject {
   [key: string]: string | IArticleCode | IArticleTitle;
 }
 
-const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
+const BlogPost = ({ locale, postName }: PostProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -181,7 +182,16 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
-export { getStaticPaths, getStaticProps };
+export const getServerSideProps = async (ctx: any) => {
+  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles']);
+  const pageProps = await staticProps(ctx);
+  const props = pageProps.props;
 
-export default NextjsNginxDeployment;
+  return {
+    props: {
+      ...props
+    }
+  };
+};
+
+export default BlogPost;
