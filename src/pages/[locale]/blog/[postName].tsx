@@ -101,6 +101,10 @@ const BlogPost = ({ locale, postName }: PostProps) => {
   };
 
   React.useEffect(() => {
+    // @ts-ignore
+    const availablePosts = process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(',');
+    if (!availablePosts.includes(postName)) handleRedirect('/404').then();
+
     let quantityOfTitles = 0;
     const allRefs: Array<string> = [];
 
