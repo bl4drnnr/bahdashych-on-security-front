@@ -14,8 +14,6 @@ import {
   ArticleTitle,
   PostParagraph,
   TableOfContentsContainer,
-  TableOfContentsOl,
-  TableOFContentsLi,
   TableOfContentsTitle
 } from '@styles/post.style';
 
@@ -48,6 +46,41 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
 
   const [listRefs, setListRefs] = React.useState<RefObject<unknown>[]>([]);
   const [refNames, setRefNames] = React.useState<Array<string>>([]);
+
+  const generateTableOfContents = (toc: any) => {
+    const CreateTableOfContents = ({ toc }: { toc: any }): JSX.Element => {
+      return (
+        <ol className={'blogPostOl'}>
+          {Object.entries(toc).map(([key, value]: any) => {
+            if (typeof value === 'string') {
+              return (
+                <li
+                  className={'blogPostLi'}
+                  key={key}
+                  onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${key}`)))}
+                >
+                  {t(`articles:nextjsNginxDeployment.toc.${key}`)}
+                </li>
+              );
+            } else {
+              return (
+                <li
+                  className={'blogPostLi'}
+                  key={key}
+                >
+                  <span onClick={() => scrollTo(getRefByName(key))}>{key}</span>
+                  {generateTableOfContents(value)}
+                </li>
+              );
+            }
+          })}
+        </ol>
+      );
+    };
+
+    return <CreateTableOfContents toc={toc} />;
+  };
+
 
   const scrollTo = (ref: any) => {
     if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -115,36 +148,7 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
             <TableOfContentsTitle>
               {t('common:tocTitle')}
             </TableOfContentsTitle>
-            <TableOfContentsOl>
-              {
-                Object.entries(t('articles:nextjsNginxDeployment.toc', { returnObjects: true }))
-                  .map(([key, value]) => (
-                  <div key={key}>
-                    {typeof value === 'string' ? (
-                      <TableOFContentsLi
-                        onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${key}`)))}
-                      >
-                        {t(`articles:nextjsNginxDeployment.toc.${key}`)}
-                      </TableOFContentsLi>
-                    ) : (
-                      <TableOFContentsLi>
-                        <span onClick={() => scrollTo(getRefByName(key))}>{key}</span>
-                        <TableOfContentsOl>
-                          {Object.entries(value).map(([nKey, nValue]) => (
-                            <TableOFContentsLi
-                              key={nKey}
-                              onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${key}.${nKey}`)))}
-                            >
-                              {t(`articles:nextjsNginxDeployment.toc.${key}.${nKey}`)}
-                            </TableOFContentsLi>
-                          ))}
-                        </TableOfContentsOl>
-                      </TableOFContentsLi>
-                    )}
-                  </div>
-                ))
-              }
-            </TableOfContentsOl>
+            {generateTableOfContents(t('articles:nextjsNginxDeployment.toc', { returnObjects: true }))}
           </TableOfContentsContainer>
 
           {

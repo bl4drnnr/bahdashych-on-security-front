@@ -34,6 +34,35 @@ export const ArticleBodyWrapper = styled.div`
     border-radius: 5px;
     background: rgb(${(props) => props.theme.colors.lightBackground});
   }
+  
+  .blogPostLi {
+    font-size: 18px;
+    color: rgb(${(props) => props.theme.colors.primaryDark});
+    text-decoration: underline;
+    display: table;
+    counter-increment: item;
+    margin-bottom: 0.6em;
+    transition: .2s;
+
+    :hover {
+      cursor: pointer;
+    }
+    li:first-child {
+      margin-top: 0.6em;
+    }
+    ::before {
+      content: counters(item, ".") ". ";
+      display: table-cell;
+      padding-right: 0.6em;
+    }
+  }
+  
+  .blogPostOl {
+    list-style-type: none;
+    counter-reset: item;
+    margin: 0;
+    padding: 0;
+  }
 `;
 
 export const PostParagraph = styled.p`
@@ -74,33 +103,4 @@ export const TableOfContentsContainer = styled.div`
 export const TableOfContentsTitle = styled.h1`
   color: rgb(${(props) => props.theme.colors.textColor});
   margin-bottom: 20px;
-`;
-
-export const TableOfContentsOl = styled.ol`
-  list-style-type: none;
-  counter-reset: item;
-  margin: 0;
-  padding: 0;
-`;
-
-export const TableOFContentsLi = styled.li`
-  font-size: 18px;
-  color: rgb(${(props) => props.theme.colors.primaryDark});
-  text-decoration: underline;
-  display: table;
-  counter-increment: item;
-  margin-bottom: 0.6em;
-  transition: .2s;
-  
-  :hover {
-    cursor: pointer;
-  }
-  li:first-child {
-    margin-top: 0.6em;
-  }
-  ::before {
-    content: counters(item, ".") ". ";
-    display: table-cell;
-    padding-right: 0.6em;
-  }
 `;
