@@ -59,9 +59,9 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                 <li
                   className={'blogPostLi'}
                   key={key}
-                  onClick={() => scrollTo(getRefByName(t(`articles:nextjs-nginx-deployment.toc.${keyName}`)))}
+                  onClick={() => scrollTo(getRefByName(t(`articles:${postName}.toc.${keyName}`)))}
                 >
-                  {t(`articles:nextjs-nginx-deployment.toc.${keyName}`)}
+                  {t(`articles:${postName}.toc.${keyName}`)}
                 </li>
               );
             } else {
@@ -108,7 +108,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     let quantityOfTitles = 0;
     const allRefs: Array<string> = [];
 
-    const contentObj: ArticleContentObject = t('articles:nextjs-nginx-deployment.content', { returnObjects: true });
+    const contentObj: ArticleContentObject = t(`articles:${postName}.content`, { returnObjects: true });
 
     Object.entries(contentObj).forEach(([key, value]) => {
         if (
@@ -128,9 +128,9 @@ const BlogPost = ({ locale, postName }: PostProps) => {
   return (
     <>
       <Head>
-        <title>{t('pages:home.name')} | {t('articles:nextjs-nginx-deployment.title')}</title>
-        <meta name={'keywords'} content={t('articles:nextjs-nginx-deployment.tags') as string} />
-        <meta name={'description'} content={t('articles:nextjs-nginx-deployment.description') as string} />
+        <title>{t('pages:home.name')} | {t(`articles:${postName}.title`)}</title>
+        <meta name={'keywords'} content={t(`articles:${postName}.tags`) as string} />
+        <meta name={'description'} content={t(`articles:${postName}.description`) as string} />
         <meta charSet={'utf-8'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
@@ -140,30 +140,30 @@ const BlogPost = ({ locale, postName }: PostProps) => {
               onInit={(typewriter) => {
                 typewriter
                   .changeDelay(75)
-                  .typeString(t('articles:nextjs-nginx-deployment.title'))
+                  .typeString(t(`articles:${postName}.title`))
                   .start();
               }}
             />
           </ArticleTitle>
 
           <ArticleTitle className={'intro'}>
-            {t('articles:nextjs-nginx-deployment.intro')}
+            {t(`articles:${postName}.intro`)}
           </ArticleTitle>
 
           <TableOfContentsContainer className={locale === 'en' ? 'en' : 'non-en'}>
             <TableOfContentsTitle>
               {t('common:tocTitle')}
             </TableOfContentsTitle>
-            {generateTableOfContents(t('articles:nextjs-nginx-deployment.toc', { returnObjects: true }))}
+            {generateTableOfContents(t(`articles:${postName}.toc`, { returnObjects: true }))}
           </TableOfContentsContainer>
 
           {
-            Object.entries(t('articles:nextjs-nginx-deployment.content', { returnObjects: true }) as ArticleContentObject)
+            Object.entries(t(`articles:${postName}.content`, { returnObjects: true }) as ArticleContentObject)
               .map(([value, key], index) => (
               <div key={value}>
                 {typeof key === 'string' ? (
                   <PostParagraph
-                    dangerouslySetInnerHTML={{ __html: t(`articles:nextjs-nginx-deployment.content.p${index}`) }}
+                    dangerouslySetInnerHTML={{ __html: t(`articles:${postName}.content.p${index}`) }}
                   />
                 ) : (key.type === 'title' || key.type === 'subtitle') ? (
                   <PostParagraph
