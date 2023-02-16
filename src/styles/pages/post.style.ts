@@ -61,7 +61,7 @@ export const ArticleBodyWrapper = styled.div`
   }
   &.non-en {
     ${PostParagraph} {
-      font-family: 'Times New Roman', sans-serif;
+      font-family: 'Poly', serif;
     }
   }
 
@@ -111,7 +111,7 @@ export const TableOfContentsContainer = styled.div`
   }
   &.non-en {
     h1, ol, li, span {
-      font-family: 'Times New Roman', sans-serif;
+      font-family: 'Poly', serif;
     }
   }
 `;

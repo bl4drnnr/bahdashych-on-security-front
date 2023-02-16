@@ -6,49 +6,231 @@
     "pageDescription": "Proces wdrażania jest zawsze dość stresujący, zwłaszcza jeśli jesteś programistą i nie jesteś zaznajomiony z tym, czym zajmuje się zespół DevOps. Oto najłatwiejsze rozwiązanie, jak wdrożyć aplikację Next.js przy użyciu Nginx i Letsencrypt do bezpiecznej komunikacji HTTPS. Twoja ściągawka.",
     "intro": "O Boże, nie masz pojęcia, jak bałam się wszystkiego poza pisaniem kodu. Kiedyś myślałam, że to coś nierealnego, ukończonego i niebezpiecznego, ponieważ twój błąd może zniszczyć dosłownie wszystko, ale potem spróbowałam i ty wiesz, brzmi to o wiele bardziej przerażająco niż jest w rzeczywistości. Jedyne, co musisz zrobić, to zacząć od podstaw.",
     "toc": {
-      "intro": "Wstęp",
+      "intro": "Intro",
       "whyNginx": "Dlaczego Nginx?",
       "preps": "Przygotowania",
       "Konfiguracja HTTPS": {
-        "certGen": "Generowanie certyfikatu",
+        "certGen": "Generowanie certyfikatów",
         "nginxSec": "Konfiguracja zabezpieczeń Nginx"
       },
       "nginxConfig": "Konfiguracja Nginx",
       "appConfig": "Konfiguracja aplikacji przy użyciu pm2",
       "conclusion": "Wnioski i ściągawka"
     },
-    "p1": "Proces wdrożenia aplikacji zawsze wiąże się ze stresem, zwłaszcza gdy jest się programistą, który nie ma pojęcia, czym zajmuje się zespół DevOps (wierzcie mi, wiem, o czym mówię). jedyne, czego naprawdę chcesz, to jak najszybsze wdrożenie aplikacji w mniej lub bardziej bezpieczny sposób.",
-    "p2": "No cóż, gratulacje, trafiłeś we właściwe miejsce! Ten artykuł wyjaśni, w jaki sposób możesz wdrożyć swoją aplikację Next.js przy użyciu Nginx w bezpieczny sposób i szyfrowanie HTTPS. A więc zaczynajmy!",
-    "p3": "Nginx (wymawiane jako \"engine-x\") to wysokowydajny serwer sieciowy typu open source. Jest to odwrotny serwer proxy, co oznacza, że jest przeznaczony do przekazywania żądań przychodzących od klientów do innych serwerów w celu dalszego przetwarzania Może to być przydatne w różnych sytuacjach, takich jak udostępnianie plików statycznych, przesyłanie żądań proxy do serwera zaplecza lub obsługa szyfrowania SSL.",
-    "p4": "Nginx jest znany ze swojej stabilności, solidności i niskiego zużycia zasobów, co czyni go popularnym wyborem dla administratorów stron internetowych i dostawców usług hostingowych. Może obsłużyć dużą liczbę jednoczesnych połączeń, dzięki czemu dobrze nadaje się do obsługi dużego ruchu stron internetowych i aplikacji internetowych. Posiada również szeroki zakres funkcji i opcji konfiguracyjnych, w tym równoważenie obciążenia, buforowanie i kontrolę dostępu.",
-    "p5": "Oprócz zastosowania jako serwer WWW, Nginx może być również używany jako odwrotne proxy, moduł równoważenia obciążenia i pamięć podręczna HTTP. Ta wszechstronność w połączeniu z wydajnością i stabilnością sprawiła, że Nginx jest popularnym wyborem wśród sieci programistów i administratorów systemu.",
-    "p6": "Ogólnie rzecz biorąc, Nginx to potężny i elastyczny serwer sieciowy, który dobrze nadaje się do szerokiego zakresu aplikacji i przypadków użycia. Niezależnie od tego, czy obsługujesz prostą witrynę internetową, uruchamiasz dużą aplikację internetową, czy cokolwiek pomiędzy, Nginx jest doskonałym wyborem dla Twoich potrzeb.",
-    "p7": "Nie będziemy omawiać, jak i gdzie można uruchomić instancję i ją wzmocnić (albo AWS, DigitalOcean, Microsoft Azure, albo jakikolwiek inny dostawca usług w chmurze). Nawiasem mówiąc, możesz o tym przeczytać tutaj (LINK DO POSTU O UTWARDZANIU INSTANCJI). Zamiast tego skupimy się na procesie instalacji Nginx, jako naszego serwera WWW i Letsencrypt, jako naszego dostawcy CA, biorąc pod uwagę, że masz już instancję do wdrożenia.",
-    "p8": "Korzystając z kolejnych 2 poleceń zaktualizujesz wszystkie pakiety na swoim komputerze i zainstalujesz wymagane nginx i Letsencrypt.",
-    "p9": "Włącz także nginx w ufw:",
-    "p10": "Ostatnim krokiem jest sprawdzenie, czy nasz serwer nginx działa poprawnie. W tym celu przejdź do /etc/nginx/sites-available/default i wklej następną zawartość (*q to nasza domena):",
-    "p11": "Sprawdź błędy składniowe i zrestartuj nginx:",
-    "p12": "Let's Encrypt to bezpłatny, otwarty i zautomatyzowany urząd certyfikacji (CA), który zapewnia cyfrowe certyfikaty do szyfrowania Transport Layer Security (TLS). Certyfikaty te służą do zabezpieczania ruchu sieciowego i zapewnienia, że poufne informacje, takie jak jak hasła i numery kart kredytowych, są bezpiecznie przesyłane przez Internet.",
-    "p13": "Głównym celem Let's Encrypt jest uczynienie szyfrowania bardziej dostępnym dla ogółu społeczeństwa poprzez oferowanie bezpłatnych i łatwych w użyciu certyfikatów. Przed Let's Encrypt uzyskanie certyfikatu mogło być skomplikowanym i kosztownym procesem. Z Let's Encrypt Szyfruj, każdy może uzyskać certyfikat za pomocą zaledwie kilku kliknięć, dzięki czemu można zabezpieczyć stronę internetową lub aplikację internetową przy minimalnym wysiłku.",
-    "p14": "Let's Encrypt wyróżnia się również zautomatyzowanym procesem wydawania i odnawiania certyfikatów. Oznacza to, że po uzyskaniu certyfikatu nie musisz się martwić o ręczne odnawianie go w przyszłości. Certyfikat odnowi się automatycznie tak długo, jak domena pozostaje aktywna i pod Twoją kontrolą.",
-    "p15": "Podsumowując, Let's Encrypt to przełomowy urząd certyfikacji, który ułatwia dostęp do szyfrowania e i przystępne cenowo dla każdego. Dzięki darmowym i łatwym w użyciu certyfikatom, zautomatyzowanemu procesowi odnawiania i zaangażowaniu w oprogramowanie typu open source, Let's Encrypt to doskonały wybór dla każdego, kto chce zabezpieczyć swoją stronę internetową lub aplikację internetową.",
-    "p16": "Czas wygenerować certyfikaty TLS. W tym przykładzie użyjemy Let's Encrypt, ale możesz użyć dowolnego innego dostawcy CA. Jak wspomniano wcześniej, zastąp *q nazwą swojej domeny:" ,
-    "p17": "Następne polecenie wygeneruje parametry DH. Parametry te określają, w jaki sposób OpenSSL przeprowadza wymianę kluczy Diffie-Hellman (DH). Zasadniczo dodatkowa warstwa bezpieczeństwa dla połączenia HTTPS:",
-    "p18": "Musimy zabezpieczyć nasz serwer Nginx poprzez umieszczenie kolejnej konfiguracji w pliku konfiguracyjnym ssl-params.conf. Używając swojego ulubionego edytora tekstu (vim tutaj) skopiuj i wklej następną zawartość:",
-    "p19": "Już prawie skończyliśmy konfigurację. Dwie ostatnie rzeczy, które musimy zrobić, to skonfigurować nasz serwer Nginx jako odwrotny serwer proxy i uruchomić aplikację.",
-    "p20": "Zacznijmy od konfiguracji Nginx jako odwrotnego proxy. Zasadniczo tutaj musimy wyedytować plik nginx i wkleić następną zawartość (pamiętaj, że *q oznacza nazwę Twojej domeny):",
-    "p21": "Zrestartuj usługę nginx i jedyne, co musimy zrobić, to skonfigurować naszą aplikację jako demona przy użyciu menedżera procesów pm2.",
-    "p22": "PM2 to menedżer procesów produkcyjnych dla aplikacji Node.js. Jest przeznaczony do utrzymywania działania aplikacji Node.js i przywracania sprawności po nieoczekiwanych błędach lub awariach. PM2 zapewnia takie funkcje, jak automatyczne ponowne uruchamianie, automatyczne zarządzanie dziennikami i monitorowanie procesu.",
-    "p23": "PM2 ułatwia uruchamianie aplikacji Node.js w tle jako demon, bez martwienia się o przerwanie lub ponowne uruchomienie procesu. Jest to szczególnie przydatne w przypadku długo działających aplikacji Node.js, takich jak web serwerów lub pracowników działających w tle, ponieważ gwarantuje, że są one zawsze dostępne i mogą naprawić wszelkie problemy, które mogą się pojawić.",
-    "p24": "Oprócz funkcji zarządzania procesami, PM2 zapewnia również zaawansowane możliwości monitorowania procesów. Obejmuje to szczegółowe informacje o stanie i wydajności aplikacji Node.js, takie jak użycie procesora i pamięci, a także możliwość zarządzaj plikami dziennika i sprawdzaj je.",
-    "p25": "PM2 jest popularnym narzędziem do zarządzania aplikacjami Node.js w środowiskach produkcyjnych, ponieważ ułatwia utrzymanie działania aplikacji i dostarcza wielu informacji o ich statusie i wydajności. Niezależnie od tego, czy korzystasz z pojedynczego Node. js lub wiele aplikacji w klastrze, PM2 jest doskonałym narzędziem do zarządzania i monitorowania aplikacji.",
-    "p26": "W zasadzie tutaj musimy po prostu zbudować naszą aplikację, zainstalować globalnie aplikację pm2 i uruchomić proces wykonywanej kompilacji produkcyjnej jako demon w tle:",
-    "p27": "Ciesz się swoją aplikacją w trybie produkcyjnym i bezpiecznym połączeniem HTTPS! Poniżej znajdziesz również kilka posłów i mały poradnik jak zarządzać swoją aplikacją za pomocą tego menedżera procesów.",
-    "p28": "Było całkiem łatwo, co? To najłatwiejszy sposób na skonfigurowanie, wdrożenie i zabezpieczenie aplikacji Next.js za pomocą Nginx. Ale może masz pytanie typu: \"Dobra, wszystko w porządku, ale co z CI/ Potok CD?\". Cóż, to jest twoje. Możesz go skonfigurować za pomocą GitHub Actions, Jenkinsa lub dowolnego preferowanego narzędzia potoku CI/CD. Ale jeśli chcesz wiedzieć, jak możesz przeprowadzić wdrożenie ręcznie, proszę bardzo ",
-    "p29": "Pierwszą rzeczą, którą musisz zrobić, to udać się na swój serwer i przejść do folderu ze swoim projektem. Tam pociągnij gałąź główną (główną) lub inną, której używasz w trybie produkcyjnym, zainstaluj wszystkie pakiety, zbuduj projekt (używając npm w tym konkretnym przykładzie) i zrestartuj proces pm2:",
-    "p30": "Przy okazji, myślę, że chcesz zmienić nazwę aplikacji na bardziej czytelną dla człowieka. Oto jak możesz to zrobić. Najpierw wpisz polecenie next, aby uzyskać listę wszystkich procesów obsługiwanych przez pm2 :",
-    "p31": "W rezultacie zobaczysz ładnie wyglądającą tabelę, spójrz na kolumnę id, w tym momencie, jak sądzę, zobaczysz wartość 0, ale jeśli nie, po prostu zamień ją na swoją wartość i wpisz obok zmień nazwę procesu:",
-    "p32": "Ściągawka specjalnie dla Ciebie:"
+    "content": {
+      "p0": {
+        "type": "title",
+        "content": "Intro"
+      },
+      "p1": "Proces wdrażania aplikacji jest zawsze rodzajem stresu, zwłaszcza gdy jesteś programistą, który nie ma pojęcia, co robi personel DevOps (zaufaj mi, wiem o czym mówię). Dlatego jedyne, czego naprawdę chcesz, to jak najszybsze wdrożenie aplikacji w mniej lub bardziej bezpieczny sposób.",
+      "p2": "Cóż, gratulacje, trafiłeś we właściwe miejsce! W tym artykule wyjaśnimy, jak możesz wdrożyć następny.aplikacja js wykorzystująca nginx w bezpieczny sposób i szyfrowanie HTTPS. Więc zacznijmy!",
+      "p3": {
+        "type": "title",
+        "content": "Dlaczego Nginx?"
+      },
+      "p4": "Nginx (wymawiane \"engine-x\") to wysokowydajny serwer WWW o otwartym kodzie źródłowym. Jest to odwrotny serwer proxy, co oznacza, że jest przeznaczony do przekazywania przychodzących żądań od klientów do innych serwerów w celu dalszego przetwarzania. Może to być przydatne w różnych sytuacjach, takich jak obsługa plików statycznych, proxy żądań do serwera zaplecza lub obsługa szyfrowania SSL.",
+      "p5": "Nginx jest znany ze swojej stabilności, solidności i niskiego zużycia zasobów, co czyni go popularnym wyborem dla administratorów sieci i dostawców hostingu. Może obsługiwać dużą liczbę jednoczesnych połączeń, dzięki czemu doskonale nadaje się do witryn i aplikacji internetowych o dużym natężeniu ruchu. Posiada również szeroki zakres funkcji i opcji konfiguracyjnych, w tym równoważenie obciążenia, buforowanie i kontrolę dostępu.",
+      "p6": "Oprócz wykorzystania jako serwer WWW, Nginx może być również używany jako odwrotny serwer proxy, moduł równoważenia obciążenia i pamięć podręczna HTTP. Ta wszechstronność w połączeniu z wydajnością i stabilnością sprawiła, że Nginx stał się popularnym wyborem wśród twórców stron internetowych i administratorów systemów.",
+      "p7": "Ogólnie rzecz biorąc, Nginx to potężny i elastyczny serwer WWW, który doskonale nadaje się do szerokiej gamy aplikacji i przypadków użycia. Niezależnie od tego, czy obsługujesz prostą stronę internetową, uruchamiasz dużą aplikację internetową, czy cokolwiek pomiędzy, Nginx jest doskonałym wyborem dla Twoich potrzeb.",
+      "p8": {
+        "type": "title",
+        "content": "Przygotowania"
+      },
+      "p9": "Nie będziemy dyskutować, jak i gdzie można uruchomić instancję i jak to wszysyko skonfigurować (AWS, DigitalOcean, Microsoft Azure lub jakikolwiek inny dostawca usług w chmurze). Przy okazji, możesz przeczytać o tym tutaj (LINK do Postu o instancjach HARDERING). Zamiast tego skupimy się na procesie instalacji Nginx, jako naszego serwera WWW, i Letsencrypt, jako naszego dostawcy CA, biorąc pod uwagę, że masz już instancję do wdrożenia.",
+      "p10": "Za pomocą kolejnych 2 poleceń zaktualizujesz wszystkie pakiety na swoim komputerze i zainstalujesz wymagane nginx i Letsencrypt:",
+      "p11": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt"
+      },
+      "p12": "Włącz także nginx w ufw:",
+      "p13": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo ufw allow 'Nginx Full'"
+      },
+      "p14": "Ostatnim krokiem jest sprawdzenie, czy nasz serwer nginx działa poprawnie. Aby to zrobić, przejdź do <span class='codeBlock'>/etc/nginx/sites-available/default</span> i wklej następną zawartość (<span class='codeBlock'>*q</span> to nasza domena):",
+      "p15": {
+        "type": "code",
+        "lang": "bash",
+        "content": "$ sudo vim /etc/nginx/sites-available/default"
+      },
+      "p16": {
+        "type": "code",
+        "lang": "nginx",
+        "content": "server {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\troot /var/www/html;\n\tindex index.html index.htm index.nginx-debian.html;\n\n\tserver_name q*;\n\n\tlocation / {\n\t\ttry_files $uri $uri/ =404;\n\t}\n\n\t# letsencrypt\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
+      },
+      "p17": "Sprawdź błędy składniowe i uruchom ponownie nginx:",
+      "p18": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo nginx -t\nnginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n$ sudo systemctl restart nginx"
+      },
+      "p19": {
+        "type": "title",
+        "content": "Konfiguracja HTTPS"
+      },
+      "p20": "Let's Encrypt to darmowy, otwarty i zautomatyzowany urząd certyfikacji (CA), który zapewnia cyfrowe certyfikaty do szyfrowania Transport Layer Security (TLS). Certyfikaty te służą do zabezpieczenia ruchu w sieci i zapewnienia bezpiecznego przesyłania poufnych informacji, takich jak hasła i numery kart kredytowych, przez internet.",
+      "p21": "Głównym celem Let's Encrypt jest uczynienie szyfrowania bardziej dostępnym dla ogółu społeczeństwa poprzez oferowanie bezpłatnych i łatwych w użyciu certyfikatów. Przed Let's Encrypt uzyskanie certyfikatu może być skomplikowanym i kosztownym procesem. Dzięki Let's Encrypt każdy może uzyskać certyfikat za pomocą zaledwie kilku kliknięć, umożliwiając zabezpieczenie strony internetowej lub aplikacji internetowej przy minimalnym wysiłku.",
+      "p22": "Let's Encrypt wyróżnia się również automatycznym procesem wydawania i odnawiania certyfikatów. Oznacza to, że po uzyskaniu certyfikatu nie musisz się martwić o ręczne odnowienie go w przyszłości. Certyfikat odnowi się automatycznie, o ile domena pozostanie aktywna i będzie pod twoją kontrolą.",
+      "p23": "Podsumowując, Let's Encrypt to przełomowy urząd certyfikacji, dzięki któremu szyfrowanie jest bardziej dostępne i przystępne dla każdego. Dzięki darmowym i łatwym w użyciu certyfikatom, zautomatyzowanemu procesowi odnawiania i zaangażowaniu w oprogramowanie open source, Let's Encrypt jest doskonałym wyborem dla każdego, kto chce zabezpieczyć swoją stronę internetową lub aplikację internetową.",
+      "p24": {
+        "type": "subtitle",
+        "content": "Generowanie certyfikatów"
+      },
+      "p25": "Czas wygenerować certyfikaty TLS. W tym przykładzie użyjemy Let ' s Encrypt, ale możesz użyć dowolnego innego dostawcy CA, którego chcesz. Jak wspomniano wcześniej, zastąp <span class= 'codeBlock'>*q</span> nazwą domeny:",
+      "p26": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q"
+      },
+      "p27": "Następne polecenie wygeneruje parametry DH. Te parametry określają sposób, w jaki OpenSSL wykonuje wymianę kluczy Diffie-Hellman (DH). Zasadniczo dodatkowa warstwa bezpieczeństwa dla połączenia HTTPS:",
+      "p28": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048"
+      },
+      "p29": {
+        "type": "subtitle",
+        "content": "Konfiguracja zabezpieczeń Nginx"
+      },
+      "p30": "Musimy zabezpieczyć nasz serwer Nginx, umieszczając następną konfigurację do ssl-params.conf. Korzystając z ulubionego edytora tekstu (vim tutaj) skopiuj i wklej następną zawartość:",
+      "p31": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo vim /etc/nginx/snippets/ssl-params.conf"
+      },
+      "p32": {
+        "type": "code",
+        "lang": "bash",
+        "content": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\nssl_prefer_server_ciphers on;\nssl_ciphers \"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH\";\nssl_ecdh_curvesecp384r1;\nssl_session_cache shared:SSL:10m;\nssl_session_tickets off;\nssl_stapling on;\nssl_stapling_verify on;\n\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\n\nadd_header Strict-Transport-Security \"max-age=63072000;includeSubdomains\";\nadd_header X-Frame-Options DENY;\nadd_headerX-Content-Type-Options nosniff;\n\nssl_dhparam /etc/ssl/certs/dhparam.pem;"
+      },
+      "p33": {
+        "type": "title",
+        "content": "Konfiguracja Nginx"
+      },
+      "p34": "Prawie skończyliśmy z konfiguracją. 2 ostatnie rzeczy, które musimy zrobić, to skonfigurować serwer Nginx jako odwrotny serwer proxy i uruchomić aplikację.",
+      "p35": "Zacznijmy od konfiguracji Nginx jako odwrotnego serwera proxy. Zasadniczo musimy tutaj edytować plik nginx i wkleić następną zawartość (pamiętaj, <span class='codeBlock'>*q</span> jest dla Twojej nazwy domeny):",
+      "p36": {
+        "type": "code",
+        "lang": "bash",
+        "content": "$ sudo vim /etc/nginx/sites-available/default"
+      },
+      "p37": {
+        "type": "code",
+        "lang": "nginx",
+        "content": "# redirect z http na https\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\tserver_name *q;\n\treturn 301 https://$server_name$request_uri;\n}\n\nserver {\n\t# listen on *:443 -> ssl; instead of *:80\n\tlisten 443 ssl http2 default_server;\n\tlisten [::]:443 ssl http2 default_server;\n\n\tserver_name q*;\n\n\tssl_certificate /etc/letsencrypt/live/*q/fullchain.pem;\n\tssl_certificate_key /etc/letsencrypt/live/*q/privkey.pem;\n\tinclude snippets/ssl-params.conf;\n\n\tlocation / {\n\t\t# reverse proxy dla next serwer\n\n\t\t# Ważne jest, aby wspomnieć, że musisz zmienić port\n\t\t# dla aplikacji na porcie aplikacja używa po uruchomieniu\n\t\t# po buildzie.\n\t\tproxy_pass http://localhost:8080;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\n\t\t# musimy usunąć tę obsługę 404\n\t\t# bo next _next folder ma to\n\t\t# try_files $uri $uri/ =404;\n\t}\n\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
+      },
+      "p38": "Uruchom ponownie usługę nginx i jedyne, co musimy zrobić, to skonfigurować naszą aplikację jako demona za pomocą pm2 process manager:",
+      "p39": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo service nginx restart"
+      },
+      "p40": {
+        "type": "title",
+        "content": "Konfiguracja aplikacji przy użyciu pm2"
+      },
+      "p41": "PM2 jest menedżerem procesu produkcyjnego dla Node.aplikacje js. Jest przeznaczony do utrzymania Node.js aplikacji działają i mogą odzyskać po nieoczekiwanych błędach lub awariach. PM2 zapewnia takie funkcje, jak automatyczny restart, Automatyczne zarządzanie dziennikami i monitorowanie procesów.",
+      "p42": "PM2 ułatwia uruchomienie Node.js w tle jako demon, bez martwienia się o zakończenie lub ponowne uruchomienie procesu. Jest to szczególnie przydatne w przypadku długotrwałego Node.js, takie jak serwery internetowe lub pracownicy w tle, ponieważ zapewniają, że są zawsze dostępne i mogą odzyskać wszelkie problemy, które mogą się pojawić.",
+      "p43": "Oprócz funkcji zarządzania procesami PM2 zapewnia również zaawansowane możliwości monitorowania procesów. Obejmuje to szczegółowe informacje o stanie i wydajności Node.js, takie jak użycie procesora i pamięci, a także możliwość zarządzania i sprawdzania plików dziennika.",
+      "p44": "PM2 jest popularnym narzędziem do zarządzania Node.js aplikacje js w środowiskach produkcyjnych, ponieważ ułatwia utrzymanie uruchomionych aplikacji i dostarcza wielu informacji o ich stanie i wydajności. Czy używasz jednego Node.js lub wiele aplikacji w klastrze, PM2 jest doskonałym narzędziem do zarządzania i monitorowania aplikacji.",
+      "p45": "Basically, here, we need to just build our application, install pm2 application globally and start the process of executed production build as a daemon in the background:",
+      "p46": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ npm run build # zbudować naszą aplikację do produkcji (npm build script: next build)\n$ npm i -g pm2 # zainstaluj pm2, aby następna aplikacja działała wiecznie*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
+      },
+      "p47": "Ciesz się aplikacją w trybie produkcyjnym i bezpiecznym połączeniem HTTPS! Poniżej znajdziesz również kilka posłów i mały przewodnik, jak zarządzać swoją aplikacją za pomocą tego menedżera procesów.",
+      "p48": {
+        "type": "title",
+        "content": "Wnioski i ściągawka"
+      },
+      "p49": "Było dość łatwe, co? To najłatwiejszy sposób na skonfigurowanie, wdrożenie i zabezpieczenie aplikacji Next.js przy użyciu Nginx. Ale może masz pytanie typu: \"Dobra, w porządku, ale co z potokiem CI/CD?\". Cóż, to jest po twojej stronie. Możesz go skonfigurować za pomocą GitHub Actions lub Jenkins lub dowolnego preferowanego narzędzia potokowego CI/CD. Ale jeśli chcesz wiedzieć, jak możesz przeprowadzić wdrożenie ręcznie, proszę bardzo.",
+      "p50": "Pierwszą rzeczą, którą musisz zrobić, to przejść do swojego serwera i przejść do folderu z projektem. Tam pociągnij gałąź główną (główną) lub inną gałąź, której używasz w trybie produkcyjnym, zainstaluj wszystkie pakiety, zbuduj projekt (używając npm w tym konkretnym przykładzie) i zrestartuj proces pm2:",
+      "p51": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ git pull origin master\n$ npm i\n$ npm run build\n$ pm2 restart blog"
+      },
+      "p52": "By the way, I guess you want to change the name of the application on something more human-readable. Here is how you can do that. First of all type next command to get list of all processes handled by pm2:",
+      "p53": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ pm2 list"
+      },
+      "p54": "As a result you will see pretty looking table, take a look at the id column, at this moment, I guess, you will see 0 value, but if not, just replace it on your value and type next to change the name of the process:",
+      "p55": {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ pm2 restart 0 --name \"new-name\""
+      },
+      "p56": "You are awesome! Cheatsheet specially for you:",
+      "p57": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Update and upgrade all packages and install required programs\n$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt"
+      },
+      "p58": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Also enable nginx in ufw\n$ sudo ufw allow 'Nginx Full'"
+      },
+      "p59": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Paste next content in sites-available/default file and test the server\n$ sudo vim /etc/nginx/sites-available/default"
+      },
+      "p60": {
+        "type": "code",
+        "lang": "nginx",
+        "content": "# Replace *q with your domain name\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\troot /var/www/html;\n\tindex index.html index.htm index.nginx-debian.html;\n\n\tserver_name q*;\n\n\tlocation / {\n\t\ttry_files $uri $uri/ =404;\n\t}\n\n\t# letsencrypt\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
+      },
+      "p61": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Check for syntax error and restart the server\n$ sudo nginx -t\nnginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n$ sudo systemctl restart nginx"
+      },
+      "p62": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Generate the TLS certificate (replace *q with your domain name)\n$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q"
+      },
+      "p63": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Generate Diffie-Hellman (DH) params\n$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048"
+      },
+      "p64": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Secure our Nginx server by pasting next into config file\n$ sudo vim /etc/nginx/snippets/ssl-params.conf"
+      },
+      "p65": {
+        "type": "code",
+        "lang": "bash",
+        "content": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\nssl_prefer_server_ciphers on;\nssl_ciphers \"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH\";\nssl_ecdh_curvesecp384r1;\nssl_session_cache shared:SSL:10m;\nssl_session_tickets off;\nssl_stapling on;\nssl_stapling_verify on;\n\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\n\nadd_header Strict-Transport-Security \"max-age=63072000;includeSubdomains\";\nadd_header X-Frame-Options DENY;\nadd_headerX-Content-Type-Options nosniff;\n\nssl_dhparam /etc/ssl/certs/dhparam.pem;"
+      },
+      "p66": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Paste next config into file\n# Remember about port of localhost and replacing *q with domain name\n$ sudo vim /etc/nginx/sites-available/default"
+      },
+      "p67": {
+        "type": "code",
+        "lang": "nginx",
+        "content": "# redirect http to https\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\tserver_name *q;\n\treturn 301 https://$server_name$request_uri;\n}\n\nserver {\n\t# listen on *:443 -> ssl; instead of *:80\n\tlisten 443 ssl http2 default_server;\n\tlisten [::]:443 ssl http2 default_server;\n\n\tserver_name q*;\n\n\tssl_certificate /etc/letsencrypt/live/*q/fullchain.pem;\n\tssl_certificate_key /etc/letsencrypt/live/*q/privkey.pem;\n\tinclude snippets/ssl-params.conf;\n\n\tlocation / {\n\t\t# reverse proxy for next server\n\n\t\t# It is important to mention that you need to change port\n\t\t# for application on port application uses when is started\n\t\t# after build.\n\t\tproxy_pass http://localhost:8080;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\n\t\t# we need to remove this 404 handling\n\t\t# because next's _next folder and own handling\n\t\t# try_files $uri $uri/ =404;\n\t}\n\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
+      },
+      "p68": {
+        "type": "code",
+        "lang": "bash",
+        "content": "# Restart the service\n$ sudo service nginx restart"
+      },
+      "p69": {
+        "type": "code",
+        "lang": "shell",
+        "content": "# Build and start the application\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # install pm2 to keep next app alive forever*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
+      }
+    }
   }
 }
-
