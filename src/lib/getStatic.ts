@@ -17,12 +17,15 @@ export const getStaticPaths = () => ({
 
 export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors']) {
   const locale = await ctx?.params?.locale;
+  const postName = await ctx?.params?.postName || null;
 
   return {
     ...(await serverSideTranslations(locale, ns)),
-    locale
+    locale,
+    postName
   };
 }
+
 
 export function makeStaticProps(ns: string[]) {
   return async function getStaticProps(ctx: any) {

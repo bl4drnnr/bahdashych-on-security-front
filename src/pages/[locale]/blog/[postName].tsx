@@ -8,7 +8,7 @@ import Typewriter from 'typewriter-effect';
 import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
 import PostFooter from '@components/PostFooter/PostFooter.component';
 import DefaultLayout from '@layouts/Default.layout';
-import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
+import { makeStaticProps } from '@lib/getStatic';
 import {
   ArticleBodyWrapper,
   ArticleTitle,
@@ -17,8 +17,9 @@ import {
   TableOfContentsTitle
 } from '@styles/post.style';
 
-interface NextjsNginxDeploymentProps {
+interface PostProps {
   locale: string;
+  postName: string;
 }
 
 interface IArticleTitle {
@@ -36,7 +37,7 @@ interface ArticleContentObject {
   [key: string]: string | IArticleCode | IArticleTitle;
 }
 
-const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
+const BlogPost = ({ locale, postName }: PostProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -58,9 +59,9 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
                 <li
                   className={'blogPostLi'}
                   key={key}
-                  onClick={() => scrollTo(getRefByName(t(`articles:nextjsNginxDeployment.toc.${keyName}`)))}
+                  onClick={() => scrollTo(getRefByName(t(`articles:nextjs-nginx-deployment.toc.${keyName}`)))}
                 >
-                  {t(`articles:nextjsNginxDeployment.toc.${keyName}`)}
+                  {t(`articles:nextjs-nginx-deployment.toc.${keyName}`)}
                 </li>
               );
             } else {
@@ -100,10 +101,14 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   };
 
   React.useEffect(() => {
+    // @ts-ignore
+    const availablePosts = process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(',');
+    if (!availablePosts.includes(postName)) handleRedirect('/404').then();
+
     let quantityOfTitles = 0;
     const allRefs: Array<string> = [];
 
-    const contentObj: ArticleContentObject = t('articles:nextjsNginxDeployment.content', { returnObjects: true });
+    const contentObj: ArticleContentObject = t('articles:nextjs-nginx-deployment.content', { returnObjects: true });
 
     Object.entries(contentObj).forEach(([key, value]) => {
         if (
@@ -123,9 +128,9 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   return (
     <>
       <Head>
-        <title>{t('pages:home.name')} | {t('articles:nextjsNginxDeployment.title')}</title>
-        <meta name={'keywords'} content={t('articles:nextjsNginxDeployment.tags') as string} />
-        <meta name={'description'} content={t('articles:nextjsNginxDeployment.description') as string} />
+        <title>{t('pages:home.name')} | {t('articles:nextjs-nginx-deployment.title')}</title>
+        <meta name={'keywords'} content={t('articles:nextjs-nginx-deployment.tags') as string} />
+        <meta name={'description'} content={t('articles:nextjs-nginx-deployment.description') as string} />
         <meta charSet={'utf-8'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
@@ -135,30 +140,30 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
               onInit={(typewriter) => {
                 typewriter
                   .changeDelay(75)
-                  .typeString(t('articles:nextjsNginxDeployment.title'))
+                  .typeString(t('articles:nextjs-nginx-deployment.title'))
                   .start();
               }}
             />
           </ArticleTitle>
 
           <ArticleTitle className={'intro'}>
-            {t('articles:nextjsNginxDeployment.intro')}
+            {t('articles:nextjs-nginx-deployment.intro')}
           </ArticleTitle>
 
           <TableOfContentsContainer className={locale === 'en' ? 'en' : 'non-en'}>
             <TableOfContentsTitle>
               {t('common:tocTitle')}
             </TableOfContentsTitle>
-            {generateTableOfContents(t('articles:nextjsNginxDeployment.toc', { returnObjects: true }))}
+            {generateTableOfContents(t('articles:nextjs-nginx-deployment.toc', { returnObjects: true }))}
           </TableOfContentsContainer>
 
           {
-            Object.entries(t('articles:nextjsNginxDeployment.content', { returnObjects: true }) as ArticleContentObject)
+            Object.entries(t('articles:nextjs-nginx-deployment.content', { returnObjects: true }) as ArticleContentObject)
               .map(([value, key], index) => (
               <div key={value}>
                 {typeof key === 'string' ? (
                   <PostParagraph
-                    dangerouslySetInnerHTML={{ __html: t(`articles:nextjsNginxDeployment.content.p${index}`) }}
+                    dangerouslySetInnerHTML={{ __html: t(`articles:nextjs-nginx-deployment.content.p${index}`) }}
                   />
                 ) : (key.type === 'title' || key.type === 'subtitle') ? (
                   <PostParagraph
@@ -181,7 +186,16 @@ const NextjsNginxDeployment = ({ locale }: NextjsNginxDeploymentProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
-export { getStaticPaths, getStaticProps };
+export const getServerSideProps = async (ctx: any) => {
+  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles']);
+  const pageProps = await staticProps(ctx);
+  const props = pageProps.props;
 
-export default NextjsNginxDeployment;
+  return {
+    props: {
+      ...props
+    }
+  };
+};
+
+export default BlogPost;
