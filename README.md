@@ -96,7 +96,7 @@ export const Redirect = () => {
 Probably you have seen, that the route of the blog always looks like that: [blog.mikhailbahdashych.com/en](blog.mikhailbahdashych.com/en).
 It always starts with the picked language. You will understand why it happens just by taking a look at `pages` folder.
 
-![2](media/2.jpeg)
+![2](media/2.png)
 
 Content of every page outside of `[locale]` route was replaced by:
 
@@ -158,7 +158,7 @@ export function makeStaticProps(ns: string[]) {
 
 ```
 
-You can see, that it returns `locale` and, optionally, `postName` (will be discussed [here](#page-rendering)).
+You can see, that it returns `locale` and, optionally, `postName` or `projectName` (will be discussed [here](#page-rendering)).
 It allows us to get `locale` in props and use it, for instance, in redirect function.
 
 ```typescript jsx
@@ -182,9 +182,66 @@ export { getStaticPaths, getStaticProps };
 export default ErrorPage;
 ```
 
+Items in array for `makeStaticProps` function have exact same names as JSON files inside locale folder.
+
 ### Light/Dark themes
 
 ### Page rendering
+
+As you can see, instead of creating page per post/project only one page per entity has been created.
+Every page gets the name of the project or post from params and then checks (in environmental variables) check,
+if page exists it renders it from JSON, in other case it redirects user to 404. Also, it means that every JSON has to be written in certain format.
+
+Here is how it looks like:
+
+```typescript jsx
+import React from 'react';
+
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+
+import { makeStaticProps } from '@lib/getStatic';
+
+interface PostProps {
+  locale: string;
+  postName: string;
+}
+
+const BlogPost = ({ locale, postName }: PostProps) => {
+  const { t } = useTranslation();
+  const router = useRouter();
+  
+  return (
+    <>
+       ...
+       <PostParagraph
+         dangerouslySetInnerHTML={{ __html: t(`articles:${postName}.content.p${index}`) }}
+       />
+       ...
+    </>
+  );
+};
+
+export const getServerSideProps = async (ctx: any) => {
+  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles']);
+  const pageProps = await staticProps(ctx);
+  const props = pageProps.props;
+
+  return {
+    props: {
+      ...props
+    }
+  };
+};
+
+export default BlogPost;
+```
+
+As it's been mentioned above, the usage of props for post and project page is 
+a little differ from other pages as in those case we also need to get not only 
+`locale` but `postName` (or `projectName`)
+
+Have you noticed `dangerouslySetInnerHTML`, well there is one [security issue](#security-issues)... 
 
 ## Security issues
 
@@ -222,6 +279,7 @@ Above you have seen an example of how I render simple paragraph. You can easily 
 As I have mentioned previously, I had a couple of ideas on how to implement that.
 The way it's been implemented is actually the easiest one. The other quite easy method is 
 simple sanitization. The only thing that would be excluded in this case is `<script>` tag.
+The exact same situation with projects page. 
 
 The most completed is to create "your own tags" and after pages gets JSON, instead of 
 rendering it at this exact moment, you would pass it to function, that would interpret your tags
