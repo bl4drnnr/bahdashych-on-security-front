@@ -2,21 +2,105 @@
   My personal blog
 </h1>
 
-<h3 align="center">
-  I sincerely believe that the best way to learn anything is to start teaching other people, sharing your knowledge with them. 
-</h3>
-
-<h3 align="center">
-  Thank you!
-</h3>
-
 ## Table of contents
 1. [Structure and implementation](#structure-and-implementation)
+   1. [Multi-languages](#multi-languages)
+   2. [Light/Dark themes](#lightdark-themes)
+   3. [Page rendering](#page-rendering)
 2. [Security issues](#security-issues)
 3. [Contact and references](#contact-and-references)
 4. [License](#license)
 
 ## Structure and implementation
+
+I think, that the first thing you need to know about the blog is that is the simplest static application.
+Even though there is no any API or back-end, from which posts would be fetched, you won't see
+structure *page per post*. Actually, pages are actually rendered, but from JSON, and it'll be described later.
+
+### Multi-languages
+
+First of all, blog has been written using 3 languages (not programming ones, lol) - Polish, English and Russian.
+This has been implemented using `i18n` library (quite obvious, isn't it).
+
+In the root folder of the project you will find simple config file called
+[next-i18next.config.js](next-i18next.config.js) that contains available languages and default languages:
+
+```js
+module.exports = {
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pl', 'ru'],
+  },
+  react: { useSuspense: false }
+};
+```
+
+In [lib](src/lib) folder, you will find a couple of function that are responsible for
+the whole translation process. They will be discussed right now, but there is one more thing to mention.
+
+In [locales](public/locales) folder, you will find a couple of other folders.
+Looking at their names it is quite understood what they are responsible for.
+Every folder has the same named JSON files (even the same structure) that contain
+all text you see in the blog translated on 3 languages. So now you know where everything is stored,
+and we can get back to [lib](src/lib) folder.
+
+The first one is [language detector](src/lib/languageDetector.ts) contains this (`i18conifg` is an alias for [next-i18next.config.js](next-i18next.config.js)):
+
+```ts
+import languageDetector from 'next-language-detector';
+
+import i18nextConfig from '@i18config';
+
+export default languageDetector({
+  supportedLngs: i18nextConfig.i18n.locales,
+  fallbackLng: i18nextConfig.i18n.defaultLocale
+});
+```
+
+The above code is just a helper for [redirect page](src/lib/redirect.tsx). It's just an
+empty page that is used to check the current language:
+
+```typescript jsx
+import React from 'react';
+
+import { useRouter } from 'next/router';
+
+import languageDetector from './languageDetector';
+
+const useRedirect = (to: any) => {
+  const router = useRouter();
+  to = to || router.asPath;
+
+  React.useEffect(() => {
+    const detectedLng = languageDetector.detect();
+    if (to.startsWith('/' + detectedLng) && router.route === '/404') {
+      router.replace('/' + detectedLng + router.route);
+      return;
+    }
+
+    // @ts-ignore
+    languageDetector.cache(detectedLng);
+    router.replace('/' + detectedLng + to);
+  });
+
+  return <></>;
+};
+
+export const Redirect = () => {
+  // @ts-ignore
+  useRedirect();
+  return <></>;
+};
+```
+
+Probably you have seen, that the route of the blog always looks like that: [blog.mikhailbahdashych.com/en](blog.mikhailbahdashych.com/en).
+It always starts with the picked language. You will understand why it happens just by taking a look at `pages` folder.
+
+![2](media/2.png)
+
+### Light/Dark themes
+
+### Page rendering
 
 ## Security issues
 
@@ -59,6 +143,14 @@ The most completed is to create "your own tags" and after pages gets JSON, inste
 rendering it at this exact moment, you would pass it to function, that would interpret your tags
 to normal HTML and return it to the page. Also, it would be the sort of sanitization, as
 it could be implemented right in that function. Why did I do this way? Well... You know... I'm kinda lazy :)
+
+<h3 align="center">
+  I sincerely believe that the best way to learn anything is to start teaching other people, sharing your knowledge with them. 
+</h3>
+
+<h3 align="center">
+  Thank you!
+</h3>
 
 ## Contact and references
 

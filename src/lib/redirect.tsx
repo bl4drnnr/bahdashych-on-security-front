@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import languageDetector from './languageDetector';
 
-export const useRedirect = (to: any) => {
+const useRedirect = (to: any) => {
   const router = useRouter();
   to = to || router.asPath;
 
@@ -26,11 +26,5 @@ export const useRedirect = (to: any) => {
 export const Redirect = () => {
   // @ts-ignore
   useRedirect();
-  return <></>;
-};
-
-// eslint-disable-next-line react/display-name
-export const getRedirect = (to: any) => () => {
-  useRedirect(to);
   return <></>;
 };
