@@ -18,6 +18,12 @@ import {
   TypewritingText
 } from '@styles/home.style';
 
+interface PostProps {
+  title: string;
+  description: string;
+  link: string;
+}
+
 interface HomeProps {
   locale: string;
 }
@@ -29,6 +35,20 @@ const Home = ({ locale }: HomeProps) => {
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
   };
+
+  const [bestPosts,] = React.useState<PostProps[]>([{
+    title: t('articles:nextjs-nginx-deployment.title'),
+    description: t('articles:nextjs-nginx-deployment.pageDescription'),
+    link: '/blog/nextjs-nginx-deployment'
+  }, {
+    title: t('articles:everything-you-need-to-know-about-hardening.title'),
+    description: t('articles:everything-you-need-to-know-about-hardening.pageDescription'),
+    link: '/blog/everything-you-need-to-know-about-hardening'
+  }, {
+    title: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.title'),
+    description: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.pageDescription'),
+    link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn'
+  }]);
 
   return (
     <>
@@ -81,18 +101,17 @@ const Home = ({ locale }: HomeProps) => {
           <BlogPostsContainer>
             <InterestingPosts>
               {t('pages:home.interestingPosts')}
-
             </InterestingPosts>
-            <BlogPostPreview
-              onClick={() => handleRedirect('/nextjs-nginx-deployment')}
-            >
-              <BlogPostTitle>
-                {t('articles:nextjs-nginx-deployment.title')}
-              </BlogPostTitle>
-              <BlogPostDescription>
-                {t('articles:nextjs-nginx-deployment.pageDescription')}
-              </BlogPostDescription>
-            </BlogPostPreview>
+
+            {bestPosts.map((post, key) => (
+              <BlogPostPreview
+                key={key}
+                onClick={() => handleRedirect(post.link)}
+              >
+                <BlogPostTitle>{post.title}</BlogPostTitle>
+                <BlogPostDescription>{post.description}</BlogPostDescription>
+              </BlogPostPreview>
+            ))}
           </BlogPostsContainer>
         </Container>
       </DefaultLayout>

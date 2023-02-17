@@ -35,6 +35,14 @@ const Blog = ({ locale }: BlogProps) => {
     title: t('articles:nextjs-nginx-deployment.title'),
     description: t('articles:nextjs-nginx-deployment.pageDescription'),
     link: '/blog/nextjs-nginx-deployment'
+  }, {
+    title: t('articles:everything-you-need-to-know-about-hardening.title'),
+    description: t('articles:everything-you-need-to-know-about-hardening.pageDescription'),
+    link: '/blog/everything-you-need-to-know-about-hardening'
+  }, {
+    title: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.title'),
+    description: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.pageDescription'),
+    link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn'
   }]);
 
   const handleRedirect = async (path: string) => {

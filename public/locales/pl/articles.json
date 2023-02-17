@@ -234,5 +234,31 @@
         "content": "# Zbuduj i uruchom aplikację\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # zainstaluj pm2, aby następna aplikacja działała wiecznie*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
       }
     }
+  },
+  "everything-you-need-to-know-about-hardening": {
+    "title": "Wszystko, co musisz wiedzieć o hardeningu",
+    "tags": "",
+    "description": "",
+    "pageDescription": "Hardening instancji odnosi się do procesu zabezpieczenia instancji, która jest pojedynczym występowaniem maszyny wirtualnej lub fizycznej, która prowadzi system operacyjny oraz aplikacje lub usługi hostingowe. Celem hardeningu instancji jest zminimalizowanie ryzyka nieautoryzowanego dostępu do instancji, ochrona danych i aplikacji hostowanych na niej oraz zapobieganie kompromisowi systemu.",
+    "intro": "",
+    "timestamp": "",
+    "footer": "",
+    "toc": {
+      "intro": "Intro"
+    },
+    "content": {}
+  },
+  "pki-infrastructure-or-how-to-build-your-own-vpn": {
+    "title": "Infrastruktura PKI, czyli jak zbudować własny VPN",
+    "tags": "",
+    "description": "",
+    "pageDescription": "Czy kiedykolwiek myślałeś o tym, jak działa VPN? Myślę, że ta technologia stała się tak dużą częścią nowoczesnego biznesu i całej jej infrastruktury, której nawet o tym nie myślimy. I byłoby tego warte! Dzisiaj omówimy, w jaki sposób możemy zbudować naszą infrastrukturę VPN i ogólnie dowiemy się, jak to wszystko działa.",
+    "intro": "",
+    "timestamp": "",
+    "footer": "",
+    "toc": {
+      "intro": "Intro"
+    },
+    "content": {}
   }
 }
