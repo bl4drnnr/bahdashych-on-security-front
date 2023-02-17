@@ -96,7 +96,91 @@ export const Redirect = () => {
 Probably you have seen, that the route of the blog always looks like that: [blog.mikhailbahdashych.com/en](blog.mikhailbahdashych.com/en).
 It always starts with the picked language. You will understand why it happens just by taking a look at `pages` folder.
 
-![2](media/2.png)
+![2](media/2.jpeg)
+
+Content of every page outside of `[locale]` route was replaced by:
+
+```typescript
+import { Redirect } from '@lib/redirect';
+
+export default Redirect;
+```
+
+Therefore, every time you are trying to go to wrong route you are either redirected to 404 or main route.
+Also, in `_app.tsx` file, to turn on `i18n` application is exported with `appWithTranslation` wrapper:
+
+```typescript jsx
+export default appWithTranslation(App);
+```
+
+Last, but not least is [getStatic](src/lib/getStatic.ts) file which is
+responsible for pages props and getting locale.
+
+```typescript
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+import i18nextConfig from '@i18config';
+
+
+export const getI18nPaths = () =>
+        i18nextConfig.i18n.locales.map((lang) => ({
+           params: {
+              locale: lang
+           }
+        }));
+
+export const getStaticPaths = () => ({
+   fallback: false,
+   paths: getI18nPaths()
+});
+
+export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors', 'articles']) {
+   const locale = await ctx?.params?.locale;
+   const postName = await ctx?.params?.postName || null;
+   const projectName = await ctx?.params?.projectName || null;
+
+   return {
+      ...(await serverSideTranslations(locale, ns)),
+      locale,
+      postName,
+      projectName
+   };
+}
+
+
+export function makeStaticProps(ns: string[]) {
+   return async function getStaticProps(ctx: any) {
+      return {
+         props: await getI18nProps(ctx, ns)
+      };
+   };
+}
+
+```
+
+You can see, that it returns `locale` and, optionally, `postName` (will be discussed [here](#page-rendering)).
+It allows us to get `locale` in props and use it, for instance, in redirect function.
+
+```typescript jsx
+import { useTranslation } from 'next-i18next';
+import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
+
+interface ErrorPageProps {
+  locale: string;
+}
+
+const ErrorPage = ({ locale }: ErrorPageProps) => {
+  const { t } = useTranslation();
+  return (
+    <>...</>
+  );
+};
+
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
+export { getStaticPaths, getStaticProps };
+
+export default ErrorPage;
+```
 
 ### Light/Dark themes
 
