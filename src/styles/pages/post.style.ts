@@ -119,6 +119,9 @@ export const ArticleBodyWrapper = styled.div`
 export const TableOfContentsContainer = styled.div`
   &.contact-and-references {
     margin-top: 30px;
+    a {
+      font-size: 20px;
+    }
   }
   &.en {
     h1, ol, li, span, a {

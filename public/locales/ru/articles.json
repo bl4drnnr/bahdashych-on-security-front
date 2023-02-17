@@ -17,7 +17,8 @@
       },
       "nginxConfig": "Конфигурация Nginx",
       "appConfig": "Настройка приложения с помощью pm2",
-      "conclusion": "Выводы и шпаргалка"
+      "conclusion": "Выводы и шпаргалка",
+      "references": "Контакт и ссылки"
     },
     "content": {
       "p0": {
@@ -232,8 +233,16 @@
         "type": "code",
         "lang": "shell",
         "content": "# Соберите и запустите приложение\n$ npm run build # сборка приложения (npm build script: next build)\n$ npm i -g pm2 # установите pm2, чтобы следующее приложение всегда оставалось в работе*\n$ pm2 start npm --name \"next\" -- start # старт приложения (npm start script: next start)\n"
+      },
+      "p70": {
+        "type": "title",
+        "content": "Контакт и ссылки"
       }
-    }
+    },
+    "references": [{
+      "name": "Оригинальный GitHub gist",
+      "link": "https://gist.github.com/jjsquady/5399d6e1b23f501083a9c262d806e248"
+    }]
   },
   "everything-you-need-to-know-about-hardening": {
     "title": "Все, что вам нужно знать о харденинге",

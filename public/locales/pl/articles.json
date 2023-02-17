@@ -17,7 +17,8 @@
       },
       "nginxConfig": "Konfiguracja Nginx",
       "appConfig": "Konfiguracja aplikacji przy użyciu pm2",
-      "conclusion": "Wnioski i ściągawka"
+      "conclusion": "Wnioski i ściągawka",
+      "references": "Kontakt i referencje"
     },
     "content": {
       "p0": {
@@ -232,8 +233,16 @@
         "type": "code",
         "lang": "shell",
         "content": "# Zbuduj i uruchom aplikację\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # zainstaluj pm2, aby następna aplikacja działała wiecznie*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
+      },
+      "p70": {
+        "type": "title",
+        "content": "Kontakt i referencje"
       }
-    }
+    },
+    "references": [{
+      "name": "Oryginalny GitHub gist",
+      "link": "https://gist.github.com/jjsquady/5399d6e1b23f501083a9c262d806e248"
+    }]
   },
   "everything-you-need-to-know-about-hardening": {
     "title": "Wszystko, co musisz wiedzieć o hardeningu",

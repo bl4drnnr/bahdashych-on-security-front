@@ -15,7 +15,7 @@ const PostFooter = ({ message, timestamp }: PostFooterProps) => {
       </Message>
       <Message className={'link'}>
         <Image className={'img'} src={'/img/linkedin.svg'} alt={'GitHub'} width={24} height={24}/>
-        <HrefLink href="https://linkedin.com/in/mikhail-bahdashych">linkedin.com/in/mikhail-bahdashych</HrefLink>
+        <HrefLink href="https://linkedin.com/in/mikhail-bahdashych">linkedin.com/mikhail-bahdashych</HrefLink>
       </Message>
       <Message className={'link'}>
         <Image className={'img'} src={'/img/gmail.svg'} alt={'GitHub'} width={24} height={24}/>

@@ -240,9 +240,9 @@
       }
     },
     "references": [{
-        "name": "The original GitHub gist",
-        "link": "https://gist.github.com/jjsquady/5399d6e1b23f501083a9c262d806e248"
-      }]
+      "name": "The original GitHub gist",
+      "link": "https://gist.github.com/jjsquady/5399d6e1b23f501083a9c262d806e248"
+    }]
   },
   "everything-you-need-to-know-about-hardening": {
     "title": "Everything you need to know about hardening",

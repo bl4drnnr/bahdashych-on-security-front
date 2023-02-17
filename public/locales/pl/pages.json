@@ -38,5 +38,11 @@
     "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie.",
     "aboutMe": "Coś o mnie?",
     "kidding": "O, jak miło! Spoko... Żartuję!"
+  },
+  "error": {
+    "title": "Nie znaleziono",
+    "mainMessage": "Nie znaleziono :(",
+    "secondMessage": "Bez względu na to, czego szukałeś, nie ma tego tutaj...",
+    "redirectMessage": "A może spróbujesz znaleźć fajne rzeczy gdzie indziej?"
   }
 }
