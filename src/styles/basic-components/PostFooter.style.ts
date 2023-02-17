@@ -20,6 +20,17 @@ export const Message = styled.p`
       filter: ${(props) => props.theme.colors.svgColor}
     }
   }
+  
+  &.timestamp {
+    font-size: 18px;
+    opacity: .5;
+  }
+`;
+
+export const TimestampWrapper = styled.div`
+  justify-content: space-evenly;
+  width: 100%;
+  display: flex;
 `;
 
 export const HrefLink = styled.a`

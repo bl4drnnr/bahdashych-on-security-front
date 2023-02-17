@@ -179,7 +179,10 @@ const BlogPost = ({ locale, postName }: PostProps) => {
             ))
           }
 
-          <PostFooter message={'Thank you for reading! I hope you found it useful.'} />
+          <PostFooter
+            timestamp={t(`articles:${postName}.timestamp`)}
+            message={t(`articles:${postName}.footer`)}
+          />
         </ArticleBodyWrapper>
       </DefaultLayout>
     </>

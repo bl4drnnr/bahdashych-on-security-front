@@ -1,10 +1,12 @@
 {
   "nextjs-nginx-deployment": {
     "title": "NextJS Nginx Deployment",
-    "tags": "",
-    "description": "",
+    "tags": "nextjs,nginx,deployment,mikhail,bahdashych,mikhail bahdashych,blog",
+    "description": "NextJS Nginx deployment process",
     "pageDescription": "Proces wdrażania jest zawsze dość stresujący, zwłaszcza jeśli jesteś programistą i nie jesteś zaznajomiony z tym, czym zajmuje się zespół DevOps. Oto najłatwiejsze rozwiązanie, jak wdrożyć aplikację Next.js przy użyciu Nginx i Letsencrypt do bezpiecznej komunikacji HTTPS. Twoja ściągawka.",
     "intro": "O Boże, nie masz pojęcia, jak bałam się wszystkiego poza pisaniem kodu. Kiedyś myślałam, że to coś nierealnego, ukończonego i niebezpiecznego, ponieważ twój błąd może zniszczyć dosłownie wszystko, ale potem spróbowałam i ty wiesz, brzmi to o wiele bardziej przerażająco niż jest w rzeczywistości. Jedyne, co musisz zrobić, to zacząć od podstaw.",
+    "timestamp": "2023-02-17",
+    "footer": "To wszystko na dziś chłopaki. Dziękuję za przeczytanie, mam nadzieję, że było to pomocne i rozwiązało problem, na który natrafiłeś tutaj, szukając rozwiązania.",
     "toc": {
       "intro": "Intro",
       "whyNginx": "Dlaczego Nginx?",
@@ -78,7 +80,7 @@
         "type": "subtitle",
         "content": "Generowanie certyfikatów"
       },
-      "p25": "Czas wygenerować certyfikaty TLS. W tym przykładzie użyjemy Let ' s Encrypt, ale możesz użyć dowolnego innego dostawcy CA, którego chcesz. Jak wspomniano wcześniej, zastąp <span class= 'codeBlock'>*q</span> nazwą domeny:",
+      "p25": "Czas wygenerować certyfikaty TLS. W tym przykładzie użyjemy Let's Encrypt, ale możesz użyć dowolnego innego dostawcy CA, którego chcesz. Jak wspomniano wcześniej, zastąp <span class= 'codeBlock'>*q</span> nazwą domeny:",
       "p26": {
         "type": "code",
         "lang": "shell",
@@ -147,64 +149,64 @@
         "content": "Wnioski i ściągawka"
       },
       "p49": "Było dość łatwe, co? To najłatwiejszy sposób na skonfigurowanie, wdrożenie i zabezpieczenie aplikacji Next.js przy użyciu Nginx. Ale może masz pytanie typu: \"Dobra, w porządku, ale co z potokiem CI/CD?\". Cóż, to jest po twojej stronie. Możesz go skonfigurować za pomocą GitHub Actions lub Jenkins lub dowolnego preferowanego narzędzia potokowego CI/CD. Ale jeśli chcesz wiedzieć, jak możesz przeprowadzić wdrożenie ręcznie, proszę bardzo.",
-      "p50": "Pierwszą rzeczą, którą musisz zrobić, to przejść do swojego serwera i przejść do folderu z projektem. Tam pociągnij gałąź główną (główną) lub inną gałąź, której używasz w trybie produkcyjnym, zainstaluj wszystkie pakiety, zbuduj projekt (używając npm w tym konkretnym przykładzie) i zrestartuj proces pm2:",
+      "p50": "Pierwszą rzeczą, którą musisz zrobić, to przejść do swojego serwera i przejść do folderu z projektem. Tam pociągnij gałąź master (main) lub inną gałąź, której używasz w trybie produkcyjnym, zainstaluj wszystkie pakiety, zbuduj projekt (używając npm w tym konkretnym przykładzie) i zrestartuj proces pm2:",
       "p51": {
         "type": "code",
         "lang": "shell",
         "content": "$ git pull origin master\n$ npm i\n$ npm run build\n$ pm2 restart blog"
       },
-      "p52": "By the way, I guess you want to change the name of the application on something more human-readable. Here is how you can do that. First of all type next command to get list of all processes handled by pm2:",
+      "p52": "Nawiasem mówiąc, myślę, że chcesz zmienić nazwę aplikacji na coś bardziej czytelnego dla człowieka. Oto jak możesz to zrobić. Najpierw wpisz to polecenie, aby uzyskać listę wszystkich procesów obsługiwanych przez pm2:",
       "p53": {
         "type": "code",
         "lang": "shell",
         "content": "$ pm2 list"
       },
-      "p54": "As a result you will see pretty looking table, take a look at the id column, at this moment, I guess, you will see 0 value, but if not, just replace it on your value and type next to change the name of the process:",
+      "p54": "W rezultacie zobaczysz ładnie wyglądającą tabelę, spójrz na kolumnę id, w tym momencie, jak sądzę, zobaczysz wartość 0, ale jeśli nie, po prostu zamień ją na swoją wartość i wpisz obok, aby zmienić nazwę proces:",
       "p55": {
         "type": "code",
         "lang": "shell",
         "content": "$ pm2 restart 0 --name \"new-name\""
       },
-      "p56": "You are awesome! Cheatsheet specially for you:",
+      "p56": "Jesteś niesamowity! Ściągawka specjalnie dla Ciebie:",
       "p57": {
         "type": "code",
         "lang": "bash",
-        "content": "# Update and upgrade all packages and install required programs\n$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt"
+        "content": "# Zaktualizuj i zaktualizuj wszystkie pakiety oraz zainstaluj wymagane programy\n$ sudo apt update && sudo apt upgrade\n$ sudo apt install nginx letsencrypt"
       },
       "p58": {
         "type": "code",
         "lang": "bash",
-        "content": "# Also enable nginx in ufw\n$ sudo ufw allow 'Nginx Full'"
+        "content": "# Włącz także nginx w ufw\n$ sudo ufw allow 'Nginx Full'"
       },
       "p59": {
         "type": "code",
         "lang": "bash",
-        "content": "# Paste next content in sites-available/default file and test the server\n$ sudo vim /etc/nginx/sites-available/default"
+        "content": "# Wklej następną zawartość do pliku sites-available/default i przetestuj serwer\n$ sudo vim /etc/nginx/sites-available/default"
       },
       "p60": {
         "type": "code",
         "lang": "nginx",
-        "content": "# Replace *q with your domain name\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\troot /var/www/html;\n\tindex index.html index.htm index.nginx-debian.html;\n\n\tserver_name q*;\n\n\tlocation / {\n\t\ttry_files $uri $uri/ =404;\n\t}\n\n\t# letsencrypt\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
+        "content": "# Zastąp *q nazwą swojej domeny\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\n\troot /var/www/html;\n\tindex index.html index.htm index.nginx-debian.html;\n\n\tserver_name q*;\n\n\tlocation / {\n\t\ttry_files $uri $uri/ =404;\n\t}\n\n\t# letsencrypt\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
       },
       "p61": {
         "type": "code",
         "lang": "bash",
-        "content": "# Check for syntax error and restart the server\n$ sudo nginx -t\nnginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n$ sudo systemctl restart nginx"
+        "content": "# Sprawdź, czy nie wystąpił błąd składni i zrestartuj serwer\n$ sudo nginx -t\nnginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n$ sudo systemctl restart nginx"
       },
       "p62": {
         "type": "code",
         "lang": "bash",
-        "content": "# Generate the TLS certificate (replace *q with your domain name)\n$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q"
+        "content": "# Wygeneruj certyfikat TLS (zastąp *q nazwą swojej domeny)\n$ sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html -d *q"
       },
       "p63": {
         "type": "code",
         "lang": "bash",
-        "content": "# Generate Diffie-Hellman (DH) params\n$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048"
+        "content": "# Wygeneruj parametry Diffie-Hellmana (DH)\n$ sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048"
       },
       "p64": {
         "type": "code",
         "lang": "bash",
-        "content": "# Secure our Nginx server by pasting next into config file\n$ sudo vim /etc/nginx/snippets/ssl-params.conf"
+        "content": "# Zabezpiecz nasz serwer Nginx wklejając następną zawartość do pliku konfiguracyjnego\n$ sudo vim /etc/nginx/snippets/ssl-params.conf"
       },
       "p65": {
         "type": "code",
@@ -214,22 +216,22 @@
       "p66": {
         "type": "code",
         "lang": "bash",
-        "content": "# Paste next config into file\n# Remember about port of localhost and replacing *q with domain name\n$ sudo vim /etc/nginx/sites-available/default"
+        "content": "# Wklej następną konfigurację do pliku\n# Pamiętaj o porcie localhost i zamianie *q na nazwę domeny\n$ sudo vim /etc/nginx/sites-available/default"
       },
       "p67": {
         "type": "code",
         "lang": "nginx",
-        "content": "# redirect http to https\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\tserver_name *q;\n\treturn 301 https://$server_name$request_uri;\n}\n\nserver {\n\t# listen on *:443 -> ssl; instead of *:80\n\tlisten 443 ssl http2 default_server;\n\tlisten [::]:443 ssl http2 default_server;\n\n\tserver_name q*;\n\n\tssl_certificate /etc/letsencrypt/live/*q/fullchain.pem;\n\tssl_certificate_key /etc/letsencrypt/live/*q/privkey.pem;\n\tinclude snippets/ssl-params.conf;\n\n\tlocation / {\n\t\t# reverse proxy for next server\n\n\t\t# It is important to mention that you need to change port\n\t\t# for application on port application uses when is started\n\t\t# after build.\n\t\tproxy_pass http://localhost:8080;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\n\t\t# we need to remove this 404 handling\n\t\t# because next's _next folder and own handling\n\t\t# try_files $uri $uri/ =404;\n\t}\n\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
+        "content": "# redirect z http na https\nserver {\n\tlisten 80 default_server;\n\tlisten [::]:80 default_server;\n\tserver_name *q;\n\treturn 301 https://$server_name$request_uri;\n}\n\nserver {\n\t# listen on *:443 -> ssl; instead of *:80\n\tlisten 443 ssl http2 default_server;\n\tlisten [::]:443 ssl http2 default_server;\n\n\tserver_name q*;\n\n\tssl_certificate /etc/letsencrypt/live/*q/fullchain.pem;\n\tssl_certificate_key /etc/letsencrypt/live/*q/privkey.pem;\n\tinclude snippets/ssl-params.conf;\n\n\tlocation / {\n\t\t# reverse proxy for next server\n\n\t\t# It is important to mention that you need to change port\n\t\t# for application on port application uses when is started\n\t\t# after build.\n\t\tproxy_pass http://localhost:8080;\n\t\tproxy_http_version 1.1;\n\t\tproxy_set_header Upgrade $http_upgrade;\n\t\tproxy_set_header Connection 'upgrade';\n\t\tproxy_set_header Host $host;\n\t\tproxy_cache_bypass $http_upgrade;\n\n\t\t# we need to remove this 404 handling\n\t\t# because next's _next folder and own handling\n\t\t# try_files $uri $uri/ =404;\n\t}\n\n\tlocation ~ /.well-known {\n\t\tallow all;\n\t}\n}"
       },
       "p68": {
         "type": "code",
         "lang": "bash",
-        "content": "# Restart the service\n$ sudo service nginx restart"
+        "content": "# Uruchom ponownie usługę\n$ sudo service nginx restart"
       },
       "p69": {
         "type": "code",
         "lang": "shell",
-        "content": "# Build and start the application\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # install pm2 to keep next app alive forever*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
+        "content": "# Zbuduj i uruchom aplikację\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # zainstaluj pm2, aby następna aplikacja działała wiecznie*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
       }
     }
   }
