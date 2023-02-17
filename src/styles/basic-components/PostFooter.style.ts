@@ -9,10 +9,13 @@ export const Container = styled.div`
 export const Message = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
   font-family: 'Charter', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   padding-top: 30px;
   font-weight: 400;
   display: flex;
+  &.mess {
+    text-indent: 50px;
+  }
   
   &.link {
     .img {
