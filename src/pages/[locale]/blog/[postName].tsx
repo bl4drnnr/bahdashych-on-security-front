@@ -33,6 +33,11 @@ interface IArticleCode {
   content: string;
 }
 
+interface IReference {
+  name: string;
+  link: string;
+}
+
 interface ArticleContentObject {
   [key: string]: string | IArticleCode | IArticleTitle;
 }
@@ -51,13 +56,13 @@ const BlogPost = ({ locale, postName }: PostProps) => {
   const generateTableOfContents = (toc: any, parentKeyName?: string) => {
     const CreateTableOfContents = ({ toc, parentKeyName }: { toc: any, parentKeyName?: string }): JSX.Element => {
       return (
-        <ol className={'blogPostOl'}>
+        <ol className={'blog-post-ol'}>
           {Object.entries(toc).map(([key, value]: any) => {
             const keyName = parentKeyName ? `${parentKeyName}.${key}` : key;
             if (typeof value === 'string') {
               return (
                 <li
-                  className={'blogPostLi'}
+                  className={'blog-post-li'}
                   key={key}
                   onClick={() => scrollTo(getRefByName(t(`articles:${postName}.toc.${keyName}`)))}
                 >
@@ -67,7 +72,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
             } else {
               return (
                 <li
-                  className={'blogPostLi'}
+                  className={'blog-post-li'}
                   key={key}
                 >
                   <span onClick={() => scrollTo(getRefByName(keyName))}>{key}</span>
@@ -178,6 +183,18 @@ const BlogPost = ({ locale, postName }: PostProps) => {
               </div>
             ))
           }
+
+          <TableOfContentsContainer className={`${locale === 'en' ? 'en' : 'non-en'} contact-and-references`}>
+            {
+              Object.entries(t(`articles:${postName}.references`, { returnObjects: true }) as IReference[]).map(([key, value]) => (
+                <ul key={key}>
+                  <li className={'blog-post-ul'}>
+                    <a href={value.link}>{value.name}</a>
+                  </li>
+                </ul>
+              ))
+            }
+          </TableOfContentsContainer>
 
           <PostFooter
             timestamp={t(`articles:${postName}.timestamp`)}

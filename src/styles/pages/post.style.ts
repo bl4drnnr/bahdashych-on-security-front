@@ -65,7 +65,7 @@ export const ArticleBodyWrapper = styled.div`
     }
   }
 
-  .codeBlock {
+  .code-block {
     font-size: 16px;
     font-family: 'Hack', sans-serif;
     padding: 2px;
@@ -73,7 +73,20 @@ export const ArticleBodyWrapper = styled.div`
     background: rgb(${(props) => props.theme.colors.lightBackground});
   }
   
-  .blogPostLi {
+  .blog-post-ul {
+    font-size: 18px;
+    color: rgb(${(props) => props.theme.colors.primaryDark});
+    text-decoration: underline;
+    margin-bottom: 0.6em;
+    transition: .2s;
+    margin-left: 20px;
+
+    :hover {
+      cursor: pointer;
+    }
+  }
+  
+  .blog-post-li {
     font-size: 18px;
     color: rgb(${(props) => props.theme.colors.primaryDark});
     text-decoration: underline;
@@ -95,7 +108,7 @@ export const ArticleBodyWrapper = styled.div`
     }
   }
   
-  .blogPostOl {
+  .blog-post-ol {
     list-style-type: none;
     counter-reset: item;
     margin: 0;
@@ -104,13 +117,19 @@ export const ArticleBodyWrapper = styled.div`
 `;
 
 export const TableOfContentsContainer = styled.div`
+  &.contact-and-references {
+    margin-top: 30px;
+    a {
+      font-size: 20px;
+    }
+  }
   &.en {
-    h1, ol, li, span {
+    h1, ol, li, span, a {
       font-family: 'Charter', sans-serif;
     } 
   }
   &.non-en {
-    h1, ol, li, span {
+    h1, ol, li, span, a {
       font-family: 'Crimson', serif;
     }
   }
@@ -120,3 +139,4 @@ export const TableOfContentsTitle = styled.h1`
   color: rgb(${(props) => props.theme.colors.textColor});
   margin-bottom: 20px;
 `;
+

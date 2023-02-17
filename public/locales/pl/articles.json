@@ -17,7 +17,8 @@
       },
       "nginxConfig": "Konfiguracja Nginx",
       "appConfig": "Konfiguracja aplikacji przy użyciu pm2",
-      "conclusion": "Wnioski i ściągawka"
+      "conclusion": "Wnioski i ściągawka",
+      "references": "Kontakt i referencje"
     },
     "content": {
       "p0": {
@@ -51,7 +52,7 @@
         "lang": "shell",
         "content": "$ sudo ufw allow 'Nginx Full'"
       },
-      "p14": "Ostatnim krokiem jest sprawdzenie, czy nasz serwer nginx działa poprawnie. Aby to zrobić, przejdź do <span class='codeBlock'>/etc/nginx/sites-available/default</span> i wklej następną zawartość (<span class='codeBlock'>*q</span> to nasza domena):",
+      "p14": "Ostatnim krokiem jest sprawdzenie, czy nasz serwer nginx działa poprawnie. Aby to zrobić, przejdź do <span class='code-block'>/etc/nginx/sites-available/default</span> i wklej następną zawartość (<span class='code-block'>*q</span> to nasza domena):",
       "p15": {
         "type": "code",
         "lang": "bash",
@@ -80,7 +81,7 @@
         "type": "subtitle",
         "content": "Generowanie certyfikatów"
       },
-      "p25": "Czas wygenerować certyfikaty TLS. W tym przykładzie użyjemy Let's Encrypt, ale możesz użyć dowolnego innego dostawcy CA, którego chcesz. Jak wspomniano wcześniej, zastąp <span class= 'codeBlock'>*q</span> nazwą domeny:",
+      "p25": "Czas wygenerować certyfikaty TLS. W tym przykładzie użyjemy Let's Encrypt, ale możesz użyć dowolnego innego dostawcy CA, którego chcesz. Jak wspomniano wcześniej, zastąp <span class= 'code-block'>*q</span> nazwą domeny:",
       "p26": {
         "type": "code",
         "lang": "shell",
@@ -112,7 +113,7 @@
         "content": "Konfiguracja Nginx"
       },
       "p34": "Prawie skończyliśmy z konfiguracją. 2 ostatnie rzeczy, które musimy zrobić, to skonfigurować serwer Nginx jako odwrotny serwer proxy i uruchomić aplikację.",
-      "p35": "Zacznijmy od konfiguracji Nginx jako odwrotnego serwera proxy. Zasadniczo musimy tutaj edytować plik nginx i wkleić następną zawartość (pamiętaj, <span class='codeBlock'>*q</span> jest dla Twojej nazwy domeny):",
+      "p35": "Zacznijmy od konfiguracji Nginx jako odwrotnego serwera proxy. Zasadniczo musimy tutaj edytować plik nginx i wkleić następną zawartość (pamiętaj, <span class='code-block'>*q</span> jest dla Twojej nazwy domeny):",
       "p36": {
         "type": "code",
         "lang": "bash",
@@ -232,8 +233,16 @@
         "type": "code",
         "lang": "shell",
         "content": "# Zbuduj i uruchom aplikację\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # zainstaluj pm2, aby następna aplikacja działała wiecznie*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
+      },
+      "p70": {
+        "type": "title",
+        "content": "Kontakt i referencje"
       }
-    }
+    },
+    "references": [{
+      "name": "Oryginalny GitHub gist",
+      "link": "https://gist.github.com/jjsquady/5399d6e1b23f501083a9c262d806e248"
+    }]
   },
   "everything-you-need-to-know-about-hardening": {
     "title": "Wszystko, co musisz wiedzieć o hardeningu",

@@ -6,13 +6,6 @@ import { PostFooterProps } from '@components/PostFooter/PostFooter.interface';
 import { Container, Message, HrefLink, TimestampWrapper } from '@styles/PostFooter.style';
 
 const PostFooter = ({ message, timestamp }: PostFooterProps) => {
-  const handleRedirect = (link: string, type = 'link') => {
-    if (type === 'link')
-      window.open(`https://${link}`, '_blank', 'noreferrer');
-    else
-      window.open(link, '_blank', 'noreferrer');
-  };
-
   return (
     <Container>
       <Message className={'mess'}>{message}</Message>
@@ -22,7 +15,7 @@ const PostFooter = ({ message, timestamp }: PostFooterProps) => {
       </Message>
       <Message className={'link'}>
         <Image className={'img'} src={'/img/linkedin.svg'} alt={'GitHub'} width={24} height={24}/>
-        <HrefLink href="https://linkedin.com/in/mikhail-bahdashych">linkedin.com/in/mikhail-bahdashych</HrefLink>
+        <HrefLink href="https://linkedin.com/in/mikhail-bahdashych">linkedin.com/mikhail-bahdashych</HrefLink>
       </Message>
       <Message className={'link'}>
         <Image className={'img'} src={'/img/gmail.svg'} alt={'GitHub'} width={24} height={24}/>

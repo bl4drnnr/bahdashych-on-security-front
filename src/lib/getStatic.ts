@@ -15,14 +15,16 @@ export const getStaticPaths = () => ({
   paths: getI18nPaths()
 });
 
-export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors']) {
+export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors', 'articles']) {
   const locale = await ctx?.params?.locale;
   const postName = await ctx?.params?.postName || null;
+  const projectName = await ctx?.params?.projectName || null;
 
   return {
     ...(await serverSideTranslations(locale, ns)),
     locale,
-    postName
+    postName,
+    projectName
   };
 }
 

@@ -38,5 +38,11 @@
     "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience.",
     "aboutMe": "Something about me?",
     "kidding": "Oh, how sweet! Nah... Just kidding!"
+  },
+  "error": {
+    "title": "Not found",
+    "mainMessage": "Not found :(",
+    "secondMessage": "No matter what you were looking for, it is not here...",
+    "redirectMessage": "What about to try to find cool stuff somewhere else?"
   }
 }

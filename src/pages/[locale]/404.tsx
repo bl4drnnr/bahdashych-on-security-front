@@ -6,7 +6,10 @@ import { useRouter } from 'next/router';
 
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
-import { Container } from '@styles/error.style';
+import {
+  Container, MainMessage, RedirectMessage, SecondaryMessage,
+  Wrapper
+} from '@styles/error.style';
 
 interface ErrorPageProps {
   locale: string;
@@ -23,10 +26,20 @@ const ErrorPage = ({ locale }: ErrorPageProps) => {
   return (
     <>
       <Head>
-        <title></title>
+        <title>{t('pages:home.name')} | {t('pages:error.title')}</title>
       </Head>
       <DefaultLayout locale={locale} translation={t}>
-        <Container></Container>
+        <Container>
+          <Wrapper>
+            <MainMessage>{t('pages:error.mainMessage')}</MainMessage>
+            <SecondaryMessage>{t('pages:error.secondMessage')}</SecondaryMessage>
+            <RedirectMessage
+              onClick={() => handleRedirect('/')}
+            >
+              {t('pages:error.redirectMessage')}
+            </RedirectMessage>
+          </Wrapper>
+        </Container>
       </DefaultLayout>
     </>
   );
