@@ -186,6 +186,71 @@ Items in array for `makeStaticProps` function have exact same names as JSON file
 
 ### Light/Dark themes
 
+Everything is quite easy here. Just `Recoil` to control the state and `localStorage` to store the value for color scheme.
+
+```typescript
+// src/store/global/global.state.ts
+
+import { atom } from 'recoil';
+
+export const theme = atom<'dark' | 'light'>({
+  key: 'theme',
+  default: 'dark',
+});
+```
+
+Special hook to change the theme:
+
+```typescript
+import { useMemo } from 'react';
+
+import { useRecoilState } from 'recoil';
+
+import { theme as storeTheme } from '@store/global/global.state';
+import { DarkTheme } from '@styles/Dark.theme';
+import { LightTheme } from '@styles/Light.theme';
+
+const useDarkMode = () => {
+  const [theme, setTheme] = useRecoilState(storeTheme);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const themeMode = useMemo(() => (theme === 'light' ? LightTheme : DarkTheme), [theme]);
+
+  return [theme, toggleTheme, themeMode] as const;
+};
+
+export default useDarkMode;
+```
+
+Used in `Global.layout.tsx` by `<ThemeProvider>`:
+
+```typescript jsx
+import React from 'react';
+
+import { ThemeProvider } from 'styled-components';
+
+import useDarkMode from '@hooks/useDarkMode.hook';
+import { DarkTheme } from '@styles/Dark.theme';
+import { LightTheme } from '@styles/Light.theme';
+
+const GlobalLayout = ({ children, loading = false }: GlobalLayoutProps) => {
+  const [theme] = useDarkMode();
+
+  return (
+    <ThemeProvider theme={theme === 'light' ? LightTheme : DarkTheme}>
+      ...
+    </ThemeProvider>
+  );
+};
+
+export default GlobalLayout;
+```
+
+Handler for theme changing has been implemented within `Header` component. 
+
 ### Page rendering
 
 As you can see, instead of creating page per post/project only one page per entity has been created.
