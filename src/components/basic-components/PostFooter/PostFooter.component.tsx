@@ -6,13 +6,6 @@ import { PostFooterProps } from '@components/PostFooter/PostFooter.interface';
 import { Container, Message, HrefLink, TimestampWrapper } from '@styles/PostFooter.style';
 
 const PostFooter = ({ message, timestamp }: PostFooterProps) => {
-  const handleRedirect = (link: string, type = 'link') => {
-    if (type === 'link')
-      window.open(`https://${link}`, '_blank', 'noreferrer');
-    else
-      window.open(link, '_blank', 'noreferrer');
-  };
-
   return (
     <Container>
       <Message className={'mess'}>{message}</Message>

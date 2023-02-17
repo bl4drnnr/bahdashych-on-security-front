@@ -17,7 +17,8 @@
       },
       "nginxConfig": "Nginx configuration",
       "appConfig": "Application setup using pm2",
-      "conclusion": "Conclusions and cheatsheet"
+      "conclusion": "Conclusions and cheatsheet",
+      "references": "Contact and references"
     },
     "content": {
       "p0": {
@@ -51,7 +52,7 @@
         "lang": "shell",
         "content": "$ sudo ufw allow 'Nginx Full'"
       },
-      "p14": "Very last step here is checking if our nginx sever is working correctly. In order to do that go to <span class='codeBlock'>/etc/nginx/sites-available/default</span> and paste next content (<span class='codeBlock'>*q</span> is our domain):",
+      "p14": "Very last step here is checking if our nginx sever is working correctly. In order to do that go to <span class='code-block'>/etc/nginx/sites-available/default</span> and paste next content (<span class='code-block'>*q</span> is our domain):",
       "p15": {
         "type": "code",
         "lang": "bash",
@@ -80,7 +81,7 @@
         "type": "subtitle",
         "content": "Certificate generating"
       },
-      "p25": "It's time to generate some TLS certificates. In this example we are going to use Let's Encrypt, but you can use any other CA provider you want. As it was mentioned previously, replace <span class='codeBlock'>*q</span> by your domain name:",
+      "p25": "It's time to generate some TLS certificates. In this example we are going to use Let's Encrypt, but you can use any other CA provider you want. As it was mentioned previously, replace <span class='code-block'>*q</span> by your domain name:",
       "p26": {
         "type": "code",
         "lang": "shell",
@@ -112,7 +113,7 @@
         "content": "Nginx configuration"
       },
       "p34": "We are almost done with the configuration. The 2 very last things we need to do is to configure our Nginx server as a reverse proxy server and start application.",
-      "p35": "Let's start with configuration out Nginx as a reverse proxy. Basically, here we need to edit out nginx file and paste next content (remember, <span class='codeBlock'>*q</span> is for your domain name):",
+      "p35": "Let's start with configuration out Nginx as a reverse proxy. Basically, here we need to edit out nginx file and paste next content (remember, <span class='code-block'>*q</span> is for your domain name):",
       "p36": {
         "type": "code",
         "lang": "bash",
@@ -232,8 +233,16 @@
         "type": "code",
         "lang": "shell",
         "content": "# Build and start the application\n$ npm run build # build our app for production (npm build script: next build)\n$ npm i -g pm2 # install pm2 to keep next app alive forever*\n$ pm2 start npm --name \"next\" -- start # start next app (npm start script: next start)\n"
+      },
+      "p70": {
+        "type": "title",
+        "content": "Contact and references"
       }
-    }
+    },
+    "references": [{
+        "name": "The original GitHub gist",
+        "link": "https://gist.github.com/jjsquady/5399d6e1b23f501083a9c262d806e248"
+      }]
   },
   "everything-you-need-to-know-about-hardening": {
     "title": "Everything you need to know about hardening",
