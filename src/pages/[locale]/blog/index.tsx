@@ -54,7 +54,7 @@ const Blog = ({ locale }: BlogProps) => {
               onInit={(typewriter) => {
                 typewriter
                   .changeDelay(75)
-                  .typeString('My own Library of Alexandria')
+                  .typeString(t('pages:blog.alexandriaLibrary'))
                   .start();
               }}
             />

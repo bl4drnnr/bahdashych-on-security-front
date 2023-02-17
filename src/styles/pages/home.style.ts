@@ -79,6 +79,7 @@ export const BlogPostTitle = styled.h3`
 `;
 
 export const BlogPostDescription = styled.p`
+  text-indent: 50px;
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .5);
 `;

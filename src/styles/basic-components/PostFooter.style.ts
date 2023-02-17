@@ -8,11 +8,19 @@ export const Container = styled.div`
 
 export const Message = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-family: 'Charter', sans-serif;
+  font-family: 'Crimson', serif;
   font-size: 20px;
   padding-top: 30px;
   font-weight: 400;
   display: flex;
+  
+  &.mess {
+    text-indent: 50px;
+    @media only screen and (max-width: 780px) {
+      font-size: 18px;
+      text-indent: 25px;
+    }
+  }
   
   &.link {
     .img {
@@ -20,6 +28,17 @@ export const Message = styled.p`
       filter: ${(props) => props.theme.colors.svgColor}
     }
   }
+  
+  &.timestamp {
+    font-size: 18px;
+    opacity: .5;
+  }
+`;
+
+export const TimestampWrapper = styled.div`
+  justify-content: space-evenly;
+  width: 100%;
+  display: flex;
 `;
 
 export const HrefLink = styled.a`

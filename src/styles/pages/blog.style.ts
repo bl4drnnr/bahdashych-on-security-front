@@ -24,6 +24,7 @@ export const BlogPostsDescription = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 18px;
   font-weight: 200;
+  text-indent: 25px;
   
   &.margins {
     margin: 25px 0;
@@ -54,6 +55,7 @@ export const PostTitle = styled.h3`
 `;
 
 export const PostDescription = styled.p`
+  text-indent: 50px;
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .5);
 `;

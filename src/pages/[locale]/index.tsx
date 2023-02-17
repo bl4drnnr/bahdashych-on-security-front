@@ -80,10 +80,18 @@ const Home = ({ locale }: HomeProps) => {
 
           <BlogPostsContainer>
             <InterestingPosts>
+              {t('pages:home.interestingPosts')}
+
             </InterestingPosts>
-            <BlogPostPreview>
-              <BlogPostTitle></BlogPostTitle>
-              <BlogPostDescription></BlogPostDescription>
+            <BlogPostPreview
+              onClick={() => handleRedirect('/nextjs-nginx-deployment')}
+            >
+              <BlogPostTitle>
+                {t('articles:nextjs-nginx-deployment.title')}
+              </BlogPostTitle>
+              <BlogPostDescription>
+                {t('articles:nextjs-nginx-deployment.pageDescription')}
+              </BlogPostDescription>
             </BlogPostPreview>
           </BlogPostsContainer>
         </Container>
