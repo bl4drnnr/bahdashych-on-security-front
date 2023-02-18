@@ -8,7 +8,7 @@
     "timestamp": "2023-02-17",
     "footer": "To wszystko na dziś chłopaki. Dziękuję za przeczytanie, mam nadzieję, że było to pomocne i rozwiązało problem, na który natrafiłeś tutaj, szukając rozwiązania.",
     "toc": {
-      "intro": "Intro",
+      "intro": "Introduction",
       "whyNginx": "Dlaczego Nginx?",
       "preps": "Przygotowania",
       "Konfiguracja HTTPS": {
@@ -23,7 +23,7 @@
     "content": {
       "p0": {
         "type": "title",
-        "content": "Intro"
+        "content": "Introduction"
       },
       "p1": "Proces wdrażania aplikacji jest zawsze rodzajem stresu, zwłaszcza gdy jesteś programistą, który nie ma pojęcia, co robi personel DevOps (zaufaj mi, wiem o czym mówię). Dlatego jedyne, czego naprawdę chcesz, to jak najszybsze wdrożenie aplikacji w mniej lub bardziej bezpieczny sposób.",
       "p2": "Cóż, gratulacje, trafiłeś we właściwe miejsce! W tym artykule wyjaśnimy, jak możesz wdrożyć następny.aplikacja js wykorzystująca nginx w bezpieczny sposób i szyfrowanie HTTPS. Więc zacznijmy!",
@@ -253,7 +253,7 @@
     "timestamp": "",
     "footer": "",
     "toc": {
-      "intro": "Intro"
+      "intro": "Introduction"
     },
     "content": {}
   },
@@ -266,7 +266,7 @@
     "timestamp": "",
     "footer": "",
     "toc": {
-      "intro": "Intro"
+      "intro": "Introduction"
     },
     "content": {}
   }

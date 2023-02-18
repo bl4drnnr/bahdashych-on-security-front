@@ -8,7 +8,7 @@
     "timestamp": "2023-02-17",
     "footer": "That's all for today guys. Thanks for reading, I hope this was helpful and solved the problem you came across here looking for a solution.",
     "toc": {
-      "intro": "Intro",
+      "intro": "Introduction",
       "whyNginx": "Why Nginx?",
       "preps": "Preparations",
       "HTTPS Configuration": {
@@ -23,7 +23,7 @@
     "content": {
       "p0": {
         "type": "title",
-        "content": "Intro"
+        "content": "Introduction"
       },
       "p1": "The process of deployment of the application is always kind of stress, especially when you are a developer, who has no idea of what DevOps staff does (trust me, I know what I am talking about). Therefore, the only thing you really want is to as fast as possible deploy your application in a more or less secure way.",
       "p2": "Well, congratulations, you have come to the right place! This article will explain how you can deploy your Next.js application using Nginx in a secure manner and HTTPS encryption. So, let's start!",
@@ -253,7 +253,7 @@
     "timestamp": "",
     "footer": "",
     "toc": {
-      "intro": "Intro"
+      "intro": "Introduction"
     },
     "content": {}
   },
@@ -266,8 +266,86 @@
     "timestamp": "",
     "footer": "",
     "toc": {
-      "intro": "Intro"
+      "intro": "Introduction"
     },
     "content": {}
+  },
+  "how-does-dns-work-and-why-we-need-dnssec": {
+    "title": "How does DNS work and why we need DNSSEC",
+    "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+    "description": "Have you ever heard about DNS? I bet you have! Also I bet that if you tried to figure out what this is all about you have seen DNSSEC. Well... it's time to figure out how deep this rabbit hole actually is...",
+    "pageDescription": "I guess all you guys have ever heard about DNS. This is phone book of the Internet, and it converts human-readable domain names into IP addresses parsed by machines and blah-blah-blah. Honestly, this is literally rabbit hole, and I have decided to figure out how deep it is. Well, trust me, you are going to be surprised and I have hella interesting stuff to share with you. So, let's dive into it!",
+    "intro": "",
+    "timestamp": "",
+    "footer": "",
+    "toc": {
+      "intro": "Introduction",
+      "DNS Overview": {
+        "terminology": "DNS Terminology",
+        "resolutionFlow": "DNS Resolution Flow",
+        "dnsRoles": "DNS Servers Roles",
+        "recordsTypes": "DNS Records Types"
+      },
+      "dnssecIntro": "Introduction into DNSSEC",
+      "DNSSEC Overview": {
+        "terminology": "DNSSEC Terminology",
+        "resolutionFlow": "DNSSEC Resolution Flow"
+      },
+      "conclusion": "Conclusions",
+      "references": "Contact and references"
+    },
+    "content": {
+      "p0": {
+        "type": "title",
+        "content": "Introduction"
+      },
+      "p1": "In today's digital age, the Domain Name System (DNS) plays a vital role in facilitating online communication and enabling users to access websites and services on the internet. However, with the increasing number of cybersecurity threats and malicious activities, there is a growing concern about the security of DNS and the potential risks associated with it.",
+      "p2": "This is where DNS Security Extensions (DNSSEC) comes into the picture, offering a powerful solution to strengthen the security of DNS and protect against various attacks such as DNS spoofing, cache poisoning, and other forms of cyber threats.",
+      "p3": "In this blog post, we'll take a closer look at what DNS and DNSSEC are, how they work, and why they are essential for maintaining a secure and reliable internet infrastructure. We'll also explore some real-world use cases and discuss the benefits and limitations of DNSSEC. So, if you want to learn more about DNS and DNSSEC and how they can help secure your online presence, keep reading!",
+      "p4": {
+        "type": "title",
+        "content": "DNS Overview"
+      },
+      "p5": "The same as always let's start with short description what DNS actually is and how it can be described. The most popular definition of DNS always sounds more or less like that:",
+      "p6": {
+        "type": "list",
+        "items": ["<b>DNS (Domain Name System)</b> - system that translates human-readable domain names to IP address, so machines can communicate with each other using those IP addresses."]
+      },
+      "p7": "Sounds pretty common, isn't it? I wanted to try to dig a little deeper in order to find out what happens after you write URL address into your browser and hit Enter button. I wanted to know what is happening behind the scene and how your computer obtains the IP address of source web server.",
+      "p8": {
+        "type": "subtitle",
+        "content": "DNS Terminology"
+      },
+      "p9": "But before we start, let's define some terminology we are going to use all through our long journey. Feel free to get back to them whenever you need that:",
+      "p10": {
+        "type": "list",
+        "items": [
+          "<b>DNS Domain / DNS Zone</b> - a section of the DNS namespace. For instance: blog.mikhailbahdashych.me. (trailing dot is not a typo) is the server named \"blog\" in the \"mikhailbahdashych\" domain/zone, which is in the \"me\" domain/zone, which is in the \"root (.)\" domain/zone.",
+          "<b>Iterative DNS Query</b> - a request to a DNS server: 'Give me whatever help you can, but ask no one else'.",
+          "<b>Recursive DNS Query</b> - a request to a DNS server: 'Give me what I need, and ask everyone you want'.",
+          "<b>DNS Server</b> - term that described the whole infrastructure of DNS roles. It's okay, if you don't understand it at this point, we will clarify that."
+        ]
+      },
+      "p11": {
+        "type": "subtitle",
+        "content": "DNS Resolution Flow"
+      },
+      "p12": "The very first thing we need to know about is: how does your browser send some text in form of URL and get back IP address of requested website? At this moment of time we are discussing DNS only from perspective that the only thing it does is converting URLs into IP address of websites, but we will expand its usage a little later.",
+      "p13": "Here is where <b>DNS Resolution Flow</b> comes into play.",
+      "p14": {
+        "type": "picture",
+        "resource": "dns_record_request_sequence_recursive_resolver.png"
+      }
+    },
+    "references": [{
+      "name": "What is DNS by Cloudflare",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/what-is-dns/"
+    }, {
+      "name": "What is DNSSEC by Cloudflare (obvious, isn't it?)",
+      "link": "https://www.cloudflare.com/en-gb/dns/dnssec/how-dnssec-works/"
+    }, {
+      "name": "Really cool video that explains DNS and DNSSEC resolution flows",
+      "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
+    }]
   }
 }

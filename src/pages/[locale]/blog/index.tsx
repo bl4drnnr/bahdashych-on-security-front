@@ -36,6 +36,10 @@ const Blog = ({ locale }: BlogProps) => {
     description: t('articles:nextjs-nginx-deployment.pageDescription'),
     link: '/blog/nextjs-nginx-deployment'
   }, {
+    title: t('articles:how-does-dns-work-and-why-we-need-dnssec.title'),
+    description: t('articles:how-does-dns-work-and-why-we-need-dnssec.pageDescription'),
+    link: '/blog/how-does-dns-work-and-why-we-need-dnssec'
+  }, {
     title: t('articles:everything-you-need-to-know-about-hardening.title'),
     description: t('articles:everything-you-need-to-know-about-hardening.pageDescription'),
     link: '/blog/everything-you-need-to-know-about-hardening'

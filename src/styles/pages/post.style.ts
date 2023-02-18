@@ -34,13 +34,13 @@ export const PostParagraph = styled.p`
     margin-top: 30px;
     font-size: 32px;
   }
-  
+
   &.subtitle {
     font-weight: 700;
     text-indent: 0;
     font-size: 24px;
   }
-  
+
   @media only screen and (max-width: 780px) {
     font-size: 18px;
     text-indent: 25px;
@@ -53,14 +53,20 @@ export const ArticleBodyWrapper = styled.div`
   @media only screen and (max-width: 780px) {
     width: 90%;
   }
-  
+
   &.en {
     ${PostParagraph} {
       font-family: 'Charter', sans-serif;
-    } 
+    }
+    b {
+      font-family: 'Charter', sans-serif;
+    }
   }
   &.non-en {
     ${PostParagraph} {
+      font-family: 'Crimson', serif;
+    }
+    b {
       font-family: 'Crimson', serif;
     }
   }
@@ -72,8 +78,8 @@ export const ArticleBodyWrapper = styled.div`
     border-radius: 5px;
     background: rgb(${(props) => props.theme.colors.lightBackground});
   }
-  
-  .blog-post-ul {
+
+  .table-of-contents-ul {
     font-size: 18px;
     color: rgb(${(props) => props.theme.colors.primaryDark});
     text-decoration: underline;
@@ -85,8 +91,8 @@ export const ArticleBodyWrapper = styled.div`
       cursor: pointer;
     }
   }
-  
-  .blog-post-li {
+
+  .table-of-contents-li {
     font-size: 18px;
     color: rgb(${(props) => props.theme.colors.primaryDark});
     text-decoration: underline;
@@ -107,12 +113,33 @@ export const ArticleBodyWrapper = styled.div`
       padding-right: 0.6em;
     }
   }
-  
-  .blog-post-ol {
+
+  .table-of-contents-ol {
     list-style-type: none;
     counter-reset: item;
     margin: 0;
     padding: 0;
+  }
+
+  .blog-post-ul {
+    color: rgb(${(props) => props.theme.colors.textColor});
+    margin: 20px 0 0 20px;
+  }
+
+  .blog-post-li {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+
+    @media only screen and (max-width: 780px) {
+      font-size: 18px;
+    }
+    &.en {
+      font-family: 'Charter', sans-serif;
+    }
+    &.non-en {
+      font-family: 'Crimson', serif;
+    }
   }
 `;
 
@@ -126,7 +153,7 @@ export const TableOfContentsContainer = styled.div`
   &.en {
     h1, ol, li, span, a {
       font-family: 'Charter', sans-serif;
-    } 
+    }
   }
   &.non-en {
     h1, ol, li, span, a {
@@ -140,3 +167,17 @@ export const TableOfContentsTitle = styled.h1`
   margin-bottom: 20px;
 `;
 
+export const ImageContainer = styled.div`
+  width: 100%;
+
+  > div {
+    position: unset !important;
+  }
+
+  .image {
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+  }
+`;
