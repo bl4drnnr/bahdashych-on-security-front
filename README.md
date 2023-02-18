@@ -176,7 +176,7 @@ const ErrorPage = ({ locale }: ErrorPageProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
 export { getStaticPaths, getStaticProps };
 
 export default ErrorPage;
@@ -251,6 +251,22 @@ export default GlobalLayout;
 
 Handler for theme changing has been implemented within `Header` component. 
 
+Two themes described in [themes folder](src/styles/themes). They are implementing interface, that describes
+what fields are allowed to be used:
+
+```typescript
+export interface ThemeProps {
+  colors: {
+    primaryLight: string;
+    primaryDark: string;
+    lightBackground: string;
+    darkBackground: string;
+    textColor: string;
+    svgColor: string;
+  }
+}
+```
+
 ### Page rendering
 
 As you can see, instead of creating page per post/project only one page per entity has been created.
@@ -288,7 +304,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
 };
 
 export const getServerSideProps = async (ctx: any) => {
-  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles']);
+  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
   const pageProps = await staticProps(ctx);
   const props = pageProps.props;
 

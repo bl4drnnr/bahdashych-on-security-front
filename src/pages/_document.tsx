@@ -10,8 +10,8 @@ class AppDocument extends Document {
         <Head>
           <link rel="icon" type="image/png" href="/favicon.ico"/>
           <link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'/>
-          <meta name={'keywords'} content={'Mikhail Bahdashych,blog,cybersecurity,portfolio'} />
-          <meta name={'description'} content={'Mikhail Bahdashych personal blog and portfolio page'} />
+          <meta name={'keywords'} content={'mikhail bahdashych,mikhail,bahdashych,blog,cybersecurity,portfolio'} />
+          <meta name={'description'} content={'Hello there! My name is Mikhail Bahdashych and this is my personal blog - place where I share my thoughts and knowledge. Hope you will find something interesting.'} />
           <meta httpEquiv={'Content-Type'} content="text/html; charset=utf-8" />
           <meta charSet={'utf-8'} />
         </Head>

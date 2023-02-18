@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import PostFooter from '@components/PostFooter/PostFooter.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import { AboutParagraph, AboutTitle, Box, Container } from '@styles/about.style';
@@ -27,6 +28,8 @@ const About = ({ locale }: AboutProps) => {
     <>
       <Head>
         <title>{t('pages:home.name')} | {t('pages:about.title')}</title>
+        <meta name={'keywords'} content={'mikhail bahdashych,mikhail,bahdashych,blog,cybersecurity,portfolio'} />
+        <meta name={'description'} content={'Hello there! My name is Mikhail Bahdashych and this is my personal blog - place where I share my thoughts and knowledge. Hope you will find something interesting.'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <Container>
@@ -68,14 +71,23 @@ const About = ({ locale }: AboutProps) => {
                   ))
               }
             </ul>
-            <AboutParagraph>
-              {t('pages:about.overall')}
-            </AboutParagraph>
+            <AboutParagraph dangerouslySetInnerHTML={{ __html: t('pages:about.overall') }} />
           </Box>
           <Box>
-            <AboutParagraph>
-              In case if you have any issues/propositions or whatever reason you have to contact me you can do that using next channels. Do not hesitate to do that, I will always be glad to have a small talk, so, here you go:
-            </AboutParagraph>
+            <AboutTitle>
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.contactMe'))
+                    .start();
+                }}
+              />
+            </AboutTitle>
+          </Box>
+          <Box>
+            <AboutParagraph>{t('pages:about.contactInfo')}</AboutParagraph>
+            <PostFooter />
           </Box>
         </Container>
       </DefaultLayout>
@@ -83,7 +95,7 @@ const About = ({ locale }: AboutProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
 export { getStaticPaths, getStaticProps };
 
 export default About;

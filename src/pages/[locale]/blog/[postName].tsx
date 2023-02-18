@@ -207,7 +207,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
 };
 
 export const getServerSideProps = async (ctx: any) => {
-  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles']);
+  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
   const pageProps = await staticProps(ctx);
   const props = pageProps.props;
 

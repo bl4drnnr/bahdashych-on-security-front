@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
@@ -17,7 +18,6 @@ import {
   IntroTextWrapper,
   TypewritingText
 } from '@styles/home.style';
-import Image from "next/image";
 
 interface PostProps {
   title: string;
@@ -55,6 +55,8 @@ const Home = ({ locale }: HomeProps) => {
     <>
       <Head>
         <title>{t('pages:home.name')} | {t('pages:home.title')}</title>
+        <meta name={'keywords'} content={'mikhail bahdashych,mikhail,bahdashych,blog,cybersecurity,portfolio'} />
+        <meta name={'description'} content={'Hello there! My name is Mikhail Bahdashych and this is my personal blog - place where I share my thoughts and knowledge. Hope you will find something interesting.'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <Container>
@@ -101,8 +103,8 @@ const Home = ({ locale }: HomeProps) => {
 
           <BlogPostsContainer>
             <InterestingPosts>
-              {t('pages:home.interestingPosts')}
-              <Image
+              {t('pages:home.interestingPosts')} <Image
+                className={'icon'}
                 src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/fire.png`}
                 alt={'Fire'}
                 width={32}
@@ -126,7 +128,7 @@ const Home = ({ locale }: HomeProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles']);
+const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
 export { getStaticPaths, getStaticProps };
 
 export default Home;
