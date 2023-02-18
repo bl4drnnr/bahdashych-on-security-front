@@ -1,4 +1,4 @@
 export interface PostFooterProps {
-  message?: string;
-  timestamp?: string;
+  message?: string | undefined;
+  timestamp?: string | undefined;
 }
