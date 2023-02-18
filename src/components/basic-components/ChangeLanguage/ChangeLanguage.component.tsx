@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { ChangeLanguageProps } from '@components/ChangeLanguage/ChangeLanguage.interface';
@@ -16,29 +17,29 @@ const ChangeLanguage = ({ defaultLanguage, path }: ChangeLanguageProps) => {
   const [showLanguages, setShowLanguages] = React.useState(false);
   const [pickedLanguage, setPickedLanguage] = React.useState('');
   const [languages,] = React.useState([{
-    flag: '🇵🇱',
+    flag: 'pl',
     prefix: 'pl'
   }, {
-    flag: '🇷🇺',
+    flag: 'ru',
     prefix: 'ru'
   }, {
-    flag: '🇬🇧',
+    flag: 'en',
     prefix: 'en'
   }]);
 
   React.useEffect(() => {
     switch (defaultLanguage) {
       case 'en':
-        setPickedLanguage('🇬🇧');
+        setPickedLanguage('en');
         break;
       case 'ru':
-        setPickedLanguage('🇷🇺');
+        setPickedLanguage('ru');
         break;
       case 'pl':
-        setPickedLanguage('🇵🇱');
+        setPickedLanguage('pl');
         break;
       default:
-        setPickedLanguage('🇬🇧');
+        setPickedLanguage('en');
         break;
     }
   }, []);
@@ -56,7 +57,14 @@ const ChangeLanguage = ({ defaultLanguage, path }: ChangeLanguageProps) => {
         <CurrentLanguage
           onClick={() => setShowLanguages(!showLanguages)}
         >
-          {pickedLanguage}
+          {pickedLanguage && (
+            <Image
+              src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${pickedLanguage}.png`}
+              alt={pickedLanguage}
+              width={32}
+              height={32}
+            />
+          )}
         </CurrentLanguage>
       )}
       {showLanguages && (
@@ -66,7 +74,14 @@ const ChangeLanguage = ({ defaultLanguage, path }: ChangeLanguageProps) => {
               key={index}
               onClick={() => handleRedirect(item)}
             >
-              {item.flag}
+              {item.flag && (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${item.flag}.png`}
+                  alt={item.flag}
+                  width={32}
+                  height={32}
+                />
+              )}
             </LanguageItem>
           ))}
         </SelectLanguages>
