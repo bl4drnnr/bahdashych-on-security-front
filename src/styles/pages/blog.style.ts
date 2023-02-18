@@ -50,7 +50,7 @@ export const PostTitle = styled.h3`
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 500;
   color: rgb(${(props) => props.theme.colors.textColor});
 `;
 

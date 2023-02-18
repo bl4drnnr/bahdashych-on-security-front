@@ -75,9 +75,6 @@ const Blog = ({ locale }: BlogProps) => {
           <BlogPostsDescription className={'margins'}>
             {t('pages:blog.description')}
           </BlogPostsDescription>
-          <BlogPostsDescription className={'margins'}>
-            {t('pages:blog.description2')}
-          </BlogPostsDescription>
 
           {allPosts.map((post, key) => (
             <PostPreview key={key} onClick={() => handleRedirect(post.link)}>

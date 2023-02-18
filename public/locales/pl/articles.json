@@ -3,7 +3,7 @@
     "title": "NextJS Nginx Deployment",
     "tags": "nextjs,nginx,deployment,mikhail,bahdashych,mikhail bahdashych,blog",
     "description": "NextJS Nginx deployment process",
-    "pageDescription": "Proces wdrażania jest zawsze dość stresujący, zwłaszcza jeśli jesteś programistą i nie jesteś zaznajomiony z tym, czym zajmuje się zespół DevOps. Oto najłatwiejsze rozwiązanie, jak wdrożyć aplikację Next.js przy użyciu Nginx i Letsencrypt do bezpiecznej komunikacji HTTPS. Twoja ściągawka.",
+    "pageDescription": "Proces wdrażania jest zawsze dość stresujący, zwłaszcza jeśli jesteś programistą i nie jesteś zaznajomiony z tym, czym zajmuje się zespół DevOps. Oto najłatwiejsze rozwiązanie, jak wdrożyć aplikację Next.js przy użyciu Nginx i Let's encrypt do bezpiecznej komunikacji HTTPS. Twoja ściągawka.",
     "intro": "O Boże, nie masz pojęcia, jak bałam się wszystkiego poza pisaniem kodu. Kiedyś myślałam, że to coś nierealnego i niebezpiecznego, ponieważ twój błąd może zniszczyć dosłownie wszystko, ale potem spróbowałam i ty wiesz, brzmi to o wiele bardziej przerażająco niż jest w rzeczywistości. Jedyne, co musisz zrobić, to zacząć od podstaw.",
     "timestamp": "2023-02-17",
     "footer": "To wszystko na dziś chłopaki. Dziękuję za przeczytanie, mam nadzieję, że było to pomocne i rozwiązało problem, na który natrafiłeś tutaj, szukając rozwiązania.",
@@ -39,8 +39,8 @@
         "type": "title",
         "content": "Przygotowania"
       },
-      "p9": "Nie będziemy dyskutować, jak i gdzie można uruchomić instancję i jak to wszysyko skonfigurować (AWS, DigitalOcean, Microsoft Azure lub jakikolwiek inny dostawca usług w chmurze). Przy okazji, możesz przeczytać o tym tutaj (LINK do Postu o instancjach HARDERING). Zamiast tego skupimy się na procesie instalacji Nginx, jako naszego serwera WWW, i Letsencrypt, jako naszego dostawcy CA, biorąc pod uwagę, że masz już instancję do wdrożenia.",
-      "p10": "Za pomocą kolejnych 2 poleceń zaktualizujesz wszystkie pakiety na swoim komputerze i zainstalujesz wymagane nginx i Letsencrypt:",
+      "p9": "Nie będziemy dyskutować, jak i gdzie można uruchomić instancję i jak to wszysyko skonfigurować (AWS, DigitalOcean, Microsoft Azure lub jakikolwiek inny dostawca usług w chmurze). Przy okazji, możesz przeczytać o tym tutaj (LINK do Postu o instancjach HARDERING). Zamiast tego skupimy się na procesie instalacji Nginx, jako naszego serwera WWW, i Let's encrypt, jako naszego dostawcy CA, biorąc pod uwagę, że masz już instancję do wdrożenia.",
+      "p10": "Za pomocą kolejnych 2 poleceń zaktualizujesz wszystkie pakiety na swoim komputerze i zainstalujesz wymagane nginx i Let's encrypt:",
       "p11": {
         "type": "code",
         "lang": "shell",

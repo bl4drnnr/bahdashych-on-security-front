@@ -74,7 +74,7 @@ export const BlogPostTitle = styled.h3`
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 500;
   color: rgb(${(props) => props.theme.colors.textColor});
 `;
 
@@ -87,6 +87,7 @@ export const BlogPostDescription = styled.p`
 export const InterestingPosts = styled.h1`
   margin-bottom: 15px;
   color: rgb(${(props) => props.theme.colors.textColor});
+  font-weight: 500;
   
   .icon {
     vertical-align: middle;

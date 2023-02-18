@@ -3,7 +3,7 @@
     "title": "NextJS Nginx Deployment",
     "tags": "nextjs,nginx,deployment,mikhail,bahdashych,mikhail bahdashych,blog",
     "description": "NextJS Nginx deployment process",
-    "pageDescription": "The process of deployment is always quite stressful, especially if you are developer and kind of not familiar with what DevOps team is doing. Well, here is the easiest solution on how you can deploy your Next.js application using Nginx and Letsencrypt for HTTPS secure communication. Your cheatsheet.",
+    "pageDescription": "The process of deployment is always quite stressful, especially if you are developer and kind of not familiar with what DevOps team is doing. Well, here is the easiest solution on how you can deploy your Next.js application using Nginx and Let's encrypt for HTTPS secure communication. Your cheatsheet.",
     "intro": "Oh God, you have no clue how I used to be scared of everything beyond writing code. I used to think that it's something unreal complicated and dangerous since your mistake can destroy literally everything, but then I tried, and you know, it sounds much scary then it is in really. The only thing you need to do is to start from the basics.",
     "timestamp": "2023-02-17",
     "footer": "That's all for today guys. Thanks for reading, I hope this was helpful and solved the problem you came across here looking for a solution.",
@@ -39,8 +39,8 @@
         "type": "title",
         "content": "Preparations"
       },
-      "p9": "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Letsencrypt, as our CA provider, considering you already have an instance for deployment.",
-      "p10": "Using next 2 commands you will update all packages on your machine and installed required nginx and Letsencrypt:",
+      "p9": "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Let's encrypt, as our CA provider, considering you already have an instance for deployment.",
+      "p10": "Using next 2 commands you will update all packages on your machine and installed required nginx and Let's encrypt:",
       "p11": {
         "type": "code",
         "lang": "shell",
@@ -346,7 +346,10 @@
         "type": "picture",
         "resource": "dns_record_request_sequence_recursive_resolver.png"
       },
-      "p16": "Important note about difference between DNS Root Nameserver and DNS Root Server.",
+      "p16": {
+        "type": "picture",
+        "resource": "what_is_a_dns_server_dns_lookup.png"
+      },
       "p17": {
         "type": "subtitle",
         "content": "DNS Servers Roles"
