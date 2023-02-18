@@ -1,6 +1,5 @@
 import React from 'react';
 
-import classNames from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
@@ -55,7 +54,7 @@ export const Header = ({ locale, translation }: HeaderProps) => {
             <ImageWrapper>
               <Image
                 className={'color'}
-                src={'/img/hamburger.svg'}
+                src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/hamburger.svg`}
                 alt={'Hamburger'}
                 width={28}
                 height={28}
@@ -65,7 +64,7 @@ export const Header = ({ locale, translation }: HeaderProps) => {
             <ImageWrapper>
               <Image
                 className={'color'}
-                src={'/img/close.svg'}
+                src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/close.svg`}
                 alt={'Close'}
                 width={28}
                 height={28}

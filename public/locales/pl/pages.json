@@ -4,7 +4,7 @@
     "name": "Mikhail Bahdashych",
     "workTitles": "Inżynier oprogramowania / Specjalista ds. operacji bezpieczeństwa",
     "interests": "Web development, WEB3, technologie sieciowe, DevOps & cyberbezpieczeństwo.",
-    "interestingPosts": "Najciekawsze wpisy \uD83D\uDD25 :"
+    "interestingPosts": "Najciekawsze wpisy"
   },
   "blog": {
     "title": "Blog",
@@ -21,8 +21,7 @@
     "title": "O blogu",
     "thanks": "Dziękuję!",
     "appreciating": "Naprawdę doceniam, że interesujesz się tym, co robię.",
-    "reasonForReading": "Blog, który w tej chwili czytasz, został stworzony, aby dzielić się wiedzą, którą zdobyłem podczas całej mojej kariery zawodowej. Ten prosty, statyczny blog jest dla mnie moim pamiętnikiem wiedzy. Tutaj zapisuję wszystko, czego udało mi się nauczyć i postaraj się wyjaśnić tutaj wprowadzonym w błąd ludziom w najprostszy możliwy sposób.",
-    "teachingOther": "Szczerze wierzę, że najlepszym sposobem na nauczenie się czegokolwiek jest rozpoczęcie nauczania innych ludzi, dzielenie się z nimi swoją wiedzą. Mam ku temu kilka powodów:",
+    "reasonForReading": "Blog, który w tej chwili czytasz, został stworzony, aby dzielić się wiedzą, którą zdobyłem podczas całej mojej kariery zawodowej. Ten prosty, statyczny blog jest dla mnie moim pamiętnikiem wiedzy. Tutaj zapisuję wszystko, czego udało mi się nauczyć i postaraj się wyjaśnić tutaj wprowadzonym w błąd ludziom w najprostszy możliwy sposób. Szczerze wierzę, że najlepszym sposobem na nauczenie się czegokolwiek jest rozpoczęcie nauczania innych ludzi, dzielenie się z nimi swoją wiedzą. Mam ku temu kilka powodów:",
     "personalGrowthTitle": "Rozwój osobisty:",
     "personalGrowthDescription": "Dzielenie się swoją wiedzą z innymi pomaga lepiej rozumieć i wyrażać własne myśli i pomysły, co może prowadzić do osobistego wzrostu i rozwoju.",
     "relationshipsTitle": "Budowanie relacji:",
@@ -35,9 +34,7 @@
     "careerDescription": "Dzielenie się swoją wiedzą może prowadzić do nowych możliwości i uznania, co może pomóc w rozwoju kariery.",
     "givingBackTitle": "Oddawanie:",
     "givingBackDescription": "Dzielenie się swoją wiedzą może być sposobem na odwdzięczenie się innym i wywarcie pozytywnego wpływu na ich życie.",
-    "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie.",
-    "aboutMe": "Coś o mnie?",
-    "kidding": "O, jak miło! Spoko... Żartuję!"
+    "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie."
   },
   "error": {
     "title": "Nie znaleziono",

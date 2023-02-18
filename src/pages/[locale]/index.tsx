@@ -17,6 +17,7 @@ import {
   IntroTextWrapper,
   TypewritingText
 } from '@styles/home.style';
+import Image from "next/image";
 
 interface PostProps {
   title: string;
@@ -101,6 +102,12 @@ const Home = ({ locale }: HomeProps) => {
           <BlogPostsContainer>
             <InterestingPosts>
               {t('pages:home.interestingPosts')}
+              <Image
+                src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/fire.png`}
+                alt={'Fire'}
+                width={32}
+                height={32}
+              />
             </InterestingPosts>
 
             {bestPosts.map((post, key) => (

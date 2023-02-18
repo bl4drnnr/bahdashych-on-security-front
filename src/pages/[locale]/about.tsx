@@ -56,52 +56,26 @@ const About = ({ locale }: AboutProps) => {
             <AboutParagraph>
               {t('pages:about.reasonForReading')}
             </AboutParagraph>
-            <AboutParagraph>
-              {t('pages:about.teachingOther')}
-            </AboutParagraph>
-            <AboutParagraph>
-              <b>{t('pages:about.personalGrowthTitle')}</b> {t('pages:about.personalGrowthDescription')}
-            </AboutParagraph>
-            <AboutParagraph>
-              <b>{t('pages:about.relationshipsTitle')}</b> {t('pages:about.relationshipsDescription')}
-            </AboutParagraph>
-            <AboutParagraph>
-              <b>{t('pages:about.influenceTitle')}</b> {t('pages:about.influenceDescription')}
-            </AboutParagraph>
-            <AboutParagraph>
-              <b>{t('pages:about.problemsTitle')}</b> {t('pages:about.problemsDescription')}
-            </AboutParagraph>
-            <AboutParagraph>
-              <b>{t('pages:about.careerTitle')}</b> {t('pages:about.careerDescription')}
-            </AboutParagraph>
-            <AboutParagraph>
-              <b>{t('pages:about.givingBackTitle')}</b> {t('pages:about.givingBackDescription')}
-            </AboutParagraph>
+            <ul className={'sharing-ul'}>
+              {
+                Object.entries(t('pages:about.sharingKnowledge', { returnObjects: true }) as string)
+                  .map(([key, value]) => (
+                    <li
+                      key={key}
+                      className={'sharing-li'}
+                      dangerouslySetInnerHTML={{ __html: value }}
+                    />
+                  ))
+              }
+            </ul>
             <AboutParagraph>
               {t('pages:about.overall')}
             </AboutParagraph>
           </Box>
           <Box>
-            <AboutTitle>
-              <Typewriter
-                onInit={(typewriter) => {
-                  typewriter
-                    .changeDelay(75)
-                    .typeString(t('pages:about.aboutMe'))
-                    .start();
-                }}
-              />
-            </AboutTitle>
-            <AboutTitle className={classNames('description')}>
-              <Typewriter
-                onInit={(typewriter) => {
-                  typewriter
-                    .changeDelay(75)
-                    .typeString(t('pages:about.kidding'))
-                    .start();
-                }}
-              />
-            </AboutTitle>
+            <AboutParagraph>
+              In case if you have any issues/propositions or whatever reason you have to contact me you can do that using next channels. Do not hesitate to do that, I will always be glad to have a small talk, so, here you go:
+            </AboutParagraph>
           </Box>
         </Container>
       </DefaultLayout>

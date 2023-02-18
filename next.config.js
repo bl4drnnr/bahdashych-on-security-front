@@ -7,6 +7,9 @@ const nextConfig = {
   swcMinify: true,
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['mikhail-bahdashych-personal-blog.s3.us-east-2.amazonaws.com']
   }
 };
 
