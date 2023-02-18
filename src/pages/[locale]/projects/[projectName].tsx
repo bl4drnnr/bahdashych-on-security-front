@@ -24,7 +24,10 @@ const Project = ({ locale, projectName }: ProjectProps) => {
   return (
     <>
       <Head>
-        <title></title>
+        <title>{t('pages:home.name')} | {t(`articles:${projectName}.title`)}</title>
+        <meta name={'keywords'} content={t(`articles:${projectName}.tags`) as string} />
+        <meta name={'description'} content={t(`articles:${projectName}.description`) as string} />
+        <meta charSet={'utf-8'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <>

@@ -27,6 +27,8 @@ const About = ({ locale }: AboutProps) => {
     <>
       <Head>
         <title>{t('pages:home.name')} | {t('pages:about.title')}</title>
+        <meta name={'keywords'} content={'mikhail bahdashych,mikhail,bahdashych,blog,cybersecurity,portfolio'} />
+        <meta name={'description'} content={'Hello there! My name is Mikhail Bahdashych and this is my personal blog - place where I share my thoughts and knowledge. Hope you will find something interesting.'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
         <Container>
