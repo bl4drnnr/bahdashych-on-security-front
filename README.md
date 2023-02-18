@@ -96,7 +96,7 @@ export const Redirect = () => {
 Probably you have seen, that the route of the blog always looks like that: [blog.mikhailbahdashych.com/en](blog.mikhailbahdashych.com/en).
 It always starts with the picked language. You will understand why it happens just by taking a look at `pages` folder.
 
-![1](https://mikhail-bahdashych-personal-blog.s3.us-east-2.amazonaws.com/readme2.png)
+![1](https://mikhail-bahdashych-personal-blog.s3.us-east-2.amazonaws.com/readme/readme2.png)
 
 Content of every page outside of `[locale]` route was replaced by:
 
@@ -320,7 +320,7 @@ Basically, if you take a look at the file structure, as it has been mentioned be
 that there is only one page which gets post name from the URL and then just checks (using environmental variables), 
 if the page exists, it "renders" it from JSON, otherwise, it redirects to 404 page.
 
-![1](https://mikhail-bahdashych-personal-blog.s3.us-east-2.amazonaws.com/readme1.png)
+![1](https://mikhail-bahdashych-personal-blog.s3.us-east-2.amazonaws.com/readme/readme1.png)
 
 At this point I guess some of you already has figured out what is the issue.
 If I need to render HTML that is written as text, I need to use `dangerouslySetInnerHTML` and

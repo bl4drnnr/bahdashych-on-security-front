@@ -9,9 +9,9 @@ const ChangeTheme = ({ theme, onClick }: ChangeThemeProps) => {
   return (
     <Toggler onClick={onClick}>
       {theme === 'dark' ? (
-        <><Image src={'/img/sun.svg'} alt={'Sun'} width={30} height={30}/></>
+        <><Image src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/sun.svg`} alt={'Sun'} width={30} height={30}/></>
       ) : (
-        <><Image src={'/img/moon.svg'} alt={'Moon'} width={30} height={30}/></>
+        <><Image src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/moon.svg`} alt={'Moon'} width={30} height={30}/></>
       )}
     </Toggler>
   );

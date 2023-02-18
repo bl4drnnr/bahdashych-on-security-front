@@ -10,6 +10,19 @@ export const Box = styled.div`
     width: 90%;
     margin: 50px auto 0 auto;
   }
+  
+  .sharing-ul {
+    margin-left: 20px;
+  }
+  .sharing-li {
+    b {
+      font-weight: 500;
+    }
+    margin: 15px 0;
+    color: rgb(${(props) => props.theme.colors.textColor});
+    font-size: 18px;
+    font-weight: 200;
+  }
 `;
 
 export const AboutTitle = styled.h3`
@@ -36,4 +49,5 @@ export const AboutParagraph = styled.p`
   font-weight: 200;
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 18px;
+  text-indent: 25px;
 `;

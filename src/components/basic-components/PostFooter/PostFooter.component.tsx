@@ -10,15 +10,33 @@ const PostFooter = ({ message, timestamp }: PostFooterProps) => {
     <Container>
       <Message className={'mess'}>{message}</Message>
       <Message className={'link'}>
-        <Image className={'img'} src={'/img/github.svg'} alt={'GitHub'} width={24} height={24}/>
+        <Image
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/github.svg`}
+          className={'img'}
+          alt={'GitHub'}
+          width={24}
+          height={24}
+        />
         <HrefLink href="https://github.com/bl4drnnr">github.com/bl4drnnr</HrefLink>
       </Message>
       <Message className={'link'}>
-        <Image className={'img'} src={'/img/linkedin.svg'} alt={'GitHub'} width={24} height={24}/>
+        <Image
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/linkedin.svg`}
+          className={'img'}
+          alt={'GitHub'}
+          width={24}
+          height={24}
+        />
         <HrefLink href="https://linkedin.com/in/mikhail-bahdashych">linkedin.com/mikhail-bahdashych</HrefLink>
       </Message>
       <Message className={'link'}>
-        <Image className={'img'} src={'/img/gmail.svg'} alt={'GitHub'} width={24} height={24}/>
+        <Image
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/gmail.svg`}
+          className={'img'}
+          alt={'GitHub'}
+          width={24}
+          height={24}
+        />
         <HrefLink href="mailto:contact@mikhailbahdashych.me">contact@mikhailbahdashych.me</HrefLink>
       </Message>
       <TimestampWrapper>
