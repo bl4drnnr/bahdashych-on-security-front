@@ -8,7 +8,7 @@ import { Container, Message, HrefLink, TimestampWrapper } from '@styles/PostFoot
 const PostFooter = ({ message, timestamp }: PostFooterProps) => {
   return (
     <Container>
-      <Message className={'mess'}>{message}</Message>
+      {message && (<Message className={'mess'}>{message}</Message>)}
       <Message className={'link'}>
         <Image
           src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/github.svg`}
@@ -40,7 +40,7 @@ const PostFooter = ({ message, timestamp }: PostFooterProps) => {
         <HrefLink href="mailto:contact@mikhailbahdashych.me">contact@mikhailbahdashych.me</HrefLink>
       </Message>
       <TimestampWrapper>
-        <Message className={'timestamp'}>{timestamp}</Message>
+        {timestamp && (<Message className={'timestamp'}>{timestamp}</Message>)}
       </TimestampWrapper>
     </Container>
   );

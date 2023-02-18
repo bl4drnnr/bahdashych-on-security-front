@@ -30,7 +30,9 @@
       "career": "<b>Career Advancement</b> - sharing your knowledge can lead to new opportunities and recognition, which can help you advance in your career.",
       "givingBack": "<b>Giving Back</b> - sharing your knowledge can be a way of giving back to others and making a positive impact on their lives."
     },
-    "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience. By the way, if you are interested in more technical part of this blog, about its implementation, you won't find it here, just read README file on repository page."
+    "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience. By the way, if you are interested in more technical part of this blog, about its implementation, you won't find it here, just read README file on <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link roboto'>repository page</a>.",
+    "contactMe": "How to contact me",
+    "contactInfo": "In case if you have any issues/propositions or whatever reason you have to contact me you can do that using next channels. Do not hesitate to do that, I will always be glad to have a small talk, so, here you go:"
   },
   "error": {
     "title": "Not found",
