@@ -5,9 +5,9 @@ import Image from 'next/image';
 import { PostFooterProps } from '@components/PostFooter/PostFooter.interface';
 import { Container, Message, HrefLink, TimestampWrapper } from '@styles/PostFooter.style';
 
-const PostFooter = ({ message, timestamp }: PostFooterProps) => {
+const PostFooter = ({ message, timestamp, locale }: PostFooterProps) => {
   return (
-    <Container>
+    <Container className={locale === 'en' ? 'en' : 'non-en'}>
       {message && (<Message className={'mess'}>{message}</Message>)}
       <Message className={'link'}>
         <Image

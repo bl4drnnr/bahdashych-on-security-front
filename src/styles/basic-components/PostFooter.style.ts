@@ -1,20 +1,16 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  min-height: 500px;
-  width: 100%;
-  padding-top: 30px;
-`;
-
 export const Message = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-family: 'Crimson', serif;
-  font-size: 20px;
-  padding-top: 30px;
-  font-weight: 400;
   display: flex;
+  font-size: 20px;
+  line-height: 30px;
+  padding-top: 30px;
+  text-indent: 50px;
+  font-weight: 400;
   
   &.mess {
+    padding-top: 0;
     text-indent: 50px;
     @media only screen and (max-width: 780px) {
       font-size: 18px;
@@ -32,6 +28,29 @@ export const Message = styled.p`
   &.timestamp {
     font-size: 18px;
     opacity: .5;
+  }
+`;
+
+export const Container = styled.div`
+  min-height: 500px;
+  width: 100%;
+  padding-top: 30px;
+
+  &.en {
+    ${Message} {
+      font-family: 'Charter', sans-serif;
+    }
+    b {
+      font-family: 'Charter', sans-serif;
+    }
+  }
+  &.non-en {
+    ${Message} {
+      font-family: 'Crimson', serif;
+    }
+    b {
+      font-family: 'Crimson', serif;
+    }
   }
 `;
 

@@ -175,7 +175,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                     >{key.content}</PostParagraph>
                   ) : ((isArticleCode(key)) ? (
                     <CodeHighlighter language={key.lang} code={key.content as string} />
-                  ) : ((key.type === 'list') ? (
+                  ) : ((key.type === 'list-bullet') ? (
                     <ul className={'blog-post-ul'}>
                       {key.items?.map((item) => (
                         <li
@@ -185,16 +185,27 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                         />
                       ))}
                     </ul>
-                    ) : ((key.type === 'picture') ? (
-                      <ImageContainer>
-                        <Image
-                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${key.resource}`}
-                          alt={key.resource as string}
-                          className={'image'}
-                          fill
-                        />
-                      </ImageContainer>
-                    ) : (<></>))
+                    ) : ((key.type === 'list-numeric') ? (
+                      <ol className={'blog-post-ol'}>
+                        {key.items?.map((item) => (
+                          <li
+                            key={item}
+                            className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                            dangerouslySetInnerHTML={{ __html: item }}
+                          />
+                        ))}
+                      </ol>
+                  ) : ((key.type === 'picture') ? (
+                    <ImageContainer>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${key.resource}`}
+                        alt={key.resource as string}
+                        className={'image'}
+                        fill
+                      />
+                    </ImageContainer>
+                  ) : (<></>))
+                    )
                   ))}
                 </div>
               ))
@@ -215,6 +226,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
           <PostFooter
             timestamp={t(`articles:${postName}.timestamp`) as string}
             message={t(`articles:${postName}.footer`) as string}
+            locale={locale}
           />
         </ArticleBodyWrapper>
       </DefaultLayout>

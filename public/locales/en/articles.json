@@ -3,7 +3,7 @@
     "title": "NextJS Nginx Deployment",
     "tags": "nextjs,nginx,deployment,mikhail,bahdashych,mikhail bahdashych,blog",
     "description": "NextJS Nginx deployment process",
-    "pageDescription": "The process of deployment is always quite stressful, especially if you are developer and kind of not familiar with what DevOps team is doing. Well, here is the easiest solution on how you can deploy your Next.js application using Nginx and Letsencrypt for HTTPS secure communication. Your cheatsheet.",
+    "pageDescription": "The process of deployment is always quite stressful, especially if you are developer and kind of not familiar with what DevOps team is doing. Well, here is the easiest solution on how you can deploy your Next.js application using Nginx and Let's encrypt for HTTPS secure communication. Your cheatsheet.",
     "intro": "Oh God, you have no clue how I used to be scared of everything beyond writing code. I used to think that it's something unreal complicated and dangerous since your mistake can destroy literally everything, but then I tried, and you know, it sounds much scary then it is in really. The only thing you need to do is to start from the basics.",
     "timestamp": "2023-02-17",
     "footer": "That's all for today guys. Thanks for reading, I hope this was helpful and solved the problem you came across here looking for a solution.",
@@ -39,8 +39,8 @@
         "type": "title",
         "content": "Preparations"
       },
-      "p9": "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Letsencrypt, as our CA provider, considering you already have an instance for deployment.",
-      "p10": "Using next 2 commands you will update all packages on your machine and installed required nginx and Letsencrypt:",
+      "p9": "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Let's encrypt, as our CA provider, considering you already have an instance for deployment.",
+      "p10": "Using next 2 commands you will update all packages on your machine and installed required nginx and Let's encrypt:",
       "p11": {
         "type": "code",
         "lang": "shell",
@@ -277,7 +277,7 @@
     "pageDescription": "I guess all you guys have ever heard about DNS. This is phone book of the Internet, and it converts human-readable domain names into IP addresses parsed by machines and blah-blah-blah. Honestly, this is literally rabbit hole, and I have decided to figure out how deep it is. Well, trust me, you are going to be surprised and I have hella interesting stuff to share with you. So, let's dive into it!",
     "intro": "",
     "timestamp": "",
-    "footer": "",
+    "footer": "Pew... That was kinda complicated, wasn't it? But now you what DNS and DNSSEC actually are and how they work. If after reading you have even more questions than before, congratulations, from now on you will be able to find all answers on your own, but that's it for now. Thank you so much for reading.",
     "toc": {
       "intro": "Introduction",
       "DNS Overview": {
@@ -318,7 +318,7 @@
       },
       "p9": "But before we start, let's define some terminology we are going to use all through our long journey. Feel free to get back to them whenever you need that:",
       "p10": {
-        "type": "list",
+        "type": "list-bullet",
         "items": [
           "<b>DNS Domain / DNS Zone</b> - a section of the DNS namespace. For instance: blog.mikhailbahdashych.me. (trailing dot is not a typo) is the server named \"blog\" in the \"mikhailbahdashych\" domain/zone, which is in the \"me\" domain/zone, which is in the \"root (.)\" domain/zone.",
           "<b>Iterative DNS Query</b> - a request to a DNS server: 'Give me whatever help you can, but ask no one else'.",
@@ -331,10 +331,56 @@
         "content": "DNS Resolution Flow"
       },
       "p12": "The very first thing we need to know about is: how does your browser send some text in form of URL and get back IP address of requested website? At this moment of time we are discussing DNS only from perspective that the only thing it does is converting URLs into IP address of websites, but we will expand its usage a little later.",
-      "p13": "Here is where <b>DNS Resolution Flow</b> comes into play.",
+      "p13": "Here is where <b>DNS Resolution Flow</b> comes into play. Everything is better on examples, so let's say you want to request for <b>cloudflare.com</b>. Here is what is happening after you paste URL in browser and hit Enter button:",
       "p14": {
+        "type": "list-numeric",
+        "items": [
+          "<b>DNS Stub Resolver</b> - everything starts with DNS stub resolver or DNS Client.",
+          "<b>DNS Recursive Resolver</b> - ",
+          "<b>DNS Root Nameserver</b> -",
+          "<b>DNS TLD Nameserver</b> -",
+          "<b>Authoritative Nameserver</b> -"
+        ]
+      },
+      "p15": {
         "type": "picture",
         "resource": "dns_record_request_sequence_recursive_resolver.png"
+      },
+      "p16": {
+        "type": "picture",
+        "resource": "what_is_a_dns_server_dns_lookup.png"
+      },
+      "p17": {
+        "type": "subtitle",
+        "content": "DNS Servers Roles"
+      },
+      "p18": {
+        "type": "subtitle",
+        "content": "DNS Records Types"
+      },
+      "p19": {
+        "type": "title",
+        "content": "Introduction into DNSSEC"
+      },
+      "p20": {
+        "type": "title",
+        "content": "DNSSEC Overview"
+      },
+      "p21": {
+        "type": "subtitle",
+        "content": "DNSSEC Terminology"
+      },
+      "p22": {
+        "type": "subtitle",
+        "content": "DNSSEC Resolution Flow"
+      },
+      "p23": {
+        "type": "title",
+        "content": "Conclusions"
+      },
+      "p24": {
+        "type": "title",
+        "content": "Contact and references"
       }
     },
     "references": [{
