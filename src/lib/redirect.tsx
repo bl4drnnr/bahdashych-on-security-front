@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import languageDetector from './languageDetector';
 
-const useRedirect = (to: any) => {
+const useRedirect = (to?: any) => {
   const router = useRouter();
   to = to || router.asPath;
 
@@ -24,7 +24,6 @@ const useRedirect = (to: any) => {
 };
 
 export const Redirect = () => {
-  // @ts-ignore
   useRedirect();
   return <></>;
 };
