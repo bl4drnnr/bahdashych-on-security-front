@@ -318,7 +318,7 @@
       },
       "p9": "But before we start, let's define some terminology we are going to use all through our long journey. Feel free to get back to them whenever you need that:",
       "p10": {
-        "type": "list",
+        "type": "list-bullet",
         "items": [
           "<b>DNS Domain / DNS Zone</b> - a section of the DNS namespace. For instance: blog.mikhailbahdashych.me. (trailing dot is not a typo) is the server named \"blog\" in the \"mikhailbahdashych\" domain/zone, which is in the \"me\" domain/zone, which is in the \"root (.)\" domain/zone.",
           "<b>Iterative DNS Query</b> - a request to a DNS server: 'Give me whatever help you can, but ask no one else'.",
@@ -331,11 +331,22 @@
         "content": "DNS Resolution Flow"
       },
       "p12": "The very first thing we need to know about is: how does your browser send some text in form of URL and get back IP address of requested website? At this moment of time we are discussing DNS only from perspective that the only thing it does is converting URLs into IP address of websites, but we will expand its usage a little later.",
-      "p13": "Here is where <b>DNS Resolution Flow</b> comes into play.",
+      "p13": "Here is where <b>DNS Resolution Flow</b> comes into play. Everything is better on examples, so let's say you want to request for <b>cloudflare.com</b>. Here is what is happening after you paste URL in browser and hit Enter button:",
       "p14": {
+        "type": "list-numeric",
+        "items": [
+          "<b>DNS Stub Resolver</b> - everything starts with DNS stub resolver or DNS Client.",
+          "<b>DNS Recursive Resolver</b> - ",
+          "<b>DNS Root Nameserver</b> -",
+          "<b>DNS TLD Nameserver</b> -",
+          "<b>Authoritative Nameserver</b> -"
+        ]
+      },
+      "p15": {
         "type": "picture",
         "resource": "dns_record_request_sequence_recursive_resolver.png"
-      }
+      },
+      "p16": "Important note about difference between DNS Root Nameserver and DNS Root Server."
     },
     "references": [{
       "name": "What is DNS by Cloudflare",

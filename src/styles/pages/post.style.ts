@@ -121,7 +121,7 @@ export const ArticleBodyWrapper = styled.div`
     padding: 0;
   }
 
-  .blog-post-ul {
+  .blog-post-ul, .blog-post-ol {
     color: rgb(${(props) => props.theme.colors.textColor});
     margin: 20px 0 0 20px;
   }
