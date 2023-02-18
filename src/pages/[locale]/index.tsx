@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
@@ -17,7 +18,6 @@ import {
   IntroTextWrapper,
   TypewritingText
 } from '@styles/home.style';
-import Image from "next/image";
 
 interface PostProps {
   title: string;
@@ -101,8 +101,8 @@ const Home = ({ locale }: HomeProps) => {
 
           <BlogPostsContainer>
             <InterestingPosts>
-              {t('pages:home.interestingPosts')}
-              <Image
+              {t('pages:home.interestingPosts')} <Image
+                className={'icon'}
                 src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/fire.png`}
                 alt={'Fire'}
                 width={32}

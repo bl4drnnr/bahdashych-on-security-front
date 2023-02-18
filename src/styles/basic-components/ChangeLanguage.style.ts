@@ -6,6 +6,7 @@ export const CurrentLanguage = styled.div`
   height: 65px;
   display: flex;
   align-items: center;
+  vertical-align: middle;
   margin: 0 15px;
 `;
 
@@ -17,6 +18,11 @@ export const SelectLanguages = styled.div`
 `;
 
 export const LanguageItem = styled.div`
-  margin: 0 10px;
   cursor: pointer;
+  font-size: 32px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0 15px;
 `;

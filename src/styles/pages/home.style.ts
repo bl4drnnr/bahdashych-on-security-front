@@ -87,4 +87,8 @@ export const BlogPostDescription = styled.p`
 export const InterestingPosts = styled.h1`
   margin-bottom: 15px;
   color: rgb(${(props) => props.theme.colors.textColor});
+  
+  .icon {
+    vertical-align: middle;
+  }
 `;
