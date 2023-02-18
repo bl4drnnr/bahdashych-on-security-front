@@ -87,7 +87,7 @@ const About = ({ locale }: AboutProps) => {
           </Box>
           <Box>
             <AboutParagraph>{t('pages:about.contactInfo')}</AboutParagraph>
-            <PostFooter />
+            <PostFooter locale={locale} />
           </Box>
         </Container>
       </DefaultLayout>

@@ -277,7 +277,7 @@
     "pageDescription": "I guess all you guys have ever heard about DNS. This is phone book of the Internet, and it converts human-readable domain names into IP addresses parsed by machines and blah-blah-blah. Honestly, this is literally rabbit hole, and I have decided to figure out how deep it is. Well, trust me, you are going to be surprised and I have hella interesting stuff to share with you. So, let's dive into it!",
     "intro": "",
     "timestamp": "",
-    "footer": "",
+    "footer": "Pew... That was kinda complicated, wasn't it? But now you what DNS and DNSSEC actually are and how they work. If after reading you have even more questions than before, congratulations, from now on you will be able to find all answers on your own, but that's it for now. Thank you so much for reading.",
     "toc": {
       "intro": "Introduction",
       "DNS Overview": {
@@ -346,7 +346,39 @@
         "type": "picture",
         "resource": "dns_record_request_sequence_recursive_resolver.png"
       },
-      "p16": "Important note about difference between DNS Root Nameserver and DNS Root Server."
+      "p16": "Important note about difference between DNS Root Nameserver and DNS Root Server.",
+      "p17": {
+        "type": "subtitle",
+        "content": "DNS Servers Roles"
+      },
+      "p18": {
+        "type": "subtitle",
+        "content": "DNS Records Types"
+      },
+      "p19": {
+        "type": "title",
+        "content": "Introduction into DNSSEC"
+      },
+      "p20": {
+        "type": "title",
+        "content": "DNSSEC Overview"
+      },
+      "p21": {
+        "type": "subtitle",
+        "content": "DNSSEC Terminology"
+      },
+      "p22": {
+        "type": "subtitle",
+        "content": "DNSSEC Resolution Flow"
+      },
+      "p23": {
+        "type": "title",
+        "content": "Conclusions"
+      },
+      "p24": {
+        "type": "title",
+        "content": "Contact and references"
+      }
     },
     "references": [{
       "name": "What is DNS by Cloudflare",

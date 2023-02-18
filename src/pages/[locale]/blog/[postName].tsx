@@ -226,6 +226,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
           <PostFooter
             timestamp={t(`articles:${postName}.timestamp`) as string}
             message={t(`articles:${postName}.footer`) as string}
+            locale={locale}
           />
         </ArticleBodyWrapper>
       </DefaultLayout>
