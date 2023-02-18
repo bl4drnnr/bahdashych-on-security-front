@@ -197,8 +197,8 @@ const BlogPost = ({ locale, postName }: PostProps) => {
           </TableOfContentsContainer>
 
           <PostFooter
-            timestamp={t(`articles:${postName}.timestamp`)}
-            message={t(`articles:${postName}.footer`)}
+            timestamp={t(`articles:${postName}.timestamp`) as string}
+            message={t(`articles:${postName}.footer`) as string}
           />
         </ArticleBodyWrapper>
       </DefaultLayout>
