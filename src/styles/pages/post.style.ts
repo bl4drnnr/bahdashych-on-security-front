@@ -41,6 +41,12 @@ export const PostParagraph = styled.p`
     font-size: 24px;
   }
 
+  &.subsubtitle {
+    text-indent: 0;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
   @media only screen and (max-width: 780px) {
     font-size: 18px;
     text-indent: 25px;

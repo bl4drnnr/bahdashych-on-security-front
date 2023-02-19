@@ -6,7 +6,6 @@ export const Message = styled.p`
   font-size: 20px;
   line-height: 30px;
   padding-top: 30px;
-  text-indent: 50px;
   font-weight: 400;
   
   &.mess {
