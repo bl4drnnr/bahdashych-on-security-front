@@ -33,6 +33,7 @@ interface ArticleContentObject {
   lang?: string | undefined;
   content?: string | undefined;
   resource?: string | undefined;
+  width?: string | undefined;
   items?: Array<any>
 }
 
@@ -199,7 +200,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                         ))}
                       </ol>
                   ) : ((item.type === 'picture') ? (
-                    <ImageContainer>
+                    <ImageContainer className={`${item.width}`}>
                       <Image
                         src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${item.resource}`}
                         alt={item.resource as string}

@@ -295,7 +295,7 @@
           "aRec": "A Record (address)",
           "quadA": "AAAA Record (quad A)",
           "mxRec": "MX Record (Mail eXchange)",
-          "nsRec": "NS Record (name server)",
+          "nsRec": "NS Record (nameserver)",
           "cnameRec": "CNAME Record (Canonical Name)",
           "anameRec": "ANAME Record",
           "txtRec": "TXT Record"
@@ -306,6 +306,7 @@
         "terminology": "DNSSEC Terminology",
         "resolutionFlow": "DNSSEC Resolution Flow"
       },
+      "dnssecSignCeremony": "The DNSSEC Root Signing Ceremony",
       "About DNS Encryption": {
         "dot": "DNS over TLS",
         "doh": "DNS over HTTPS",
@@ -369,11 +370,13 @@
       },
       {
         "type": "picture",
+        "width": "w80",
         "resource": "dns_record_request_sequence_recursive_resolver.png"
       },
       "Okay, smart ass, but about about subdomains, like for example <b>\"blog.cloudflare.com\"</b>? Not a big deal, the sequence will be expand for one more authoritative nameserver, which holds the IP address of that subdomain.",
       {
         "type": "picture",
+        "width": "w80",
         "resource": "dns_record_request_sequence_cname_subdomain.png"
       },
       "Well, well, well, I see you have a lot questions. Okay, let's break this sequence down with step-by-step explanations of different types of nameservers. It's time to figure out everything about <b>DNS Servers Roles and Complete Lookup</b>.",
@@ -386,6 +389,7 @@
       "Also, let's update our sequence a little and let me introduce the whole <b>DNS lookup flow</b>. Just keep in mind this picture and get back to it after you read about each role to complete this pictuer inside your head and understand each step and role for the DNS lookup.",
       {
         "type": "picture",
+        "width": "w100",
         "resource": "what_is_a_dns_server_dns_lookup.png"
       },
       "So, the very first thing that your DNS query meets is <b>DNS Stub Resolver</b>.",
@@ -420,7 +424,7 @@
         "type": "subsubtitle",
         "content": "DNS Authoritative Nameserver"
       },
-      "<b>DNS Authoritative Nameserver</b> — this final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative name server has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
+      "<b>DNS Authoritative Nameserver</b> — this final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative nameserver has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
       "The recursive caching DNS server sends an iterative query to a <b>cloudflare</b> server for <b>cloudflare.com</b> — <b>step 6</b>. The cloudflare server responds with the IP address for <b>cloudflare.com</b> — <b>step 7</b>. The recursive caching DNS server responds to the original client with the IP address of <b>cloudflare.com</b> — <b>step 8</b> — and client interacts with the web server <b>cloudflare.com</b> — <b>steps 9 and 10</b>.",
       "Well done, that's it about DNS lookups. Now you know how it works and what components are involved. Probably you have noticed that there are a lot of \"DNS Servers\". When I say \"DNS server\" I literally mean this whole flow because DNS server just combines inside all roles.",
       {
@@ -450,9 +454,9 @@
       "The main usage of it is to map where email should be delivered. Should point to a mail server name and not to an IP address. <b>ANAME</b> — can point to a mail server name or an IP address.",
       {
         "type": "subsubtitle",
-        "content": "NS Record (name server)"
+        "content": "NS Record (nameserver)"
       },
-      "<b>NS Record (name server)</b> — specifies the authoritative DNS server for a domain. In other words, the NS record helps point to where internet application like a web browser can find the IP address for a domain name. Usually, multiple name servers are specified for a domain. The main usage of those authoritative servers is to connect your domain name to the actual server your site is hosted on. The name servers contains other DNS records like MX or A records.",
+      "<b>NS Record (nameserver)</b> — specifies the authoritative DNS server for a domain. In other words, the NS record helps point to where internet application like a web browser can find the IP address for a domain name. Usually, multiple nameservers are specified for a domain. The main usage of those authoritative servers is to connect your domain name to the actual server your site is hosted on. The nameservers contains other DNS records like MX or A records.",
       {
         "type": "subsubtitle",
         "content": "CNAME Record (Canonical Name)"
@@ -497,10 +501,11 @@
       },
       {
         "type": "picture",
+        "width": "w70",
         "resource": "dns_poisoning.jpeg"
       },
       "As you can see, from step 1 to 6 we have exactly the same flow, problems start from step 7.",
-      "It's called <b>DNS spoofing/cache poisoning</b> — this is an attack where forged DNS data is introduced into a DNS resolver’s cache, resulting in the resolver returning an incorrect IP address for a domain. Instead of going to the correct website, traffic can be diverted to a malicious machine or anywhere else the attacker desires; often this will be a replica of the original site used for malicious purposes such as distributing malware or collecting login information.",
+      "It's called <b>DNS spoofing/cache poisoning</b> — this is an attack where forged DNS data is introduced into a DNS resolver's cache, resulting in the resolver returning an incorrect IP address for a domain. Instead of going to the correct website, traffic can be diverted to a malicious machine or anywhere else the attacker desires; often this will be a replica of the original site used for malicious purposes such as distributing malware or collecting login information.",
       "So, we need to somehow verify that response comes from trusted source, right? Basically, provide <b>authentication</b> — this is where <b>DNSSEC</b> comes into play.",
       {
         "type": "title",
@@ -512,10 +517,10 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>DNSSEC (DNS Security Extension)</b> — is an authentication mechanism that utilises PKI cryptography to prevent spoofing. With DNSSEC, it’s not DNS queries and responses themselves are cryptographically signed, but rather DNS data itself signed by the owner of the data."
+          "<b>DNSSEC (DNS Security Extension)</b> — is an authentication mechanism that utilises PKI cryptography to prevent spoofing. With DNSSEC, it's not DNS queries and responses themselves are cryptographically signed, but rather DNS data itself signed by the owner of the data."
         ]
       },
-      "Assuming that you are already familiar with PKI and cryptography, we need to introduce a couple of new terms especially for DNSSEC.",
+      "Remember where we mentioned that DNS has hierarchical structure? The example of DNSSEC will make it even more obvious. Assuming that you are already familiar with PKI and cryptography, we need to introduce a couple of new terms especially for DNSSEC.",
       {
         "type": "subtitle",
         "content": "DNSSEC Terminology"
@@ -523,16 +528,82 @@
       {
         "type": "list-bullet",
         "items": [
-          "",
-          "",
-          "",
-          ""
+          "<b>RRSet - Resource Record Set</b> — the first step towards securing a zone with DNSSEC is to group all the records with the same type into a resource record set (RRset). For example, if you have three AAAA records in your zone on the same label (i.e. label.example.com), they would all be bundled into a single AAAA RRset.\n\nIt's actually this full RRset that gets digitally signed, opposed to individual DNS records. Of course, this also means that you must request and validate all of the AAAA records from a zone with the same label instead of validating only one of them. In short — <b>a set of records with the same type and same domain/zone</b>."
         ]
+      },
+      {
+        "type": "picture",
+        "width": "w80",
+        "resource": "diagram-rrsets.svg"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNSKEY</b> — contains a public signing key.",
+          "<b>RRSig - Resource Record Signature</b> — a record containing RRSet's digital signature.",
+          "<b>ZSK - Zone Signing Key</b> — <b>used to sign or verify a domain's/zone's non-key records (A, AAAA, MX etc.)</b>. Each zone in DNSSEC has a zone-signing key pair (ZSK): the private portion of the key digitally signs each RRset in the zone, while the public portion verifies the signature. To enable DNSSEC, a zone operator creates digital signatures for each RRset using the private ZSK and stores them in their nameserver as RRSIG records.\n\nHowever, these RRSIG records are useless unless DNS resolvers have a way of verifying the signatures. The zone operator also needs to make their public ZSK available by adding it to their nameserver in a DNSKEY record.\n\nWhen a DNSSEC resolver requests a particular record type (e.g., AAAA), the nameserver also returns the corresponding RRSIG. The resolver can then pull the DNSKEY record containing the public ZSK from the nameserver. Together, the RRset, RRSIG, and public ZSK can validate the response.\n\nIf we trust the zone-signing key in the DNSKEY record, we can trust all the records in the zone. But, what if the zone-signing key was compromised? We need a way to validate the public ZSK."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w60",
+        "resource": "diagram-zone-signing-keys-2.svg"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>KSK - Key Signing Key</b> — <b>used to sign or verify a domain's/zone's keys</b>. In addition to a zone-signing key, DNSSEC nameservers also have a key-signing key (KSK). The KSK validates the DNSKEY record in exactly the same way as our ZSK secured the rest of our RRsets in the previous section: It signs the public ZSK (which is stored in a DNSKEY record), creating an RRSIG for the DNSKEY.\n\nJust like the public ZSK, the nameserver publishes the public KSK in another DNSKEY record, which gives us the DNSKEY RRSet. Both the public KSK and public ZSK are signed by the private KSK. Resolvers can then use the public KSK to validate the public ZSK."
+        ]
+      },
+      "Validation for resolvers now looks like this:",
+      {
+        "type": "list-numeric",
+        "items": [
+          "Request the desired <b>RRSet</b>, which also returns the corresponding <b>RRSIG</b> record.",
+          "Request the DNSKEY records that contains <b>public ZSK and KSK</b> which also returns the <b>RRSig</b> for the <b>DNSKEY RRSet</b>.",
+          "Verify the <b>RRSig</b> of the requested <b>RRSet</b> with the <b>public ZSK</b>.",
+          "Verify the <b>RRSig</b> of the <b>DNSKEY RRSet</b> with the <b>public KSK</b>."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w60",
+        "resource": "diagram-key-signing-keys-2.svg"
+      },
+      "Probably you already see that hierarchy, don't you? And this is only the begging. Continuing about KSK, of course, the DNSKEY RRSet and corresponding RRSig records can be cached, so the DNS name servers aren't constantly being bombarded with unnecessary requests.",
+      "Why do we use separate zone-signing keys and key-signing keys? As we'll discuss in the next section, it's difficult to swap out an old or compromised KSK. Changing the ZSK, on the other hand, is much easier. This allows us to use a smaller ZSK without compromising the security of the server, minimizing the amount of data that the server has to send with each response.",
+      "We've now established trust within our zone, but DNS is a hierarchical system, and zones rarely operate independently. Complicating things further, the key-signing key is signed by itself, which doesn't provide any additional trust. We need a way to connect the trust in our zone with its parent zone.",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DS Record - Delegation of Signing</b> — <b>a record containing the hash/digest of a child domain's/zone's public KSK (the fingerprint of child's public KSK)</b>. DNSSEC introduces a delegation signer (DS) record to allow the transfer of trust from a parent zone to a child zone. A zone operator hashes the DNSKEY record containing the public KSK and gives it to parent zone to publish as a DS record.\n\nEvery time a resolver is referred to a child zone, the parent of the zone also provides a DS record. This DS record is how resolvers know that the child zone is DNSSEC-enabled. To check the validity of zone's public KSK, the resolver hashes it and compares it to the DS record from the parent. If hashes match, resolver can assume that the public KSK hasn't been compromised or tampered with, which means it can trust all of the records in the child zone. <b>This is how a chain of trust is established in DNSSEC.</b>"
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w50",
+        "resource": "diagram-delegation-signer-records.svg"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>The Chain of Trust</b> — ok, so we have a way to establish trust within a zone and connect it to its parent zone, but how do we trust the DS record? Well, the DS record is signed just like any other RRset, which means it has a corresponding RRSIG in the parent. The whole validation process repeats until we get to the parent’s public KSK. To verify that, we need to go to that parent’s DS record, and on and on we go up the chain of trust."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w50",
+        "resource": "diagram-the-chain-of-trust.svg"
       },
       {
         "type": "subtitle",
         "content": "DNSSEC Resolution Flow"
       },
+      {
+        "type": "title",
+        "content": "The DNSSEC Root Signing Ceremony"
+      },
+      "Oh, in fact, in order to understand how everything works, you do not need to know anything about this ceremony, but it looks so cool and sounds so pathetic that I could not help but write about it. <b>Keys to the Internet</b>, not bad, huh?",
       {
         "type": "title",
         "content": "About DNS Encryption"
@@ -561,6 +632,9 @@
         "type": "title",
         "content": "Conclusions"
       },
+      "In conclusion, DNS (Domain Name System) is a fundamental component of the internet that is used to translate domain names into IP addresses. While DNS is critical for internet connectivity and online services, it is also vulnerable to a range of DNS-based attacks, including cache poisoning and DNS spoofing.",
+      "To address these security concerns, DNSSEC (Domain Name System Security Extensions) has been developed as a security protocol that adds a layer of cryptographic security to the DNS system. By using digital signatures to verify the authenticity of DNS responses, DNSSEC can help to protect against a range of DNS-related attacks, ensuring the integrity and reliability of the DNS system.",
+      "While the adoption of DNSSEC has been slow, it is becoming increasingly important as the threat of DNS-based attacks continues to grow. Organizations that rely on online services should consider implementing DNSSEC to protect their online presence, improve the security of their network, and reduce the risk of DNS-based attacks. As the internet continues to evolve, DNS and DNSSEC will remain essential components of the global network, ensuring the reliability and security of online services for years to come.",
       {
         "type": "title",
         "content": "Contact and references"
@@ -578,6 +652,9 @@
     }, {
       "name": "DNS cache poisoning and spoofing",
       "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-cache-poisoning/"
+    }, {
+      "name": "People who hold keys for the Internet",
+      "link": "https://www.cloudflare.com/en-gb/dns/dnssec/root-signing-ceremony/"
     }, {
       "name": "Well-written article by ICANN about what DNSSEC is and why it is important",
       "link": "https://www.icann.org/resources/pages/dnssec-what-is-it-why-important-2019-03-05-en"
