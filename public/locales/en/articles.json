@@ -431,6 +431,14 @@
         "type": "subsubtitle",
         "content": "DNS Root Nameserver vs DNS Root Server"
       },
+      "Remember that pictured titled <b>Complete DNS Lookup and Webpage Query</b>. There is one huge mistake on that picture. You see, step 2 and 3 tell about about communication with <b>DNS Root Server</b>, but in reality, it's <b>DNS Root Nameserver</b>. It is extremely important to differ them. So, let me explain the difference:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS Root Servers</b> — are the 13 authoritative name servers that are responsible for responding to queries for the root zone of the Domain Name System (DNS). These servers are operated by various organizations around the world and are identified by letters A through M. They are the first step in the process of resolving a domain name to an IP address and help to direct traffic to the appropriate top-level domain (TLD) nameserver.",
+          "<b>DNS Root Nameservers</b> — set of nameservers that serve the root zone of the DNS. These nameservers are responsible for providing referrals to the TLD nameservers and other authoritative nameservers, and they play a critical role in the functioning of the DNS. The term \"root nameserver\" is often used interchangeably with \"root server,\" but strictly speaking, the former refers specifically to the nameservers that serve the root zone."
+        ]
+      },
       {
         "type": "subtitle",
         "content": "DNS Records Types"
