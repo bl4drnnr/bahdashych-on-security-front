@@ -1,4 +1,4 @@
 export interface CodeHighlighterProps {
-  code: string;
+  code: string | undefined;
   language: string | undefined;
 }

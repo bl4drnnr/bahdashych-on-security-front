@@ -296,7 +296,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     <>
        ...
        <PostParagraph
-         dangerouslySetInnerHTML={{ __html: t(`articles:${postName}.content.p${index}`) }}
+         dangerouslySetInnerHTML={{ __html: item }}
        />
        ...
     </>
@@ -344,7 +344,7 @@ this is the straight road to XSS, if text comes from untrusted sources and/or no
 
 ```typescript jsx
 <PostParagraph 
-  dangerouslySetInnerHTML={{ __html: t(`articles:${postName}.content.p${index}`) }}
+  dangerouslySetInnerHTML={{ __html: item }}
 />
 ```
 

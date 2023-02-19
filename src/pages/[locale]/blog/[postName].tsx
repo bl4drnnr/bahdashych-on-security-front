@@ -23,21 +23,17 @@ interface PostProps {
   postName: string;
 }
 
-interface IArticleItem {
-  type: string | undefined;
-  lang?: string | undefined;
-  content?: string | undefined;
-  resource?: string | undefined;
-  items?: Array<any>
-}
-
 interface IReference {
   name: string;
   link: string;
 }
 
 interface ArticleContentObject {
-  [key: string]: string | IArticleItem;
+  type?: string | undefined;
+  lang?: string | undefined;
+  content?: string | undefined;
+  resource?: string | undefined;
+  items?: Array<any>
 }
 
 const BlogPost = ({ locale, postName }: PostProps) => {
@@ -62,7 +58,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                 <li
                   className={'table-of-contents-li'}
                   key={key}
-                  onClick={() => scrollTo(getRefByName(t(`articles:${postName}.toc.${keyName}`)))}
+                  onClick={() => scrollTo(getRefByName(t(`articles:${postName}.toc.${keyName}`) as string))}
                 >
                   {t(`articles:${postName}.toc.${keyName}`)}
                 </li>
@@ -91,7 +87,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const getRefByName = (refName: string): any => {
+  const getRefByName = (refName: string | undefined): any => {
     let matchingRef = null;
     refNames.forEach((item, index) => {
       if (item === refName) matchingRef = listRefs[index];
@@ -111,17 +107,17 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     let quantityOfTitles = 0;
     const allRefs: Array<string> = [];
 
-    const contentObj: ArticleContentObject = t(`articles:${postName}.content`, { returnObjects: true });
+    const contentObj: ArticleContentObject[] = t(`articles:${postName}.content`, { returnObjects: true });
 
-    Object.entries(contentObj).forEach(([key, value]) => {
-        if (
-          typeof value !== 'string' &&
-          (value.type === 'title' || value.type === 'subtitle')
-        ) {
-          quantityOfTitles += 1;
-          allRefs.push(value.content as string);
-        }
-      });
+    contentObj.forEach((item: ArticleContentObject | string) => {
+      if (
+        typeof item !== 'string' &&
+        (item.type === 'title' || item.type === 'subtitle')
+      ) {
+        quantityOfTitles += 1;
+        allRefs.push(item.content as string);
+      }
+    });
 
     setListRefs(Array(quantityOfTitles).fill(null).map(() => React.createRef()));
 
@@ -161,45 +157,45 @@ const BlogPost = ({ locale, postName }: PostProps) => {
           </TableOfContentsContainer>
 
           {
-            Object.entries(t(`articles:${postName}.content`, { returnObjects: true }) as ArticleContentObject)
-              .map(([value, key], index) => (
-                <div key={value}>
-                  {typeof key === 'string' ? (
+            (t(`articles:${postName}.content`, { returnObjects: true }) as ArticleContentObject[])
+              .map((item: ArticleContentObject | string, index) => (
+                <div key={index}>
+                  {typeof item === 'string' ? (
                     <PostParagraph
-                      dangerouslySetInnerHTML={{ __html: t(`articles:${postName}.content.p${index}`) }}
+                      dangerouslySetInnerHTML={{ __html: item }}
                     />
-                  ) : (key.type === 'title' || key.type === 'subtitle') ? (
+                  ) : (item.type === 'title' || item.type === 'subtitle') ? (
                     <PostParagraph
-                      className={key.type}
-                      ref={getRefByName(key.content as string)}
-                    >{key.content}</PostParagraph>
-                  ) : ((isArticleCode(key)) ? (
-                    <CodeHighlighter language={key.lang} code={key.content as string} />
-                  ) : ((key.type === 'list-bullet') ? (
+                      className={item.type}
+                      ref={getRefByName(item.content)}
+                    >{item.content}</PostParagraph>
+                  ) : ((isArticleCode(item)) ? (
+                    <CodeHighlighter language={item.lang} code={item.content} />
+                  ) : ((item.type === 'list-bullet') ? (
                     <ul className={'blog-post-ul'}>
-                      {key.items?.map((item) => (
+                      {item.items?.map((listItem: string) => (
                         <li
                           className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                          key={item}
-                          dangerouslySetInnerHTML={{ __html: item }}
+                          key={listItem}
+                          dangerouslySetInnerHTML={{ __html: listItem }}
                         />
                       ))}
                     </ul>
-                    ) : ((key.type === 'list-numeric') ? (
+                    ) : ((item.type === 'list-numeric') ? (
                       <ol className={'blog-post-ol'}>
-                        {key.items?.map((item) => (
+                        {item.items?.map((listItem: string) => (
                           <li
-                            key={item}
+                            key={listItem}
                             className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                            dangerouslySetInnerHTML={{ __html: item }}
+                            dangerouslySetInnerHTML={{ __html: listItem }}
                           />
                         ))}
                       </ol>
-                  ) : ((key.type === 'picture') ? (
+                  ) : ((item.type === 'picture') ? (
                     <ImageContainer>
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${key.resource}`}
-                        alt={key.resource as string}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${item.resource}`}
+                        alt={item.resource as string}
                         className={'image'}
                         fill
                       />
