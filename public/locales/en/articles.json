@@ -283,13 +283,34 @@
       "DNS Overview": {
         "terminology": "DNS Terminology",
         "resolutionFlow": "DNS Resolution Flow",
-        "dnsRoles": "DNS Servers Roles",
-        "recordsTypes": "DNS Records Types"
+        "DNS Servers Roles and Complete Lookup": {
+          "stubResolver": "DNS Stub Resolver",
+          "recursiveResolver": "DNS Recursive Resolver",
+          "rootNameserver": "DNS Root Nameserver",
+          "tldNameserver": "DNS TLD Nameserver",
+          "authNameserver": "DNS Authoritative Nameserver",
+          "rootNameserverVsRootServer": "DNS Root Nameserver vs DNS Root Server"
+        },
+        "DNS Records Types": {
+          "aRec": "A Record (address)",
+          "quadA": "AAAA Record (quad A)",
+          "mxRec": "MX Record (Mail eXchange)",
+          "nsRec": "NS Record (name server)",
+          "cnameRec": "CNAME Record (Canonical Name)",
+          "anameRec": "ANAME Record",
+          "txtRec": "TXT Record"
+        }
       },
+      "dnsSecIssues": "DNS Security Issues",
       "dnssecIntro": "Introduction into DNSSEC",
       "DNSSEC Overview": {
         "terminology": "DNSSEC Terminology",
         "resolutionFlow": "DNSSEC Resolution Flow"
+      },
+      "About DNS Encryption": {
+        "dot": "DNS over TLS",
+        "doh": "DNS over HTTPS",
+        "difference": "Difference between DoT and DoH"
       },
       "conclusion": "Conclusions",
       "references": "Contact and references"
@@ -309,7 +330,7 @@
       "The same as always let's start with short description what DNS actually is and how it can be described. The most popular definition of DNS always sounds more or less like that:",
       {
         "type": "list",
-        "items": ["<b>DNS (Domain Name System)</b> - system that translates human-readable domain names to IP address, so machines can communicate with each other using those IP addresses."]
+        "items": ["<b>DNS (Domain Name System)</b> – system that translates human-readable domain names to IP address, so machines can communicate with each other using those IP addresses."]
       },
       "Sounds pretty common, isn't it? I wanted to try to dig a little deeper in order to find out what happens after you write URL address into your browser and hit Enter button. I wanted to know what is happening behind the scene and how your computer obtains the IP address of source web server.",
       {
@@ -320,10 +341,11 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>DNS Domain / DNS Zone</b> - a section of the DNS namespace. For instance: blog.mikhailbahdashych.me. (trailing dot is not a typo) is the server named \"blog\" in the \"mikhailbahdashych\" domain/zone, which is in the \"me\" domain/zone, which is in the \"root (.)\" domain/zone.",
-          "<b>Iterative DNS Query</b> - a request to a DNS server: 'Give me whatever help you can, but ask no one else'.",
-          "<b>Recursive DNS Query</b> - a request to a DNS server: 'Give me what I need, and ask everyone you want'.",
-          "<b>DNS Server</b> - term that described the whole infrastructure of DNS roles. It's okay, if you don't understand it at this point, we will clarify that."
+          "<b>DNS Domain / DNS Zone</b> – a section of the DNS namespace. For instance: blog.mikhailbahdashych.me. (trailing dot is not a typo) is the server named \"blog\" in the \"mikhailbahdashych\" domain/zone, which is in the \"me\" domain/zone, which is in the \"root (.)\" domain/zone.",
+          "<b>Iterative DNS Query</b> – a request to a DNS server: 'Give me whatever help you can, but ask no one else'.",
+          "<b>Recursive DNS Query</b> – a request to a DNS server: 'Give me what I need, and ask everyone you want'.",
+          "<b>DNS Server</b> – term that described the whole infrastructure of DNS roles. It's okay, if you don't understand it at this point, we will clarify that.",
+          "<b>DNS Query or Request</b> – request for resolution of domain name to an IP address."
         ]
       },
       {
@@ -331,32 +353,115 @@
         "content": "DNS Resolution Flow"
       },
       "The very first thing we need to know about is: how does your browser send some text in form of URL and get back IP address of requested website? At this moment of time we are discussing DNS only from perspective that the only thing it does is converting URLs into IP address of websites, but we will expand its usage a little later.",
-      "Here is where <b>DNS Resolution Flow</b> comes into play. Everything is better on examples, so let's say you want to request for <b>cloudflare.com</b>. Here is what is happening after you paste URL in browser and hit Enter button:",
+      "Here is where <b>DNS Resolution Flow</b> comes into play. Everything is better on examples, so let's say you want to request for <b>cloudflare.com. (trailing dot is not a typo)</b>. First of all let me just introduce you the sequence of all requests, the whole resolution flow itself and then we discuss its parts step-by-step:",
       {
         "type": "list-numeric",
         "items": [
-          "<b>DNS Stub Resolver</b> - everything starts with DNS stub resolver or DNS Client.",
-          "<b>DNS Recursive Resolver</b> - ",
-          "<b>DNS Root Nameserver</b> -",
-          "<b>DNS TLD Nameserver</b> -",
-          "<b>Authoritative Nameserver</b> -"
+          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root server responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\"cloudflare\"</b> authoritative nameserver server responds with the IP address for <b>\"cloudflare.com\"</b>. webpage",
+          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b> (and caches it, if it had no this record).",
+          "The client interacts with the web server <b>\"cloudflare.com\"</b>."
         ]
       },
       {
         "type": "picture",
         "resource": "dns_record_request_sequence_recursive_resolver.png"
       },
+      "Okay, smart ass, but about about subdomains, like for example <b>\"blog.cloudflare.com\"</b>? Not a big deal, the sequence will be expand for one more authoritative nameserver, which holds the IP address of that subdomain.",
+      {
+        "type": "picture",
+        "resource": "dns_record_request_sequence_cname_subdomain.png"
+      },
+      "Well, well, well, I see you have a lot questions. Okay, let's break this sequence down with step-by-step explanations of different types of nameservers. It's time to figure out everything about <b>DNS Servers Roles and Complete Lookup</b>.",
+      {
+        "type": "subtitle",
+        "content": "DNS Servers Roles and Complete Lookup"
+      },
+      "The first thing you need to understand is that all those nameservers like root, TLD and blah-blah-blah are just roles. It literally can be just one physical machine (eiter virtual or not) which is responsible for handling almost every step of described sequence above. Also, I guess you have already notices, that there is some hierarchy of DNS servers, and that's true. All DNS roles are places in hierarchy that goes up from down.",
+      "By the way, <b>let's consider that there is no caching on each step of the sequence</b>. You should know that <b>caching</b> is probably one of the most important function of the whole DNS. We want to make as few requests as possible in order to keep high performance of the system. Caching there is on literally every step of the DNS resolution flow.",
+      "Also, let's update our sequence a little and let me introduce the whole <b>DNS lookup flow</b>. Just keep in mind this picture and get back to it after you read about each role to complete this pictuer inside your head and understand each step and role for the DNS lookup.",
       {
         "type": "picture",
         "resource": "what_is_a_dns_server_dns_lookup.png"
       },
+      "So, the very first thing that your DNS query meets is <b>DNS Stub Resolver</b>.",
       {
         "type": "subtitle",
-        "content": "DNS Servers Roles"
+        "content": "DNS Stub Resolver"
+      },
+      "<b>DNS Stub Resolver</b> – is an intermediate component between application that requiring DNS resolution and recursive DNS resolver. A DNS stub resolver is typically used by end-user devices, such as laptops, smartphones, and other networked devices, to look up domain names for websites and other online services.",
+      "The operating system level DNS resolver is the second and last local stop before a DNS query leaves your machine. The process inside your operating system that is designed to handle this query is commonly called a <b>\"stub resolver\"</b> or <b>DNS client</b>. When a stub resolver gets a request from an application, it first checks its own cache to see if it has the record. If it does not, it then sends a DNS query (with a recursive flag set), outside the local network to a DNS recursive resolver inside the Internet service provider (ISP).",
+      "I guess you have notices that there is no stub resolver on pictures, but that's fine. It's step between client and DNS recursive resolver. Basically, this is step where client checks if it already has the cached IP address of requested domain name. Also, for better understanding let's mark all steps where this role is involved. So, let's say it is <b>step 0</b>.",
+      {
+        "type": "subtitle",
+        "content": "DNS Recursive Resolver"
+      },
+      "<b>DNS Recursive Resolver</b> – the recursive resolver is a component responsible for responses to a recursive request from a client and taking the time to track down the DNS record (usually 24h). It performs the task of resolving DNS queries by recursively traversing the DNS hierarchy. When a recursive resolver receives a DNS query from a client, it will query other DNS servers on behalf of the client to resolve the domain name to an IP address.",
+      "<b>DNS Recursive Resolver is the connecting link of the whole flow.</b>",
+      "One of the key benefits of using a recursive resolver is that it can <b>cache</b> DNS records to improve the efficiency of subsequent DNS queries. This is why also going to refer to it as to <b>DNS caching server</b>. When a recursive resolver receives a DNS response, it will store the response in its cache for a period of time (known as the time-to-live, or TTL), so that it can quickly respond to future queries for the same domain name. This can help to reduce the load on the DNS system and improve the performance of DNS lookups.",
+      "Here is where everything starts. The client (end user) sends a recursive query to its local recursive caching DNS server for <b>cloudflare.com</b>. This is <b>step 1</b>",
+      {
+        "type": "subtitle",
+        "content": "DNS Root Nameserver"
+      },
+      "<b>DNS Root Nameserver</b> – the root nameserver <b>(DNS Root Nameserver ≠ DNS Root Server!!! We'll discuss that later)</b> is the first step in translating (resolving) human readable host names into IP addresses. Remember that dot in domain name, that wasn't typo? This is where root nameserver comes into play.",
+      "The recursive caching server sends an iterative query to a root <b>\".\"</b> nameserver for <b>cloudflare.com</b> – <b>step 2</b>. The root nameserver responds with referral to <b>\".com\"</b> zone’s nameserver. But what is <b>\".com\"</b>, of course, it’s top-level domain! The root server responds with a referral to <b>\".com\"</b> zone’s TLD nameservers.",
+      {
+        "type": "subtitle",
+        "content": "DNS TLD Nameserver"
+      },
+      "<b>DNS TLD Nameserver</b> – TLD stands for top-level domain. TLD nameserver maintains information for all the domain names that share a common domain extension, such as <b>.com</b, <b>.net</b>, or whatever comes after the last dot in a URL. For example, a <b>\".com\"</b> TLD nameserver contains information for every website that ends in <b>\".com\"</b>.",
+      "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> server for cloudflare.com – <b>step 4</b>. TLD Nameserver responds with a referral to cloudflare zone’s authoritative nameserver – <b>step 5</b>.",
+      {
+        "type": "subtitle",
+        "content": "DNS Authoritative Nameserver"
+      },
+      "<b>DNS Authoritative Nameserver</b> – this final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative name server has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
+      "The recursive caching DNS server sends an iterative query to a <b>cloudflare</b> server for <b>cloudflare.com</b> – <b>step 6</b>. The cloudflare server responds with the IP address for <b>cloudflare.com</b> – <b>step 7</b>. The recursive caching DNS server responds to the original client with the IP address of <b>cloudflare.com</b> – <b>step 8</b> – and client interacts with the web server <b>cloudflare.com</b> – <b>steps 9 and 10</b>.",
+      {
+        "type": "subtitle",
+        "content": "DNS Root Nameserver vs DNS Root Server"
       },
       {
         "type": "subtitle",
         "content": "DNS Records Types"
+      },
+      {
+        "type": "subtitle",
+        "content": "A Record (address)"
+      },
+      {
+        "type": "subtitle",
+        "content": "AAAA Record (quad A)"
+      },
+      {
+        "type": "subtitle",
+        "content": "MX Record (Mail eXchange)"
+      },
+      {
+        "type": "subtitle",
+        "content": "NS Record (name server)"
+      },
+      {
+        "type": "subtitle",
+        "content": "CNAME Record (Canonical Name)"
+      },
+      {
+        "type": "subtitle",
+        "content": "ANAME Record"
+      },
+      {
+        "type": "subtitle",
+        "content": "TXT Record"
+      },
+      {
+        "type": "title",
+        "content": "DNS Security Issues"
       },
       {
         "type": "title",
@@ -373,6 +478,22 @@
       {
         "type": "subtitle",
         "content": "DNSSEC Resolution Flow"
+      },
+      {
+        "type": "title",
+        "content": "About DNS Encryption"
+      },
+      {
+        "type": "subtitle",
+        "content": "DNS over TLS"
+      },
+      {
+        "type": "subtitle",
+        "content": "DNS over HTTPS"
+      },
+      {
+        "type": "subtitle",
+        "content": "Difference between DoT and DoH"
       },
       {
         "type": "title",
