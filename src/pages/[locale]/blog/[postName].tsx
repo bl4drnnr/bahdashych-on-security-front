@@ -112,7 +112,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     contentObj.forEach((item: ArticleContentObject | string) => {
       if (
         typeof item !== 'string' &&
-        (item.type === 'title' || item.type === 'subtitle')
+        (item.type === 'title' || item.type === 'subtitle' || item.type === 'subsubtitle')
       ) {
         quantityOfTitles += 1;
         allRefs.push(item.content as string);
@@ -164,7 +164,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                     <PostParagraph
                       dangerouslySetInnerHTML={{ __html: item }}
                     />
-                  ) : (item.type === 'title' || item.type === 'subtitle') ? (
+                  ) : (item.type === 'title' || item.type === 'subtitle' || item.type === 'subsubtitle') ? (
                     <PostParagraph
                       className={item.type}
                       ref={getRefByName(item.content)}
