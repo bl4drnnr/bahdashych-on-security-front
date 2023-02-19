@@ -128,6 +128,7 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .blog-post-ul, .blog-post-ol {
+    white-space: pre-line;
     color: rgb(${(props) => props.theme.colors.textColor});
     margin: 20px 0 0 20px;
   }
@@ -174,7 +175,25 @@ export const TableOfContentsTitle = styled.h1`
 `;
 
 export const ImageContainer = styled.div`
-  width: 100%;
+  margin: 30px auto 0 auto;
+  &.w50 {
+    width: 50%;
+  }
+  &.w60 {
+    width: 60%;
+  }
+  &.w70 {
+    width: 70%;
+  }
+  &.w80 {
+    width: 80%;
+  }
+  &.w90 {
+    width: 90%;
+  }
+  &.w100 {
+    width: 100%;
+  }
 
   > div {
     position: unset !important;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   height: 65px;
-  background-color: rgb(${(props) => props.theme.colors.darkBackground});
+  background-color: rgb(${(props) => props.theme.colors.lightBackground});
   position: fixed;
   z-index: 998;
 `;
@@ -78,7 +78,7 @@ export const ImageWrapper = styled.div`
 export const MobileMenuContainer = styled.div`
   position: absolute;
   border-bottom: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
-  background-color: rgb(${(props) => props.theme.colors.darkBackground});
+  background-color: rgb(${(props) => props.theme.colors.lightBackground});
   right: 0;
   left: 0;
   top: 65px;

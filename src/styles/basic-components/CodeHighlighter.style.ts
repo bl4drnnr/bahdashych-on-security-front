@@ -6,7 +6,7 @@ export const CodeHighlighterWrapper = styled.div`
   font-family: 'Ubuntu', sans-serif !important;
   & > pre {
     border-radius: 6px;
-    background: rgb(${(props) => props.theme.colors.lightBackground}) !important;
+    background: rgb(${(props) => props.theme.colors.darkBackground}) !important;
   }
   span {
     font-family: 'Ubuntu', sans-serif !important;

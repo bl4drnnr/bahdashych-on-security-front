@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: rgb(${(props) => props.theme.colors.darkBackground});
+  background-color: rgb(${(props) => props.theme.colors.lightBackground});
 `;
 
 export const IntroTextBox = styled.div`

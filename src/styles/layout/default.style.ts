@@ -4,7 +4,7 @@ export const MainWrapper = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: rgb(${(props) => props.theme.colors.darkBackground});
+  background: rgb(${(props) => props.theme.colors.lightBackground});
   
   .inline-link {
     &.roboto {
