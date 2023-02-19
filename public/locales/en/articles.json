@@ -302,7 +302,6 @@
         }
       },
       "dnsSecIssues": "DNS Security Issues",
-      "dnssecIntro": "Introduction into DNSSEC",
       "DNSSEC Overview": {
         "terminology": "DNSSEC Terminology",
         "resolutionFlow": "DNSSEC Resolution Flow"
@@ -329,7 +328,7 @@
       },
       "The same as always let's start with short description what DNS actually is and how it can be described. The most popular definition of DNS always sounds more or less like that:",
       {
-        "type": "list",
+        "type": "list-bullet",
         "items": ["<b>DNS (Domain Name System)</b> — system that translates human-readable domain names to IP address, so machines can communicate with each other using those IP addresses."]
       },
       "Sounds pretty common, isn't it? I wanted to try to dig a little deeper in order to find out what happens after you write URL address into your browser and hit Enter button. I wanted to know what is happening behind the scene and how your computer obtains the IP address of source web server.",
@@ -382,7 +381,7 @@
         "type": "subtitle",
         "content": "DNS Servers Roles and Complete Lookup"
       },
-      "The first thing you need to understand is that all those nameservers like root, TLD and blah-blah-blah are just roles. It literally can be just one physical machine (eiter virtual or not) which is responsible for handling almost every step of described sequence above. Also, I guess you have already notices, that there is some hierarchy of DNS servers, and that's true. All DNS roles are places in hierarchy that goes up from down.",
+      "The first thing you need to understand is that all those nameservers like root, TLD and blah-blah-blah are just roles. It literally can be just one physical machine (eiter virtual or not) which is responsible for handling almost every step of described sequence above. Also, I guess you have already notices, that there is some <b>hierarchy</b> of DNS servers, and that's true. All DNS roles are places in hierarchy that goes up from down.",
       "By the way, <b>let's consider that there is no caching on each step of the sequence</b>. You should know that <b>caching</b> is probably one of the most important function of the whole DNS. We want to make as few requests as possible in order to keep high performance of the system. Caching there is on literally every step of the DNS resolution flow.",
       "Also, let's update our sequence a little and let me introduce the whole <b>DNS lookup flow</b>. Just keep in mind this picture and get back to it after you read about each role to complete this pictuer inside your head and understand each step and role for the DNS lookup.",
       {
@@ -505,15 +504,30 @@
       "So, we need to somehow verify that response comes from trusted source, right? Basically, provide <b>authentication</b> — this is where <b>DNSSEC</b> comes into play.",
       {
         "type": "title",
-        "content": "Introduction into DNSSEC"
-      },
-      {
-        "type": "title",
         "content": "DNSSEC Overview"
       },
+      "Finally, here we are, DNSSEC! We should consider that DNS and DNSSEC now are like HTTP and HTTPS ~20 years ago. It will be just required to use by everyone in order to provide secure communication. DNSSEC and HTTPS are even similar in some cases.",
+      "HTTPS provide both <b>authentication</b> and <b>confidentiality</b> using PKI infrastructure of CA's (if you are not familiar with <a href='https://blog.mikhailbahdashych.me/en/blog/pki-infrastructure-or-how-to-build-your-own-vpn' class='inline-link en'>see here</a>). <b>Authentication</b> is provided by verifying who was the issuer of the certificate, while <b>confidentiality</b> is provided by encrypting traffic.",
+      "In case of DNSSEC, it provides only <b>authentication</b>, where DNS encryption provides <b>confidentiality</b>, what was already mentioned above. But getting back to DNSSEC, let's start with simple definition of what it actually is:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNSSEC (DNS Security Extension)</b> — is an authentication mechanism that utilises PKI cryptography to prevent spoofing. With DNSSEC, it’s not DNS queries and responses themselves are cryptographically signed, but rather DNS data itself signed by the owner of the data."
+        ]
+      },
+      "Assuming that you are already familiar with PKI and cryptography, we need to introduce a couple of new terms especially for DNSSEC.",
       {
         "type": "subtitle",
         "content": "DNSSEC Terminology"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "",
+          "",
+          "",
+          ""
+        ]
       },
       {
         "type": "subtitle",
@@ -564,6 +578,9 @@
     }, {
       "name": "DNS cache poisoning and spoofing",
       "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-cache-poisoning/"
+    }, {
+      "name": "Well-written article by ICANN about what DNSSEC is and why it is important",
+      "link": "https://www.icann.org/resources/pages/dnssec-what-is-it-why-important-2019-03-05-en"
     }, {
       "name": "Really cool video that explains DNS and DNSSEC resolution flows",
       "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
