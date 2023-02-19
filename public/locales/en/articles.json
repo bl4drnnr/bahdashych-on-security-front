@@ -478,6 +478,31 @@
         "type": "title",
         "content": "DNS Security Issues"
       },
+      "Okay, now we have a complete overview of how DNS resolution works, what are different roles of DNS servers and even mentioned a couple of main record types, but what about security issues? Actually, we have only 2 main security issues — <b>lack of authentication and confidentiality</b>.",
+      "The first is due to the fact that DNS has no ability to check if the record it has requested comes from trusted source, and this issue is mitigated by <b>DNSSEC</b>.",
+      "The second is due to the fact that DNS as a protocol has been implemented in early 80's. As you already know, at that period of time, security wasn't on the foreground while all resources have been concentrated on providing just availability. Therefore, DNS, as many other protocols such as HTTP or ART, is transmitting data in plaintext. This issue is mitigated by <b>encryption</b>.",
+      "Fine, we are definitely going to discuss both of the issues, but let's first take a look at how DNS looks like when it has been hacked:",
+      {
+        "type": "list-numeric",
+        "items": [
+          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root server responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The evil DNS server responds with the evil IP address for <b>\"cloudflare.com\"</b>.",
+          "The recursive caching DNS server responds to the original client with the evil IP address for <b>\"cloudflare.com\"</b>.",
+          "Client interacts with the evil web server, which either respond directly, or perform <b>Man-in-the-Middle</b> attack operation by passing and observing (or altering) traffic from/to the legitimate web server."
+        ]
+      },
+      {
+        "type": "picture",
+        "resource": "dns_poisoning.jpeg"
+      },
+      "As you can see, from step 1 to 6 we have exactly the same flow, problems start from step 7.",
+      "It's called <b>DNS spoofing/cache poisoning</b> — this is an attack where forged DNS data is introduced into a DNS resolver’s cache, resulting in the resolver returning an incorrect IP address for a domain. Instead of going to the correct website, traffic can be diverted to a malicious machine or anywhere else the attacker desires; often this will be a replica of the original site used for malicious purposes such as distributing malware or collecting login information.",
+      "So, we need to somehow verify that response comes from trusted source, right? Basically, provide <b>authentication</b> — this is where <b>DNSSEC</b> comes into play.",
       {
         "type": "title",
         "content": "Introduction into DNSSEC"
@@ -498,18 +523,26 @@
         "type": "title",
         "content": "About DNS Encryption"
       },
+      "As you have already found out, DNSSEC insures only authentication, but it still transfers it in plaintext. Here is where cryptography comes into play, our lovely HTTPS and TLS, which will help us to ensure not only authentication of our traffic, but also its confidentiality.",
       {
         "type": "subtitle",
         "content": "DNS over TLS"
       },
+      "<b>DNS over TLS (or DoT)</b>, is a standard for encrypting DNS queries to keep them secure and private. DoT uses the same protocol as HTTPS to encrypt and authenticate connection. Normally, DNS works over UDP. What DoT does, it it adds TLS encryption on top of the user datagram protocol (UDP), which is used for DNS queries. Additionally, it ensures that DNS requests and responses are not tampered with or forged via on-path attacks.",
       {
         "type": "subtitle",
         "content": "DNS over HTTPS"
       },
+      "<b>DNS over HTTPS (or DoH)</b> is an alternative way to DoT. DNS queries and responses are encrypted, but sent via the HTTP or HTTP/2 protocols instead of directly over UDP. DoH traffic looks like other HTTPS traffic - e.g. normal user-driven interactions with websites and web apps — from a network administrator's perspective.",
+      "In February 2020, the Mozilla Firefox browser began enabling DoH for U.S. users by default. DNS queries from the Firefox browser are encrypted by DoH and go to either Cloudflare or NextDNS. Several other browsers also support DoH, although it is not turned on by default.",
       {
         "type": "subtitle",
         "content": "Difference between DoT and DoH"
       },
+      "The main difference between them is <b>what port they use</b>. DoT only uses port 853, while DoH uses 443, which is the port that all other HTTPS traffic uses as well.",
+      "Because DoT has a dedicated port, anyone with network visibility can see DoT traffic coming and going, even though the requests and responses themselves are encrypted. In contrast, with DoH, DNS queries and responses are camouflaged within other HTTPS traffic, since it all comes and goes from the same port.",
+      "<b>From a network security standpoint, DoT is arguably better</b>. It gives network administrator the ability to monitor and block DNS queries, which is important for identifying and stopping malicious activity.",
+      "<b>DoH queries, meanwhile, are hidden in regular HTTPS traffic</b>, meaning they cannot easily be blocked without blocking all other HTTPS traffic as well. However, from a privacy perspective, DoH is arguably preferable. With DoH, DNS queries are hidden within the larger flow of HTTPS traffic. This gives network administrators less visibility but provides users with more privacy.",
       {
         "type": "title",
         "content": "Conclusions"
@@ -528,6 +561,9 @@
     }, {
       "name": "DNS over TLS vs DNS over HTTPS",
       "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/"
+    }, {
+      "name": "DNS cache poisoning and spoofing",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-cache-poisoning/"
     }, {
       "name": "Really cool video that explains DNS and DNSSEC resolution flows",
       "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
