@@ -715,8 +715,8 @@
               ]
             }
           ],
-          "The recursive caching DNS server sends an iterative query to a \".com\" TLD nameserver for \"cloudflare.com\".",
-          "The \".com\" TLD nameserver:",
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for <b>\"cloudflare.com\"</b>.",
+          "The <b>\".com\"</b> TLD nameserver:",
           [
             "Sends a referral:",
             {
@@ -797,11 +797,17 @@
           "The client interacts with the web server <b>\"cloudflare.com\"</b>."
         ]
       },
+      "There is one thing you need to understand. All those examples that are presented here about how DNS works are academic examples. This only happens in sterile, \"laboratory\" conditions (in this case, if there were no cache anywhere). These concepts are easy enough to understand that they have a place to be, in reality, if you have to configure such a system, then it is literally a few lines of code or a configuration change.",
+      "Such examples are more likely to be needed by people who design networks and infrastructures of this scale.",
+      "Speaking of the DNS example itself, different configurations represent different functions. As mentioned above all those recursive resolvers, caching server or root nameservers are just roles, physically, it can be one machine. Therefore, configuration of your DNS server also depends on what you want to build. So, be careful with guidelines you find on the Internet.",
       {
         "type": "title",
         "content": "The DNSSEC Root Signing Ceremony"
       },
       "Oh, in fact, in order to understand how everything works, you do not need to know anything about this ceremony, but it looks so cool and sounds so pathetic that I could not help but write about it. <b>Keys to the Internet</b>, not bad, huh?",
+      "You have probably already paid attention to how this DNS hierarchy goes from bottom to top. In this case, you might have a logical question: What is at the very top?",
+      "That's the purpose of the Root Signing Ceremony—a rigorous procedure around signing the root DNS zone's public keying information for the next few months. The private signing key used in this process is quite literally the key to the entire DNSSEC-protected Internet. A public, audited, and tightly controlled ceremony around accessing this key is a necessity for DNSSEC to succeed as a global standard.",
+      "Just find a video of this ceremony, because it's translated online and see where DNSSEC trust comes from.",
       {
         "type": "title",
         "content": "About DNS Encryption"
