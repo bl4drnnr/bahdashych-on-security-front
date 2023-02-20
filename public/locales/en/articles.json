@@ -450,7 +450,7 @@
           "<b>DNS Authoritative Nameserver</b> — this final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative nameserver has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request."
         ]
       },
-      "The recursive caching DNS server sends an iterative query to a <b>cloudflare</b> server for <b>cloudflare.com</b> — <b>step 6</b>. The cloudflare server responds with the IP address for <b>cloudflare.com</b> — <b>step 7</b>. The recursive caching DNS server responds to the original client with the IP address of <b>cloudflare.com</b> — <b>step 8</b> — and client interacts with the web server <b>cloudflare.com</b> — <b>steps 9 and 10</b>.",
+      "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> server for <b>\"cloudflare.com\"</b> — <b>step 6</b>. The <b>\"cloudflare.com\"</b> authoritative nameserver responds with the IP address for <b>\"cloudflare.com\"</b> — <b>step 7</b>. The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b> — <b>step 8</b> — and client interacts with the web server <b>\"cloudflare.com\"</b> — <b>steps 9 and 10</b>.",
       "Well done, that's it about DNS lookups. Now you know how it works and what components are involved. Probably you have noticed that there are a lot of \"DNS Servers\". When I say \"DNS server\" I literally mean this whole flow because DNS server just combines inside all roles.",
       {
         "type": "subsubtitle",
