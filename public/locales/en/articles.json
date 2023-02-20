@@ -358,8 +358,8 @@
         "type": "list-numeric",
         "items": [
           "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) server for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The root server responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root nameserver responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
           "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
           "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
           "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
@@ -497,8 +497,8 @@
         "type": "list-numeric",
         "items": [
           "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) server for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The root server responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root nameserver responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
           "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
           "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
           "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
@@ -606,6 +606,21 @@
       {
         "type": "subtitle",
         "content": "DNSSEC Resolution Flow"
+      },
+      "Oh, that was tough, wasn't it? Okay, enough of this terminology, everything is better seen in examples. We are going to modify our previous DNS resolution flow to make it DNSSEC-enabled.",
+      {
+        "type": "list-numeric",
+        "items": [
+          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root nameserver responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\"cloudflare\"</b> authoritative nameserver server responds with the IP address for <b>\"cloudflare.com\"</b>. webpage",
+          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b> (and caches it, if it had no this record).",
+          "The client interacts with the web server <b>\"cloudflare.com\"</b>."
+        ]
       },
       {
         "type": "title",

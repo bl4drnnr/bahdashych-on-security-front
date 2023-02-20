@@ -83,6 +83,63 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
   };
 
+  const generateLists = (items: any, type: string) => {
+    const CreatedList = ({ items, type }: { items: any, type: string }): JSX.Element => {
+      if (type === 'list-bullet') {
+        return (
+          <ul className={'blog-post-ul'}>
+            {items.map((item: any) => {
+              if (typeof item === 'string') {
+                return (
+                  <li
+                    key={item}
+                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                    dangerouslySetInnerHTML={{ __html: item }}
+                  />
+                );
+              } else {
+                return (
+                  <span
+                    key={item}
+                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                  >
+                    {generateLists(item.items, item.type)}
+                  </span>
+                );
+              }
+            })}
+          </ul>
+        );
+      } else {
+        return (
+          <ol className={'blog-post-ol'}>
+            {items.map((item: any) => {
+              if (typeof item === 'string') {
+                return (
+                  <li
+                    key={item}
+                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                    dangerouslySetInnerHTML={{ __html: item }}
+                  />
+                );
+              } else {
+                return (
+                  <span
+                    key={item}
+                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                  >
+                    {generateLists(item.items, item.type)}
+                  </span>
+                );
+              }
+            })}
+          </ol>
+        );
+      }
+    };
+
+    return <CreatedList items={items} type={type} />;
+  };
 
   const scrollTo = (ref: any) => {
     if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -179,36 +236,19 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                     >{item.content}</PostParagraph>
                   ) : ((isArticleCode(item)) ? (
                     <CodeHighlighter language={item.lang} code={item.content} />
-                  ) : ((item.type === 'list-bullet') ? (
-                    <ul className={'blog-post-ul'}>
-                      {item.items?.map((listItem: string) => (
-                        <li
-                          className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                          key={listItem}
-                          dangerouslySetInnerHTML={{ __html: listItem }}
+                  ) : ((item.type === 'list-bullet' || item.type === 'list-numeric') ? (
+                    generateLists(item.items, item.type)
+                  ) : (
+                    ((item.type === 'picture') ? (
+                      <ImageContainer className={`${item.width}`}>
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${item.resource}`}
+                          alt={item.resource as string}
+                          className={'image'}
+                          fill
                         />
-                      ))}
-                    </ul>
-                    ) : ((item.type === 'list-numeric') ? (
-                      <ol className={'blog-post-ol'}>
-                        {item.items?.map((listItem: string) => (
-                          <li
-                            key={listItem}
-                            className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                            dangerouslySetInnerHTML={{ __html: listItem }}
-                          />
-                        ))}
-                      </ol>
-                  ) : ((item.type === 'picture') ? (
-                    <ImageContainer className={`${item.width}`}>
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${item.resource}`}
-                        alt={item.resource as string}
-                        className={'image'}
-                        fill
-                      />
-                    </ImageContainer>
-                  ) : (<></>))
+                      </ImageContainer>
+                    ) : (<></>))
                     )
                   ))}
                 </div>
