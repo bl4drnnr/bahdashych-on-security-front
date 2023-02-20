@@ -682,13 +682,118 @@
               "items": [
                 "A non-secured referral for the authoritative TLD nameserver for the <b>\".com\"</b > zone"
               ]
+            },
+            "Sends a record:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet of DNSKEY</b> records for the root zone - the root zone's <b>public ZSK and public KSK</b>.",
+                "<b>RRSig</b> of above record set - signed using the root zone's <b>private KSK</b>.",
+                "<b>DS record</b> for the <b>\".com\"</b> zone - the hash/digest/fingerprint of the \".com\" zone's public KSK.",
+                "<b>RRSig</b> of above DS record - signed using the root zone's private ZSK."
+              ]
             }
           ],
-          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
-          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The <b>\"cloudflare\"</b> authoritative nameserver server responds with the IP address for <b>\"cloudflare.com\"</b>. webpage",
-          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b> (and caches it, if it had no this record).",
+          "The recursive caching DNS server:",
+          [
+            "Verifies the record:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>Root</b> zone's <b>DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the root zone's public KSK.",
+                "<b>Root</b> zone's DS record for <b>\".com\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>root</b> zone's public ZSK."
+              ]
+            },
+            "Verifies the zone:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "The recursive caching DNS server already has a trusted copy of the root public KSK which it obtained by means other than the DNS protocol (such as from the server's operating system's vendor). The root zone is verified by the recursive caching DNS server when the server's copy of the root public KSK is found to match that provided to the server by the root DNS server."
+              ]
+            }
+          ],
+          "The recursive caching DNS server sends an iterative query to a \".com\" TLD nameserver for \"cloudflare.com\".",
+          "The \".com\" TLD nameserver:",
+          [
+            "Sends a referral:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "A non-secured referral for <b>\"cloudflare\"</b> zone's authoritative nameserver."
+              ]
+            },
+            "Sends the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet of DNSKEY</b> records for the \".com\" zone - the \".com\" zone's <b>public ZSK and public KSK</b>.",
+                "<b>RRSig</b> of above record set - signed using the \".com\" <b>private KSK</b>.",
+                "<b>DS record</b> for the <b>\"cloudflare\"</b> zone - the hash/digest/fingerprint of the \"cloudflare\" zone's public KSK.",
+                "<b>RRSig</b> of above DS record - signed using \".com\" zone's private ZSK."
+              ]
+            }
+          ],
+          "The recursive caching DNS server:",
+          [
+            "Verifies the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>\".com\" DNSKEY RRSet<b/b> is verified by successfully decrypting the RRSet's RRSig using the \".com\" zone's public KSK",
+                "<b>\".com\"</b> zone's DS record for <b>\"cloudflare\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>\".com\"</b> zone's public ZSK."
+              ]
+            },
+            "Verifies the zone:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "The <b>\".com\"</b> zone is verified by comparing the hash/digest/fingerprint of the <b>\".com\"</b> zone's public KSK from the <b>\".com\"</b> zone with the previously obtained DS record from the root zone for the <b>\".com\"</b> zone."
+              ]
+            }
+          ],
+          "The recursive caching DNS server sends an iterative query to a \"cloudflare\" authoritative nameserver for  \"cloudflare.com\"",
+          "The \"cloudflare\" authoritative nameserver server:",
+          [
+            "Sends the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet of DNSKEY</b> records for the <b>\"cloudflare\"</b> zone - the <b>\"cloudflare\"</b> zone's public ZSK and public KSK.",
+                "<b>RRSig</b> of above record set - signed using the <b>\"cloudflare\"</b> private KSK.",
+                "<b>RRSet of A records</b> from the <b>\"cloudflare\"</b> zone.",
+                "<b>RRSig</b> of above DS record - signed using <b>\"cloudflare\"</b> zone's private ZSK."
+              ]
+            }
+          ],
+          "The recursive caching DNS server:",
+          [
+            "Verifies the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>\"cloudflare\" DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the <b>\"cloudflare\"</b> zone's public KSK.",
+                "<b>\"cloudflare\" A RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the <b>\"cloudflare\"</b> zone's public ZSK."
+              ]
+            },
+            "Verifies the zone:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "The <b>\"cloudflare\"</b> zone is verified by comparing the hash/digest/fingerprint of the <b>\"cloudflare\"</b> zone's public KSK from the <b>\"cloudflare\"</b> zone with the previously obtained DS record from the root zone for the <b>\"cloudflare\"</b> zone."
+              ]
+            }
+          ],
+          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b>.",
           "The client interacts with the web server <b>\"cloudflare.com\"</b>."
         ]
       },

@@ -106,7 +106,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
               key={index}
               className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
             >
-              {generateLists(item, '')}
+              {generateLists(item, '', 'no-margin')}
             </span>
           );
         } else {

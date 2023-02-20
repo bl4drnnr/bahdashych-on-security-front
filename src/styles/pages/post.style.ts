@@ -132,7 +132,7 @@ export const ArticleBodyWrapper = styled.div`
     color: rgb(${(props) => props.theme.colors.textColor});
     margin: 20px 0 0 50px;
     &.no-margin {
-      margin: 0 0 0 20px
+      margin: 0 0 20px 20px
     }
   }
 
