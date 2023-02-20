@@ -84,81 +84,69 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
   };
 
-  const generateLists = (items: any, type?: string | undefined) => {
-    const CreatedList = ({ items, type }: { items: any, type?: string | undefined })
-      : JSX.Element => {
+  const generateLists = (
+    items: any,
+    type?: string | undefined,
+    style?: string | undefined
+  ) => {
+
+    const iterateList = (items: any) => (
+      items.map((item: any, index: number) => {
+        if (typeof item === 'string') {
+          return (
+            <li
+              key={item}
+              className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+              dangerouslySetInnerHTML={{ __html: item }}
+            />
+          );
+        } else if (Array.isArray(item)) {
+          return (
+            <span
+              key={index}
+              className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+            >
+              {generateLists(item, '')}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              key={index}
+              className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+            >
+              {generateLists(item.items, item.type, item.style)}
+            </span>
+          );
+        }
+      })
+    );
+
+    const CreatedList = ({
+      items,
+      type,
+      style
+    }: {
+      items: any,
+      type?: string | undefined,
+      style?: string | undefined
+    }) : JSX.Element => {
       if (type === 'list-bullet' || type === '') {
         return (
-          <ul className={'blog-post-ul'}>
-            {items.map((item: any, index: number) => {
-              if (typeof item === 'string') {
-                return (
-                  <li
-                    key={item}
-                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                    dangerouslySetInnerHTML={{ __html: item }}
-                  />
-                );
-              } else if (Array.isArray(item)) {
-                return (
-                  <span
-                    key={index}
-                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                  >
-                  {generateLists(item, '')}
-                </span>
-                );
-              } else {
-                return (
-                  <span
-                    key={index}
-                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                  >
-                  {generateLists(item.items, item.type)}
-                </span>
-                );
-              }
-            })}
+          <ul className={`blog-post-ul ${style || ''}`}>
+            {iterateList(items)}
           </ul>
         );
       } else {
         return (
-          <ol className={'blog-post-ol'}>
-            {items.map((item: any, index: number) => {
-              if (typeof item === 'string') {
-                return (
-                  <li
-                    key={item}
-                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                    dangerouslySetInnerHTML={{ __html: item }}
-                  />
-                );
-              } else if (Array.isArray(item)) {
-                return (
-                  <span
-                    key={index}
-                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                  >
-                  {generateLists(item, '')}
-                </span>
-                );
-              } else {
-                return (
-                  <span
-                    key={index}
-                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                  >
-                  {generateLists(item.items, item.type)}
-                </span>
-                );
-              }
-            })}
+          <ol className={`blog-post-ol ${style || ''}`}>
+            {iterateList(items)}
           </ol>
         );
       }
     };
 
-    return <CreatedList items={items} type={type} />;
+    return <CreatedList items={items} type={type} style={style} />;
   };
 
   const scrollTo = (ref: any) => {
@@ -257,7 +245,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                   ) : ((isArticleCode(item)) ? (
                     <CodeHighlighter language={item.lang} code={item.content} />
                   ) : ((item.type === 'list-bullet' || item.type === 'list-numeric') ? (
-                    generateLists(item.items, item.type)
+                    generateLists(item.items, item.type, item.style)
                   ) : (
                     ((item.type === 'picture') ? (
                       <ImageContainer className={`${item.width}`}>
