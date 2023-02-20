@@ -131,6 +131,9 @@ export const ArticleBodyWrapper = styled.div`
     white-space: pre-line;
     color: rgb(${(props) => props.theme.colors.textColor});
     margin: 20px 0 0 20px;
+    &.no-margin {
+      margin: 0 0 0 20px
+    }
   }
 
   .blog-post-li {

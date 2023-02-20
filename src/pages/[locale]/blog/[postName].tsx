@@ -34,6 +34,7 @@ interface ArticleContentObject {
   content?: string | undefined;
   resource?: string | undefined;
   width?: string | undefined;
+  style?: string | undefined;
   items?: Array<any>
 }
 
@@ -83,12 +84,13 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
   };
 
-  const generateLists = (items: any, type: string) => {
-    const CreatedList = ({ items, type }: { items: any, type: string }): JSX.Element => {
-      if (type === 'list-bullet') {
+  const generateLists = (items: any, type?: string | undefined) => {
+    const CreatedList = ({ items, type }: { items: any, type?: string | undefined })
+      : JSX.Element => {
+      if (type === 'list-bullet' || type === '') {
         return (
           <ul className={'blog-post-ul'}>
-            {items.map((item: any) => {
+            {items.map((item: any, index: number) => {
               if (typeof item === 'string') {
                 return (
                   <li
@@ -97,14 +99,23 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                     dangerouslySetInnerHTML={{ __html: item }}
                   />
                 );
+              } else if (Array.isArray(item)) {
+                return (
+                  <span
+                    key={index}
+                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                  >
+                  {generateLists(item, '')}
+                </span>
+                );
               } else {
                 return (
                   <span
-                    key={item}
+                    key={index}
                     className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
                   >
-                    {generateLists(item.items, item.type)}
-                  </span>
+                  {generateLists(item.items, item.type)}
+                </span>
                 );
               }
             })}
@@ -113,7 +124,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
       } else {
         return (
           <ol className={'blog-post-ol'}>
-            {items.map((item: any) => {
+            {items.map((item: any, index: number) => {
               if (typeof item === 'string') {
                 return (
                   <li
@@ -122,14 +133,23 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                     dangerouslySetInnerHTML={{ __html: item }}
                   />
                 );
+              } else if (Array.isArray(item)) {
+                return (
+                  <span
+                    key={index}
+                    className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+                  >
+                  {generateLists(item, '')}
+                </span>
+                );
               } else {
                 return (
                   <span
-                    key={item}
+                    key={index}
                     className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
                   >
-                    {generateLists(item.items, item.type)}
-                  </span>
+                  {generateLists(item.items, item.type)}
+                </span>
                 );
               }
             })}

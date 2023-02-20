@@ -613,7 +613,17 @@
         "items": [
           "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
           "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The root nameserver responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The root nameserver:",
+          [
+            "Sends a referral:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "A non-secured referral for the authoritative TLD nameserver for the <b>\".com\"</b > zone"
+              ]
+            }
+          ],
           "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
           "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
           "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
