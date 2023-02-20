@@ -34,6 +34,7 @@ interface ArticleContentObject {
   content?: string | undefined;
   resource?: string | undefined;
   width?: string | undefined;
+  style?: string | undefined;
   items?: Array<any>
 }
 
@@ -83,6 +84,70 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
   };
 
+  const generateLists = (
+    items: any,
+    type?: string | undefined,
+    style?: string | undefined
+  ) => {
+
+    const iterateList = (items: any) => (
+      items.map((item: any, index: number) => {
+        if (typeof item === 'string') {
+          return (
+            <li
+              key={item}
+              className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+              dangerouslySetInnerHTML={{ __html: item }}
+            />
+          );
+        } else if (Array.isArray(item)) {
+          return (
+            <span
+              key={index}
+              className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+            >
+              {generateLists(item, '', 'no-margin')}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              key={index}
+              className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
+            >
+              {generateLists(item.items, item.type, item.style)}
+            </span>
+          );
+        }
+      })
+    );
+
+    const CreatedList = ({
+      items,
+      type,
+      style
+    }: {
+      items: any,
+      type?: string | undefined,
+      style?: string | undefined
+    }) : JSX.Element => {
+      if (type === 'list-bullet' || type === '') {
+        return (
+          <ul className={`blog-post-ul ${style || ''}`}>
+            {iterateList(items)}
+          </ul>
+        );
+      } else {
+        return (
+          <ol className={`blog-post-ol ${style || ''}`}>
+            {iterateList(items)}
+          </ol>
+        );
+      }
+    };
+
+    return <CreatedList items={items} type={type} style={style} />;
+  };
 
   const scrollTo = (ref: any) => {
     if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -179,36 +244,19 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                     >{item.content}</PostParagraph>
                   ) : ((isArticleCode(item)) ? (
                     <CodeHighlighter language={item.lang} code={item.content} />
-                  ) : ((item.type === 'list-bullet') ? (
-                    <ul className={'blog-post-ul'}>
-                      {item.items?.map((listItem: string) => (
-                        <li
-                          className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                          key={listItem}
-                          dangerouslySetInnerHTML={{ __html: listItem }}
+                  ) : ((item.type === 'list-bullet' || item.type === 'list-numeric') ? (
+                    generateLists(item.items, item.type, item.style)
+                  ) : (
+                    ((item.type === 'picture') ? (
+                      <ImageContainer className={`${item.width}`}>
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${item.resource}`}
+                          alt={item.resource as string}
+                          className={'image'}
+                          fill
                         />
-                      ))}
-                    </ul>
-                    ) : ((item.type === 'list-numeric') ? (
-                      <ol className={'blog-post-ol'}>
-                        {item.items?.map((listItem: string) => (
-                          <li
-                            key={listItem}
-                            className={`blog-post-li ${locale === 'en' ? 'en' : 'non-en'}`}
-                            dangerouslySetInnerHTML={{ __html: listItem }}
-                          />
-                        ))}
-                      </ol>
-                  ) : ((item.type === 'picture') ? (
-                    <ImageContainer className={`${item.width}`}>
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${postName}/${item.resource}`}
-                        alt={item.resource as string}
-                        className={'image'}
-                        fill
-                      />
-                    </ImageContainer>
-                  ) : (<></>))
+                      </ImageContainer>
+                    ) : (<></>))
                     )
                   ))}
                 </div>
