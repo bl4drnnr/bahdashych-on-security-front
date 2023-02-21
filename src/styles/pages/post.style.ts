@@ -157,7 +157,7 @@ export const TableOfContentsContainer = styled.div`
   &.contact-and-references {
     margin-top: 30px;
     a {
-      font-size: 1.2em;
+      font-size: 1em;
     }
   }
   &.en {
