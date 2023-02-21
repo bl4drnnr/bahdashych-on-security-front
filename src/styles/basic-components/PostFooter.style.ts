@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Message = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
   display: flex;
-  font-size: 20px;
+  font-size: 1.1em;
   line-height: 30px;
   padding-top: 30px;
   font-weight: 400;
@@ -12,7 +12,7 @@ export const Message = styled.p`
     padding-top: 0;
     text-indent: 50px;
     @media only screen and (max-width: 780px) {
-      font-size: 18px;
+      font-size: 1em;
       text-indent: 25px;
     }
   }
@@ -25,7 +25,7 @@ export const Message = styled.p`
   }
   
   &.timestamp {
-    font-size: 18px;
+    font-size: 1em;
     opacity: .5;
   }
 `;

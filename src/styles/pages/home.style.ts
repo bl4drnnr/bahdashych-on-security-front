@@ -35,7 +35,7 @@ export const TypewritingText = styled.h1`
     padding-top: 15px;
 
     @media only screen and (max-width: 780px) {
-      font-size: 18px;
+      font-size: 1em;
     }
   }
 
@@ -52,6 +52,21 @@ export const BlogPostsContainer = styled.div`
   @media only screen and (max-width: 780px) {
     width: 90%;
     margin: 50px auto 0 auto;
+  }
+
+  &.en {
+    p, li, ul, h1, h3 {
+      font-family: 'Charter', sans-serif;
+    }
+  }
+  &.non-en {
+    p, li, ul, h1, h3 {
+      font-family: 'Crimson', serif;
+    }
+    p, li, ul {
+      font-family: 'Crimson', serif;
+      font-size: 1.1em;
+    }
   }
 `;
 
@@ -79,6 +94,7 @@ export const BlogPostTitle = styled.h3`
 `;
 
 export const BlogPostDescription = styled.p`
+  font-size: 1em;
   text-indent: 50px;
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .5);
