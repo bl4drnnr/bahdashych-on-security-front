@@ -26,8 +26,8 @@ export const Box = styled.div`
 
 export const Link = styled.h3`
   color: rgba(${(props) => props.theme.colors.textColor});
-  font-family: "Roboto", sans-serif;
-  font-weight: 900;
+  font-family: "Charter", sans-serif;
+  font-weight: 100;
   transition: .2s;
   cursor: pointer;
   
@@ -104,7 +104,6 @@ export const MobileMenuWrapper = styled.div`
 export const MobileLink = styled.h3`
   color: rgba(${(props) => props.theme.colors.textColor});
   display: none;
-  font-family: "Roboto", sans-serif;
   font-weight: 900;
   cursor: pointer;
 

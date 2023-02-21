@@ -37,6 +37,7 @@ export const FlexWrapper = styled.div`
 `;
 
 export const Name = styled.h2`
+  font-family: "Charter", sans-serif;
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 1.25rem;
   font-weight: 500;
@@ -45,6 +46,16 @@ export const Name = styled.h2`
 
 export const Container = styled.div`
   width: 100%;
+  &.en {
+    p, li, ul {
+      font-family: "Charter", sans-serif;
+    }
+  }
+  &.non-en {
+    p, li, ul {
+      font-family: 'Crimson', serif;
+    }
+  }
 `;
 
 export const TestimonialGrid = styled.div`
@@ -123,6 +134,7 @@ export const TestimonialArticle = styled.article`
 `;
 
 export const Title = styled.p`
+  font-family: "Charter", sans-serif;
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 1rem;
   line-height: 1.2;
@@ -130,5 +142,6 @@ export const Title = styled.p`
 `;
 
 export const Description = styled.p`
+  font-family: "Charter", sans-serif;
   color: rgb(${(props) => props.theme.colors.textColor});
 `;

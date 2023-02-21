@@ -7,9 +7,6 @@ export const MainWrapper = styled.div`
   background: rgb(${(props) => props.theme.colors.lightBackground});
   
   .inline-link {
-    &.roboto {
-      font-family: 'Roboto', sans-serif;
-    }
     &.en {
       font-family: 'Charter', sans-serif;
     }

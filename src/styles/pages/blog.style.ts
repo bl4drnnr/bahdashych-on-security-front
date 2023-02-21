@@ -34,7 +34,7 @@ export const BlogPostsDescription = styled.p`
 export const PostPreview = styled.div`
   width: 100%;
   min-height: 100px;
-  border: 1px solid rgba(${(props) => props.theme.colors.primaryDark}, .5);
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
   border-radius: 5px;
   transition: .2s;
   cursor: pointer;
@@ -42,20 +42,33 @@ export const PostPreview = styled.div`
   padding: 15px;
   
   &:hover {
-    border: 1px solid rgb(${(props) => props.theme.colors.primaryDark});
+    border: 1px solid rgb(${(props) => props.theme.colors.primaryLight});
+  }
+`;
+
+export const AllPostsWrapper = styled.div`
+  &.en {
+    p, h3, li, ul {
+      font-family: 'Charter', sans-serif;
+    }
+  }
+  &.non-en {
+    p, h3, li, ul {
+      font-family: 'Crimson', serif;
+    }
   }
 `;
 
 export const PostTitle = styled.h3`
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 24px; !important;
+  font-weight: 600;
   color: rgb(${(props) => props.theme.colors.textColor});
 `;
 
 export const PostDescription = styled.p`
   text-indent: 50px;
   font-weight: 300;
-  color: rgb(${(props) => props.theme.colors.textColor}, .5);
+  color: rgb(${(props) => props.theme.colors.textColor}, .75);
 `;

@@ -56,7 +56,7 @@ const Projects = ({ locale }: ProjectsProps) => {
           </ProjectsDescription>
         </ProjectsWrapper>
 
-        <Container>
+        <Container className={locale === 'en' ? 'en' : 'non-en'}>
           <TestimonialGrid>
             <TestimonialArticle>
               <FlexWrapper>

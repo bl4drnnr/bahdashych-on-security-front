@@ -32,7 +32,7 @@ const About = ({ locale }: AboutProps) => {
         <meta name={'description'} content={'Hello there! My name is Mikhail Bahdashych and this is my personal blog - place where I share my thoughts and knowledge. Hope you will find something interesting.'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
-        <Container>
+        <Container className={locale === 'en' ? 'en' : 'non-en'}>
           <Box>
             <AboutTitle>
               <Typewriter

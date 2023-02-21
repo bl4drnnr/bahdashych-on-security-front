@@ -8,6 +8,7 @@ import Typewriter from 'typewriter-effect';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
+  AllPostsWrapper,
   BlogIntroWrapper,
   BlogPostsDescription,
   BlogPostsTitle,
@@ -76,12 +77,14 @@ const Blog = ({ locale }: BlogProps) => {
             {t('pages:blog.description')}
           </BlogPostsDescription>
 
-          {allPosts.map((post, key) => (
-            <PostPreview key={key} onClick={() => handleRedirect(post.link)}>
-              <PostTitle>{post.title}</PostTitle>
-              <PostDescription>{post.description}</PostDescription>
-            </PostPreview>
-          ))}
+          <AllPostsWrapper className={locale === 'en' ? 'en' : 'non-en'}>
+            {allPosts.map((post, key) => (
+              <PostPreview key={key} onClick={() => handleRedirect(post.link)}>
+                <PostTitle>{post.title}</PostTitle>
+                <PostDescription>{post.description}</PostDescription>
+              </PostPreview>
+            ))}
+          </AllPostsWrapper>
         </BlogIntroWrapper>
       </DefaultLayout>
     </>

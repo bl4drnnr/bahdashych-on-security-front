@@ -1,6 +1,18 @@
 import styled from 'styled-components';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  &.en {
+    p, li, ul {
+      font-family: "Charter", sans-serif;
+    }
+  }
+  &.non-en {
+    p, li, ul {
+      font-family: 'Crimson', serif;
+      font-size: 20px;
+    }
+  }
+`;
 
 export const Box = styled.div`
   width: 45%;
@@ -15,9 +27,7 @@ export const Box = styled.div`
     margin-left: 20px;
   }
   .sharing-li {
-    b {
-      font-weight: 500;
-    }
+    font-family: "Charter", sans-serif;
     margin: 15px 0;
     color: rgb(${(props) => props.theme.colors.textColor});
     font-size: 18px;
@@ -46,7 +56,7 @@ export const AboutTitle = styled.h3`
 
 export const AboutParagraph = styled.p`
   margin: 10px 0;
-  font-weight: 200;
+  font-weight: 100;
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 18px;
   text-indent: 25px;
