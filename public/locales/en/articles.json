@@ -544,7 +544,7 @@
           "<b>TXT Record (Text Record)</b> — is the type of record that allows administrator to add human-readable (and machine-readable) notes in the DNS. Doesn't require specific format. Used to provide the ability to associate arbitrary text with a host or other name, such as human readable information about a server, network, data center, or other accounting information"
         ]
       },
-      "The main usage of it nowadays is to prevent email spam and verify domain ownership. Here we should talk about DMARC, SPF and DKIM, but for now just know that those are about <b>anti-span security</b>.",
+      "The main usage of it nowadays is to prevent email spam and verify domain ownership. Here we should talk about DMARC, SPF and DKIM, but for now just know that those are about <b>anti-spam security</b>.",
       {
         "type": "title",
         "content": "DNS Security Issues"
@@ -745,7 +745,7 @@
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "<b>\".com\" DNSKEY RRSet<b/b> is verified by successfully decrypting the RRSet's RRSig using the \".com\" zone's public KSK",
+                "<b>\".com\" DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the \".com\" zone's public KSK",
                 "<b>\".com\"</b> zone's DS record for <b>\"cloudflare\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>\".com\"</b> zone's public ZSK."
               ]
             },
@@ -758,7 +758,7 @@
               ]
             }
           ],
-          "The recursive caching DNS server sends an iterative query to a \"cloudflare\" authoritative nameserver for  \"cloudflare.com\"",
+          "The recursive caching DNS server sends an iterative query to a \"cloudflare\" authoritative nameserver for \"cloudflare.com\"",
           "The \"cloudflare\" authoritative nameserver server:",
           [
             "Sends the records:",
