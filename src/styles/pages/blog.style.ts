@@ -22,9 +22,9 @@ export const BlogPostsTitle = styled.h1`
 
 export const BlogPostsDescription = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-size: 20px;
-  font-weight: 200;
-  text-indent: 25px;
+  font-size: 24px;
+  font-weight: 100;
+  text-align: center;
   
   &.margins {
     margin: 25px 0;
