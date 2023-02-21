@@ -98,6 +98,12 @@ export const TestimonialArticle = styled.article`
   border-radius: 0.5rem;
   box-shadow: 2.5rem 3.75rem 3rem -3rem hsl(217 19% 35% / 0.25);
   cursor: pointer;
+  transition: .2s;
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+
+  :hover {
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
+  }
   
   :nth-child(1) {
     grid-area: one;
