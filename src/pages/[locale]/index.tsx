@@ -97,7 +97,7 @@ const Home = ({ locale }: HomeProps) => {
 
           </IntroTextBox>
 
-          <BlogPostsContainer>
+          <BlogPostsContainer className={locale === 'en' ? 'en' : 'non-en'}>
             <InterestingPosts>
               {t('pages:home.interestingPosts')} <Image
                 className={'icon'}

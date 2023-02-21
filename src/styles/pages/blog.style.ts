@@ -56,6 +56,10 @@ export const AllPostsWrapper = styled.div`
     p, h3, li, ul {
       font-family: 'Crimson', serif;
     }
+    p, li, ul {
+      font-family: 'Crimson', serif;
+      font-size: 1.1em;
+    }
   }
 `;
 
@@ -68,6 +72,7 @@ export const PostTitle = styled.h3`
 `;
 
 export const PostDescription = styled.p`
+  font-size: 1em;
   text-indent: 50px;
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .75);
