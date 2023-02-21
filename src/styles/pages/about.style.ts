@@ -9,7 +9,7 @@ export const Container = styled.div`
   &.non-en {
     p, li, ul {
       font-family: 'Crimson', serif;
-      font-size: 20px;
+      font-size: 1.1em;
     }
   }
 `;
@@ -30,7 +30,7 @@ export const Box = styled.div`
     font-family: "Charter", sans-serif;
     margin: 15px 0;
     color: rgb(${(props) => props.theme.colors.textColor});
-    font-size: 18px;
+    font-size: 1em;
     font-weight: 200;
   }
 `;
@@ -58,6 +58,6 @@ export const AboutParagraph = styled.p`
   margin: 10px 0;
   font-weight: 100;
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-size: 18px;
+  font-size: 1em;
   text-indent: 25px;
 `;

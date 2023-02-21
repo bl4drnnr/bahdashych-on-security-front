@@ -10,7 +10,7 @@ export const ArticleTitle = styled.h1`
     margin: 75px 0;
 
     @media only screen and (max-width: 780px) {
-      font-size: 20px;
+      font-size: 1.1em;
       margin: 25px 0;
     }
   }
@@ -22,7 +22,7 @@ export const ArticleTitle = styled.h1`
 
 export const PostParagraph = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-size: 20px;
+  font-size: 1.1em;
   line-height: 30px;
   padding-top: 30px;
   text-indent: 50px;
@@ -44,11 +44,11 @@ export const PostParagraph = styled.p`
   &.subsubtitle {
     text-indent: 0;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.1em;
   }
 
   @media only screen and (max-width: 780px) {
-    font-size: 18px;
+    font-size: 1em;
     text-indent: 25px;
   }
 `;
@@ -82,11 +82,11 @@ export const ArticleBodyWrapper = styled.div`
     font-family: 'Hack', sans-serif;
     padding: 2px;
     border-radius: 5px;
-    background: rgb(${(props) => props.theme.colors.lightBackground});
+    background: rgb(${(props) => props.theme.colors.darkBackground});
   }
 
   .table-of-contents-ul {
-    font-size: 18px;
+    font-size: 1em;
     color: rgb(${(props) => props.theme.colors.primaryDark});
     text-decoration: underline;
     margin-bottom: 0.6em;
@@ -99,7 +99,7 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .table-of-contents-li {
-    font-size: 18px;
+    font-size: 1em;
     color: rgb(${(props) => props.theme.colors.primaryDark});
     text-decoration: underline;
     display: table;
@@ -137,12 +137,12 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .blog-post-li {
-    font-size: 20px;
+    font-size: 1.1em;
     line-height: 30px;
     font-weight: 400;
 
     @media only screen and (max-width: 780px) {
-      font-size: 18px;
+      font-size: 1em;
     }
     &.en {
       font-family: 'Charter', sans-serif;
@@ -157,7 +157,7 @@ export const TableOfContentsContainer = styled.div`
   &.contact-and-references {
     margin-top: 30px;
     a {
-      font-size: 20px;
+      font-size: 1.1em;
     }
   }
   &.en {

@@ -35,7 +35,7 @@ export const TypewritingText = styled.h1`
     padding-top: 15px;
 
     @media only screen and (max-width: 780px) {
-      font-size: 18px;
+      font-size: 1em;
     }
   }
 
