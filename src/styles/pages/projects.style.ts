@@ -30,3 +30,99 @@ export const ProjectsDescription = styled.p`
     margin: 25px 0;
   }
 `;
+
+export const FlexWrapper = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+export const Name = styled.h2`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1;
+`;
+
+export const Container = styled.div`
+  width: 100%;
+`;
+
+export const TestimonialGrid = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-auto-columns: 1fr;
+  grid-template-areas:
+   'one'
+   'two'
+   'three'
+   'four'
+   'five';
+
+  padding-block: 2rem;
+  width: min(95%, 70rem);
+  margin-inline: auto;
+
+  @media screen and (min-width: 33em) {
+    grid-template-areas:
+      "one one"
+      "two three"
+      "five five"
+      "four four";
+  }
+
+  @media screen and (min-width: 38em) {
+    grid-template-areas:
+     'one one'
+     'two five'
+     'three five'
+     'four four';
+  }
+
+  @media screen and (min-width: 54em) {
+    grid-template-areas:
+      "one one two"
+      "five five five"
+      "three four four";
+  }
+
+  @media screen and (min-width: 75em) {
+    grid-template-areas:
+      "one one two five"
+      "three four four five";
+  }
+`;
+
+export const TestimonialArticle = styled.article`
+  font-size: 0.8125rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2.5rem 3.75rem 3rem -3rem hsl(217 19% 35% / 0.25);
+  cursor: pointer;
+  
+  :nth-child(1) {
+    grid-area: one;
+  }
+  :nth-child(2) {
+    grid-area: two;
+  }
+  :nth-child(3) {
+    grid-area: three;
+  }
+  :nth-child(4) {
+    grid-area: four;
+  }
+  :nth-child(5) {
+    grid-area: five;
+  }
+`;
+
+export const Title = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  font-size: 1rem;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+`;
+
+export const Description = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+`;
