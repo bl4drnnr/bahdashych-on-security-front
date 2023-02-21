@@ -269,5 +269,74 @@
       "intro": "Introduction"
     },
     "content": {}
+  },
+  "how-does-dns-work-and-why-we-need-dnssec": {
+    "title": "Jak działa DNS i dlaczego potrzebujemy DNSSEC",
+    "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+    "description": "Słyszałeś kiedyś o DNS? Założę się, że tak! Założę się również, że jeśli próbowałeś dowiedzieć się, o co w tym wszystkim chodzi, widziałeś DNSSEC. Cóż... czas dowiedzieć się, jak głęboka jest ta królicza nora...",
+    "pageDescription": "Chyba wszyscy słyszeliście o DNS. To jest internetowa książka telefoniczna, która konwertuje czytelne dla człowieka nazwy domen na adresy IP przetwarzane przez maszyny i bla-bla-bla. Szczerze mówiąc, to dosłownie królicza nora i postanowiłem dowiedzieć się, jak głęboka jest. Cóż, zaufaj mi, będziesz zaskoczony, a ja mam cholernie ciekawe rzeczy do podzielenia się z tobą. Więc zanurzmy się w to!",
+    "intro": "Królicza dziura — to chyba najlepszy opis DNS, jaki znalazłem. Byłem wystarczająco naiwny, by sądzić, że jedyne, co robi, to konwertowanie nazw domen na adresy IP, aby zapewnić, że nazwy czytelne dla człowieka są zrozumiałe dla maszyn. Nie mam pojęcia, jak bardzo się myliłem, myśląc w ten sposób.",
+    "timestamp": "2023-02-20",
+    "footer": "Phew... To było trochę skomplikowane, prawda? Ale teraz wiesz, czym właściwie są DNS i DNSSEC i jak działają. Jeśli po przeczytaniu masz jeszcze więcej pytań niż wcześniej, gratuluję, od teraz będziesz mógł sam znaleźć wszystkie odpowiedzi, ale na razie to wszystko. Dziękuję bardzo za przeczytanie.",
+    "toc": {
+      "intro": "Wstęp",
+      "Przegląd DNS": {
+        "terminology": "Terminologia DNS",
+        "resolutionFlow": "Przepływ rozpoznawania DNS",
+        "Role serwerów DNS i pełne wyszukiwanie": {
+          "stubResolver": "DNS Stub Resolver",
+          "recursiveResolver": "Rekurencyjny mechanizm rozpoznawania nazw DNS",
+          "rootNameserver": "Główny serwer nazw DNS",
+          "tldNameserver": "Serwer nazw DNS TLD",
+          "authNameserver": "Autorytatywny serwer nazw DNS",
+          "rootNameserverVsRootServer": "DNS Root Nameserver vs DNS Root Server"
+        },
+        "Typy rekordów DNS": {
+          "aRec": "A Rekord (address)",
+          "quadA": "AAAA Rekord (quad A)",
+          "mxRec": "MX Rekord (Mail eXchange)",
+          "nsRec": "NS Rekord (nameserver)",
+          "cnameRec": "CNAME Rekord (Canonical Name)",
+          "anameRec": "ANAME Rekord",
+          "txtRec": "TXT Rekord"
+        }
+      },
+      "dnsSecIssues": "Problemy z bezpieczeństwem DNS",
+      "Przegląd DNSSEC": {
+        "terminology": "Terminologia DNSSEC",
+        "resolutionFlow": "Przepływ rozpoznawania DNSSEC"
+      },
+      "dnssecSignCeremony": "Ceremonia podpisania roota DNSSEC",
+      "O szyfrowaniu DNS": {
+        "dot": "DNS over TLS",
+        "doh": "DNS over HTTPS",
+        "difference": "Różnica między DoT a DoH"
+      },
+      "conclusion": "Wnioski",
+      "references": "Kontakt i referencje"
+    },
+    "content": [],
+    "references": [{
+      "name": "Co to jest DNS od Cloudflare",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/what-is-dns/"
+    }, {
+      "name": "Co to jest DNSSEC od Cloudflare (oczywiste, prawda?)",
+      "link": "https://www.cloudflare.com/en-gb/dns/dnssec/how-dnssec-works/"
+    }, {
+      "name": "DNS over TLS vs DNS over HTTPS",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/"
+    }, {
+      "name": "Zatruwanie i fałszowanie pamięci podręcznej DNS",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-cache-poisoning/"
+    }, {
+      "name": "Ludzie, którzy trzymają klucze do Internetu",
+      "link": "https://www.cloudflare.com/en-gb/dns/dnssec/root-signing-ceremony/"
+    }, {
+      "name": "Dobrze napisany artykuł ICANN o tym, czym jest DNSSEC i dlaczego jest ważny",
+      "link": "https://www.icann.org/resources/pages/dnssec-what-is-it-why-important-2019-03-05-en"
+    }, {
+      "name": "Naprawdę fajne wideo, które wyjaśnia przepływ rozpoznawania nazw DNS i DNSSEC",
+      "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
+    }]
   }
 }

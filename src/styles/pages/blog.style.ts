@@ -31,22 +31,9 @@ export const BlogPostsDescription = styled.p`
   }
 `;
 
-export const PostPreview = styled.div`
-  width: 100%;
-  min-height: 100px;
-  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
-  border-radius: 5px;
-  transition: .2s;
-  cursor: pointer;
-  margin-bottom: 20px;
-  padding: 15px;
-  
-  &:hover {
-    border: 1px solid rgb(${(props) => props.theme.colors.primaryLight});
-  }
-`;
-
 export const AllPostsWrapper = styled.div`
+  width: 100%;
+
   &.en {
     p, h3, li, ul {
       font-family: 'Charter', sans-serif;
@@ -58,21 +45,52 @@ export const AllPostsWrapper = styled.div`
     }
     p, li, ul {
       font-family: 'Crimson', serif;
-      font-size: 1.1em;
+      font-size: 1.2em;
     }
+  }
+`;
+
+export const TestimonialGrid = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-auto-columns: 1fr;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  padding-block: 2rem;
+  width: min(95%, 70rem);
+  margin-inline: auto;
+`;
+
+export const TestimonialArticle = styled.article`
+  font-size: 0.8125rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2.5rem 3.75rem 3rem -3rem hsl(217 19% 35% / 0.25);
+  cursor: pointer;
+  transition: .2s;
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+
+  :hover {
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
   }
 `;
 
 export const PostTitle = styled.h3`
   text-align: center;
-  margin-bottom: 20px;
   font-size: 24px; !important;
   font-weight: 600;
   color: rgb(${(props) => props.theme.colors.textColor});
 `;
 
+export const PostTimestamp = styled.p`
+  text-align: center;
+  margin: 10px 0;
+  color: rgb(${(props) => props.theme.colors.textColor}, .5);
+`;
+
 export const PostDescription = styled.p`
-  font-size: 1em;
+  font-size: 1.1em;
   text-indent: 50px;
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .75);

@@ -12,9 +12,10 @@ import {
   BlogIntroWrapper,
   BlogPostsDescription,
   BlogPostsTitle,
-  PostDescription,
-  PostPreview,
-  PostTitle
+  PostDescription, PostTimestamp,
+  PostTitle,
+  TestimonialArticle,
+  TestimonialGrid
 } from '@styles/blog.style';
 
 
@@ -26,6 +27,7 @@ interface PostProps {
   title: string;
   description: string;
   link: string;
+  timestamp: string;
 }
 
 const Blog = ({ locale }: BlogProps) => {
@@ -35,19 +37,23 @@ const Blog = ({ locale }: BlogProps) => {
   const [allPosts,] = React.useState<PostProps[]>([{
     title: t('articles:nextjs-nginx-deployment.title'),
     description: t('articles:nextjs-nginx-deployment.pageDescription'),
-    link: '/blog/nextjs-nginx-deployment'
+    link: '/blog/nextjs-nginx-deployment',
+    timestamp: t('articles:nextjs-nginx-deployment.timestamp')
   }, {
     title: t('articles:how-does-dns-work-and-why-we-need-dnssec.title'),
     description: t('articles:how-does-dns-work-and-why-we-need-dnssec.pageDescription'),
-    link: '/blog/how-does-dns-work-and-why-we-need-dnssec'
+    link: '/blog/how-does-dns-work-and-why-we-need-dnssec',
+    timestamp: t('articles:how-does-dns-work-and-why-we-need-dnssec.timestamp')
   }, {
     title: t('articles:everything-you-need-to-know-about-hardening.title'),
     description: t('articles:everything-you-need-to-know-about-hardening.pageDescription'),
-    link: '/blog/everything-you-need-to-know-about-hardening'
+    link: '/blog/everything-you-need-to-know-about-hardening',
+    timestamp: t('articles:everything-you-need-to-know-about-hardening.timestamp')
   }, {
     title: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.title'),
     description: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.pageDescription'),
-    link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn'
+    link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
+    timestamp: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.timestamp')
   }]);
 
   const handleRedirect = async (path: string) => {
@@ -77,15 +83,19 @@ const Blog = ({ locale }: BlogProps) => {
             {t('pages:blog.description')}
           </BlogPostsDescription>
 
-          <AllPostsWrapper className={locale === 'en' ? 'en' : 'non-en'}>
-            {allPosts.map((post, key) => (
-              <PostPreview key={key} onClick={() => handleRedirect(post.link)}>
-                <PostTitle>{post.title}</PostTitle>
-                <PostDescription>{post.description}</PostDescription>
-              </PostPreview>
-            ))}
-          </AllPostsWrapper>
         </BlogIntroWrapper>
+
+        <AllPostsWrapper className={locale === 'en' ? 'en' : 'non-en'}>
+          <TestimonialGrid>
+            {allPosts.map((post, key) => (
+              <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
+                <PostTitle>{post.title}</PostTitle>
+                <PostTimestamp>{post.timestamp}</PostTimestamp>
+                <PostDescription>{post.description}</PostDescription>
+              </TestimonialArticle>
+            ))}
+          </TestimonialGrid>
+        </AllPostsWrapper>
       </DefaultLayout>
     </>
   );

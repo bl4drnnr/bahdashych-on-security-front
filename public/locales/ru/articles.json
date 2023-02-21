@@ -269,5 +269,614 @@
       "intro": "Introduction"
     },
     "content": {}
+  },
+  "how-does-dns-work-and-why-we-need-dnssec": {
+    "title": "Как работает DNS и почему нам нужен DNSSEC",
+    "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+    "description": "Вы когда-нибудь слышали о DNS? Бьюсь об заклад, вы слышали! Также держу пари, что если вы пытались понять, что это такое, вы видели DNSSEC. Что ж... пришло время выяснить, насколько глубока эта кроличья нора на самом деле...",
+    "pageDescription": "Думаю, все вы, ребята, когда-либо слышали о DNS. Это телефонная книга Интернета, и она преобразует удобочитаемые доменные имена в IP-адреса, анализируемые машинами, и бла-бла-бла. Честно говоря, это буквально кроличья нора, и я решил выяснить, насколько она глубока. Что ж, поверьте мне, вы будете удивлены, и я могу поделиться с вами чертовски интересным материалом. Итак, давайте углубимся в это!",
+    "intro": "Кроличья нора — думаю, это лучшее описание DNS, которое я нашел. Я был достаточно наивен, чтобы думать, что единственное, что он делает, — это преобразовывает доменные имена в IP-адреса, чтобы гарантировать, что человекочитаемые имена понятны машинам. Я понятия не имею, как неправильно я думал таким образом.",
+    "timestamp": "2023-02-20",
+    "footer": "Фух... Это было довольно сложно, не так ли? Но теперь вы знаете, что такое DNS и DNSSEC и как они работают. Если после прочтения у вас появилось еще больше вопросов, чем раньше, поздравляю, отныне вы сможете найти все ответы самостоятельно, но пока это все. Большое спасибо за чтение.",
+    "toc": {
+      "intro": "Введение",
+      "Обзор DNS": {
+        "terminology": "DNS-терминология",
+        "resolutionFlow": "Разрешения DNS адресов",
+        "Роли DNS-серверов и полный поиск": {
+          "stubResolver": "Преобразователь DNS-заглушек",
+          "recursiveResolver": "Рекурсивный преобразователь DNS",
+          "rootNameserver": "Корневой DNS-сервер имен",
+          "tldNameserver": "TLD DNS-сервер имен",
+          "authNameserver": "Авторитетный DNS-сервер имен",
+          "rootNameserverVsRootServer": "DNS Root Nameserver vs DNS Root Server"
+        },
+        "Типы DNS рекордов": {
+          "aRec": "A Рекорд (address)",
+          "quadA": "AAAA Рекорд (quad A)",
+          "mxRec": "MX Рекорд (Mail eXchange)",
+          "nsRec": "NS Рекорд (nameserver)",
+          "cnameRec": "CNAME Рекорд (Canonical Name)",
+          "anameRec": "ANAME Рекорд",
+          "txtRec": "TXT Рекорд"
+        }
+      },
+      "dnsSecIssues": "Проблемы безопасности DNS",
+      "Обзор DNSSEC": {
+        "terminology": "Терминология DNSSEC",
+        "resolutionFlow": "Разрешения DNSSEC адресов"
+      },
+      "dnssecSignCeremony": "Церемония подписания корневого каталога DNSSEC",
+      "О шифровании DNS": {
+        "dot": "DNS over TLS",
+        "doh": "DNS over HTTPS",
+        "difference": "Разница между DoT и DoH"
+      },
+      "conclusion": "Выводы",
+      "references": "Контакты и рекомендации"
+    },
+    "content": [
+      {
+        "type": "title",
+        "content": "Введение"
+      },
+      "В сегодняшнюю цифровую эпоху система доменных имен (DNS) играет жизненно важную роль в облегчении онлайн-общения и предоставлении пользователям доступа к веб-сайтам и услугам в Интернете. Однако с ростом числа угроз кибербезопасности и злонамеренных действий растет озабоченность по поводу безопасности DNS и связанных с ней потенциальных рисков.",
+      "Именно здесь на сцену выходят расширения безопасности DNS (DNSSEC), предлагающие мощное решение для усиления безопасности DNS и защиты от различных атак, таких как спуфинг DNS, отравление кеша и другие формы киберугроз.",
+      "В этом посте мы более подробно рассмотрим, что такое DNS и DNSSEC, как они работают и почему они необходимы для поддержания безопасной и надежной интернет-инфраструктуры. Мы также рассмотрим некоторые примеры использования в реальных условиях и обсудим преимущества и ограничения DNSSEC. Итак, если вы хотите узнать больше о DNS и DNSSEC и о том, как они могут помочь защитить ваше присутствие в Интернете, продолжайте читать!",
+      {
+        "type": "title",
+        "content": "Обзор DNS"
+      },
+      "Как всегда, начнем с краткого описания того, что такое DNS на самом деле и как его можно описать. Самое популярное определение DNS всегда звучит примерно так:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS (Система Доменных Имен)</b> — система, которая переводит удобочитаемые доменные имена в IP-адреса, чтобы машины могли общаться друг с другом, используя эти IP-адреса."
+        ]
+      },
+      "Звучит довольно обычно, не так ли? Я хотел попытаться копнуть немного глубже, чтобы узнать, что происходит после того, как вы введете URL-адрес в свой браузер и нажмете кнопку Enter. Я хотел знать, что происходит за кулисами и как ваш компьютер получает IP-адрес исходного веб-сервера.",
+      {
+        "type": "subtitle",
+        "content": "DNS-терминология"
+      },
+      "Но прежде чем мы начнем, давайте определимся с терминологией, которую будем использовать на протяжении всего нашего долгого путешествия. Не стесняйтесь обращаться к ней, когда вам это нужно:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS-домен/DNS-зона</b> — раздел пространства имен DNS. Например: blog.mikhailbahdashych.me. (точка в конце — не опечатка) — это сервер с именем \"blog\" в  домен/зона \"mikhailbahdashych\", которая находится в домене/зоне \"me\", которая находится в \"корневом (.)\" домене/зоне.",
+          "<b>Итеративный DNS-запрос</b> — запрос к DNS-серверу: \"Помогите мне, чем можете, но ни у кого больше не спрашивайте\".",
+          "<b>Рекурсивный DNS-запрос</b> — запрос к DNS-серверу: \"Дайте мне то, что мне нужно, и спросите всех, кого хотите\".",
+          "<b>DNS-сервер</b> — термин, описывающий всю инфраструктуру DNS-ролей. Ничего страшного, если вы не понимаете этого на данный момент, мы это уточним.",
+          "<b>DNS-запрос или запрос</b> — запрос на преобразование доменного имени в IP-адрес"
+        ]
+      },
+      {
+        "type": "subtitle",
+        "content": "Разрешения DNS адресов"
+      },
+      "Самое первое, о чем нам нужно знать, это: как ваш браузер отправляет некоторый текст в виде URL-адреса и возвращает IP-адрес запрошенного веб-сайта? На данный момент мы обсуждаем DNS только с точки зрения того, что единственное, что он делает, — это конвертирует URL-адреса в IP-адреса веб-сайтов, но мы расширим его использование чуть позже.",
+      "Здесь в игру вступает <b>поток разрешения DNS</b>. На примерах все лучше, допустим, вы хотите запросить <b>cloudflare.com. (точка в конце не опечатка)</b>. Прежде всего позвольте мне представить вам последовательность всех запросов, весь процесс разрешения, а затем мы шаг за шагом обсудим его части:",
+      {
+        "type": "list-numeric",
+        "items": [
+          "Клиент отправляет рекурсивный запрос на свой локальный DNS-сервер рекурсивного кэширования для получения IP-адреса веб-страницы <b>\"cloudflare.com\"</b>.",
+          "DNS-сервер с рекурсивным кэшированием отправляет итеративный запрос корневому (<b>\".\"</b>) серверу имен IP-адреса веб-страницы <b>\"cloudflare.com\"</b>.",
+          "Корневой сервер имен отвечает ссылкой на сервер имен TLD зоны <b>.com</b>.",
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\"cloudflare\"</b> authoritative nameserver server responds with the IP address for <b>\"cloudflare.com\"</b>. webpage",
+          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b> (and caches it, if it had no this record).",
+          "The client interacts with the web server <b>\"cloudflare.com\"</b>."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w80",
+        "resource": "dns_record_request_sequence_recursive_resolver.png"
+      },
+      "Okay, smart ass, but about about subdomains, like for example <b>\"blog.cloudflare.com\"</b>? Not a big deal, the sequence will be expand for one more authoritative nameserver, which holds the IP address of that subdomain.",
+      {
+        "type": "picture",
+        "width": "w80",
+        "resource": "dns_record_request_sequence_cname_subdomain.png"
+      },
+      "Well, well, well, I see you have a lot questions. Okay, let's break this sequence down with step-by-step explanations of different types of nameservers. It's time to figure out everything about <b>DNS Servers Roles and Complete Lookup</b>.",
+      {
+        "type": "subtitle",
+        "content": "DNS Servers Roles and Complete Lookup"
+      },
+      "The first thing you need to understand is that all those nameservers like root, TLD and blah-blah-blah are just roles. It literally can be just one physical machine (eiter virtual or not) which is responsible for handling almost every step of described sequence above. Also, I guess you have already notices, that there is some <b>hierarchy</b> of DNS servers, and that's true. All DNS roles are places in hierarchy that goes up from down.",
+      "By the way, <b>let's consider that there is no caching on each step of the sequence</b>. You should know that <b>caching</b> is probably one of the most important function of the whole DNS. We want to make as few requests as possible in order to keep high performance of the system. Caching there is on literally every step of the DNS resolution flow.",
+      "Also, let's update our sequence a little and let me introduce the whole <b>DNS lookup flow</b>. Just keep in mind this picture and get back to it after you read about each role to complete this pictuer inside your head and understand each step and role for the DNS lookup.",
+      {
+        "type": "picture",
+        "width": "w100",
+        "resource": "what_is_a_dns_server_dns_lookup.png"
+      },
+      "So, the very first thing that your DNS query meets is <b>DNS Stub Resolver</b>.",
+      {
+        "type": "subsubtitle",
+        "content": "DNS Stub Resolver"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS Stub Resolver</b> — is an intermediate component between application that requiring DNS resolution and recursive DNS resolver. A DNS stub resolver is typically used by end-user devices, such as laptops, smartphones, and other networked devices, to look up domain names for websites and other online services."
+        ]
+      },
+      "The operating system level DNS resolver is the second and last local stop before a DNS query leaves your machine. The process inside your operating system that is designed to handle this query is commonly called a <b>\"stub resolver\"</b> or <b>DNS client</b>. When a stub resolver gets a request from an application, it first checks its own cache to see if it has the record. If it does not, it then sends a DNS query (with a recursive flag set), outside the local network to a DNS recursive resolver inside the Internet service provider (ISP).",
+      "I guess you have notices that there is no stub resolver on pictures, but that's fine. It's step between client and DNS recursive resolver. Basically, this is step where client checks if it already has the cached IP address of requested domain name. Also, for better understanding let's mark all steps where this role is involved. So, let's say it is <b>step 0</b>.",
+      {
+        "type": "subsubtitle",
+        "content": "DNS Recursive Resolver"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS Recursive Resolver</b> — the recursive resolver is a component responsible for responses to a recursive request from a client and taking the time to track down the DNS record (usually 24h). It performs the task of resolving DNS queries by recursively traversing the DNS hierarchy. When a recursive resolver receives a DNS query from a client, it will query other DNS servers on behalf of the client to resolve the domain name to an IP address."
+        ]
+      },
+      "<b>DNS Recursive Resolver is the connecting link of the whole flow.</b>",
+      "One of the key benefits of using a recursive resolver is that it can <b>cache</b> DNS records to improve the efficiency of subsequent DNS queries. This is why also going to refer to it as to <b>DNS caching server</b>. When a recursive resolver receives a DNS response, it will store the response in its cache for a period of time (known as the time-to-live, or TTL), so that it can quickly respond to future queries for the same domain name. This can help to reduce the load on the DNS system and improve the performance of DNS lookups.",
+      "Here is where everything starts. The client (end user) sends a recursive query to its local recursive caching DNS server for <b>cloudflare.com</b>. This is <b>step 1</b>",
+      {
+        "type": "subsubtitle",
+        "content": "DNS Root Nameserver"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS Root Nameserver</b> — the root nameserver <b>(DNS Root Nameserver ≠ DNS Root Server!!! We'll discuss that later)</b> is the first step in translating (resolving) human readable host names into IP addresses. Remember that dot in domain name, that wasn't typo? This is where root nameserver comes into play."
+        ]
+      },
+      "The recursive caching server sends an iterative query to a root <b>\".\"</b> nameserver for <b>cloudflare.com</b> — <b>step 2</b>. The root nameserver responds with referral to <b>\".com\"</b> zone's nameserver. But what is <b>\".com\"</b>, of course, it's top-level domain! The root server responds with a referral to <b>\".com\"</b> zone's TLD nameservers.",
+      {
+        "type": "subsubtitle",
+        "content": "DNS TLD Nameserver"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS TLD Nameserver</b> — TLD stands for top-level domain. TLD nameserver maintains information for all the domain names that share a common domain extension, such as <b>.com</b, <b>.net</b>, or whatever comes after the last dot in a URL. For example, a <b>\".com\"</b> TLD nameserver contains information for every website that ends in <b>\".com\"</b>."
+        ]
+      },
+      "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> server for cloudflare.com — <b>step 4</b>. TLD Nameserver responds with a referral to cloudflare zone's authoritative nameserver — <b>step 5</b>.",
+      {
+        "type": "subsubtitle",
+        "content": "DNS Authoritative Nameserver"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS Authoritative Nameserver</b> — this final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative nameserver has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request."
+        ]
+      },
+      "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> server for <b>\"cloudflare.com\"</b> — <b>step 6</b>. The <b>\"cloudflare.com\"</b> authoritative nameserver responds with the IP address for <b>\"cloudflare.com\"</b> — <b>step 7</b>. The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b> — <b>step 8</b> — and client interacts with the web server <b>\"cloudflare.com\"</b> — <b>steps 9 and 10</b>.",
+      "Well done, that's it about DNS lookups. Now you know how it works and what components are involved. Probably you have noticed that there are a lot of \"DNS Servers\". When I say \"DNS server\" I literally mean this whole flow because DNS server just combines inside all roles.",
+      {
+        "type": "subsubtitle",
+        "content": "DNS Root Nameserver vs DNS Root Server"
+      },
+      "Remember that pictured titled <b>Complete DNS Lookup and Webpage Query</b>. There is one huge mistake on that picture. You see, step 2 and 3 tell about about communication with <b>DNS Root Server</b>, but in reality, it's <b>DNS Root Nameserver</b>. It is extremely important to differ them. So, let me explain the difference:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS Root Servers</b> — are the 13 authoritative name servers that are responsible for responding to queries for the root zone of the Domain Name System (DNS). These servers are operated by various organizations around the world and are identified by letters A through M. They are the first step in the process of resolving a domain name to an IP address and help to direct traffic to the appropriate top-level domain (TLD) nameserver.",
+          "<b>DNS Root Nameservers</b> — set of nameservers that serve the root zone of the DNS. These nameservers are responsible for providing referrals to the TLD nameservers and other authoritative nameservers, and they play a critical role in the functioning of the DNS. The term \"root nameserver\" is often used interchangeably with \"root server,\" but strictly speaking, the former refers specifically to the nameservers that serve the root zone."
+        ]
+      },
+      {
+        "type": "subtitle",
+        "content": "DNS Records Types"
+      },
+      "At the beginning of our path I told that until some point of time we should consider DNS as something converting URLs into IP address of websites. Technically, this is true, but only partly. DNS is responsible for converting <b>every human-readable resource name into IP address</b>. It not only includes web sites (IPv4 and IPv6), but also email servers, for instance. Those are called <b>DNS records types</b>. Let's briefly discuss most important of them.",
+      {
+        "type": "subsubtitle",
+        "content": "A Record (address)"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>A Record (address)</b> — shows the IP address for a specific hostname or domain. Works for IPv4 type only. The main usage of it is for IP address lookup. Using an A record, a web browser is able to load a website using the domain name."
+        ]
+      },
+      {
+        "type": "subsubtitle",
+        "content": "AAAA Record (quad A)"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>AAAA Record (quad A)</b> — just like A record points to the IP address for a domain, buy instead of using IPv4, uses IPv6. The main usage of if is the same as for A type, but resolving a domain name to the newer IPv6 protocol address. Mobile phones prefer IPv6, if it's available."
+        ]
+      },
+      {
+        "type": "subsubtitle",
+        "content": "MX Record (Mail eXchange)"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>MX Record (Mail eXchange)</b> — makes possible to direct emails to a mail server by showing where emails for a domain should be routed to. You can have multiple MX records for a single domain name — basically, just backup email severs. The lower priority value for the server, the more important it is. And in case when primary server goes down, the secondary server will be used - active-active scheme."
+        ]
+      },
+      "The main usage of it is to map where email should be delivered. Should point to a mail server name and not to an IP address. <b>ANAME</b> — can point to a mail server name or an IP address.",
+      {
+        "type": "subsubtitle",
+        "content": "NS Record (nameserver)"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>NS Record (nameserver)</b> — specifies the authoritative DNS server for a domain. In other words, the NS record helps point to where internet application like a web browser can find the IP address for a domain name. Usually, multiple nameservers are specified for a domain. The main usage of those authoritative servers is to connect your domain name to the actual server your site is hosted on. The nameservers contains other DNS records like MX or A records."
+        ]
+      },
+      {
+        "type": "subsubtitle",
+        "content": "CNAME Record (Canonical Name)"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>CNAME record (Canonical Name)</b> — is a DNS records that points a domain name (an alias) to another domain. In a CNAME record, the alias doesn't point to an IP address. And the domain name that the alias points to is the canonical name."
+        ]
+      },
+      "For example, the subdomain ng.example.com (ng.example.com is a CNAME Record) can point to example.com using CNAME. Here example.com points to the actual IP address using an A record.",
+      "The main usage of it is running multiple subdomains for different purposes on the same server. For example, we have ftp.example.com and www.example.com. We can then use a CNAME record to point both subdomains to example.com. The main domain example.com then points to the server's IP address using an A record. It's also possible for one CNAME to point to other CNAME. However, doing so is inefficient and can lead to slow load speed and poor user experience.",
+      "Usually points to a load balancer.",
+      {
+        "type": "subsubtitle",
+        "content": "ANAME Record"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>ANAME (ALIAS)</b> — combination of CNAME and A types of records. ANAME is not a read DNS record but a way of simulating it. And that's why it is called Alias name. Just like CNAME, ANAME maps one domain name to another. So, an ANAME is configured to point to another domain. When the domain name an ANAME points to is queried by the client browser, it responds with an IP address. A CNAME, on the other hand, cannot point to an IP address, but an ANAME can."
+        ]
+      },
+      "Was used in the past, CNAME is a king nowadays. Shouldn't point to a load balancer.",
+      {
+        "type": "subsubtitle",
+        "content": "TXT Record"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>TXT Record (Text Record)</b> — is the type of record that allows administrator to add human-readable (and machine-readable) notes in the DNS. Doesn't require specific format. Used to provide the ability to associate arbitrary text with a host or other name, such as human readable information about a server, network, data center, or other accounting information"
+        ]
+      },
+      "The main usage of it nowadays is to prevent email spam and verify domain ownership. Here we should talk about DMARC, SPF and DKIM, but for now just know that those are about <b>anti-span security</b>.",
+      {
+        "type": "title",
+        "content": "DNS Security Issues"
+      },
+      "Okay, now we have a complete overview of how DNS resolution works, what are different roles of DNS servers and even mentioned a couple of main record types, but what about security issues? Actually, we have only 2 main security issues — <b>lack of authentication and confidentiality</b>.",
+      "The first is due to the fact that DNS has no ability to check if the record it has requested comes from trusted source, and this issue is mitigated by <b>DNSSEC</b>.",
+      "The second is due to the fact that DNS as a protocol has been implemented in early 80's. As you already know, at that period of time, security wasn't on the foreground while all resources have been concentrated on providing just availability. Therefore, DNS, as many other protocols such as HTTP or ART, is transmitting data in plaintext. This issue is mitigated by <b>encryption</b>.",
+      "Fine, we are definitely going to discuss both of the issues, but let's first take a look at how DNS looks like when it has been hacked:",
+      {
+        "type": "list-numeric",
+        "items": [
+          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root nameserver responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
+          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The evil DNS server responds with the evil IP address for <b>\"cloudflare.com\"</b>.",
+          "The recursive caching DNS server responds to the original client with the evil IP address for <b>\"cloudflare.com\"</b>.",
+          "Client interacts with the evil web server, which either respond directly, or perform <b>Man-in-the-Middle</b> attack operation by passing and observing (or altering) traffic from/to the legitimate web server."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w70",
+        "resource": "dns_poisoning.jpeg"
+      },
+      "As you can see, from step 1 to 6 we have exactly the same flow, problems start from step 7.",
+      "It's called <b>DNS spoofing/cache poisoning</b> — this is an attack where forged DNS data is introduced into a DNS resolver's cache, resulting in the resolver returning an incorrect IP address for a domain. Instead of going to the correct website, traffic can be diverted to a malicious machine or anywhere else the attacker desires; often this will be a replica of the original site used for malicious purposes such as distributing malware or collecting login information.",
+      "So, we need to somehow verify that response comes from trusted source, right? Basically, provide <b>authentication</b> — this is where <b>DNSSEC</b> comes into play.",
+      {
+        "type": "title",
+        "content": "DNSSEC Overview"
+      },
+      "Finally, here we are, DNSSEC! We should consider that DNS and DNSSEC now are like HTTP and HTTPS ~20 years ago. It will be just required to use by everyone in order to provide secure communication. DNSSEC and HTTPS are even similar in some cases.",
+      "HTTPS provide both <b>authentication</b> and <b>confidentiality</b> using PKI infrastructure of CA's (if you are not familiar with <a href='https://blog.mikhailbahdashych.me/en/blog/pki-infrastructure-or-how-to-build-your-own-vpn' class='inline-link en'>see here</a>). <b>Authentication</b> is provided by verifying who was the issuer of the certificate, while <b>confidentiality</b> is provided by encrypting traffic.",
+      "In case of DNSSEC, it provides only <b>authentication</b>, where DNS encryption provides <b>confidentiality</b>, what was already mentioned above. But getting back to DNSSEC, let's start with simple definition of what it actually is:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNSSEC (DNS Security Extension)</b> — is an authentication mechanism that utilises PKI cryptography to prevent spoofing. With DNSSEC, it's not DNS queries and responses themselves are cryptographically signed, but rather DNS data itself signed by the owner of the data."
+        ]
+      },
+      "Remember where we mentioned that DNS has hierarchical structure? The example of DNSSEC will make it even more obvious. Assuming that you are already familiar with PKI and cryptography, we need to introduce a couple of new terms especially for DNSSEC.",
+      {
+        "type": "subtitle",
+        "content": "DNSSEC Terminology"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>RRSet - Resource Record Set</b> — the first step towards securing a zone with DNSSEC is to group all the records with the same type into a resource record set (RRset). For example, if you have three AAAA records in your zone on the same label (i.e. label.example.com), they would all be bundled into a single AAAA RRset.\n\nIt's actually this full RRset that gets digitally signed, opposed to individual DNS records. Of course, this also means that you must request and validate all of the AAAA records from a zone with the same label instead of validating only one of them. In short — <b>a set of records with the same type and same domain/zone</b>."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w80",
+        "resource": "diagram-rrsets.svg"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNSKEY</b> — contains a public signing key.",
+          "<b>RRSig - Resource Record Signature</b> — a record containing RRSet's digital signature.",
+          "<b>ZSK - Zone Signing Key</b> — <b>used to sign or verify a domain's/zone's non-key records (A, AAAA, MX etc.)</b>. In DNSSEC, each zone has a pair of zone-signing keys (ZSK), where the private key signs each RRset in the zone while the public key verifies the signature. To implement DNSSEC, a zone operator uses the private ZSK to create digital signatures for each RRset and stores them as RRSig records in their nameserver.\n\nHowever, the RRSig records alone cannot be used by DNS resolvers to verify the signatures. To enable this, the zone operator adds their public ZSK to their nameserver in a DNSKEY record.\n\nWhen a DNSSEC resolver requests a record type, the nameserver returns the corresponding RRSig along with the RRset. The resolver can then retrieve the public ZSK from the DNSKEY record on the nameserver. The RRset, RRSig, and public ZSK together can validate the response.\n\nTrusting the zone-signing key in the DNSKEY record also means trusting all records in the zone. But if the ZSK is compromised, it is crucial to validate the public ZSK to ensure security."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w60",
+        "resource": "diagram-zone-signing-keys-2.svg"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>KSK - Key Signing Key</b> — <b>used to sign or verify a domain's/zone's keys</b>. In addition to the zone-signing key, DNSSEC nameservers utilize a key-signing key (KSK). Similar to how the ZSK provided security for the RRsets in the previous section, the KSK validates the DNSKEY record by signing the public ZSK, thereby generating an RRSIG for the DNSKEY.\n\nThe public KSK is also published in a DNSKEY record by the nameserver, just like the public ZSK, which results in the DNSKEY RRSet. Both the public KSK and public ZSK are signed by the private KSK. This enables resolvers to use the public KSK to validate the public ZSK."
+        ]
+      },
+      "Validation for resolvers now looks like this:",
+      {
+        "type": "list-numeric",
+        "items": [
+          "Request the desired <b>RRSet</b>, which also returns the corresponding <b>RRSIG</b> record.",
+          "Request the DNSKEY records that contains <b>public ZSK and KSK</b> which also returns the <b>RRSig</b> for the <b>DNSKEY RRSet</b>.",
+          "Verify the <b>RRSig</b> of the requested <b>RRSet</b> with the <b>public ZSK</b>.",
+          "Verify the <b>RRSig</b> of the <b>DNSKEY RRSet</b> with the <b>public KSK</b>."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w60",
+        "resource": "diagram-key-signing-keys-2.svg"
+      },
+      "You have probably already noticed the hierarchical nature of DNS, and this is just the beginning. Regarding KSK, the DNSKEY RRSet and corresponding RRSig records can be cached to avoid excessive requests to DNS name servers.",
+      "The use of separate zone-signing keys and key-signing keys is aimed at facilitating the replacement of an old or compromised KSK, as we will discuss in the next section. Conversely, changing the ZSK is a simpler process, making it possible to use a smaller ZSK without compromising server security and reducing the amount of data that the server needs to transmit with each response.",
+      "While we have established trust within our zone, DNS is a hierarchical system, and zones typically operate in conjunction with one another. The key-signing key is signed by itself, which doesn't add any extra trust, so we need a means of connecting the trust in our zone with its parent zone.",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DS Record - Delegation of Signing</b> — <b>a record containing the hash/digest of a child domain's/zone's public KSK (the fingerprint of child's public KSK)</b>. In DNSSEC, a delegation signer (DS) record is introduced to transfer trust from a parent zone to a child zone. To accomplish this, the zone operator hashes the public KSK contained in the DNSKEY record and provides it to the parent zone to publish as a DS record.\n\nWhenever a resolver is directed to a child zone, the parent zone also provides a DS record. This record enables resolvers to determine if the child zone is DNSSEC-enabled. To validate the public KSK of the zone, the resolver hashes it and compares it to the DS record from the parent zone. If the hash values match, the resolver can safely assume that the public KSK has not been compromised or altered, thereby establishing trust in all the records of the child zone. <b>This is how a chain of trust is established in DNSSEC.</b>"
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w50",
+        "resource": "diagram-delegation-signer-records.svg"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>The Chain of Trust</b> — the process of establishing trust within a zone and linking it to its parent zone, requires a mechanism for verifying the authenticity of the DS record. This is accomplished by digitally signing the DS record, similar to any other RRSet, resulting in the existence of a corresponding RRSig in the parent zone. The process of validating this signature is repeated successively, all the way up to the public KSK of the parent zone. To confirm the authenticity of this KSK, it is necessary to check the parent's DS record, continuing this process up the Chain of Trust."
+        ]
+      },
+      {
+        "type": "picture",
+        "width": "w50",
+        "resource": "diagram-the-chain-of-trust.svg"
+      },
+      {
+        "type": "subtitle",
+        "content": "DNSSEC Resolution Flow"
+      },
+      "Oh, that was tough, wasn't it? Okay, enough of this terminology, everything is better seen in examples. We are going to modify our previous DNS resolution flow to make it DNSSEC-enabled.",
+      {
+        "type": "list-numeric",
+        "items": [
+          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
+          "The root nameserver:",
+          [
+            "Sends a referral:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "A non-secured referral for the authoritative TLD nameserver for the <b>\".com\"</b > zone"
+              ]
+            },
+            "Sends a record:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet of DNSKEY</b> records for the root zone - the root zone's <b>public ZSK and public KSK</b>.",
+                "<b>RRSig</b> of above record set - signed using the root zone's <b>private KSK</b>.",
+                "<b>DS record</b> for the <b>\".com\"</b> zone - the hash/digest/fingerprint of the \".com\" zone's public KSK.",
+                "<b>RRSig</b> of above DS record - signed using the root zone's private ZSK."
+              ]
+            }
+          ],
+          "The recursive caching DNS server:",
+          [
+            "Verifies the record:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>Root</b> zone's <b>DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the root zone's public KSK.",
+                "<b>Root</b> zone's DS record for <b>\".com\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>root</b> zone's public ZSK."
+              ]
+            },
+            "Verifies the zone:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "The recursive caching DNS server already has a trusted copy of the root public KSK which it obtained by means other than the DNS protocol (such as from the server's operating system's vendor). The root zone is verified by the recursive caching DNS server when the server's copy of the root public KSK is found to match that provided to the server by the root DNS server."
+              ]
+            }
+          ],
+          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for <b>\"cloudflare.com\"</b>.",
+          "The <b>\".com\"</b> TLD nameserver:",
+          [
+            "Sends a referral:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "A non-secured referral for <b>\"cloudflare\"</b> zone's authoritative nameserver."
+              ]
+            },
+            "Sends the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet of DNSKEY</b> records for the \".com\" zone - the \".com\" zone's <b>public ZSK and public KSK</b>.",
+                "<b>RRSig</b> of above record set - signed using the \".com\" <b>private KSK</b>.",
+                "<b>DS record</b> for the <b>\"cloudflare\"</b> zone - the hash/digest/fingerprint of the \"cloudflare\" zone's public KSK.",
+                "<b>RRSig</b> of above DS record - signed using \".com\" zone's private ZSK."
+              ]
+            }
+          ],
+          "The recursive caching DNS server:",
+          [
+            "Verifies the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>\".com\" DNSKEY RRSet<b/b> is verified by successfully decrypting the RRSet's RRSig using the \".com\" zone's public KSK",
+                "<b>\".com\"</b> zone's DS record for <b>\"cloudflare\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>\".com\"</b> zone's public ZSK."
+              ]
+            },
+            "Verifies the zone:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "The <b>\".com\"</b> zone is verified by comparing the hash/digest/fingerprint of the <b>\".com\"</b> zone's public KSK from the <b>\".com\"</b> zone with the previously obtained DS record from the root zone for the <b>\".com\"</b> zone."
+              ]
+            }
+          ],
+          "The recursive caching DNS server sends an iterative query to a \"cloudflare\" authoritative nameserver for  \"cloudflare.com\"",
+          "The \"cloudflare\" authoritative nameserver server:",
+          [
+            "Sends the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet of DNSKEY</b> records for the <b>\"cloudflare\"</b> zone - the <b>\"cloudflare\"</b> zone's public ZSK and public KSK.",
+                "<b>RRSig</b> of above record set - signed using the <b>\"cloudflare\"</b> private KSK.",
+                "<b>RRSet of A records</b> from the <b>\"cloudflare\"</b> zone.",
+                "<b>RRSig</b> of above DS record - signed using <b>\"cloudflare\"</b> zone's private ZSK."
+              ]
+            }
+          ],
+          "The recursive caching DNS server:",
+          [
+            "Verifies the records:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>\"cloudflare\" DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the <b>\"cloudflare\"</b> zone's public KSK.",
+                "<b>\"cloudflare\" A RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the <b>\"cloudflare\"</b> zone's public ZSK."
+              ]
+            },
+            "Verifies the zone:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "The <b>\"cloudflare\"</b> zone is verified by comparing the hash/digest/fingerprint of the <b>\"cloudflare\"</b> zone's public KSK from the <b>\"cloudflare\"</b> zone with the previously obtained DS record from the root zone for the <b>\"cloudflare\"</b> zone."
+              ]
+            }
+          ],
+          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b>.",
+          "The client interacts with the web server <b>\"cloudflare.com\"</b>."
+        ]
+      },
+      "There is one thing you need to understand. All those examples that are presented here about how DNS works are academic examples. This only happens in sterile, \"laboratory\" conditions (in this case, if there were no cache anywhere). These concepts are easy enough to understand that they have a place to be, in reality, if you have to configure such a system, then it is literally a few lines of code or a configuration change.",
+      "Such examples are more likely to be needed by people who design networks and infrastructures of this scale.",
+      "Speaking of the DNS example itself, different configurations represent different functions. As mentioned above all those recursive resolvers, caching server or root nameservers are just roles, physically, it can be one machine. Therefore, configuration of your DNS server also depends on what you want to build. So, be careful with guidelines you find on the Internet.",
+      {
+        "type": "title",
+        "content": "The DNSSEC Root Signing Ceremony"
+      },
+      "Oh, in fact, in order to understand how everything works, you do not need to know anything about this ceremony, but it looks so cool and sounds so pathetic that I could not help but write about it. <b>Keys to the Internet</b>, not bad, huh?",
+      "You have probably already paid attention to how this DNS hierarchy goes from bottom to top. In this case, you might have a logical question: What is at the very top?",
+      "That's the purpose of the Root Signing Ceremony—a rigorous procedure around signing the root DNS zone's public keying information for the next few months. The private signing key used in this process is quite literally the key to the entire DNSSEC-protected Internet. A public, audited, and tightly controlled ceremony around accessing this key is a necessity for DNSSEC to succeed as a global standard.",
+      "Just find a video of this ceremony, because it's translated online and see where DNSSEC trust comes from.",
+      {
+        "type": "title",
+        "content": "About DNS Encryption"
+      },
+      "As you have already found out, DNSSEC insures only authentication, but it still transfers it in plaintext. Here is where cryptography comes into play, our lovely HTTPS and TLS, which will help us to ensure not only authentication of our traffic, but also its confidentiality.",
+      {
+        "type": "subtitle",
+        "content": "DNS over TLS"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS over TLS (or DoT)</b>, is a standard for encrypting DNS queries to keep them secure and private. DoT uses the same protocol as HTTPS to encrypt and authenticate connection. Normally, DNS works over UDP. What DoT does, it it adds TLS encryption on top of the user datagram protocol (UDP), which is used for DNS queries. Additionally, it ensures that DNS requests and responses are not tampered with or forged via on-path attacks."
+        ]
+      },
+      {
+        "type": "subtitle",
+        "content": "DNS over HTTPS"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>DNS over HTTPS (or DoH)</b> is an alternative way to DoT. DNS queries and responses are encrypted, but sent via the HTTP or HTTP/2 protocols instead of directly over UDP. DoH traffic looks like other HTTPS traffic - e.g. normal user-driven interactions with websites and web apps — from a network administrator's perspective."
+        ]
+      },
+      "In February 2020, the Mozilla Firefox browser began enabling DoH for U.S. users by default. DNS queries from the Firefox browser are encrypted by DoH and go to either Cloudflare or NextDNS. Several other browsers also support DoH, although it is not turned on by default.",
+      {
+        "type": "subtitle",
+        "content": "Difference between DoT and DoH"
+      },
+      "The main difference between them is <b>what port they use</b>. DoT only uses port 853, while DoH uses 443, which is the port that all other HTTPS traffic uses as well.",
+      "Because DoT has a dedicated port, anyone with network visibility can see DoT traffic coming and going, even though the requests and responses themselves are encrypted. In contrast, with DoH, DNS queries and responses are camouflaged within other HTTPS traffic, since it all comes and goes from the same port.",
+      "<b>From a network security standpoint, DoT is arguably better</b>. It gives network administrator the ability to monitor and block DNS queries, which is important for identifying and stopping malicious activity.",
+      "<b>DoH queries, meanwhile, are hidden in regular HTTPS traffic</b>, meaning they cannot easily be blocked without blocking all other HTTPS traffic as well. However, from a privacy perspective, DoH is arguably preferable. With DoH, DNS queries are hidden within the larger flow of HTTPS traffic. This gives network administrators less visibility but provides users with more privacy.",
+      {
+        "type": "title",
+        "content": "Conclusions"
+      },
+      "In conclusion, DNS (Domain Name System) is a fundamental component of the internet that is used to translate domain names into IP addresses. While DNS is critical for internet connectivity and online services, it is also vulnerable to a range of DNS-based attacks, including cache poisoning and DNS spoofing.",
+      "To address these security concerns, DNSSEC (Domain Name System Security Extensions) has been developed as a security protocol that adds a layer of cryptographic security to the DNS system. By using digital signatures to verify the authenticity of DNS responses, DNSSEC can help to protect against a range of DNS-related attacks, ensuring the integrity and reliability of the DNS system.",
+      "While the adoption of DNSSEC has been slow, it is becoming increasingly important as the threat of DNS-based attacks continues to grow. Organizations that rely on online services should consider implementing DNSSEC to protect their online presence, improve the security of their network, and reduce the risk of DNS-based attacks. As the internet continues to evolve, DNS and DNSSEC will remain essential components of the global network, ensuring the reliability and security of online services for years to come.",
+      {
+        "type": "title",
+        "content": "Contact and references"
+      }
+    ],
+    "references": [{
+      "name": "Что такое DNS от Cloudflare",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/what-is-dns/"
+    }, {
+      "name": "Что такое DNSSEC от Cloudflare (очевидно, не так ли?)",
+      "link": "https://www.cloudflare.com/en-gb/dns/dnssec/how-dnssec-works/"
+    }, {
+      "name": "DNS over TLS vs DNS over HTTPS",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-over-tls/"
+    }, {
+      "name": "Отравление кэша DNS и спуфинг",
+      "link": "https://www.cloudflare.com/en-gb/learning/dns/dns-cache-poisoning/"
+    }, {
+      "name": "Люди, которые держат ключи от Интернета",
+      "link": "https://www.cloudflare.com/en-gb/dns/dnssec/root-signing-ceremony/"
+    }, {
+      "name": "Хорошо написанная статья ICANN о том, что такое DNSSEC и почему это важно",
+      "link": "https://www.icann.org/resources/pages/dnssec-what-is-it-why-important-2019-03-05-en"
+    }, {
+      "name": "Действительно классное видео, объясняющее DNS и DNSSEC.",
+      "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
+    }]
   }
 }
