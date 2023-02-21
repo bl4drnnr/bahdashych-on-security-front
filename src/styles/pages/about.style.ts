@@ -30,7 +30,7 @@ export const Box = styled.div`
     font-family: "Charter", sans-serif;
     margin: 15px 0;
     color: rgb(${(props) => props.theme.colors.textColor});
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: 200;
   }
 `;
@@ -58,6 +58,6 @@ export const AboutParagraph = styled.p`
   margin: 10px 0;
   font-weight: 100;
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-size: 1em;
+  font-size: 1.1em;
   text-indent: 25px;
 `;

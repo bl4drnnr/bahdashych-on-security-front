@@ -10,7 +10,7 @@ export const ArticleTitle = styled.h1`
     margin: 75px 0;
 
     @media only screen and (max-width: 780px) {
-      font-size: 1.1em;
+      font-size: 1.2em;
       margin: 25px 0;
     }
   }
@@ -22,7 +22,7 @@ export const ArticleTitle = styled.h1`
 
 export const PostParagraph = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
-  font-size: 1.1em;
+  font-size: 1.2em;
   line-height: 30px;
   padding-top: 30px;
   text-indent: 50px;
@@ -44,11 +44,11 @@ export const PostParagraph = styled.p`
   &.subsubtitle {
     text-indent: 0;
     font-weight: 600;
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
 
   @media only screen and (max-width: 780px) {
-    font-size: 1em;
+    font-size: 1.1em;
     text-indent: 25px;
   }
 `;
@@ -86,7 +86,7 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .table-of-contents-ul {
-    font-size: 1em;
+    font-size: 1.1em;
     color: rgb(${(props) => props.theme.colors.primaryDark});
     text-decoration: underline;
     margin-bottom: 0.6em;
@@ -137,7 +137,7 @@ export const ArticleBodyWrapper = styled.div`
   }
 
   .blog-post-li {
-    font-size: 1.1em;
+    font-size: 18px;
     line-height: 30px;
     font-weight: 400;
 
@@ -157,7 +157,7 @@ export const TableOfContentsContainer = styled.div`
   &.contact-and-references {
     margin-top: 30px;
     a {
-      font-size: 1.1em;
+      font-size: 1em;
     }
   }
   &.en {

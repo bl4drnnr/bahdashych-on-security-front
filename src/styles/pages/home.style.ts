@@ -35,7 +35,7 @@ export const TypewritingText = styled.h1`
     padding-top: 15px;
 
     @media only screen and (max-width: 780px) {
-      font-size: 1em;
+      font-size: 1.1em;
     }
   }
 
@@ -65,7 +65,7 @@ export const BlogPostsContainer = styled.div`
     }
     p, li, ul {
       font-family: 'Crimson', serif;
-      font-size: 1.1em;
+      font-size: 1.2em;
     }
   }
 `;
@@ -94,7 +94,7 @@ export const BlogPostTitle = styled.h3`
 `;
 
 export const BlogPostDescription = styled.p`
-  font-size: 1em;
+  font-size: 1.1em;
   text-indent: 50px;
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .5);
