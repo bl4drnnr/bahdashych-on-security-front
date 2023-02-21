@@ -363,7 +363,7 @@
           "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do katalogu głównego (<b>\".\"</b>) serwer nazw dla adresu IP <b>\"cloudflare.com\"</b>.",
           "Główny serwer nazw odpowiada skierowaniem do serwera nazw TLD strefy <b>\".com\"</b>.",
           "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do <b>\".com\"</b> serwer nazw TLD dla adresu IP <b>\"cloudflare.com\"</b>.",
-          "Serwer nazw TLD <B>\".com\"</B> odpowiada skierowaniem do autorytatywnego serwera nazw strefy <B>\"cloudflare\"</B>.",
+          "Serwer nazw TLD <b>\".com\"</b> odpowiada skierowaniem do autorytatywnego serwera nazw strefy <b>\"cloudflare\"</b>.",
           "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do <b>\"cloudflare\"</b> autorytatywnego serwera nazw dla adresu IP <b>\"cloudflare.com\"</b>.",
           "<b>\"cloudflare\"</b> autorytatywny serwer nazw odpowiada adresem IP dla <b>\"cloudflare.com\"</b>.",
           "Rekurencyjny buforujący serwer DNS odpowiada oryginalnemu klientowi adresem IP <b>\"cloudflare.com\" </b> (i buforuje go, jeśli nie ma tego rekordu).",
@@ -543,10 +543,10 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>Rekord TXT (rekord tekstowy)</B> — to typ rekordu, który umożliwia administratorowi dodawanie notatek czytelnych dla człowieka (i do odczytu maszynowego) w DNS. Nie wymaga określonego formatu. Służy do zapewnienia możliwości kojarzenia dowolnego tekstu z hostem lub inną nazwą, taką jak czytelne dla człowieka informacje o serwerze, sieci, centrum danych lub inne informacje księgowe."
+          "<b>Rekord TXT (rekord tekstowy)</b> — to typ rekordu, który umożliwia administratorowi dodawanie notatek czytelnych dla człowieka (i do odczytu maszynowego) w DNS. Nie wymaga określonego formatu. Służy do zapewnienia możliwości kojarzenia dowolnego tekstu z hostem lub inną nazwą, taką jak czytelne dla człowieka informacje o serwerze, sieci, centrum danych lub inne informacje księgowe."
         ]
       },
-      "Głównym zastosowaniem tego w dzisiejszych czasach jest zapobieganie spamowi e-mailowemu i weryfikacja własności domeny. Tutaj powinniśmy porozmawiać o DMARC, SPF i DKIM, ale na razie po prostu wiedz, że chodzi o <b>bezpieczeństwo antyspamowe</B>.",
+      "Głównym zastosowaniem tego w dzisiejszych czasach jest zapobieganie spamowi e-mailowemu i weryfikacja własności domeny. Tutaj powinniśmy porozmawiać o DMARC, SPF i DKIM, ale na razie po prostu wiedz, że chodzi o <b>bezpieczeństwo antyspamowe</b>.",
       {
         "type": "title",
         "content": "Problemy z bezpieczeństwem DNS"
@@ -558,15 +558,15 @@
       {
         "type": "list-numeric",
         "items": [
-          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The root nameserver responds with a referral to <b>\".com\"</b> zone's TLD nameserver.",
-          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The <b>\".com\"</b> TLD nameserver responds with a referral to <b>\"cloudflare\"</b> zone's authoritative nameserver.",
-          "The recursive caching DNS server sends an iterative query to a <b>\"cloudflare\"</b> authoritative nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The evil DNS server responds with the evil IP address for <b>\"cloudflare.com\"</b>.",
-          "The recursive caching DNS server responds to the original client with the evil IP address for <b>\"cloudflare.com\"</b>.",
-          "Client interacts with the evil web server, which either respond directly, or perform <b>Man-in-the-Middle</b> attack operation by passing and observing (or altering) traffic from/to the legitimate web server."
+          "Klient wysyła rekurencyjne zapytanie do swojego lokalnego rekurencyjnego buforującego serwera DNS dla adresu IP <b>\"cloudflare.com\"</b>.",
+          "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do katalogu głównego (<b>\".\"</b>) serwer nazw dla adresu IP <b>\"cloudflare.com\"</b>.",
+          "Główny serwer nazw odpowiada skierowaniem do serwera nazw TLD strefy <b>\".com\"</b>.",
+          "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do <b>\".com\"</b> serwer nazw TLD dla adresu IP <b>\"cloudflare.com\"</b>.",
+          "Serwer nazw TLD <b>\".com\"</b> odpowiada skierowaniem do autorytatywnego serwera nazw strefy <b>\"cloudflare\"</b>.",
+          "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do <b>\"cloudflare\"</b> autorytatywnego serwera nazw dla adresu IP <b>\"cloudflare.com\"</b>.",
+          "Zły serwer DNS odpowiada złym adresem IP dla <b>\"cloudflare.com\" </b>.",
+          "Rekurencyjny buforujący serwer DNS odpowiada oryginalnemu klientowi złym adresem IP dla <b>\"cloudflare.com\"</b>.",
+          "Klient wchodzi w interakcję ze złym serwerem WWW, który albo odpowiada bezpośrednio, albo wykonuje operację ataku typu <b>Man-in-the-Middle</b>, przekazując i obserwując (lub zmieniając) ruch z/na legalny serwer WWW."
         ]
       },
       {
@@ -576,7 +576,7 @@
       },
       "Jak widać, od kroku 1 do 6 mamy dokładnie ten sam przepływ, problemy zaczynają się od kroku 7.",
       "Nazywa się to <b>DNS spoofing/Cache poisoning</b> — jest to atak, w którym sfałszowane dane DNS są wprowadzane do pamięci podręcznej resolwera DNS, w wyniku czego resolver zwraca nieprawidłowy adres IP dla domeny. Zamiast przejść do właściwej strony internetowej, ruch może zostać przekierowany na złośliwą maszynę lub gdziekolwiek indziej, czego chce atakujący; często będzie to replika oryginalnej witryny używanej do złośliwych celów, takich jak dystrybucja złośliwego oprogramowania lub zbieranie danych logowania.",
-      "Musimy więc jakoś sprawdzić, czy odpowiedź pochodzi z zaufanego źródła, prawda? Zasadniczo zapewnij  <B>uwierzytelnianie</B> — tutaj w grę wchodzi <b> DNSSEC</B>.",
+      "Musimy więc jakoś sprawdzić, czy odpowiedź pochodzi z zaufanego źródła, prawda? Zasadniczo zapewnij  <b>uwierzytelnianie</b> — tutaj w grę wchodzi <b>DNSSEC</b>.",
       {
         "type": "title",
         "content": "Przegląd DNSSEC"
@@ -587,18 +587,18 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>DNSSEC (DNS Security Extension)</b> — is an authentication mechanism that utilises PKI cryptography to prevent spoofing. With DNSSEC, it's not DNS queries and responses themselves are cryptographically signed, but rather DNS data itself signed by the owner of the data."
+          "<b>DNSSEC (DNS Security Extension)</b> — to mechanizm uwierzytelniania, który wykorzystuje kryptografię PKI, aby zapobiec fałszowaniu. W przypadku DNSSEC nie są to zapytania DNS, a same odpowiedzi są podpisane kryptograficznie, ale same dane DNS podpisane przez właściciela danych."
         ]
       },
-      "Remember where we mentioned that DNS has hierarchical structure? The example of DNSSEC will make it even more obvious. Assuming that you are already familiar with PKI and cryptography, we need to introduce a couple of new terms especially for DNSSEC.",
+      "Pamiętasz, gdzie wspomnieliśmy, że DNS ma strukturę hierarchiczną? Przykład DNSSEC sprawi, że będzie to jeszcze bardziej oczywiste. Zakładając, że znasz już PKI i kryptografię, musimy wprowadzić kilka nowych terminów, szczególnie dla DNSSEC.",
       {
         "type": "subtitle",
-        "content": "DNSSEC Terminology"
+        "content": "Terminologia DNSSEC"
       },
       {
         "type": "list-bullet",
         "items": [
-          "<b>RRSet - Resource Record Set</b> — the first step towards securing a zone with DNSSEC is to group all the records with the same type into a resource record set (RRset). For example, if you have three AAAA records in your zone on the same label (i.e. label.example.com), they would all be bundled into a single AAAA RRset.\n\nIt's actually this full RRset that gets digitally signed, opposed to individual DNS records. Of course, this also means that you must request and validate all of the AAAA records from a zone with the same label instead of validating only one of them. In short — <b>a set of records with the same type and same domain/zone</b>."
+          "<b>RRSet - zestaw rekordów zasobów</b> — pierwszym krokiem do zabezpieczenia strefy za pomocą DNSSEC jest zgrupowanie wszystkich rekordów tego samego typu w zestaw rekordów zasobów (RRset). Na przykład, jeśli masz trzy rekordy AAAA w swojej strefie na tej samej etykiecie (tj. label.example.com), wszystkie byłyby połączone w jeden zestaw AAAA RRset.\n\nW rzeczywistości jest to pełny RRSet, który jest podpisywany cyfrowo, w przeciwieństwie do indywidualnych rekordów DNS. Oczywiście oznacza to również, że musisz zażądać i zweryfikować wszystkie rekordy AAAA ze strefy o tej samej etykiecie, zamiast walidować tylko jeden z nich. W skrócie - <b>zbiór rekordów o tym samym typie i tej samej domenie/strefie</b>."
         ]
       },
       {
@@ -609,9 +609,9 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>DNSKEY</b> — contains a public signing key.",
-          "<b>RRSig - Resource Record Signature</b> — a record containing RRSet's digital signature.",
-          "<b>ZSK - Zone Signing Key</b> — <b>used to sign or verify a domain's/zone's non-key records (A, AAAA, MX etc.)</b>. In DNSSEC, each zone has a pair of zone-signing keys (ZSK), where the private key signs each RRset in the zone while the public key verifies the signature. To implement DNSSEC, a zone operator uses the private ZSK to create digital signatures for each RRset and stores them as RRSig records in their nameserver.\n\nHowever, the RRSig records alone cannot be used by DNS resolvers to verify the signatures. To enable this, the zone operator adds their public ZSK to their nameserver in a DNSKEY record.\n\nWhen a DNSSEC resolver requests a record type, the nameserver returns the corresponding RRSig along with the RRset. The resolver can then retrieve the public ZSK from the DNSKEY record on the nameserver. The RRset, RRSig, and public ZSK together can validate the response.\n\nTrusting the zone-signing key in the DNSKEY record also means trusting all records in the zone. But if the ZSK is compromised, it is crucial to validate the public ZSK to ensure security."
+          "<b>DNSKEY</b> — zawiera publiczny klucz podpisywania.",
+          "<b>Rrsig - Resource Record Signature</b> — rekord zawierający podpis cyfrowy RRSet.",
+          "<b>ZSK — Klucz podpisywania strefy</b> - <b>używany do podpisywania lub weryfikacji rekordów innych niż klucze domeny/strefy (A, AAAA, MX itp.)</b>. W DNSSEC każda strefa ma parę kluczy do podpisywania stref (ZSK), gdzie klucz prywatny podpisuje każdy zestaw RR w strefie, podczas gdy klucz publiczny weryfikuje podpis. Aby zaimplementować DNSSEC, operator strefy używa prywatnego ZSK do tworzenia podpisów cyfrowych dla każdego zestawu Rrsetów i przechowuje je jako rekordy RRSig na swoim serwerze nazw.\n\nJednak same rekordy RRSig nie mogą być używane przez resolwery DNS do weryfikacji podpisów. Aby to włączyć, operator strefy dodaje swój publiczny ZSK do swojego serwera nazw w rekordzie DNSKEY.\n\nGdy resolver DNSSEC żąda typu rekordu, serwer nazw zwraca odpowiedni RRSig wraz z zestawem RRset. Resolver może następnie pobrać publiczny ZSK z rekordu DNSKEY na serwerze nazw. RRset, RRSig i public ZSK razem mogą potwierdzić odpowiedź.\n\nZaufanie do klucza podpisywania strefy w rekordzie DNSKEY oznacza również zaufanie do wszystkich rekordów w strefie. Ale jeśli ZSK zostanie naruszony, ważne jest, aby zweryfikować publiczny ZSK, aby zapewnić bezpieczeństwo."
         ]
       },
       {
@@ -622,17 +622,17 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>KSK - Key Signing Key</b> — <b>used to sign or verify a domain's/zone's keys</b>. In addition to the zone-signing key, DNSSEC nameservers utilize a key-signing key (KSK). Similar to how the ZSK provided security for the RRsets in the previous section, the KSK validates the DNSKEY record by signing the public ZSK, thereby generating an RRSIG for the DNSKEY.\n\nThe public KSK is also published in a DNSKEY record by the nameserver, just like the public ZSK, which results in the DNSKEY RRSet. Both the public KSK and public ZSK are signed by the private KSK. This enables resolvers to use the public KSK to validate the public ZSK."
+          "<b>KSK — Klucz podpisywania klucz</b> - <b>używany do podpisywania lub weryfikacji kluczy domeny/strefy</b>. Oprócz klucza podpisywania strefy serwery nazw DNSSEC wykorzystują Klucz podpisywania klucza (KSK). Podobnie jak ZSK zapewnił bezpieczeństwo RRsets w poprzedniej sekcji, KSK zatwierdza rekord DNSKEY, podpisując publiczny ZSK, generując w ten sposób RRSIG dla DNSKEY.\n\nPubliczny KSK jest również publikowany w rekordzie DNSKEY przez serwer nazw, podobnie jak publiczny ZSK, co skutkuje DNSKEY RRSet. Zarówno publiczny KSK, jak i publiczny ZSK są podpisane przez prywatny KSK. Umożliwia to resolverom korzystanie z publicznego KSK do sprawdzania poprawności publicznego ZSK."
         ]
       },
-      "Validation for resolvers now looks like this:",
+      "Walidacja dla resolverów wygląda teraz tak:",
       {
         "type": "list-numeric",
         "items": [
-          "Request the desired <b>RRSet</b>, which also returns the corresponding <b>RRSIG</b> record.",
-          "Request the DNSKEY records that contains <b>public ZSK and KSK</b> which also returns the <b>RRSig</b> for the <b>DNSKEY RRSet</b>.",
-          "Verify the <b>RRSig</b> of the requested <b>RRSet</b> with the <b>public ZSK</b>.",
-          "Verify the <b>RRSig</b> of the <b>DNSKEY RRSet</b> with the <b>public KSK</b>."
+          "Żądaj żądanego <b>RRSet</b>, który również zwraca odpowiedni <b>RRSig</b> rekord.",
+          "Żądaj rekordów DNSKEY, które zawierają <b>publiczne ZSK i KSK</b>, które również zwracają <b>RRSig</b> dla <b>DNSKEY RRSet</b>.",
+          "Sprawdź <b>RRSig</b> żądanego <b>RRSet</b> za pomocą <b>publicznego ZSK</b>.",
+          "Sprawdź <b>RRSig</b> <b>DNSKEY RRSet</b> za pomocą <b>publicznego KSK</b>."
         ]
       },
       {
@@ -640,13 +640,13 @@
         "width": "w60",
         "resource": "diagram-key-signing-keys-2.svg"
       },
-      "You have probably already noticed the hierarchical nature of DNS, and this is just the beginning. Regarding KSK, the DNSKEY RRSet and corresponding RRSig records can be cached to avoid excessive requests to DNS name servers.",
-      "The use of separate zone-signing keys and key-signing keys is aimed at facilitating the replacement of an old or compromised KSK, as we will discuss in the next section. Conversely, changing the ZSK is a simpler process, making it possible to use a smaller ZSK without compromising server security and reducing the amount of data that the server needs to transmit with each response.",
-      "While we have established trust within our zone, DNS is a hierarchical system, and zones typically operate in conjunction with one another. The key-signing key is signed by itself, which doesn't add any extra trust, so we need a means of connecting the trust in our zone with its parent zone.",
+      "Prawdopodobnie zauważyłeś już hierarchiczną naturę DNS, a to dopiero początek. Jeśli chodzi o KSK, DNSKEY RRSet i odpowiadające mu rekordy RRSig można buforować, aby uniknąć nadmiernych żądań do serwerów nazw DNS.",
+      "Zastosowanie oddzielnych kluczy do podpisywania stref i kluczy do podpisywania kluczy ma na celu ułatwienie wymiany starego lub skompromitowanego KSK, co omówimy w następnej sekcji. I odwrotnie, zmiana ZSK jest prostszym procesem, umożliwiając użycie mniejszego ZSK bez narażania bezpieczeństwa serwera i zmniejszania ilości danych, które serwer musi przesyłać przy każdej odpowiedzi.",
+      "Chociaż ustanowiliśmy zaufanie w naszej strefie, DNS jest systemem hierarchicznym, a strefy zazwyczaj działają w połączeniu ze sobą. Klucz podpisywania kluczy jest podpisany sam, co nie dodaje dodatkowego zaufania, więc potrzebujemy sposobu na połączenie zaufania w naszej strefie ze strefą nadrzędną.",
       {
         "type": "list-bullet",
         "items": [
-          "<b>DS Record - Delegation of Signing</b> — <b>a record containing the hash/digest of a child domain's/zone's public KSK (the fingerprint of child's public KSK)</b>. In DNSSEC, a delegation signer (DS) record is introduced to transfer trust from a parent zone to a child zone. To accomplish this, the zone operator hashes the public KSK contained in the DNSKEY record and provides it to the parent zone to publish as a DS record.\n\nWhenever a resolver is directed to a child zone, the parent zone also provides a DS record. This record enables resolvers to determine if the child zone is DNSSEC-enabled. To validate the public KSK of the zone, the resolver hashes it and compares it to the DS record from the parent zone. If the hash values match, the resolver can safely assume that the public KSK has not been compromised or altered, thereby establishing trust in all the records of the child zone. <b>This is how a chain of trust is established in DNSSEC.</b>"
+          "<b>Rekord DS - Delegacja podpisywania</b> — <b>rekord zawierający skrót publicznego KSK domeny podrzędnej/strefy (odcisk palca publicznego KSK dziecka) </b>. W DNSSEC wprowadzono rekord sygnatariusza delegacji (DS) w celu przeniesienia zaufania ze strefy nadrzędnej do strefy podrzędnej. Aby to osiągnąć, operator strefy hashuje publiczny KSK zawarty w rekordzie DNSKEY i udostępnia go strefie nadrzędnej w celu opublikowania jako rekord DS.\n\nIlekroć resolver jest kierowany do strefy podrzędnej, Strefa nadrzędna zapewnia również rekord DS. Ten rekord umożliwia resolverom określenie, czy strefa podrzędna jest włączona DNSSEC. Aby zweryfikować publiczny KSK strefy, resolver hashuje go i porównuje z rekordem DS ze strefy nadrzędnej. Jeśli wartości skrótu są zgodne, resolver może bezpiecznie założyć, że publiczny KSK nie został naruszony ani zmieniony, ustanawiając w ten sposób zaufanie do wszystkich rekordów strefy podrzędnej. <b>W ten sposób powstaje łańcuch zaufania w DNSSEC.</b>"
         ]
       },
       {
@@ -657,7 +657,7 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>The Chain of Trust</b> — the process of establishing trust within a zone and linking it to its parent zone, requires a mechanism for verifying the authenticity of the DS record. This is accomplished by digitally signing the DS record, similar to any other RRSet, resulting in the existence of a corresponding RRSig in the parent zone. The process of validating this signature is repeated successively, all the way up to the public KSK of the parent zone. To confirm the authenticity of this KSK, it is necessary to check the parent's DS record, continuing this process up the Chain of Trust."
+          "<b>Łańcuch zaufania</b> - proces ustanawiania zaufania w strefie i łączenia go ze strefą nadrzędną, wymaga mechanizmu weryfikacji autentyczności rekordu DS. Osiąga się to poprzez cyfrowe podpisanie rekordu DS, podobnie jak każdy inny RRSet, co skutkuje istnieniem odpowiedniego rrsig w strefie nadrzędnej. Proces walidacji tego podpisu jest powtarzany sukcesywnie, aż do publicznego KSK strefy nadrzędnej. Aby potwierdzić autentyczność tego KSK, konieczne jest sprawdzenie rekordu DS rodzica, kontynuując ten proces w łańcuchu zaufania."
         ]
       },
       {
@@ -667,154 +667,154 @@
       },
       {
         "type": "subtitle",
-        "content": "DNSSEC Resolution Flow"
+        "content": "Przepływ rozpoznawania DNSSEC"
       },
-      "Oh, that was tough, wasn't it? Okay, enough of this terminology, everything is better seen in examples. We are going to modify our previous DNS resolution flow to make it DNSSEC-enabled.",
+      "To było trudne, prawda? Dobra, dość tej terminologii, wszystko lepiej widać na przykładach. Zamierzamy zmodyfikować nasz poprzedni przepływ rozdzielczości DNS, aby był włączony DNSSEC.",
       {
         "type": "list-numeric",
         "items": [
-          "The client sends a recursive query to its local recursive caching DNS server for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The recursive caching DNS server sends an iterative query to a root (<b>\".\"</b>) nameserver for IP address of <b>\"cloudflare.com\"</b> webpage.",
-          "The root nameserver:",
+          "Klient wysyła rekurencyjne zapytanie do swojego lokalnego rekurencyjnego buforującego serwera DNS dla adresu IP <b>\"cloudflare.com\"</b>.",
+          "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do katalogu głównego (<b>\".\"</b>) serwer nazw dla adresu IP <b>\"cloudflare.com\"</b>.",
+          "Główny serwer nazw:",
           [
-            "Sends a referral:",
+            "Wysyła skierowanie:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "A non-secured referral for the authoritative TLD nameserver for the <b>\".com\"</b> zone"
+                "Niezabezpieczone skierowanie do autorytatywnego serwera nazw TLD dla strefy <b>\".com\"</b>."
               ]
             },
-            "Sends a record:",
+            "Wysyła rekord:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "<b>RRSet of DNSKEY</b> records for the root zone - the root zone's <b>public ZSK and public KSK</b>.",
-                "<b>RRSig</b> of above record set - signed using the root zone's <b>private KSK</b>.",
-                "<b>DS record</b> for the <b>\".com\"</b> zone - the hash/digest/fingerprint of the \".com\" zone's public KSK.",
-                "<b>RRSig</b> of above DS record - signed using the root zone's private ZSK."
+                "<b>RRSet rekordów DNSKEY</b> dla strefy głównej - <B>publiczny ZSK i publiczny KSK</b> strefy głównej.",
+                "<b>RRSig</b> powyższego zestawu rekordów - podpisany przy użyciu <b>prywatnego KSK strefy głównej</b>.",
+                "<b>Rekord DS</b> dla strefy <b>\".com\"</b> - skrót/odcisk palca publicznego KSK strefy \".com\".",
+                "<b>RRSig</b> z powyższego rekordu DS - podpisany przy użyciu prywatnego ZSK strefy głównej."
               ]
             }
           ],
-          "The recursive caching DNS server:",
+          "Rekurencyjny buforujący serwer DNS:",
           [
-            "Verifies the record:",
+            "Weryfikuje rekord:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "<b>Root</b> zone's <b>DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the root zone's public KSK.",
-                "<b>Root</b> zone's DS record for <b>\".com\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>root</b> zone's public ZSK."
+                "<b>DNSKEY RRSet</b> strefy <b>root</b> jest weryfikowany przez pomyślne odszyfrowanie RRSet RRSig przy użyciu publicznego KSK strefy root.",
+                "<b>Root</b> rekord DS strefy dla <b>\".com\"</b> strefa jest weryfikowana przez pomyślne odszyfrowanie RRSig rekordu przy użyciu publicznego ZSK strefy <b>root</b>."
               ]
             },
-            "Verifies the zone:",
+            "Weryfikuje strefę:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "The recursive caching DNS server already has a trusted copy of the root public KSK which it obtained by means other than the DNS protocol (such as from the server's operating system's vendor). The root zone is verified by the recursive caching DNS server when the server's copy of the root public KSK is found to match that provided to the server by the root DNS server."
+                "Rekurencyjne buforowanie serwera DNS ma już zaufaną kopię głównego publicznego KSK, którą uzyskał za pomocą innych środków niż protokół DNS (na przykład od dostawcy systemu operacyjnego serwera). Strefa główna jest weryfikowana przez rekurencyjny buforujący serwer DNS, gdy kopia głównego publicznego KSK serwera jest zgodna z kopią dostarczoną serwerowi przez główny serwer DNS."
               ]
             }
           ],
-          "The recursive caching DNS server sends an iterative query to a <b>\".com\"</b> TLD nameserver for <b>\"cloudflare.com\"</b>.",
-          "The <b>\".com\"</b> TLD nameserver:",
+          "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do <b>\".com\"</b> serwera nazw TLD dla <b>\"cloudflare.com\"</b>.",
+          "<b>\".com\"</b> serwer nazw TLD:",
           [
-            "Sends a referral:",
+            "Wysyła skierowanie:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "A non-secured referral for <b>\"cloudflare\"</b> zone's authoritative nameserver."
+                "Niezabezpieczone skierowanie dla autorytatywnego serwera nazw strefy <B>\"cloudflare\"</b>"
               ]
             },
+            "Wysyła rekordy:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>RRSet rekordów DNSKEY</b> dla strefy \".com\" - strefa \".com\" jest <b>publicznym ZSK i publicznym KSK</b>.",
+                "<b>RRSig</b> powyższego zestawu rekordów - podpisany przy użyciu <b>prywatnego KSK</b> \".com\".",
+                "<b>Rekord DS</b> dla strefy <b>\"cloudflare\"</b> - skrót/odcisk palca publicznego KSK strefy \"cloudflare\".",
+                "<b>RRSig</b> z powyższego rekordu DS - podpisany przy użyciu prywatnego ZSK strefy \".com\"."
+              ]
+            }
+          ],
+          "Rekurencyjny buforujący serwer DNS:",
+          [
+            "Weryfikuje zapisy:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "<b>\".com\" DNSKEY RRSet</b> jest weryfikowany przez pomyślne odszyfrowanie RRSet RRSig przy użyciu publicznego KSK strefy \".com\"",
+                "<b>\".com\"</b> rekord DS strefy dla <b>\"cloudflare\"</b> strefa jest weryfikowana przez pomyślne odszyfrowanie RRSig rekordu za pomocą publicznego ZSK strefy <b>\".com\"</b>."
+              ]
+            },
+            "Weryfikuje strefę:",
+            {
+              "style": "no-margin",
+              "type": "list-bullet",
+              "items": [
+                "Strefa <b>\".com\"</b> jest weryfikowana przez porównanie skrótu/odcisku palca publicznego KSK strefy <b>\".com\"</b> ze strefy <b>\".com\"</b> z wcześniej uzyskanym rekordem DS ze strefy głównej dla strefy <b>\".com\"</b>."
+              ]
+            }
+          ],
+          "Rekurencyjny buforujący serwer DNS wysyła iteracyjne zapytanie do autorytatywnego serwera nazw \"cloudflare\" dla \"cloudflare.com\"",
+          "Autorytatywny serwer nazw \"cloudflare\":",
+          [
             "Sends the records:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "<b>RRSet of DNSKEY</b> records for the \".com\" zone - the \".com\" zone's <b>public ZSK and public KSK</b>.",
-                "<b>RRSig</b> of above record set - signed using the \".com\" <b>private KSK</b>.",
-                "<b>DS record</b> for the <b>\"cloudflare\"</b> zone - the hash/digest/fingerprint of the \"cloudflare\" zone's public KSK.",
-                "<b>RRSig</b> of above DS record - signed using \".com\" zone's private ZSK."
+                "<b>RRSet rekordów DNSKEY</b> dla strefy <b>\"cloudflare\"</b> - publicznego ZSK strefy <b>\"cloudflare\"</b> i publicznego KSK.",
+                "<b>RRSig</b> powyższego zestawu rekordów - podpisany przy użyciu <b>\"cloudflare\"</b> prywatnego KSK.",
+                "<b>RRSet rekordów A</b> ze strefy <b>\"cloudflare\"</b>.",
+                "<b>RRSig</b> powyższego rekordu DS - podpisany przy użyciu <b>\"cloudflare\"</b> prywatnego ZSK strefy."
               ]
             }
           ],
-          "The recursive caching DNS server:",
+          "Rekurencyjny buforujący serwer DNS:",
           [
-            "Verifies the records:",
+            "Weryfikuje zapisy:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "<b>\".com\" DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the \".com\" zone's public KSK",
-                "<b>\".com\"</b> zone's DS record for <b>\"cloudflare\"</b> zone is verified by successfully decrypting the record's RRSig using the <b>\".com\"</b> zone's public ZSK."
+                "<b>\"cloudflare\" DNSKEY RRSet</b> jest weryfikowany przez pomyślne odszyfrowanie rrset RRSig przy użyciu publicznego KSK strefy <b>\"cloudflare\"</b>.",
+                "<b>\"cloudflare\" RRSet</b> jest weryfikowany przez pomyślne odszyfrowanie RRSet RRSig przy użyciu publicznego ZSK strefy <b>\"cloudflare\"</b>."
               ]
             },
-            "Verifies the zone:",
+            "Weryfikuje strefę:",
             {
               "style": "no-margin",
               "type": "list-bullet",
               "items": [
-                "The <b>\".com\"</b> zone is verified by comparing the hash/digest/fingerprint of the <b>\".com\"</b> zone's public KSK from the <b>\".com\"</b> zone with the previously obtained DS record from the root zone for the <b>\".com\"</b> zone."
+                "Strefa <b>\"cloudflare\"</b> jest weryfikowana przez porównanie skrótu/odcisku palca publicznego KSK <b>\"cloudflare\"</b> ze strefy <b>\"cloudflare\"</b> z wcześniej uzyskanym rekordem DS ze strefy głównej dla strefy <b>\"cloudflare\"</b>."
               ]
             }
           ],
-          "The recursive caching DNS server sends an iterative query to a \"cloudflare\" authoritative nameserver for \"cloudflare.com\"",
-          "The \"cloudflare\" authoritative nameserver server:",
-          [
-            "Sends the records:",
-            {
-              "style": "no-margin",
-              "type": "list-bullet",
-              "items": [
-                "<b>RRSet of DNSKEY</b> records for the <b>\"cloudflare\"</b> zone - the <b>\"cloudflare\"</b> zone's public ZSK and public KSK.",
-                "<b>RRSig</b> of above record set - signed using the <b>\"cloudflare\"</b> private KSK.",
-                "<b>RRSet of A records</b> from the <b>\"cloudflare\"</b> zone.",
-                "<b>RRSig</b> of above DS record - signed using <b>\"cloudflare\"</b> zone's private ZSK."
-              ]
-            }
-          ],
-          "The recursive caching DNS server:",
-          [
-            "Verifies the records:",
-            {
-              "style": "no-margin",
-              "type": "list-bullet",
-              "items": [
-                "<b>\"cloudflare\" DNSKEY RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the <b>\"cloudflare\"</b> zone's public KSK.",
-                "<b>\"cloudflare\" A RRSet</b> is verified by successfully decrypting the RRSet's RRSig using the <b>\"cloudflare\"</b> zone's public ZSK."
-              ]
-            },
-            "Verifies the zone:",
-            {
-              "style": "no-margin",
-              "type": "list-bullet",
-              "items": [
-                "The <b>\"cloudflare\"</b> zone is verified by comparing the hash/digest/fingerprint of the <b>\"cloudflare\"</b> zone's public KSK from the <b>\"cloudflare\"</b> zone with the previously obtained DS record from the root zone for the <b>\"cloudflare\"</b> zone."
-              ]
-            }
-          ],
-          "The recursive caching DNS server responds to the original client with the IP address of <b>\"cloudflare.com\"</b>.",
-          "The client interacts with the web server <b>\"cloudflare.com\"</b>."
+          "Rekurencyjny buforujący serwer DNS odpowiada oryginalnemu klientowi adresem IP <b>\"cloudflare.com\"</b>.",
+          "Klient wchodzi w interakcję z serwerem WWW <b>\"cloudflare.com\" </b>."
         ]
       },
-      "There is one thing you need to understand. All those examples that are presented here about how DNS works are academic examples. This only happens in sterile, \"laboratory\" conditions (in this case, if there were no cache anywhere). These concepts are easy enough to understand that they have a place to be, in reality, if you have to configure such a system, then it is literally a few lines of code or a configuration change.",
-      "Such examples are more likely to be needed by people who design networks and infrastructures of this scale.",
-      "Speaking of the DNS example itself, different configurations represent different functions. As mentioned above all those recursive resolvers, caching server or root nameservers are just roles, physically, it can be one machine. Therefore, configuration of your DNS server also depends on what you want to build. So, be careful with guidelines you find on the Internet.",
+      "Jest jedna rzecz, którą musisz zrozumieć. Wszystkie przedstawione tutaj przykłady dotyczące działania DNS są przykładami akademickimi. Dzieje się tak tylko w sterylnych, \"laboratoryjnych\" warunkach (w tym przypadku, jeśli nigdzie nie było pamięci podręcznej). Pojęcia te są dość łatwe do zrozumienia, że mają miejsce, w rzeczywistości, jeśli musisz skonfigurować taki system, to dosłownie kilka linii kodu lub zmiana konfiguracji.",
+      "Takie przykłady są bardziej potrzebne osobom, które projektują sieci i infrastruktury na taką skalę.",
+      "Mówiąc o samym przykładzie DNS, różne konfiguracje reprezentują różne funkcje. Jak wspomniano powyżej, wszystkie te rekurencyjne resolwery, buforowanie serwera lub głównych serwerów nazw to tylko role, fizycznie może to być jedna maszyna. Dlatego konfiguracja serwera DNS zależy również od tego, co chcesz zbudować. Uważaj więc na wskazówki, które znajdziesz w Internecie.",
       {
         "type": "title",
-        "content": "The DNSSEC Root Signing Ceremony"
+        "content": "Ceremonia podpisania roota DNSSEC"
       },
-      "Oh, in fact, in order to understand how everything works, you do not need to know anything about this ceremony, but it looks so cool and sounds so pathetic that I could not help but write about it. <b>Keys to the Internet</b>, not bad, huh?",
-      "You have probably already paid attention to how this DNS hierarchy goes from bottom to top. In this case, you might have a logical question: What is at the very top?",
-      "That's the purpose of the Root Signing Ceremony—a rigorous procedure around signing the root DNS zone's public keying information for the next few months. The private signing key used in this process is quite literally the key to the entire DNSSEC-protected Internet. A public, audited, and tightly controlled ceremony around accessing this key is a necessity for DNSSEC to succeed as a global standard.",
-      "Just find a video of this ceremony, because it's translated online and see where DNSSEC trust comes from.",
+      "O, w rzeczywistości, aby zrozumieć, jak wszystko działa, nie musisz nic wiedzieć o tej ceremonii, ale wygląda tak fajnie i brzmi tak żałośnie, że nie mogłem się powstrzymać od napisania o tym. <b>Klucze do Internetu</b>, nieźle, co?",
+      "Prawdopodobnie już zwróciłeś uwagę na to, jak ta hierarchia DNS przechodzi od dołu do góry. W takim przypadku możesz mieć logiczne pytanie: co jest na samej górze?",
+      "Taki jest cel ceremonii podpisania Root - procedury dotyczącej podpisywania publicznych informacji kluczowania w głównej strefie DNS na kilka następnych miesięcy. Klucz podpisywania prywatnego używany w tym procesie jest dosłownie kluczem do całego Internetu chronionego przez DNSSEC. Publiczna, skontrolowana i ściśle kontrolowana ceremonia dostępu do tego klucza jest koniecznością, aby DNSSEC odniósł sukces jako globalny standard.",
+      "Po prostu znajdź film z tej ceremonii, ponieważ jest przetłumaczony online i zobacz, skąd pochodzi DNSSEC trust.",
       {
         "type": "title",
-        "content": "About DNS Encryption"
+        "content": "O szyfrowaniu DNS"
       },
-      "As you have already found out, DNSSEC insures only authentication, but it still transfers it in plaintext. Here is where cryptography comes into play, our lovely HTTPS and TLS, which will help us to ensure not only authentication of our traffic, but also its confidentiality.",
+      "Jak już się dowiedziałeś, DNSSEC zapewnia tylko uwierzytelnianie, ale nadal przenosi je w postaci zwykłego tekstu. Tutaj w grę wchodzi kryptografia, nasze urocze HTTPS i TLS, które pomogą nam zapewnić nie tylko uwierzytelnianie naszego ruchu, ale także jego poufność.",
       {
         "type": "subtitle",
         "content": "DNS over TLS"
@@ -822,7 +822,7 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>DNS over TLS (or DoT)</b>, is a standard for encrypting DNS queries to keep them secure and private. DoT uses the same protocol as HTTPS to encrypt and authenticate connection. Normally, DNS works over UDP. What DoT does, it it adds TLS encryption on top of the user datagram protocol (UDP), which is used for DNS queries. Additionally, it ensures that DNS requests and responses are not tampered with or forged via on-path attacks."
+          "<b>DNS przez TLS (lub DoT)</b> to standard szyfrowania zapytań DNS, aby zapewnić im bezpieczeństwo i prywatność. DoT używa tego samego protokołu co HTTPS do szyfrowania i uwierzytelniania połączenia. Zwykle DNS działa przez UDP. Co robi DoT, to dodaje szyfrowanie TLS na szczycie protokołu datagram użytkownika (UDP), który jest używany do zapytań DNS. Ponadto zapewnia, że żądania i odpowiedzi DNS nie są naruszane ani fałszowane przez ataki na ścieżce."
         ]
       },
       {
@@ -832,28 +832,28 @@
       {
         "type": "list-bullet",
         "items": [
-          "<b>DNS over HTTPS (or DoH)</b> is an alternative way to DoT. DNS queries and responses are encrypted, but sent via the HTTP or HTTP/2 protocols instead of directly over UDP. DoH traffic looks like other HTTPS traffic - e.g. normal user-driven interactions with websites and web apps — from a network administrator's perspective."
+          "<b>DNS przez HTTPS (lub DoH)</b> to alternatywny sposób. Zapytania i odpowiedzi DNS są szyfrowane, ale wysyłane za pośrednictwem protokołów HTTP lub HTTP/2 zamiast bezpośrednio przez UDP. Ruch DoH wygląda jak inny ruch HTTPS - np. normalne interakcje użytkownika ze stronami internetowymi i aplikacjami internetowymi — z perspektywy administratora sieci."
         ]
       },
-      "In February 2020, the Mozilla Firefox browser began enabling DoH for U.S. users by default. DNS queries from the Firefox browser are encrypted by DoH and go to either Cloudflare or NextDNS. Several other browsers also support DoH, although it is not turned on by default.",
+      "W lutym 2020 roku przeglądarka Mozilla Firefox zaczęła domyślnie włączać DoH dla użytkowników w USA. Zapytania DNS z przeglądarki Firefox są szyfrowane przez DoH i przechodzą do Cloudflare lub NextDNS. Kilka innych przeglądarek obsługuje również DoH, chociaż nie jest domyślnie włączony.",
       {
         "type": "subtitle",
-        "content": "Difference between DoT and DoH"
+        "content": "Różnica między DoT a DoH"
       },
-      "The main difference between them is <b>what port they use</b>. DoT only uses port 853, while DoH uses 443, which is the port that all other HTTPS traffic uses as well.",
-      "Because DoT has a dedicated port, anyone with network visibility can see DoT traffic coming and going, even though the requests and responses themselves are encrypted. In contrast, with DoH, DNS queries and responses are camouflaged within other HTTPS traffic, since it all comes and goes from the same port.",
-      "<b>From a network security standpoint, DoT is arguably better</b>. It gives network administrator the ability to monitor and block DNS queries, which is important for identifying and stopping malicious activity.",
-      "<b>DoH queries, meanwhile, are hidden in regular HTTPS traffic</b>, meaning they cannot easily be blocked without blocking all other HTTPS traffic as well. However, from a privacy perspective, DoH is arguably preferable. With DoH, DNS queries are hidden within the larger flow of HTTPS traffic. This gives network administrators less visibility but provides users with more privacy.",
+      "Główną różnicą między nimi jest <b>jakiego portu używają</b>. DoT używa tylko portu 853, podczas gdy DoH używa 443, który jest portem, z którego korzysta również cały inny ruch HTTPS.",
+      "Ponieważ DoT ma dedykowany port, każdy, kto ma widoczność sieci, może zobaczyć ruch DoT przychodzący i odchodzący, nawet jeśli same żądania i odpowiedzi są szyfrowane. Natomiast w przypadku Doh zapytania i odpowiedzi DNS są zakamuflowane w innym ruchu HTTPS, ponieważ wszystko przychodzi i odchodzi z tego samego portu.",
+      "<b>Z punktu widzenia bezpieczeństwa sieci DoT jest prawdopodobnie lepszy</b>. Daje administratorowi sieci możliwość monitorowania i blokowania zapytań DNS, co jest ważne dla identyfikacji i zatrzymywania złośliwej aktywności.",
+      "<b>Tymczasem zapytania DoH są ukryte w zwykłym ruchu HTTPS</b>, co oznacza, że nie można ich łatwo zablokować bez blokowania całego innego ruchu HTTPS. Jednak z punktu widzenia prywatności Doh jest prawdopodobnie preferowany. Dzięki Doh zapytania DNS są ukryte w większym przepływie ruchu HTTPS. Daje to administratorom sieci mniejszą widoczność, ale zapewnia użytkownikom większą prywatność.",
       {
         "type": "title",
-        "content": "Conclusions"
+        "content": "Wnioski"
       },
-      "In conclusion, DNS (Domain Name System) is a fundamental component of the internet that is used to translate domain names into IP addresses. While DNS is critical for internet connectivity and online services, it is also vulnerable to a range of DNS-based attacks, including cache poisoning and DNS spoofing.",
-      "To address these security concerns, DNSSEC (Domain Name System Security Extensions) has been developed as a security protocol that adds a layer of cryptographic security to the DNS system. By using digital signatures to verify the authenticity of DNS responses, DNSSEC can help to protect against a range of DNS-related attacks, ensuring the integrity and reliability of the DNS system.",
-      "While the adoption of DNSSEC has been slow, it is becoming increasingly important as the threat of DNS-based attacks continues to grow. Organizations that rely on online services should consider implementing DNSSEC to protect their online presence, improve the security of their network, and reduce the risk of DNS-based attacks. As the internet continues to evolve, DNS and DNSSEC will remain essential components of the global network, ensuring the reliability and security of online services for years to come.",
+      "Podsumowując, DNS (Domain Name System) jest podstawowym elementem Internetu, który służy do tłumaczenia nazw domen na adresy IP. Chociaż DNS ma kluczowe znaczenie dla łączności z Internetem i usług online, jest również podatny na szereg ataków opartych na DNS, w tym zatrucie pamięci podręcznej i fałszowanie DNS.",
+      "Aby rozwiązać te problemy związane z bezpieczeństwem, DNSSEC (Domain Name System Security Extensions) został opracowany jako protokół bezpieczeństwa, który dodaje warstwę zabezpieczeń kryptograficznych do systemu DNS. Wykorzystując podpisy cyfrowe do weryfikacji autentyczności odpowiedzi DNS, DNSSEC może pomóc w ochronie przed szeregiem ataków związanych z DNS, zapewniając integralność i niezawodność systemu DNS.",
+      "Chociaż przyjęcie DNSSEC było powolne, staje się ono coraz ważniejsze, ponieważ zagrożenie atakami opartymi na DNS stale rośnie. Organizacje, które polegają na usługach online, powinny rozważyć wdrożenie DNSSEC w celu ochrony swojej obecności w Internecie, poprawy bezpieczeństwa sieci i zmniejszenia ryzyka ataków opartych na DNS. W miarę rozwoju Internetu DNS i DNSSEC pozostaną podstawowymi elementami globalnej sieci, zapewniając niezawodność i bezpieczeństwo usług online przez wiele lat.",
       {
         "type": "title",
-        "content": "Contact and references"
+        "content": "Kontakt i referencje"
       }
     ],
     "references": [{
