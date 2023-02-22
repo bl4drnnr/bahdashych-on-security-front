@@ -7,6 +7,10 @@ export const BlogIntroWrapper = styled.div`
   @media only screen and (max-width: 780px) {
     width: 90%;
   }
+  
+  &.found-posts {
+    margin: 25px auto 0 auto;
+  }
 `;
 
 export const BlogPostsTitle = styled.h1`
@@ -56,6 +60,18 @@ export const AllPostsWrapper = styled.div`
       font-family: 'Crimson', serif;
       font-size: 1.2em;
     }
+  }
+`;
+
+export const FoundPostWrapper = styled.div`
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  padding: 20px;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: .2s;
+
+  :hover {
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
   }
 `;
 

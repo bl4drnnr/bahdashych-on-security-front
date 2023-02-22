@@ -12,8 +12,10 @@ import {
   AllPostsWrapper,
   BlogIntroWrapper,
   BlogPostsDescription,
-  BlogPostsTitle, InputWrapper,
-  PostDescription, PostTimestamp,
+  BlogPostsTitle, FoundPostWrapper,
+  InputWrapper,
+  PostDescription,
+  PostTimestamp,
   PostTitle,
   TestimonialArticle,
   TestimonialGrid
@@ -64,6 +66,20 @@ const Blog = ({ locale }: BlogProps) => {
     timestamp: t('articles:how-to-build-custom-dns-infrastructure.timestamp')
   }]);
 
+  const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
+
+  React.useEffect(() => {
+    const foundSearchPosts: PostProps[] = [];
+
+    allPosts.forEach((post) => {
+      if (searchString && post.title.toLowerCase().includes(searchString.toLowerCase())) {
+        foundSearchPosts.push(post);
+      }
+    });
+
+    setFoundPosts(foundSearchPosts);
+  }, [searchString]);
+
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
   };
@@ -103,15 +119,33 @@ const Blog = ({ locale }: BlogProps) => {
             />
           </InputWrapper>
 
-          <TestimonialGrid>
-            {allPosts.map((post, key) => (
-              <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
-                <PostTitle>{post.title}</PostTitle>
-                <PostTimestamp>{post.timestamp}</PostTimestamp>
-                <PostDescription>{post.description}</PostDescription>
-              </TestimonialArticle>
-            ))}
-          </TestimonialGrid>
+          {foundPosts.length > 0 ? (
+            <>
+              {foundPosts.map((post, key) => (
+                <BlogIntroWrapper
+                  key={key}
+                  className={'found-posts'}
+                  onClick={() => handleRedirect(post.link)}
+                >
+                  <FoundPostWrapper>
+                    <PostTitle>{post.title}</PostTitle>
+                    <PostTimestamp>{post.timestamp}</PostTimestamp>
+                    <PostDescription>{post.description}</PostDescription>
+                  </FoundPostWrapper>
+                </BlogIntroWrapper>
+              ))}
+            </>
+          ) : (
+            <TestimonialGrid>
+              {allPosts.map((post, key) => (
+                <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
+                  <PostTitle>{post.title}</PostTitle>
+                  <PostTimestamp>{post.timestamp}</PostTimestamp>
+                  <PostDescription>{post.description}</PostDescription>
+                </TestimonialArticle>
+              ))}
+            </TestimonialGrid>
+          )}
         </AllPostsWrapper>
       </DefaultLayout>
     </>
