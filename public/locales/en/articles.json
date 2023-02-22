@@ -876,5 +876,19 @@
       "name": "Really cool video that explains DNS and DNSSEC resolution flows",
       "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
     }]
+  },
+  "how-to-build-custom-dns-infrastructure": {
+    "title": "How to build custom DNS infrastructure",
+    "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+    "description": "",
+    "pageDescription": "Let me guess, if you have ever heard about DNS and you have been playing around with those settings on your computer, the most thing you have done is change DNS server IP address from your local router to 1.1.1.1 or 8.8.8.8. Well, not bad, but what about building your own DNS infrastructure, huh? Sounds cool! You will have almost complete control over your network, but take your time, we will have time...",
+    "intro": "",
+    "timestamp": "",
+    "footer": "",
+    "toc": {
+      "intro": "Introduction"
+    },
+    "content": [],
+    "references": []
   }
 }

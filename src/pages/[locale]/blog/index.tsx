@@ -54,6 +54,11 @@ const Blog = ({ locale }: BlogProps) => {
     description: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.pageDescription'),
     link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
     timestamp: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.timestamp')
+  }, {
+    title: t('articles:how-to-build-custom-dns-infrastructure.title'),
+    description: t('articles:how-to-build-custom-dns-infrastructure.pageDescription'),
+    link: '/blog/how-to-build-custom-dns-infrastructure',
+    timestamp: t('articles:how-to-build-custom-dns-infrastructure.timestamp')
   }]);
 
   const handleRedirect = async (path: string) => {
