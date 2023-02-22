@@ -878,5 +878,19 @@
       "name": "Naprawdę fajne wideo, które wyjaśnia przepływ rozpoznawania nazw DNS i DNSSEC",
       "link": "https://www.youtube.com/watch?v=_8M_vuFcdZU"
     }]
+  },
+  "how-to-build-custom-dns-infrastructure": {
+    "title": "",
+    "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+    "description": "",
+    "pageDescription": "Niech zgadnę, jeśli kiedykolwiek słyszałeś o DNS i bawiłeś się tymi ustawieniami na swoim komputerze, większość rzeczy, które zrobiłeś, to zmiana adresu IP serwera DNS z lokalnego routera na 1.1.1.1 lub 8.8.8.8. Cóż, nieźle, ale co z budowaniem własnej infrastruktury DNS, co? Brzmi nieźle! Będziesz miał prawie całkowitą kontrolę nad swoją siecią, ale nie spiesz się, my będziemy mieli czas...",
+    "intro": "",
+    "timestamp": "",
+    "footer": "",
+    "toc": {
+      "intro": "Wstęp"
+    },
+    "content": [],
+    "references": []
   }
 }

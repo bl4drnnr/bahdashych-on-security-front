@@ -31,6 +31,15 @@ export const BlogPostsDescription = styled.p`
   }
 `;
 
+export const InputWrapper = styled.div`
+  width: 35%;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 780px) {
+    width: 90%;
+  }
+`;
+
 export const AllPostsWrapper = styled.div`
   width: 100%;
 

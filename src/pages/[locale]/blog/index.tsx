@@ -5,13 +5,14 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import BasicInput from '@components/BasicInput/BasicInput.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
   AllPostsWrapper,
   BlogIntroWrapper,
   BlogPostsDescription,
-  BlogPostsTitle,
+  BlogPostsTitle, InputWrapper,
   PostDescription, PostTimestamp,
   PostTitle,
   TestimonialArticle,
@@ -33,6 +34,8 @@ interface PostProps {
 const Blog = ({ locale }: BlogProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+
+  const [searchString, setSearchString] = React.useState('');
 
   const [allPosts,] = React.useState<PostProps[]>([{
     title: t('articles:nextjs-nginx-deployment.title'),
@@ -91,6 +94,15 @@ const Blog = ({ locale }: BlogProps) => {
         </BlogIntroWrapper>
 
         <AllPostsWrapper className={locale === 'en' ? 'en' : 'non-en'}>
+          <InputWrapper>
+            <BasicInput
+              locale={locale}
+              value={searchString}
+              placeholder={t('common:searchPosts')}
+              onChange={(e) => setSearchString(e.target.value)}
+            />
+          </InputWrapper>
+
           <TestimonialGrid>
             {allPosts.map((post, key) => (
               <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>

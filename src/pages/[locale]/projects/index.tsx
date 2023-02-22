@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import BasicInput from '@components/BasicInput/BasicInput.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
@@ -18,7 +19,7 @@ import {
   ProjectsWrapper,
   ProjectTitle,
   TestimonialArticle,
-  TestimonialGrid
+  TestimonialGrid, InputWrapper
 } from '@styles/projects.style';
 
 
@@ -29,6 +30,8 @@ interface ProjectsProps {
 const Projects = ({ locale }: ProjectsProps) => {
   const { t } = useTranslation();
   const router = useRouter();
+
+  const [searchString, setSearchString] = React.useState('');
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
@@ -57,6 +60,14 @@ const Projects = ({ locale }: ProjectsProps) => {
         </ProjectsWrapper>
 
         <Container className={locale === 'en' ? 'en' : 'non-en'}>
+          <InputWrapper>
+            <BasicInput
+              locale={locale}
+              value={searchString}
+              placeholder={t('common:searchProjects')}
+              onChange={(e) => setSearchString(e.target.value)}
+            />
+          </InputWrapper>
           <TestimonialGrid>
             <TestimonialArticle>
               <FlexWrapper>
