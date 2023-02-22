@@ -5,14 +5,17 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import BasicInput from '@components/BasicInput/BasicInput.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
   AllPostsWrapper,
   BlogIntroWrapper,
   BlogPostsDescription,
-  BlogPostsTitle,
-  PostDescription, PostTimestamp,
+  BlogPostsTitle, FoundPostWrapper,
+  InputWrapper,
+  PostDescription,
+  PostTimestamp,
   PostTitle,
   TestimonialArticle,
   TestimonialGrid
@@ -34,6 +37,7 @@ const Blog = ({ locale }: BlogProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
+  const [searchString, setSearchString] = React.useState('');
   const [allPosts,] = React.useState<PostProps[]>([{
     title: t('articles:nextjs-nginx-deployment.title'),
     description: t('articles:nextjs-nginx-deployment.pageDescription'),
@@ -60,6 +64,19 @@ const Blog = ({ locale }: BlogProps) => {
     link: '/blog/how-to-build-custom-dns-infrastructure',
     timestamp: t('articles:how-to-build-custom-dns-infrastructure.timestamp')
   }]);
+  const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
+
+  React.useEffect(() => {
+    const foundSearchPosts: PostProps[] = [];
+
+    allPosts.forEach((post) => {
+      if (searchString && post.title.toLowerCase().includes(searchString.toLowerCase())) {
+        foundSearchPosts.push(post);
+      }
+    });
+
+    setFoundPosts(foundSearchPosts);
+  }, [searchString]);
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
@@ -91,15 +108,42 @@ const Blog = ({ locale }: BlogProps) => {
         </BlogIntroWrapper>
 
         <AllPostsWrapper className={locale === 'en' ? 'en' : 'non-en'}>
-          <TestimonialGrid>
-            {allPosts.map((post, key) => (
-              <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
-                <PostTitle>{post.title}</PostTitle>
-                <PostTimestamp>{post.timestamp}</PostTimestamp>
-                <PostDescription>{post.description}</PostDescription>
-              </TestimonialArticle>
-            ))}
-          </TestimonialGrid>
+          <InputWrapper>
+            <BasicInput
+              locale={locale}
+              value={searchString}
+              placeholder={t('common:searchPosts')}
+              onChange={(e) => setSearchString(e.target.value)}
+            />
+          </InputWrapper>
+
+          {foundPosts.length > 0 ? (
+            <>
+              {foundPosts.map((post, key) => (
+                <BlogIntroWrapper
+                  key={key}
+                  className={'found-posts'}
+                  onClick={() => handleRedirect(post.link)}
+                >
+                  <FoundPostWrapper>
+                    <PostTitle>{post.title}</PostTitle>
+                    <PostTimestamp>{post.timestamp}</PostTimestamp>
+                    <PostDescription>{post.description}</PostDescription>
+                  </FoundPostWrapper>
+                </BlogIntroWrapper>
+              ))}
+            </>
+          ) : (
+            <TestimonialGrid>
+              {allPosts.map((post, key) => (
+                <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
+                  <PostTitle>{post.title}</PostTitle>
+                  <PostTimestamp>{post.timestamp}</PostTimestamp>
+                  <PostDescription>{post.description}</PostDescription>
+                </TestimonialArticle>
+              ))}
+            </TestimonialGrid>
+          )}
         </AllPostsWrapper>
       </DefaultLayout>
     </>
