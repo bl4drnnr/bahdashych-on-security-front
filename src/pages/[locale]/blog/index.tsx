@@ -38,7 +38,6 @@ const Blog = ({ locale }: BlogProps) => {
   const router = useRouter();
 
   const [searchString, setSearchString] = React.useState('');
-
   const [allPosts,] = React.useState<PostProps[]>([{
     title: t('articles:nextjs-nginx-deployment.title'),
     description: t('articles:nextjs-nginx-deployment.pageDescription'),
@@ -65,7 +64,6 @@ const Blog = ({ locale }: BlogProps) => {
     link: '/blog/how-to-build-custom-dns-infrastructure',
     timestamp: t('articles:how-to-build-custom-dns-infrastructure.timestamp')
   }]);
-
   const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
 
   React.useEffect(() => {

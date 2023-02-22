@@ -22,6 +22,9 @@ import {
   TestimonialGrid, InputWrapper
 } from '@styles/projects.style';
 
+interface ProjectProps {
+  title: string;
+}
 
 interface ProjectsProps {
   locale: string;
@@ -32,6 +35,20 @@ const Projects = ({ locale }: ProjectsProps) => {
   const router = useRouter();
 
   const [searchString, setSearchString] = React.useState('');
+  const [allProjects,] = React.useState<ProjectProps[]>([]);
+  const [foundProjects, setFoundProjects] = React.useState<ProjectProps[]>([]);
+
+  React.useEffect(() => {
+    const foundSearchProjects: ProjectProps[] = [];
+
+    allProjects.forEach((project) => {
+      if (searchString && project.title.toLowerCase().includes(searchString.toLowerCase())) {
+        foundSearchProjects.push(project);
+      }
+    });
+
+    setFoundProjects(foundSearchProjects);
+  }, [searchString]);
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
