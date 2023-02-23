@@ -156,7 +156,10 @@ const Projects = ({ locale }: ProjectsProps) => {
               return (
                 <TestimonialGrid>
                   {allProjects.slice(index, index + 5).map((item, idx) => (
-                    <TestimonialArticle key={idx}>
+                    <TestimonialArticle
+                      key={idx}
+                      onClick={() => handleRedirect(item.link)}
+                    >
                       <FlexWrapper>
                         <Image
                           className={'icon'}
@@ -172,10 +175,6 @@ const Projects = ({ locale }: ProjectsProps) => {
                     </TestimonialArticle>
                   ))}
                 </TestimonialGrid>
-              );
-            } else {
-              return (
-                <></>
               );
             }
           })}
