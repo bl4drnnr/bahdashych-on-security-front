@@ -142,6 +142,7 @@ export const TestimonialArticle = styled.article`
   }
 `;
 
+
 export const Title = styled.p`
   font-family: "Charter", sans-serif;
   color: rgb(${(props) => props.theme.colors.textColor});
