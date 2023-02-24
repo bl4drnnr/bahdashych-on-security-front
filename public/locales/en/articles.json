@@ -886,9 +886,75 @@
     "timestamp": "",
     "footer": "",
     "toc": {
-      "intro": "Introduction"
+      "intro": "Introduction",
+      "reqs": "Prerequirements",
+      "Scenarios": {
+        "Configuration of Unbound DNS": {
+          "dnsRecCachingResolver": "DNS Recursive Caching Resolver",
+          "dnssecAndDot": "Enabling DNSSEC and DNS over TLS",
+          "dotBetweenResolvers": "DNS over TLS Between 2 Resolvers",
+          "blockAd": "How to block Ad servers"
+        }
+      },
+      "conclusions": "Conclusions",
+      "referencesAndContact": "References and contact"
     },
-    "content": [],
+    "content": [
+      {
+        "type": "title",
+        "content": "Introduction"
+      },
+      "Well, before we start our journey in the world of custom DNS servers, I’d like to tell a couple of words. First of all, I guess from the title of the article you figured out that we are going to build something, therefore it’s going to be something very practical, and therefore, I am not going to discuss DNS from basics. If you want to know more about DNS welcome here, this article considers that you know what is the difference between DNS recursive resolver, root server, root nameserver etc.",
+      "The second thing is that you should remember about that every case is unique. DNS is about roles, and roles are about just different sets of configuration. And I am going to describe here different scenarios of implementation, it would be more accurate to tell that here will be implemented just components. I just wanted to mention that because maybe you are looking for some specific use case that I will cover or not. So, I am not going to cover such cases. What I want to do instead is I want to just show how to build different components that you may or not use in your configuration, such as DoT communication between 2 DNS resolvers.",
+      "The last thing I want to mention is that I am going to constantly update this writeup by adding (or editing, depending on issue) new configurations. So, you will see timestamp on what moment of time it was working version.",
+      {
+        "type": "title",
+        "content": "Prerequirements"
+      },
+      "I guess I don’t need to describe what you can or should use to build what you want. If you are here, I bet you already know what you want. Anyway, I’d to tell what I have been using while building and testing it so you won’t be in trouble because of incompatibility.",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>Raspberry Pi Model 4B (Ubuntu Server 22.04)</b> — has been used as local instance in my local network.",
+          "<b>AWS Ubuntu Server 22.04 (t2.micro)</b> — has been used as remote instance.",
+          "<b>MacBook Pro 2019 Intel Core i5 (just my Mac)</b> — has been used as end client."
+        ]
+      },
+      "As our server software we are going to use Unbound and NSD.",
+      {
+        "type": "title",
+        "content": "Scenarios"
+      },
+      "As I have mentioned above I am going to write about different cases you may find useful for what you can do with your infrastructure. Every scenarios is just configuration, you can easily mix them in order to build what you want. Just experiment, dude, this is how you learn!",
+      {
+        "type": "subtitle",
+        "content": "Configuration of Unbound DNS"
+      },
+      {
+        "type": "subsubtitle",
+        "content": "DNS Recursive Caching Resolver"
+      },
+      {
+        "type": "subsubtitle",
+        "content": "Enabling DNSSEC and DNS over TLS"
+      },
+      {
+        "type": "subsubtitle",
+        "content": "DNS over TLS Between 2 Resolvers"
+      },
+      {
+        "type": "subsubtitle",
+        "content": "How to block Ad servers"
+      },
+      {
+        "type": "title",
+        "content": "Conclusions"
+      },
+      {
+        "type": "title",
+        "content": "References and contact"
+      }
+    ],
     "references": []
   }
 }
