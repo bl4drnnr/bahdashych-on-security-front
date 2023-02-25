@@ -1059,8 +1059,8 @@
         "type": "subsubtitle",
         "content": "Testing DNS over TLS and common DNS"
       },
-      "Now, let’s discuss how we can turn on <b>DoT — DNS over TLS</b>. Actually, it’s pretty easy, we just need to add a couple of lines to our configuration. Before that, I want to demonstrate you that this configuration actually works and to implement that I decided to sniff the traffic  to take a closer look at how it looks like from the network perspective.",
-      "There tons of different tools you can use to sniff the traffic. The most common are <span class='code-block'>tcpdump</span> and <span class='code-block'>ettercap</span> so use whatever you like. In my case I have been using <span class='code-block'>ettercap</span> because my Unbound DNS server has been placed within my local network on my Raspberry PI. Basically, I just perform Man-in-the-middle attack and capture traffic between my router and Raspberry PI. <b>It’s illegal, don’t do that on NOT your own networks.</b>",
+      "Now, let's discuss how we can turn on <b>DoT — DNS over TLS</b>. Actually, it's pretty easy, we just need to add a couple of lines to our configuration. Before that, I want to demonstrate you that this configuration actually works and to implement that I decided to sniff the traffic  to take a closer look at how it looks like from the network perspective.",
+      "There tons of different tools you can use to sniff the traffic. The most common are <span class='code-block'>tcpdump</span> and <span class='code-block'>ettercap</span> so use whatever you like. In my case I have been using <span class='code-block'>ettercap</span> because my Unbound DNS server has been placed within my local network on my Raspberry PI. Basically, I just perform Man-in-the-middle attack and capture traffic between my router and Raspberry PI. <b>It's illegal, don't do that on NOT your own networks.</b>",
       "I performed 2 tests — the first one was for the basic (no DNS over TLS) configuration. For that test I used configuration you can find in the previous section. The second one was for the configuration with DoT. I slightly changed previous configuration (you can find it in a next section) to make it work over DoT.",
       "I used <span class='code-block'>dig google.com</span> for both tests and I also flushed the cache for this domain name before every test. And here is what I have got. For the basic configuration we have this picture:",
       {
@@ -1069,13 +1069,13 @@
         "resource": "no-dns-over-tls.jpeg"
       },
       "The IP address 192.168.8.112 is the IP address of Raspberry PI in my local network, and, as you can see, it sends plaintext DNS resolution requests for google.com to secondary cloudflare server with IP address 1.0.0.1.",
-      "Let’s flush the cache for this record, change our configuration file a bit to make it work over TLS and take a look at what we have got:",
+      "Let's flush the cache for this record, change our configuration file a bit to make it work over TLS and take a look at what we have got:",
       {
         "type": "picture",
         "width": "w80",
         "resource": "dns-over-tls.jpeg"
       },
-      "Right now, as you can see, we have all traffic over TLS. We can tell that this is definitely DNS requests just by taking a look at source and destination IP addresses. In this case it’s primary cloudflare DNS server.",
+      "Right now, as you can see, we have all traffic over TLS. We can tell that this is definitely DNS requests just by taking a look at source and destination IP addresses. In this case it's primary cloudflare DNS server.",
       "Now, with certainty that we were able to encrypt the traffic user TLS we are going to change our configuration a bit.",
       {
         "type": "subsubtitle",
@@ -1112,6 +1112,36 @@
         "type": "subsubtitle",
         "content": "DNS over TLS Between 2 Resolvers"
       },
+      "When two DNS resolvers communicate with each other using DoT, they first establish a TLS connection by exchanging certificates and negotiating encryption parameters. Once the connection is established, the client resolver sends a DNS query over the encrypted channel, and the server resolver sends back a response over the same channel. Because the entire exchange is encrypted, it's much harder for attackers to intercept or modify the DNS traffic.",
+      "DoT between DNS resolvers provides an additional layer of security, privacy, and reliability for DNS traffic. By establishing a secure, encrypted channel between DNS resolvers, it can help prevent DNS-related attacks, improve the speed and reliability of DNS queries, and enable load balancing and redundancy. As more and more users and organizations prioritize security and privacy in their online activities, DoT is becoming an increasingly important protocol for secure and private DNS communications.",
+      "I bet you can tell me: \"Okay, but what's the point of it? It seems like this is server-to-server communication, therefore, it's unlikely that someone is going eavesdropping my communication.\" Well, technically, you are right. You can use public DNS over TLS servers like one by cloudflare that has been already mention above — <b>1.1.1.1@853</b> — and when traffic will be leaving your network it'll be already encrypted, but we are considering different type of communication.",
+      "Establishing of this communication may be useful, when you have one on-premises DNS server and one offsite. Therefore, you would like to encrypt this traffic. Also, before we start, I am going to show the structure of my network from the perspective of DNS protocol:",
+      {
+        "type": "code",
+        "lang": "",
+        "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|"
+      },
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>Raspberry PI</b> — Internal DNS caching resolver.",
+          "<b>AWS Unbound Server</b> — External DNS caching resolver."
+        ]
+      },
+      "If we take a closer look at this structure right now we can notice a couple of things:",
+      {
+        "type": "list-numeric",
+        "items": [
+          "Depending on the configuration of the AWS Unbound Server this the traffic of this part of this scheme — <span class='code-block'>AWS Unbound Server --- Internet</span> — is going to be either encrypted of not. In the previous section we discussed how we can encrypt this traffic.",
+          "For now, this part of the network — <span class='code-block'>MacBook --- Raspberry PI --- Router --- AWS Unbound Server</span> — is still transferring traffic in plain text. As you can see, traffic leaves our network unencrypted, we definitely don't want that, so, let's encrypt it.",
+          "Maybe some of you noticed that even though we can encrypt traffic from internal caching resolver to the destination server, the traffic that goes from my Mac to Raspberry PI is still unencrypted, and this is the issue. Basically, we can protect traffic that leaves our network, but if someone is sniffing traffic internally, they can sniff it between my Mac and router as the plaintext. The problem of this situation is that it depend on what kind of system you have. Anyway, I am going to show you how you can protect against this."
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "root@raspberrypi:/etc/unbound# ll\ntotal 48\ndrwxr-xr-x   3 root root 4096 Feb 25 20:29 ./\ndrwxr-xr-x 101 root root 4096 Feb 25 13:00 ../\n-rw-r--r--   1 root root 1000 Feb 25 20:29 config.cnf\n-rw-------   1 root root 3272 Feb 25 20:29 dns_key.key\n-rw-r--r--   1 root root 2004 Feb 25 20:29 dns_server_cert.crt\n-rw-r--r--   1 root root 3314 Feb 25 07:50 root.hints\n-rw-r--r--   1 root root 2759 Feb 25 16:21 unbound.conf\ndrwxr-xr-x   2 root root 4096 Feb 25 15:17 unbound.conf.d/\n-rw-------   1 root root 2484 Feb 25 13:00 unbound_control.key\n-rw-r-----   1 root root 1501 Feb 25 13:00 unbound_control.pem\n-rw-------   1 root root 2484 Feb 25 13:00 unbound_server.key\n-rw-r-----   1 root root 1549 Feb 25 13:00 unbound_server.pem"
+      },
       {
         "type": "subsubtitle",
         "content": "How to block Ad servers or other traffic"
@@ -1120,6 +1150,8 @@
         "type": "title",
         "content": "Conclusions"
       },
+      "In conclusion, choosing the right DNS server configuration is crucial to ensure a reliable and secure internet browsing experience. Unbound and NSD DNS servers offer various configurations that can cater to different needs and preferences. From simple, standalone installations to more complex setups that involve load balancing and redundancy, there's a configuration that can suit your specific requirements. Whether you're a network administrator, a business owner, or a casual user, it's worth exploring these options to see how they can enhance your online experience. By leveraging the power of Unbound and NSD DNS servers, you can enjoy faster, safer, and more efficient internet browsing, regardless of your location or device.",
+      "In today's article we have taken a look at different types of configurations that you may find useful for your own DNS infrastructure. Remember, there is no one switch that you can either turn on or turn off to enable of disable functions. It's always a set of different options that you may or not use. Everything is based on what role you want your DNS server to play and in what environment. Hope you found it useful, as I said, I am going to update this post time-to-time by adding new types of configuration sets or updating the old ones. ",
       {
         "type": "title",
         "content": "References and contact"
