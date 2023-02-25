@@ -39,7 +39,7 @@
         "type": "title",
         "content": "Przygotowania"
       },
-      "Nie będziemy dyskutować, jak i gdzie można uruchomić instancję i jak to wszysyko skonfigurować (AWS, DigitalOcean, Microsoft Azure lub jakikolwiek inny dostawca usług w chmurze). Przy okazji, możesz przeczytać o tym tutaj (LINK do Postu o instancjach HARDERING). Zamiast tego skupimy się na procesie instalacji Nginx, jako naszego serwera WWW, i Let's encrypt, jako naszego dostawcy CA, biorąc pod uwagę, że masz już instancję do wdrożenia.",
+      "Nie będziemy dyskutować, jak i gdzie można uruchomić instancję i jak to wszysyko skonfigurować (AWS, DigitalOcean, Microsoft Azure lub jakikolwiek inny dostawca usług w chmurze). Przy okazji, możesz przeczytać o tym <a href='https://blog.mikhailbahdashych.me/en/blog/everything-you-need-to-know-about-hardening' class='inline-link en'>tutaj</a>. Zamiast tego skupimy się na procesie instalacji Nginx, jako naszego serwera WWW, i Let's encrypt, jako naszego dostawcy CA, biorąc pod uwagę, że masz już instancję do wdrożenia.",
       "Za pomocą kolejnych 2 poleceń zaktualizujesz wszystkie pakiety na swoim komputerze i zainstalujesz wymagane nginx i Let's encrypt:",
       {
         "type": "code",

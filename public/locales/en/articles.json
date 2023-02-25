@@ -39,7 +39,7 @@
         "type": "title",
         "content": "Preparations"
       },
-      "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here (LINK TO POST ABOUT INSTANCES HARDERING). Instead of it, we will focus on process of installation of Nginx, as our web server, and Let's encrypt, as our CA provider, considering you already have an instance for deployment.",
+      "We are not going to discuss how and where you can spin up an instance and harder it (either AWS, DigitalOcean, Microsoft Azure or whatever cloud service provider you like). By the way, you can read about this here <a href='https://blog.mikhailbahdashych.me/en/blog/everything-you-need-to-know-about-hardening' class='inline-link en'>here</a>. Instead of it, we will focus on process of installation of Nginx, as our web server, and Let's encrypt, as our CA provider, considering you already have an instance for deployment.",
       "Using next 2 commands you will update all packages on your machine and installed required nginx and Let's encrypt:",
       {
         "type": "code",
@@ -882,8 +882,8 @@
     "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
     "description": "",
     "pageDescription": "Let me guess, if you have ever heard about DNS and you have been playing around with those settings on your computer, the most thing you have done is change DNS server IP address from your local router to 1.1.1.1 or 8.8.8.8. Well, not bad, but what about building your own DNS infrastructure, huh? Sounds cool! You will have almost complete control over your network, but take your time, we will have time...",
-    "intro": "",
-    "timestamp": "",
+    "intro": "This writeup contains different scenarios that you can utilize while building your own custom DNS infrastructure. Just your DNS cheatsheet.",
+    "timestamp": "2023-03-25",
     "footer": "",
     "toc": {
       "intro": "Introduction",
@@ -891,9 +891,11 @@
       "Scenarios": {
         "Configuration of Unbound DNS": {
           "dnsRecCachingResolver": "DNS Recursive Caching Resolver",
+          "testDns": "Testing DNS over TLS and common DNS",
           "dnssecAndDot": "Enabling DNSSEC and DNS over TLS",
+          "certificateGenerating": "How to generate self-signed certificates",
           "dotBetweenResolvers": "DNS over TLS Between 2 Resolvers",
-          "blockAd": "How to block Ad servers"
+          "blockAd": "How to block Ad servers or other traffic"
         }
       },
       "conclusions": "Conclusions",
@@ -904,14 +906,14 @@
         "type": "title",
         "content": "Introduction"
       },
-      "Well, before we start our journey in the world of custom DNS servers, I’d like to tell a couple of words. First of all, I guess from the title of the article you figured out that we are going to build something, therefore it’s going to be something very practical, and therefore, I am not going to discuss DNS from basics. If you want to know more about DNS welcome here, this article considers that you know what is the difference between DNS recursive resolver, root server, root nameserver etc.",
+      "Well, before we start our journey in the world of custom DNS servers, I'd like to tell a couple of words. First of all, I guess from the title of the article you figured out that we are going to build something, therefore it's going to be something very practical, and therefore, I am not going to discuss DNS from basics. If you want to know more about DNS welcome <a href='https://blog.mikhailbahdashych.me/en/blog/how-does-dns-work-and-why-we-need-dnssec' class='inline-link en'>here</a>, this article considers that you know what is the difference between DNS recursive resolver, root server, root nameserver etc.",
       "The second thing is that you should remember about that every case is unique. DNS is about roles, and roles are about just different sets of configuration. And I am going to describe here different scenarios of implementation, it would be more accurate to tell that here will be implemented just components. I just wanted to mention that because maybe you are looking for some specific use case that I will cover or not. So, I am not going to cover such cases. What I want to do instead is I want to just show how to build different components that you may or not use in your configuration, such as DoT communication between 2 DNS resolvers.",
       "The last thing I want to mention is that I am going to constantly update this writeup by adding (or editing, depending on issue) new configurations. So, you will see timestamp on what moment of time it was working version.",
       {
         "type": "title",
         "content": "Prerequirements"
       },
-      "I guess I don’t need to describe what you can or should use to build what you want. If you are here, I bet you already know what you want. Anyway, I’d to tell what I have been using while building and testing it so you won’t be in trouble because of incompatibility.",
+      "I guess I don't need to describe what you can or should use to build what you want. If you are here, I bet you already know what you want. Anyway, I'd to tell what I have been using while building and testing it so you won't be in trouble because of incompatibility.",
       {
         "type": "list-bullet",
         "items": [
@@ -930,21 +932,189 @@
         "type": "subtitle",
         "content": "Configuration of Unbound DNS"
       },
+      "Unbound DNS Server is a powerful and flexible DNS resolver that is designed for speed and security. With Unbound DNS Server, you can have a reliable and secure DNS resolver that ensures fast and accurate resolution of DNS queries. The very first step as usual:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo apt update && sudo apt upgrade\n$ sudo apt install unbound resolvconf"
+      },
+      "Probably you already noticed, except from unbound itself, we are installing <span class='code-block'>resolvconf</span> package. Because of the fact that unbound is going to replace default DNS nameserver of Ubuntu system and take its port, we will explicitly tell what DNS nameserver we are going to use.",
       {
         "type": "subsubtitle",
         "content": "DNS Recursive Caching Resolver"
       },
+      "First of all, let's consider the scenario where we want to just replace default DNS server by ISP by our own custom one. So, how can we do that? Well, everything is quite easy, we need to set up <b>DNS Recursive Caching Resolver</b>. So, you can see that it has already 2 roles:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "<b>Recursive</b> — recursive means that request of the DNS record is going to look like this: Give me what I need, and ask everyone you want.",
+          "<b>Caching</b> — our server is going to store the records for some time. Usually, it's 24 hours."
+        ]
+      },
+      "So, after installation of the server let's go to the Unbound configuration directory:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ cd /etc/unbound"
+      },
+      "Here is where Unbound configuration file is stored. Before we start editing this file, it would be nice to obtain one more thing — and this is file containing list of root servers. This file holds the information about root servers needed to initialize cache of Internet domain name servers.",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo ftp -o /etc/unbound/root.hints https://www.internic.net/domain/named.root"
+      },
+      "And now we are ready to go and to configure our DNS server. In configuration file you will also find my comments with description of different settings option that you can play with so you can change it to want you need. I won't be describing all of then since it's useless, but you can check the Unbound documentation.",
+      "One important note for this configuration. This is very vanilla one. There is no neither DNSSEC (but we need to explicitly turn it off) nor DoT or DoH. Also, you need to consider IPv6 for your particular configuration, some networks and/or ISP just doesn't support this version of the Internet protocol so you may need to turn it off.",
+      "Open <span class='code-block'>unbound.conf</span> file and paste next content:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo nano unbound.conf"
+      },
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "# Unbound configuration file for Debian.\n#\n# See the unbound.conf(5) man page.\n#\n# See /usr/share/doc/unbound/examples/unbound.conf for a commented\n# reference config file.\n#\n# The following line includes additional configuration files from the\n# /etc/unbound/unbound.conf.d directory.\ninclude-toplevel: \"/etc/unbound/unbound.conf.d/*.conf\"\n\nremote-control:\n\tcontrol-enable: yes\n\tcontrol-use-cert: no\n\n# ---------------------------------------------\n# Server configuration\n# ---------------------------------------------\n\nserver:\n\t# Basically, thisx line tell us that interface is listened\n\t# to for queries from clients, and answers to client are give from it.\n\t# This line tells that our server is listening to all interfaces on port 53.\n\t# The fisrt one is for IPv4. The second one is for IPv4.\n\tinterface: 0.0.0.0@53\n\tinterface: ::1@53\n\n\taccess-control: 127.0.0.0/8 allow\n\taccess-control: 0.0.0.0/0 allow\n\taccess-control: ::0/0 allow\n\n# ---------------------------------------------\n# Functionality settings\n# ---------------------------------------------\n\nroot-hints: \"/etc/unbound/root.hints\"\n\n# Hide version and identity of the server\nhide-identity: yes\nhide-version: yes\n\ndo-ip4: yes\t# Enable IPv4\ndo-ip6: yes\t# Enable IPv6\ndo-udp: yes\t# Enable UDP\ndo-tcp: yes\t# Enable TCP\n\n# Optimizations. Change it depending on your instance\nnum-threads: 1\n# Number of ports to open. This number of file descriptors can be opened per thread.\noutgoing-range: 1024\n\n# Mininum and maximum time to live for cache. Number of hosts for which information is cached\ncache-min-ttl: 2400\ncache-max-ttl: 86400\ninfra-cache-numhosts: 100000\n\n# Use 0x20-encoded random bits in the query to foil spoof attempts\nuse-caps-for-id: yes\n\n# If yes, message cache elements are prefetched before they expire to keep the cache up to date.\n# Turning it on gives about 10 percent more traffic and load on the machine, but popular items do not expire from the cache.\nprefetch: yes\n\n# Have the validator print validation failures to the log.\n# Regardless of the verbosity setting.\nval-log-level: 2\n\n# Local Resolver Functions\ndo-not-query-localhost: no\n\n# ---------------------------------------------\n# DNS (Regular)\n# ---------------------------------------------\nforward-zone:\n\tname: \".\"\n\n\t# Regular DNS\n\tforward-addr: 1.1.1.1@53 # Cloudflare primary\n\tforward-addr: 1.0.0.1@53 # Cloudflare secondary\n\n\t# Google\n\tforward-addr: 8.8.8.8@53 # Google primary\n\tforward-addr: 8.8.4.4@53 # Google secondary\n\n\t# Quad9 (Slowest, only serve as backup when the faster are temporarily down.)\n\tforward-addr: 9.9.9.9@53  # Quad9 primary\n\tforward-addr: 9.9.9.10@53 # Quad9 secondary"
+      },
+      "Do not rush with restart of the Unbound server. We also want to make sure that even after reboot of the instance:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "Our Unbound server will auto-start at boot time.",
+          "The default DNS resolver will be 127.0.0.1 even after reboot."
+        ]
+      },
+      "With the first one everything is quite easy:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo systemctl enable unbound"
+      },
+      "Things are getting a little more interesting when it comes to the second thing. By default, Ubuntu runs the systemd-resolved stub resolver which listens on <span class='code-block'>127.0.0.53:53</span>. You need to stop it, so Unbound can bind to <span class='code-block'>0.0.0.0:53</span>. You can make sure, that systemd-resolved stub resolver utilizes port 53:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo lsof -i:53\nCOMMAND    PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\nsystemd-r  733 systemd-resolve   13u  IPv4  22619      0t0  UDP 127.0.0.53:domain\nsystemd-r  733 systemd-resolve   14u  IPv4  22620      0t0  TCP 127.0.0.53:domain (LISTEN)\nunbound   3447         unbound    3u  IPv6  32974      0t0  UDP localhost:domain\nunbound   3447         unbound    4u  IPv6  32975      0t0  TCP localhost:domain (LISTEN)\nunbound   3447         unbound    5u  IPv4  32976      0t0  UDP localhost:domain\nunbound   3447         unbound    6u  IPv4  32977      0t0  TCP localhost:domain (LISTEN)"
+      },
+      "Interesting, isn't it? You see, right now, after installation of the Unbound, it has been automatically set up, and this is why you see 2 different processes — Unbound and systemd-resolved — using the same process.",
+      "Also, you can check <span class='code-block'>/etc/resolv.conf</span> file and see, that Unbound has replaced the default systemd-resolved stub resolver which listens on <span class='code-block'>127.0.0.53:53</span> with its own:",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "$ cat /etc/resolv.conf\n# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)\n#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN\n# 127.0.0.53 is the systemd-resolved stub resolver.\n# run \"systemd-resolve --status\" to see details about the actual nameservers.\n\nnameserver 127.0.0.1\noptions edns0 trust-ad"
+      },
+      "But don't think that everything is okay, first of all, previously, we have modified the Unbound, so we need to restart it, but, because of the fact that default Ubuntu utilizes this port right now, ",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo systemctl disable systemd-resolved --now"
+      },
+      "This will ensure, that after restart of the Unbound server, systemd-resolved will not take that port 53. However, we have 2 more things to be completed:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "Replace default DNS resolver with Unbound's one.",
+          "Make sure that after reboot DNS resolver is the same as we have set."
+        ]
+      },
+      "We need to make Ubuntu 22.04/20.04 server use 127.0.0.1 as DNS resolver, so unbound will answer DNS queries. The unbound package on Ubuntu ships with a systemd service <span class='code-block'>unbound-resolvconf.service</span> that is supposed to help us accomplish this. However, I found it won't work.",
+      "Instead, you can create a custom <span class='code-block'>unbound-resolvconf.service</span> file.",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo nano /etc/systemd/system/unbound-resolvconf.service"
+      },
+      "Add the following lines in this file.",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "[Unit]\nDescription=local unbound via resolvconf\nAfter=unbound.service\nConditionFileIsExecutable=/sbin/resolvconf\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/bin/sh -c 'echo nameserver 127.0.0.1 | /sbin/resolvconf -a lo.unbound'\nExecStop=/sbin/resolvconf -d lo.unbound\n\n[Install]\nWantedBy=unbound.service"
+      },
+      "Save and close this file. Then reload systemd and restart this service.",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ sudo systemctl daemon-reload\n$ sudo systemctl restart unbound-resolvconf.service"
+      },
+      "Now check the content of <span class='code-block'>/etc/resolv.conf</span>.",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "$ cat /etc/resolv.conf\n# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)\n#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN\n# 127.0.0.53 is the systemd-resolved stub resolver.\n# run \"systemd-resolve --status\" to see details about the actual nameservers.\n\nnameserver 127.0.0.1"
+      },
+      "And we are done here! Right now you have fully configured simple DNS recursive caching resolver. If you want to test that, just do a couple of dig commands. First of all, let's check if simple dig works. Then, we test it with TLS.",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "root@raspberrypi:/etc/unbound# dig google.com\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 2312\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t2400\tIN\tA\t172.217.16.142\n\n;; Query time: 163 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Sat Feb 25 15:00:09 CET 2023\n;; MSG SIZE  rcvd: 55"
+      },
+      "You can see that we use our localhost address in order to perform resolution requests. Now, let's check if DoT is enabled locally and if it actually works. To do that, we need to <span class='code-block'>+tls</span> flag:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "root@raspberrypi:/etc/unbound# dig google.com +tls\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n\nroot@raspberrypi:/etc/unbound# dig google.com +tls @1.1.1.1\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com +tls @1.1.1.1\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39720\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n; PAD: (409 bytes)\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t235\tIN\tA\t142.250.186.206\n\n;; Query time: 83 msec\n;; SERVER: 1.1.1.1#853(1.1.1.1) (TLS)\n;; WHEN: Sat Feb 25 15:01:41 CET 2023\n;; MSG SIZE  rcvd: 468"
+      },
+      "You can see that it doesn't work for local request, but if we change the address of the DNS server using <span class='code-block'>@</span> to different (cloudflare, for instance), we can see that it actually works, and in SERVER section of the response we can see the IP address of cloudflare DNS server and port 853 which is responsible for DoT.",
+      {
+        "type": "subsubtitle",
+        "content": "Testing DNS over TLS and common DNS"
+      },
+      "Now, let’s discuss how we can turn on <b>DoT — DNS over TLS</b>. Actually, it’s pretty easy, we just need to add a couple of lines to our configuration. Before that, I want to demonstrate you that this configuration actually works and to implement that I decided to sniff the traffic  to take a closer look at how it looks like from the network perspective.",
+      "There tons of different tools you can use to sniff the traffic. The most common are <span class='code-block'>tcpdump</span> and <span class='code-block'>ettercap</span> so use whatever you like. In my case I have been using <span class='code-block'>ettercap</span> because my Unbound DNS server has been placed within my local network on my Raspberry PI. Basically, I just perform Man-in-the-middle attack and capture traffic between my router and Raspberry PI. <b>It’s illegal, don’t do that on NOT your own networks.</b>",
+      "I performed 2 tests — the first one was for the basic (no DNS over TLS) configuration. For that test I used configuration you can find in the previous section. The second one was for the configuration with DoT. I slightly changed previous configuration (you can find it in a next section) to make it work over DoT.",
+      "I used <span class='code-block'>dig google.com</span> for both tests and I also flushed the cache for this domain name before every test. And here is what I have got. For the basic configuration we have this picture:",
+      {
+        "type": "picture",
+        "width": "w80",
+        "resource": "no-dns-over-tls.jpeg"
+      },
+      "The IP address 192.168.8.112 is the IP address of Raspberry PI in my local network, and, as you can see, it sends plaintext DNS resolution requests for google.com to secondary cloudflare server with IP address 1.0.0.1.",
+      "Let’s flush the cache for this record, change our configuration file a bit to make it work over TLS and take a look at what we have got:",
+      {
+        "type": "picture",
+        "width": "w80",
+        "resource": "dns-over-tls.jpeg"
+      },
+      "Right now, as you can see, we have all traffic over TLS. We can tell that this is definitely DNS requests just by taking a look at source and destination IP addresses. In this case it’s primary cloudflare DNS server.",
+      "Now, with certainty that we were able to encrypt the traffic user TLS we are going to change our configuration a bit.",
       {
         "type": "subsubtitle",
         "content": "Enabling DNSSEC and DNS over TLS"
       },
       {
         "type": "subsubtitle",
+        "content": "How to generate self-signed certificates"
+      },
+      "Before we start discussion about how we can encrypt traffic between 2 DNS resolver, we need to figure out how to generate certificates for them. Generally speaking, we have 2 approaches in this case:",
+      {
+        "type": "list-bullet",
+        "items": [
+          "We can create CSR and get it signed by CA.",
+          "We can create self-signed certificate."
+        ]
+      },
+      "Honestly, there is no big difference between them. As you probably already have guessed from title of this subtopic, we are going to generate self-signed certificate and the only additional thing we need to do in this case is to add this certificate to trusted (because of self-signing).",
+      "We are not going to discuss all PKI infrastructure in this article, but if you are not familiar with that, I would highly recommend you to go here and read about that (must have, in my opinion).",
+      "So, first of all, create file named <span class='code-block'>config.cnf</span> and paste next content:",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "#\n# SSLeay example configuration file.\n#\n# Touch /home/user/.rnd\nRANDFILE \t= $ENV::HOME/.rnd\n\n[ req ]\ndefault_bits \t= 4096\ndefault_keyfile \t= privkey.pem\ndistinguished_name \t= req_distinguished_name\nprompt \t= no\npolicy \t= policy_anything\nreq_extensions = v3_req\n\n[ req_distinguished_name ]\ncountryName \t= US\nstateOrProvinceName \t= New York\nlocalityName \t= Troy\norganizationName \t= OrgName\norganizationalUnitName \t= IT\ncommonName \t= cn.commonname.org\nemailAddress \t= it@orgname.org\n\n[ v3_req ]\n# Extensions to add to a certificate request\nbasicConstraints = CA:FALSE\nkeyUsage = nonRepudiation, digitalSignature, keyEncipherment\nsubjectAltName = @alt_names\n\n[alt_names]\nDNS.1 = cn.commonname.org\n#DNS.2 = cisecurity.org\n#DNS.3 = www.example.com\n#DNS.4 = www.sub.example.com\n#DNS.5 = mx.example.com\n#DNS.6 = support.example.com"
+      },
+      "Change data in <span class='code-block'>req_distinguished_name</span> section and <span class='code-block'>alt_names</span> to your data. Next, use this command that will generate certificate and private key (change names, is you want).",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out dns_server_cert.crt -keyout dns_key.key -config config.cnf"
+      },
+      "Now you have certificate and private key and we can move forward and start configure DNS over TLS between 2 DNS resolvers.",
+      {
+        "type": "subsubtitle",
         "content": "DNS over TLS Between 2 Resolvers"
       },
       {
         "type": "subsubtitle",
-        "content": "How to block Ad servers"
+        "content": "How to block Ad servers or other traffic"
       },
       {
         "type": "title",
@@ -955,6 +1125,18 @@
         "content": "References and contact"
       }
     ],
-    "references": []
+    "references": [{
+      "name": "My GitHub gists with all configurations",
+      "link": "https://gist.github.com/bl4drnnr"
+    }, {
+      "name": "Comparison of DNS server software",
+      "link": "https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software"
+    }, {
+      "name": "Unbound configuration file documentation",
+      "link": "https://unbound.docs.nlnetlabs.nl/en/latest/manpages/unbound.conf.html"
+    }, {
+      "name": "Set Up Unbound DNS Resolver on Ubuntu 22.04/20.04 Server",
+      "link": "https://www.linuxbabe.com/ubuntu/set-up-unbound-dns-resolver-on-ubuntu-20-04-server"
+    }]
   }
 }
