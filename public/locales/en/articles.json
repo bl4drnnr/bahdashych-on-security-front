@@ -1065,7 +1065,7 @@
       "I used <span class='code-block'>dig google.com</span> for both tests and I also flushed the cache for this domain name before every test. And here is what I have got. For the basic configuration we have this picture:",
       {
         "type": "picture",
-        "width": "w80",
+        "width": "w100",
         "resource": "no-dns-over-tls.jpeg"
       },
       "The IP address 192.168.8.112 is the IP address of Raspberry PI in my local network, and, as you can see, it sends plaintext DNS resolution requests for google.com to secondary cloudflare server with IP address 1.0.0.1.",
@@ -1081,7 +1081,7 @@
         "type": "subsubtitle",
         "content": "Enabling DNS over TLS and DNSSEC"
       },
-      "We are going to start securing our DNS connection by making it encrypted. DNS over TLS will provide traffic encryption between DNS servers. If we consider that I am going to use Raspberry Pi as my local DNS server, traffic from my computer to Raspberry Pi will by still in plaintext (this could be a problem as it’s possible place for Man-in-the-Middle attack, but we will discuss that a little later), but from my Raspberry Pi to an external server, it’s going to be already encrypted.",
+      "We are going to start securing our DNS connection by making it encrypted. DNS over TLS will provide traffic encryption between DNS servers. If we consider that I am going to use Raspberry Pi as my local DNS server, traffic from my computer to Raspberry Pi will by still in plaintext (this could be a problem as it's possible place for Man-in-the-Middle attack, but we will discuss that a little later), but from my Raspberry Pi to an external server, it's going to be already encrypted.",
       "So, here is how we are going to change our configuration to make it work via TLS:",
       {
         "type": "code",
@@ -1139,13 +1139,13 @@
       {
         "type": "list-numeric",
         "items": [
-          "Depending on the configuration of the AWS Unbound Server this the traffic of this part of this scheme — <span class='code-block'>AWS Unbound Server --- Internet</span> — is going to be either encrypted of not. In the previous section we discussed how we can encrypt this traffic.",
-          "For now, this part of the network — <span class='code-block'>MacBook --- Raspberry PI --- Router --- AWS Unbound Server</span> — is still transferring traffic in plain text. As you can see, traffic leaves our network unencrypted, we definitely don't want that. Yes, as it’s been shown in previous section, I can use Raspberry PI as my local DNS server and make it forward traffic via port 853 using DNS over TLS, but in this scenario, I would have to use public DNS servers, like Cloudflare or Google, but we want to encrypt communication between 2 our servers.",
+          "Depending on the configuration of the AWS Unbound Server this the traffic of this part of this scheme — <span class='code-block'>AWS Unbound Server --- Internet</span> — is going to be either encrypted or not. In the previous section we discussed how we can encrypt this traffic.",
+          "For now, this part of the network — <span class='code-block'>MacBook --- Raspberry PI --- Router --- AWS Unbound Server</span> — is still transferring traffic in plain text. As you can see, traffic leaves our network unencrypted, we definitely don't want that. Yes, as it's been shown in previous section, I can use Raspberry PI as my local DNS server and make it forward traffic via port 853 using DNS over TLS, but in this scenario, I would have to use public DNS servers, like Cloudflare or Google, but we want to encrypt communication between 2 our servers.",
           "Maybe some of you noticed that even though we can encrypt traffic from internal caching resolver to the destination server, the traffic that goes from my Mac to Raspberry PI is still unencrypted, and this is the issue. Basically, we can protect traffic that leaves our network, but if someone is sniffing traffic internally, they can sniff it between my Mac and router as the plaintext. The problem of this situation is that it depend on what kind of system you have. Anyway, I am going to show you how you can protect against this."
         ]
       },
       "As you probably guessed, we are going to encrypt the traffic between Raspberry Pi and AWS Unbound server, to make it leave our network encrypted and to make AWS Unbound server be able to decrypt this traffic. Then, considering that we are utilizing DoT of Cloudflare, DNS Google or Quad9, AWS Unbound server will send this traffic to the Internet encrypted. Therefore, we will have only one place, where we should encrypt traffic to prevent Man-in-the-Middle attack — <span class='code-block'>MacBook --- Router</span>.",
-      "First of all, we need to generate private key and certificate using configuration and command provided above. I have already done it on my Raspberry PI and put them into server’s folder.",
+      "First of all, we need to generate private key and certificate using configuration and command provided above. I have already done it on my Raspberry PI and put them into server's folder.",
       {
         "type": "code",
         "lang": "shell",
@@ -1159,7 +1159,7 @@
           "Transfer this certificate and private key to the remote AWS Unbound server and change configuration a little."
         ]
       },
-      "The first one is quite easy to do, but it’s important to mention that even those there is no difference between <span class='code-block'>.pem</span> and <span class='code-block'>.crt</span> format unbound, there is still difference for installation process.",
+      "The first one is quite easy to do, but it's important to mention that even those there is no difference between <span class='code-block'>.pem</span> and <span class='code-block'>.crt</span> format unbound, there is still difference for installation process.",
       {
         "type": "code",
         "lang": "shell",
@@ -1172,6 +1172,68 @@
         "content": "tls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\""
       },
       "For the second one everything is also not so complicated. Using <span class='code-block'>scp</span>, or just copying, transfer both certificate and key to your other server and put them into Unbound directory.",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ scp -i ssh.pem dns_* ubuntu@<ip-address-of-remote-server>:/tmp"
+      },
+      "On the remote server, move those 2 files to the Unbound directory and change ownership to root or unbound, depending on your configuration:",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ cd /etc/unbound\n$ mv /tmp/dns_* .\n$ chown root:root dns_*"
+      },
+      "How, we need to modify our remote server configuration a little. First of all, we need to tell that from now on we are using 2 interfaces — port 53, which is common DNS, and port 853, which is DNS over TLS default port. Also, we need to point our server that it needs to use private key and certificate for encryption process.",
+      "Also, as you probably noticed, in forward-zone we are forcing our server to use TLS and tell that only servers via DoT port 853 for our Unbound resolver are available to use. Also, as you can see, we set our certificate and private key to be able to use TLS connection:",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "include-toplevel: \"/etc/unbound/unbound.conf.d/*.conf\"\n\nserver:\n\tinterface: 0.0.0.0@53\n\tinterface: 0.0.0.0@853\n\n\ttls-service-key: \"/etc/unbound/dns_key.key\"\n\ttls-service-pem: \"/etc/unbound/dns_server_cert.crt\"\n\n\t# Enabled or disable whether the queries to this stub use TLS for transport.\n\ttls-upstream: yes\n\ttls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\"\n\nforward-zone:\n\tname: \".\"\n\n\t# DNS over TLS\n\tforward-tls-upstream: yes\n\tforward-addr: 1.0.0.1@853 # Cloudflare secondary\n\tforward-addr: 1.1.1.1@853 # Cloudflare primary"
+      },
+      "But that's not it, we also need to change the configuration of the Raspberry PI to make it now forward traffic not to public DNS server (even though it was encrypted connection to Cloudflare), but to forward to to our remote DNS server.",
+      "The only we need to change in the configuration file of our Raspberry PI Unbound server is <span class='code-block'>forward-zone</span> section. We need to set <span class='code-block'>forward-tls-upstream</span> to <span class='code-block'>yes</span> and change <span class='code-block'>forward-addr</span> to IP address of the remote server (don't forget about port 853):",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": "forward-zone:\n\tname: \".\"\n\tforward-tls-upstream: yes\n\tforward-addr: <ip-address-of-remote-server>@853"
+      },
+      "So, what do we have in the result? Let's summarise! We are using 2 Unbound servers. The first one is on-premise located in our local network. It works on Raspberry PI. The second one is located within cloud. We have encrypted communication between them, so traffic leaves the network encrypted, in this form it goes to the remote server and then, also using DNS over TLS, is sent to the Internet — to an external DNS server. I have done a couple of tests and here is how.",
+      "I performed traffic capturing between Raspberry PI and router to make sure that traffic leaves the network encrypted and I am still able to resolve domain name and get an IP address of requested resource.",
+      "Once I have started traffic capturing, I flushed the cache of the local server and tried to resolve domain name. 192.168.8.112 is the IP address of the Raspberry PI on my local network.",
+      {
+        "type": "code",
+        "lang": "shell",
+        "content": "$ dig cyberciti.biz @192.168.8.112\n\n; <<>> DiG 9.10.6 <<>> cyberciti.biz @192.168.8.112\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55757\n;; flags: qr rd ra ad; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.40.203\n\n;; Query time: 534 msec\n;; SERVER: 192.168.8.112#53(192.168.8.112)\n;; WHEN: Sun Feb 26 11:55:30 CET 2023\n;; MSG SIZE  rcvd: 74"
+      },
+      {
+        "type": "picture",
+        "width": "w100",
+        "resource": "end-to-end-dot.jpeg"
+      },
+      "And voila! We were able to resolve an IP address, and captured traffic shows us that it goes to the destination server via TLS. Great! Don't worry if it's too much for your, check my <a href='https://gist.github.com/bl4drnnr' class='inline-link en'>GitHub Gists</a> to find all configuration files.",
+      "Also, here you can see proof that DNS traffic that goes from my computer to the router is still unencrypted, so, let's fix that.",
+      {
+        "type": "code",
+        "lang": "nginx",
+        "content": ";; SERVER: 192.168.8.112#53(192.168.8.112)"
+      },
+      "By the way, remember this network datagram? This is how we had this before establishing encrypted connection between 2 DNS resolvers:",
+      {
+        "type": "code",
+        "lang": "",
+        "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|\n|_____Unencrypted_______|__Unencrypted__|___ Encrypted (optionally)___|"
+      },
+      "And this is how it looks like after:",
+      {
+        "type": "code",
+        "lang": "",
+        "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|\n|_____Unencrypted_______|___Encrypted___|______Encrypted______________|"
+      },
+      "As you see, we have only last one place where we need to protect our network. And this is communicate between endpoint and on-premise DNS server.",
+      {
+        "type": "subsubtitle",
+        "content": "DNS over TLS for endpoints"
+      },
       {
         "type": "subsubtitle",
         "content": "How to block Ad servers or other traffic"
@@ -1188,7 +1250,7 @@
       }
     ],
     "references": [{
-      "name": "My GitHub gists with all configurations",
+      "name": "My GitHub gists with all configuration files",
       "link": "https://gist.github.com/bl4drnnr"
     }, {
       "name": "Comparison of DNS server software",
