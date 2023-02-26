@@ -176,7 +176,7 @@ const ErrorPage = ({ locale }: ErrorPageProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
+const getStaticProps = makeStaticProps();
 export { getStaticPaths, getStaticProps };
 
 export default ErrorPage;
@@ -304,9 +304,8 @@ const BlogPost = ({ locale, postName }: PostProps) => {
 };
 
 export const getServerSideProps = async (ctx: any) => {
-  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
-  const pageProps = await staticProps(ctx);
-  const props = pageProps.props;
+  const staticProps = await makeStaticProps()(ctx);
+  const props = staticProps.props;
 
   return {
     props: {

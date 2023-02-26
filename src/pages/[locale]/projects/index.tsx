@@ -184,7 +184,7 @@ const Projects = ({ locale }: ProjectsProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
+const getStaticProps = makeStaticProps();
 export { getStaticPaths, getStaticProps };
 
 export default Projects;

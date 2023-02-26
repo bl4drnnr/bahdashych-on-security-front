@@ -38,12 +38,12 @@ const Home = ({ locale }: HomeProps) => {
   };
 
   const [bestPosts,] = React.useState<PostProps[]>([{
-    title: t('articles:nextjs-nginx-deployment.title'),
-    description: t('articles:nextjs-nginx-deployment.pageDescription'),
+    title: t('nextjs-nginx-deployment:title'),
+    description: t('nextjs-nginx-deployment:pageDescription'),
     link: '/blog/nextjs-nginx-deployment'
   }, {
-    title: t('articles:how-does-dns-work-and-why-we-need-dnssec.title'),
-    description: t('articles:how-does-dns-work-and-why-we-need-dnssec.pageDescription'),
+    title: t('how-does-dns-work-and-why-we-need-dnssec:title'),
+    description: t('how-does-dns-work-and-why-we-need-dnssec:pageDescription'),
     link: '/blog/how-does-dns-work-and-why-we-need-dnssec'
   }]);
 
@@ -124,7 +124,7 @@ const Home = ({ locale }: HomeProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
+const getStaticProps = makeStaticProps();
 export { getStaticPaths, getStaticProps };
 
 export default Home;

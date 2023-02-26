@@ -60,9 +60,9 @@ const BlogPost = ({ locale, postName }: PostProps) => {
                 <li
                   className={'table-of-contents-li'}
                   key={key}
-                  onClick={() => scrollTo(getRefByName(t(`articles:${postName}.toc.${keyName}`) as string))}
+                  onClick={() => scrollTo(getRefByName(t(`${postName}:toc.${keyName}`) as string))}
                 >
-                  {t(`articles:${postName}.toc.${keyName}`)}
+                  {t(`${postName}:toc.${keyName}`)}
                 </li>
               );
             } else {
@@ -180,7 +180,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
     let quantityOfTitles = 0;
     const allRefs: Array<string> = [];
 
-    const contentObj: ArticleContentObject[] = t(`articles:${postName}.content`, { returnObjects: true });
+    const contentObj: ArticleContentObject[] = t(`${postName}:content`, { returnObjects: true });
 
     contentObj.forEach((item: ArticleContentObject | string) => {
       if (
@@ -200,9 +200,9 @@ const BlogPost = ({ locale, postName }: PostProps) => {
   return (
     <>
       <Head>
-        <title>{t('pages:home.name')} | {t(`articles:${postName}.title`)}</title>
-        <meta name={'keywords'} content={t(`articles:${postName}.tags`) as string} />
-        <meta name={'description'} content={t(`articles:${postName}.description`) as string} />
+        <title>{t('pages:home.name')} | {t(`${postName}:title`)}</title>
+        <meta name={'keywords'} content={t(`${postName}:tags`) as string} />
+        <meta name={'description'} content={t(`${postName}:description`) as string} />
         <meta charSet={'utf-8'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
@@ -212,25 +212,25 @@ const BlogPost = ({ locale, postName }: PostProps) => {
               onInit={(typewriter) => {
                 typewriter
                   .changeDelay(75)
-                  .typeString(t(`articles:${postName}.title`))
+                  .typeString(t(`${postName}:title`))
                   .start();
               }}
             />
           </ArticleTitle>
 
           <ArticleTitle className={'intro'}>
-            {t(`articles:${postName}.intro`)}
+            {t(`${postName}:intro`)}
           </ArticleTitle>
 
           <TableOfContentsContainer className={locale === 'en' ? 'en' : 'non-en'}>
             <TableOfContentsTitle>
               {t('common:tocTitle')}
             </TableOfContentsTitle>
-            {generateTableOfContents(t(`articles:${postName}.toc`, { returnObjects: true }))}
+            {generateTableOfContents(t(`${postName}:toc`, { returnObjects: true }))}
           </TableOfContentsContainer>
 
           {
-            (t(`articles:${postName}.content`, { returnObjects: true }) as ArticleContentObject[])
+            (t(`${postName}:content`, { returnObjects: true }) as ArticleContentObject[])
               .map((item: ArticleContentObject | string, index) => (
                 <div key={index}>
                   {typeof item === 'string' ? (
@@ -265,7 +265,7 @@ const BlogPost = ({ locale, postName }: PostProps) => {
 
           <TableOfContentsContainer className={`${locale === 'en' ? 'en' : 'non-en'} contact-and-references`}>
             {
-              Object.entries(t(`articles:${postName}.references`, { returnObjects: true }) as IReference[]).map(([key, value]) => (
+              Object.entries(t(`${postName}:references`, { returnObjects: true }) as IReference[]).map(([key, value]) => (
                 <ul key={key}>
                   <li className={'table-of-contents-ul'}>
                     <a href={value.link}>{value.name}</a>
@@ -276,8 +276,8 @@ const BlogPost = ({ locale, postName }: PostProps) => {
           </TableOfContentsContainer>
 
           <PostFooter
-            timestamp={t(`articles:${postName}.timestamp`) as string}
-            message={t(`articles:${postName}.footer`) as string}
+            timestamp={t(`${postName}:timestamp`) as string}
+            message={t(`${postName}:footer`) as string}
             locale={locale}
           />
         </ArticleBodyWrapper>
@@ -287,9 +287,8 @@ const BlogPost = ({ locale, postName }: PostProps) => {
 };
 
 export const getServerSideProps = async (ctx: any) => {
-  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
-  const pageProps = await staticProps(ctx);
-  const props = pageProps.props;
+  const staticProps = await makeStaticProps()(ctx);
+  const props = staticProps.props;
 
   return {
     props: {

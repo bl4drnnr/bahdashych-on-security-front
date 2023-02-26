@@ -24,9 +24,9 @@ const Project = ({ locale, projectName }: ProjectProps) => {
   return (
     <>
       <Head>
-        <title>{t('pages:home.name')} | {t(`articles:${projectName}.title`)}</title>
-        <meta name={'keywords'} content={t(`articles:${projectName}.tags`) as string} />
-        <meta name={'description'} content={t(`articles:${projectName}.description`) as string} />
+        <title>{t('pages:home.name')} | {t(`${projectName}:title`)}</title>
+        <meta name={'keywords'} content={t(`${projectName}:tags`) as string} />
+        <meta name={'description'} content={t(`${projectName}:description`) as string} />
         <meta charSet={'utf-8'} />
       </Head>
       <DefaultLayout locale={locale} translation={t}>
@@ -39,9 +39,8 @@ const Project = ({ locale, projectName }: ProjectProps) => {
 };
 
 export const getServerSideProps = async (ctx: any) => {
-  const staticProps = await makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
-  const pageProps = await staticProps(ctx);
-  const props = pageProps.props;
+  const staticProps = await makeStaticProps()(ctx);
+  const props = staticProps.props;
 
   return {
     props: {
