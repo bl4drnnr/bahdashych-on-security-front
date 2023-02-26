@@ -45,7 +45,7 @@ const ErrorPage = ({ locale }: ErrorPageProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
+const getStaticProps = makeStaticProps();
 export { getStaticPaths, getStaticProps };
 
 export default ErrorPage;

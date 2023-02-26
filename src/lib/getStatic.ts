@@ -15,7 +15,16 @@ export const getStaticPaths = () => ({
   paths: getI18nPaths()
 });
 
-export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'errors', 'articles']) {
+export async function getI18nProps(
+  ctx: any,
+  ns = [
+    'pages',
+    'components',
+    'errors',
+    'common',
+    // @ts-ignore
+    ...process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(',')
+  ]) {
   const locale = await ctx?.params?.locale;
   const postName = await ctx?.params?.postName || null;
   const projectName = await ctx?.params?.projectName || null;
@@ -29,7 +38,7 @@ export async function getI18nProps(ctx: any, ns = ['pages', 'components', 'error
 }
 
 
-export function makeStaticProps(ns: string[]) {
+export function makeStaticProps(ns?: string[]) {
   return async function getStaticProps(ctx: any) {
     return {
       props: await getI18nProps(ctx, ns)

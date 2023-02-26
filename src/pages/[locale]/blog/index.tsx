@@ -39,30 +39,30 @@ const Blog = ({ locale }: BlogProps) => {
 
   const [searchString, setSearchString] = React.useState('');
   const [allPosts,] = React.useState<PostProps[]>([{
-    title: t('articles:nextjs-nginx-deployment.title'),
-    description: t('articles:nextjs-nginx-deployment.pageDescription'),
+    title: t('nextjs-nginx-deployment:title'),
+    description: t('nextjs-nginx-deployment:pageDescription'),
     link: '/blog/nextjs-nginx-deployment',
-    timestamp: t('articles:nextjs-nginx-deployment.timestamp')
+    timestamp: t('nextjs-nginx-deployment:timestamp')
   }, {
-    title: t('articles:how-does-dns-work-and-why-we-need-dnssec.title'),
-    description: t('articles:how-does-dns-work-and-why-we-need-dnssec.pageDescription'),
+    title: t('how-does-dns-work-and-why-we-need-dnssec:title'),
+    description: t('how-does-dns-work-and-why-we-need-dnssec:pageDescription'),
     link: '/blog/how-does-dns-work-and-why-we-need-dnssec',
-    timestamp: t('articles:how-does-dns-work-and-why-we-need-dnssec.timestamp')
+    timestamp: t('how-does-dns-work-and-why-we-need-dnssec:timestamp')
   }, {
-    title: t('articles:everything-you-need-to-know-about-hardening.title'),
-    description: t('articles:everything-you-need-to-know-about-hardening.pageDescription'),
+    title: t('everything-you-need-to-know-about-hardening:title'),
+    description: t('everything-you-need-to-know-about-hardening:pageDescription'),
     link: '/blog/everything-you-need-to-know-about-hardening',
-    timestamp: t('articles:everything-you-need-to-know-about-hardening.timestamp')
+    timestamp: t('everything-you-need-to-know-about-hardening:timestamp')
   }, {
-    title: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.title'),
-    description: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.pageDescription'),
+    title: t('pki-infrastructure-or-how-to-build-your-own-vpn:title'),
+    description: t('pki-infrastructure-or-how-to-build-your-own-vpn:pageDescription'),
     link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
-    timestamp: t('articles:pki-infrastructure-or-how-to-build-your-own-vpn.timestamp')
+    timestamp: t('pki-infrastructure-or-how-to-build-your-own-vpn:timestamp')
   }, {
-    title: t('articles:how-to-build-custom-dns-infrastructure.title'),
-    description: t('articles:how-to-build-custom-dns-infrastructure.pageDescription'),
+    title: t('how-to-build-custom-dns-infrastructure:title'),
+    description: t('how-to-build-custom-dns-infrastructure:pageDescription'),
     link: '/blog/how-to-build-custom-dns-infrastructure',
-    timestamp: t('articles:how-to-build-custom-dns-infrastructure.timestamp')
+    timestamp: t('how-to-build-custom-dns-infrastructure:timestamp')
   }]);
   const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
 
@@ -150,7 +150,7 @@ const Blog = ({ locale }: BlogProps) => {
   );
 };
 
-const getStaticProps = makeStaticProps(['pages', 'components', 'common', 'articles', 'projects']);
+const getStaticProps = makeStaticProps();
 export { getStaticPaths, getStaticProps };
 
 export default Blog;
