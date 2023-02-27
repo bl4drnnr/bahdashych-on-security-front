@@ -43,7 +43,7 @@
         "<b>MacBook Pro 2019 Intel Core i5 (just my Mac)</b> — has been used as end client."
       ]
     },
-    "As our server software we are going to use Unbound and NSD.",
+    "As our server software we are going to use Unbound (version 1.13.1) and NSD.",
     {
       "type": "title",
       "content": "Scenarios"
