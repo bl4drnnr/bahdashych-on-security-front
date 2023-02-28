@@ -1,10 +1,10 @@
 {
-  "title": "",
+  "title": "Как построить кастомную инфраструктуру DNS",
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
   "description": "",
   "pageDescription": "Дайте угадаю, если вы когда-либо слышали о DNS и экспериментировали с этими настройками на своем компьютере, самое большее, что вы сделали, — это изменили IP-адрес DNS-сервера с локального маршрутизатора на 1.1.1.1 или 8.8.8.8. Что ж, неплохо, но как насчет создания собственной DNS-инфраструктуры, а? Звучит круто! Вы будете иметь почти полный контроль над своей сетью, но не торопитесь, у нас будет время...",
-  "intro": "",
-  "timestamp": "",
+  "intro": "Эта статья содержит различные сценарии, которые вы можете использовать при создании собственной пользовательской инфраструктуры DNS. Просто твоя шпаргалка по DNS.",
+  "timestamp": "2023-03-25",
   "footer": "",
   "toc": {
     "intro": "Введение",
@@ -16,6 +16,7 @@
         "dnssecAndDot": "Включение DNS через TLS и DNSSEC",
         "certificateGenerating": "Как генерировать самоподписанные сертификаты",
         "dotBetweenResolvers": "DNS через TLS между двумя резолверами",
+        "dnsTlsEndpoints": "DNS через TLS для конечных пользователей",
         "blockAd": "Как заблокировать рекламные серверы или другой трафик"
       }
     },
@@ -40,7 +41,7 @@
       "items": [
         "<b>Raspberry PI Model 4B (Ubuntu Server 22.04)</b> — использовалась как локальная машина в моей локальной сети.",
         "<b>AWS Ubuntu Server 22.04 (t2.micro)</b> — использовался как удаленный сервер.",
-        "<b>MacBook Pro 2019 Intel Core i5 (just my Mac)</b> — использовался как конечный пользователь."
+        "<b>MacBook Pro 2019 Intel Core i5 (просто мой Mac)</b> — использовался как конечный пользователь."
       ]
     },
     "В качестве серверного ПО мы будем использовать Unbound (версия 1.13.1) и NSD.",
@@ -85,7 +86,7 @@
       "content": "$ sudo ftp -o /etc/unbound/root.hints https://www.internic.net/domain/named.root"
     },
     "И теперь мы готовы приступить к настройке нашего DNS-сервера. В файле конфигурации вы также найдете мои комментарии с описанием различных параметров настройки, с которыми вы можете поиграть, чтобы вы могли изменить их по своему усмотрению. Я не буду описывать все это, так как это бесполезно, но вы можете проверить документацию Unbound.",
-    "Одно важное замечание для этой конфигурации. Это очень ванильный. Нет ни DNSSEC (но надо его явно отключить), ни DoT, ни DoH. Кроме того, вам необходимо учитывать IPv6 для вашей конкретной конфигурации, некоторые сети и/или интернет-провайдеры просто не поддерживают эту версию интернет-протокола, поэтому вам может потребоваться отключить ее.",
+    "Одно важное замечание для этой конфигурации. Это очень ванильный вариант. Нет ни DNSSEC (но надо его явно отключить), ни DoT, ни DoH. Кроме того, вам необходимо учитывать IPv6 для вашей конкретной конфигурации, некоторые сети и/или интернет-провайдеры просто не поддерживают эту версию интернет-протокола, поэтому вам может потребоваться отключить ее.",
     "Open <span class='code-block'>unbound.conf</span> file and paste next content:",
     {
       "type": "code",
@@ -97,118 +98,118 @@
       "lang": "nginx",
       "content": "# Unbound configuration file for Debian.\n#\n# See the unbound.conf(5) man page.\n#\n# See /usr/share/doc/unbound/examples/unbound.conf for a commented\n# reference config file.\n#\n# The following line includes additional configuration files from the\n# /etc/unbound/unbound.conf.d directory.\ninclude-toplevel: \"/etc/unbound/unbound.conf.d/*.conf\"\n\nremote-control:\n\tcontrol-enable: yes\n\tcontrol-use-cert: no\n\n# ---------------------------------------------\n# Server configuration\n# ---------------------------------------------\n\nserver:\n\t# Basically, this line tell us that interface is listened\n\t# to for queries from clients, and answers to client are give from it.\n\t# This line tells that our server is listening to all interfaces on port 53.\n\t# The fisrt one is for IPv4. The second one is for IPv4.\n\tinterface: 0.0.0.0@53\n\tinterface: ::1@53\n\n\taccess-control: 127.0.0.0/8 allow\n\taccess-control: 0.0.0.0/0 allow\n\taccess-control: ::0/0 allow\n\n# ---------------------------------------------\n# Functionality settings\n# ---------------------------------------------\n\nroot-hints: \"/etc/unbound/root.hints\"\n\n# Hide version and identity of the server\nhide-identity: yes\nhide-version: yes\n\ndo-ip4: yes\t# Enable IPv4\ndo-ip6: yes\t# Enable IPv6\ndo-udp: yes\t# Enable UDP\ndo-tcp: yes\t# Enable TCP\n\n# Optimizations. Change it depending on your instance\nnum-threads: 1\n# Number of ports to open. This number of file descriptors can be opened per thread.\noutgoing-range: 1024\n\n# Mininum and maximum time to live for cache. Number of hosts for which information is cached\ncache-min-ttl: 2400\ncache-max-ttl: 86400\ninfra-cache-numhosts: 100000\n\n# Use 0x20-encoded random bits in the query to foil spoof attempts\nuse-caps-for-id: yes\n\n# If yes, message cache elements are prefetched before they expire to keep the cache up to date.\n# Turning it on gives about 10 percent more traffic and load on the machine, but popular items do not expire from the cache.\nprefetch: yes\n\n# Have the validator print validation failures to the log.\n# Regardless of the verbosity setting.\nval-log-level: 2\n\n# Local Resolver Functions\ndo-not-query-localhost: no\n\n# ---------------------------------------------\n# DNS (Regular)\n# ---------------------------------------------\nforward-zone:\n\tname: \".\"\n\n\t# Regular DNS\n\tforward-addr: 1.1.1.1@53 # Cloudflare primary\n\tforward-addr: 1.0.0.1@53 # Cloudflare secondary\n\n\t# Google\n\tforward-addr: 8.8.8.8@53 # Google primary\n\tforward-addr: 8.8.4.4@53 # Google secondary\n\n\t# Quad9 (Slowest, only serve as backup when the faster are temporarily down.)\n\tforward-addr: 9.9.9.9@53  # Quad9 primary\n\tforward-addr: 9.9.9.10@53 # Quad9 secondary"
     },
-    "Do not rush with restart of the Unbound server. We also want to make sure that even after reboot of the instance:",
+    "Не торопитесь с перезапуском Unbound сервера. Мы также хотим убедиться, что даже после перезагрузки инстанса:",
     {
       "type": "list-bullet",
       "items": [
-        "Our Unbound server will auto-start at boot time.",
-        "The default DNS resolver will be 127.0.0.1 even after reboot."
+        "Наш сервер Unbound будет автоматически запускаться во время загрузки.",
+        "Распознаватель DNS по умолчанию будет 127.0.0.1 даже после перезагрузки."
       ]
     },
-    "With the first one everything is quite easy:",
+    "С первым все достаточно просто:",
     {
       "type": "code",
       "lang": "shell",
       "content": "$ sudo systemctl enable unbound"
     },
-    "Things are getting a little more interesting when it comes to the second thing. By default, Ubuntu runs the systemd-resolved stub resolver which listens on <span class='code-block'>127.0.0.53:53</span>. You need to stop it, so Unbound can bind to <span class='code-block'>0.0.0.0:53</span>. You can make sure, that systemd-resolved stub resolver utilizes port 53:",
+    "Когда дело доходит до второй вещи, все становится немного интереснее. По умолчанию Ubuntu запускает systemd-resolved резолвер-заглушку, который прослушивает <span class='code-block'>127.0.0.53:53</span>. Вам нужно остановить его, чтобы Unbound мог привязаться к <span class='code-block'>0.0.0.0:53</span>. Вы можете убедиться, что systemd-resolved резолвер-заглушка использует порт 53:",
     {
       "type": "code",
       "lang": "shell",
       "content": "$ sudo lsof -i:53\nCOMMAND    PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\nsystemd-r  733 systemd-resolve   13u  IPv4  22619      0t0  UDP 127.0.0.53:domain\nsystemd-r  733 systemd-resolve   14u  IPv4  22620      0t0  TCP 127.0.0.53:domain (LISTEN)\nunbound   3447         unbound    3u  IPv6  32974      0t0  UDP localhost:domain\nunbound   3447         unbound    4u  IPv6  32975      0t0  TCP localhost:domain (LISTEN)\nunbound   3447         unbound    5u  IPv4  32976      0t0  UDP localhost:domain\nunbound   3447         unbound    6u  IPv4  32977      0t0  TCP localhost:domain (LISTEN)"
     },
-    "Interesting, isn't it? You see, right now, after installation of the Unbound, it has been automatically set up, and this is why you see 2 different processes — Unbound and systemd-resolved — using the same process.",
-    "Also, you can check <span class='code-block'>/etc/resolv.conf</span> file and see, that Unbound has replaced the default systemd-resolved stub resolver which listens on <span class='code-block'>127.0.0.53:53</span> with its own:",
+    "Интересно, не так ли? Видите ли, прямо сейчас, после установки Unbound, он был настроен автоматически, и именно поэтому вы видите 2 разных процесса — Unbound и systemd-resolved — использующих один и тот же порт.",
+    "Кроме того, вы можете проверить файл <span class='code-block'>/etc/resolv.conf</span> и увидеть, что Unbound заменил преобразователь-заглушку по умолчанию, который прослушивает <span class='code- block'>127.0.0.53:53</span> со своим собственным:",
     {
       "type": "code",
       "lang": "nginx",
       "content": "$ cat /etc/resolv.conf\n# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)\n#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN\n# 127.0.0.53 is the systemd-resolved stub resolver.\n# run \"systemd-resolve --status\" to see details about the actual nameservers.\n\nnameserver 127.0.0.1\noptions edns0 trust-ad"
     },
-    "But don't think that everything is okay, first of all, previously, we have modified the Unbound, so we need to restart it, but, because of the fact that default Ubuntu utilizes this port right now, ",
+    "Но не думайте, что все в порядке, во-первых, ранее мы модифицировали Unbound, поэтому нам нужно перезапустить его, но, из-за того, что Ubuntu по умолчанию использует этот порт прямо сейчас, мы получим ошибку, поэтому нам нужно отключить systemd-resolved резолвер-заглушку:",
     {
       "type": "code",
       "lang": "shell",
       "content": "$ sudo systemctl disable systemd-resolved --now"
     },
-    "This will ensure, that after restart of the Unbound server, systemd-resolved will not take that port 53. However, we have 2 more things to be completed:",
+    "Это гарантирует, что после перезапуска Unbound-сервера systemd-resolved не будет использовать этот порт 53. Однако нам нужно выполнить еще 2 вещи:",
     {
       "type": "list-bullet",
       "items": [
-        "Replace default DNS resolver with Unbound's one.",
-        "Make sure that after reboot DNS resolver is the same as we have set."
+        "Заменить резолвер DNS по умолчанию на резолвер Unbound.",
+        "Убедиться, что после перезагрузки резолвер DNS такой же, как мы установили."
       ]
     },
-    "We need to make Ubuntu 22.04/20.04 server use 127.0.0.1 as DNS resolver, so Unbound will answer DNS queries. The Unbound package on Ubuntu ships with a systemd service <span class='code-block'>unbound-resolvconf.service</span> that is supposed to help us accomplish this. However, I found it won't work.",
-    "Instead, you can create a custom <span class='code-block'>unbound-resolvconf.service</span> file.",
+    "Нам нужно заставить сервер Ubuntu 22.04/20.04 использовать 127.0.0.1 в качестве преобразователя DNS, что позволит Unbound отвечать на запросы DNS. Пакет Unbound в Ubuntu поставляется с сервисом systemd <span class='code-block'>unbound-resolvconf.service</span>, который должен помочь нам в этом. Однако я обнаружил, что это не сработает.",
+    "Вместо этого вы можете создать собственный файл <span class='code-block'>unbound-resolvconf.service</span>.",
     {
       "type": "code",
       "lang": "shell",
       "content": "$ sudo nano /etc/systemd/system/unbound-resolvconf.service"
     },
-    "Add the following lines in this file.",
+    "Добавьте следующие строки в этот файл.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "[Unit]\nDescription=local unbound via resolvconf\nAfter=unbound.service\nConditionFileIsExecutable=/sbin/resolvconf\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/bin/sh -c 'echo nameserver 127.0.0.1 | /sbin/resolvconf -a lo.unbound'\nExecStop=/sbin/resolvconf -d lo.unbound\n\n[Install]\nWantedBy=unbound.service"
     },
-    "Save and close this file. Then reload systemd and restart this service.",
+    "Сохраните и закройте этот файл. Затем перезагрузите systemd и перезапустите эту службу.",
     {
       "type": "code",
       "lang": "shell",
       "content": "$ sudo systemctl daemon-reload\n$ sudo systemctl restart unbound-resolvconf.service"
     },
-    "Now check the content of <span class='code-block'>/etc/resolv.conf</span>.",
+    "Теперь проверьте содержимое <span class='code-block'>/etc/resolv.conf</span>.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "$ cat /etc/resolv.conf\n# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)\n#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN\n# 127.0.0.53 is the systemd-resolved stub resolver.\n# run \"systemd-resolve --status\" to see details about the actual nameservers.\n\nnameserver 127.0.0.1"
     },
-    "And we are done here! Right now you have fully configured simple DNS recursive caching resolver. If you want to test that, just do a couple of <span class='code-block'>dig</span> commands. First of all, let's check if simple dig works. Then, we test it with TLS.",
+    "И мы закончили здесь! Прямо сейчас вы полностью настроили простой преобразователь рекурсивного кэширования DNS. Если вы хотите проверить это, просто выполните пару команд <span class='code-block'>dig</span>. Прежде всего, давайте проверим, работает ли простой dig. Затем мы тестируем его с помощью TLS.",
     {
       "type": "code",
       "lang": "shell",
       "content": "root@raspberrypi:/etc/unbound# dig google.com\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 2312\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t2400\tIN\tA\t172.217.16.142\n\n;; Query time: 163 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Sat Feb 25 15:00:09 CET 2023\n;; MSG SIZE  rcvd: 55"
     },
-    "You can see that we use our localhost address in order to perform resolution requests. Now, let's check if DoT is enabled locally and if it actually works. To do that, we need to <span class='code-block'>+tls</span> flag:",
+    "Вы можете видеть, что мы используем наш локальный адрес для выполнения запросов на разрешение. Теперь давайте проверим, включен ли DoT локально и действительно ли он работает. Для этого нам нужно установить флаг <span class='code-block'>+tls</span>:",
     {
       "type": "code",
       "lang": "shell",
       "content": "root@raspberrypi:/etc/unbound# dig google.com +tls\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n\nroot@raspberrypi:/etc/unbound# dig google.com +tls @1.1.1.1\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com +tls @1.1.1.1\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39720\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n; PAD: (409 bytes)\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t235\tIN\tA\t142.250.186.206\n\n;; Query time: 83 msec\n;; SERVER: 1.1.1.1#853(1.1.1.1) (TLS)\n;; WHEN: Sat Feb 25 15:01:41 CET 2023\n;; MSG SIZE  rcvd: 468"
     },
-    "You can see that it doesn't work for local request, but if we change the address of the DNS server using <span class='code-block'>@</span> to different (cloudflare, for instance), we can see that it actually works, and in SERVER section of the response we can see the IP address of cloudflare DNS server and port 853 which is responsible for DoT.",
-    "What about DNSSEC? As I have mentioned at the beginning, we need to explicitly turn it off. Not a big deal, there is only line we need to comment out only one line in our configuration file.",
+    "Вы можете видеть, что это не работает для локального запроса, но если мы изменим адрес DNS-сервера с помощью <span class='code-block'>@</span> на другой (например, cloudflare), мы сможем видим, что это действительно работает, и в разделе SERVER ответа мы видим IP-адрес DNS-сервера cloudflare и порт 853, который отвечает за DoT.",
+    "А как насчет DNSSEC? Как я уже упоминал в начале, нам нужно явно отключить его. Ничего страшного, есть только одна строка, которую нам нужно закомментировать в нашем файле конфигурации.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "auto-trust-anchor-file: \"/var/lib/unbound/root.key\""
     },
-    "I guess (at least on my version of Unbound server — 1.13.1) you won't see this line in <span class='code-block'>unbound.conf</span> file, but actually it is. In order to find it go to <span class='code-block'>/ect/unbound/unbound.conf.d</span>. There you will find <span class='code-block'>root-auto-trust-anchor-file.conf</span> file which by default looks like this:",
+    "Я предполагаю (по крайней мере, на моей версии Unbound сервера — 1.13.1) вы не увидите эту строчку в файле <span class='code-block'>unbound.conf</span>, но на самом деле она есть. Чтобы найти его, перейдите в <span class='code-block'>/ect/unbound/unbound.conf.d</span>. Там вы найдете файл <span class='code-block'>root-auto-trust-anchor-file.conf</span>, который по умолчанию выглядит так:",
     {
       "type": "code",
       "lang": "nginx",
       "content": "server:\n\t# The following line will configure unbound to perform cryptographic\n\t# DNSSEC validation using the root trust anchor.\n\tauto-trust-anchor-file: \"/var/lib/unbound/root.key\""
     },
-    "Comment out this line and let's test if everything works (or doesn't work, in this case). However, there is one important thing that should be mentioned before, in order to make sure that DNSSEC works, while doing <span class='code-block'>dig</span> you should pay attention at 2 things — <span class='code-block'>AD</span> flag in <span class='code-block'>HEADER</span> section and <span class='code-block'>RRSIG</span> signature. Another important thing that should be mentioned is that not every domain name supports DNSSEC. Ok, enough theory, everything is better on examples.",
-    "For the first dig we will take domain of cyberciti.biz and take a look on how it works by default, when DNSSEC is enabled on our side. In order to check that while doing dig put <span class='code-block'>+dnssec</span> option:",
+    "Закомментируйте эту строку и давайте проверим, все ли работает (или не работает, в данном случае). Тем не менее, есть одна важная вещь, о которой следует упомянуть ранее, чтобы убедиться, что DNSSEC работает, при выполнении <span class='code-block'>dig</span> вы должны обратить внимание на 2 вещи — <span class Флаг ='code-block'>AD</span> в разделе <span class='code-block'>HEADER</span> и подпись <span class='code-block'>RRSIG</span>. Еще одна важная вещь, о которой следует упомянуть, заключается в том, что не каждое доменное имя поддерживает DNSSEC. Ладно, хватит теории, лучше все на примерах.",
+    "Для начала возьмем домен cyberciti.biz и посмотрим, как он работает по умолчанию, когда DNSSEC включен на нашей стороне. Чтобы проверить это при копании, поставьте опцию <span class='code-block'>+dnssec</span>:",
     {
       "type": "code",
       "lang": "shell",
       "content": "root@raspberrypi:/etc/unbound# dig cyberciti.biz +dnssec\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> cyberciti.biz +dnssec\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19105\n;; flags: qr rd ra ad; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.40.203\ncyberciti.biz.\t\t2400\tIN\tRRSIG\tA 13 2 300 20230228173208 20230226153208 34505 cyberciti.biz. jcb7Qtuld4Pdqv1BQGArBIEmBJwqh3aXWvjzzSeMXvZ5fBISOyEd9Y/o 6VIELt8jBtlYcf6pw7l745MhUxFX+A==\n\n;; Query time: 1068 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Mon Feb 27 17:32:09 CET 2023\n;; MSG SIZE  rcvd: 183"
     },
-    "Looking at this response we can make sure that DNSSEC is enabled — we have AD (Authentic Data): indicates the resolver believes the responses to be authentic - that is, validated by DNSSEC, we see RRSIG: cryptographic signature, in SERVER section we see that we are querying localhost, basically, our Unbound server. Now, we will comment out this line and take a look on what is going to happen:",
+    "Глядя на этот ответ, мы можем убедиться, что DNSSEC включен — у нас есть AD (Authentic Data): указывает, что преобразователь считает ответы аутентичными, то есть проверенными DNSSEC, мы видим RRSIG: криптографическая подпись, в разделе SERVER мы видим что мы запрашиваем localhost, в основном, наш сервер Unbound. Теперь мы закомментируем эту строку и посмотрим, что произойдет:",
     {
       "type": "code",
       "lang": "shell",
       "content": "root@raspberrypi:/etc/unbound# dig cyberciti.biz +dnssec\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> cyberciti.biz +dnssec\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 1086\n;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.40.203\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t2400\tIN\tRRSIG\tA 13 2 300 20230228173722 20230226153722 34505 cyberciti.biz. KMI1240BcJb2EOdURgnujU/qUeClQOtQKYd46IoMT1MjYHc2Cuxn8l2E f6SmWgOD3d+dx39enUsQgN0tXCNOZA==\n\n;; Query time: 223 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Mon Feb 27 17:37:22 CET 2023\n;; MSG SIZE  rcvd: 183"
     },
-    "Okay, we still using our Unbound server, we still see <span class='code-block'>RRSIG</span> signature (but this signature was always, <span class='code-block'>+dnssec</span> just showed it), but there is no AD flag. It means, record is not validated, therefore, DNSSEC is disabled.",
-    "There is still one thing you should consider though. If your server doesn't have DNSSEC enabled, it doesn't mean that server you are using as forwarding doesn't have it enabled also. Let's try to use other DNS server for address resolution, for example, cloudflare.",
+    "Хорошо, мы все еще используем наш сервер Unbound, мы все еще видим подпись <span class='code-block'>RRSIG</span> (но эта подпись была всегда, <span class='code-block'>+dnssec</span > только что показал), но флага AD нет. Это означает, что запись не проверена, поэтому DNSSEC отключен.",
+    "Однако есть еще одна вещь, которую вы должны учитывать. Если на вашем сервере не включен DNSSEC, это не означает, что на сервере, который вы используете для пересылки, он также не включен. Попробуем использовать другой DNS-сервер для разрешения адресов, например, cloudflare.",
     {
       "type": "code",
       "lang": "shell",
       "content": "root@raspberrypi:/etc/unbound# dig cyberciti.biz +dnssec @1.1.1.1\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> cyberciti.biz +dnssec @1.1.1.1\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21077\n;; flags: qr rd ra ad; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t300\tIN\tA\t172.66.40.203\ncyberciti.biz.\t\t300\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t300\tIN\tRRSIG\tA 13 2 300 20230228174212 20230226154212 34505 cyberciti.biz. 6J5JY30o9nYfqO1uErRZvsQW8/bkIa4v/j7lNeSOkHiMjIGUydrNTvTL OGgH8tvY6XkAuULogNqJHinj21ltQw==\n\n;; Query time: 47 msec\n;; SERVER: 1.1.1.1#53(1.1.1.1) (UDP)\n;; WHEN: Mon Feb 27 17:42:12 CET 2023\n;; MSG SIZE  rcvd: 183"
     },
-    "You see, we have disabled DNSSEC validation, but cloudflare DNS still has it enabled. Also, as I said, be careful with domain names you are using to test DNSSEC validation, for example, domain name google.com doesn't have DNSSEC, even when we are using DNS server that has DNSSEC validation.",
+    "Видите ли, мы отключили проверку DNSSEC, но у Cloudflare DNS она все еще включена. Кроме того, как я уже сказал, будьте осторожны с доменными именами, которые вы используете для проверки проверки DNSSEC, например, доменное имя google.com не имеет DNSSEC, даже если мы используем DNS-сервер с проверкой DNSSEC.",
     {
       "type": "code",
       "lang": "shell",
@@ -216,32 +217,32 @@
     },
     {
       "type": "subsubtitle",
-      "content": "Testing DNS over TLS and common DNS"
+      "content": "Тестирование DNS через TLS и обычный DNS"
     },
-    "Now, let's discuss how we can turn on <b>DoT — DNS over TLS</b>. Actually, it's pretty easy, we just need to add a couple of lines to our configuration. Before that, I want to demonstrate you that this configuration actually works and to implement that I decided to sniff the traffic  to take a closer look at how it looks like from the network perspective.",
-    "There tons of different tools you can use to sniff the traffic. The most common are <span class='code-block'>tcpdump</span> and <span class='code-block'>ettercap</span> so use whatever you like. In my case I have been using <span class='code-block'>ettercap</span> because my Unbound DNS server has been placed within my local network on my Raspberry PI. Basically, I just perform Man-in-the-middle attack and capture traffic between my router and Raspberry PI. <b>It's illegal, don't do that on NOT your own networks.</b>",
-    "I performed 2 tests — the first one was for the basic (no DNS over TLS) configuration. For that test I used configuration you can find in the previous section. The second one was for the configuration with DoT. I slightly changed previous configuration (you can find it in a next section) to make it work over DoT.",
-    "I used <span class='code-block'>dig google.com</span> for both tests and I also flushed the cache for this domain name before every test. And here is what I have got. For the basic configuration we have this picture:",
+    "Теперь давайте обсудим, как мы можем включить <b>DoT — DNS через TLS</b>. На самом деле, это довольно просто, нам просто нужно добавить пару строк в нашу конфигурацию. Перед этим я хочу продемонстрировать вам, что эта конфигурация действительно работает, и для ее реализации я решил проинспектировать трафик, чтобы поближе взглянуть на то, как он выглядит с точки зрения сети.",
+    "Существует множество различных инструментов, которые вы можете использовать для анализа трафика. Наиболее распространенными являются <span class='code-block'>tcpdump</span> и <span class='code-block'>ettercap</span>, поэтому используйте все, что вам нравится. В моем случае я использовал <span class='code-block'>ettercap</span>, потому что мой Unobund DNS-сервер был размещен в моей локальной сети на моем Raspberry PI. По сути, я просто выполняю атаку \"Человек посередине\" и перехватываю трафик между моим маршрутизатором и Raspberry PI. <b>Это незаконно, не делайте этого НЕ в своих сетях.</b>",
+    "Я провел 2 теста — первый был для базовой конфигурации (без DNS поверх TLS). Для этого теста я использовал конфигурацию, которую вы можете найти в предыдущем разделе. Второй был для конфигурации с DoT. Я немного изменил предыдущую конфигурацию (вы можете найти ее в следующем разделе), чтобы она работала поверх DoT.",
+    "Я использовал <span class='code-block'>dig google.com</span> для обоих тестов, а также очищал кеш для этого доменного имени перед каждым тестом. И вот что у меня есть. Для базовой конфигурации у нас есть эта картинка:",
     {
       "type": "picture",
       "width": "w100",
       "resource": "no-dns-over-tls.jpeg"
     },
-    "The IP address 192.168.8.112 is the IP address of Raspberry PI in my local network, and, as you can see, it sends plaintext DNS resolution requests for google.com to secondary cloudflare server with IP address 1.0.0.1.",
-    "Let's flush the cache for this record, change our configuration file a bit to make it work over TLS and take a look at what we have got:",
+    "IP-адрес 192.168.8.112 — это IP-адрес Raspberry PI в моей локальной сети, и, как вы можете видеть, он отправляет незашифрованные запросы разрешения DNS для google.com на дополнительный сервер cloudflare с IP-адресом 1.0.0.1.",
+    "Давайте очистим кэш для этой записи, немного изменим наш файл конфигурации, чтобы он работал через TLS, и посмотрим, что у нас получилось:",
     {
       "type": "picture",
       "width": "w80",
       "resource": "dns-over-tls.jpeg"
     },
-    "Right now, as you can see, we have all traffic over TLS. We can tell that this is definitely DNS requests just by taking a look at source and destination IP addresses. In this case it's primary cloudflare DNS server.",
-    "Now, with certainty that we were able to encrypt the traffic uses TLS we are going to change our configuration a bit.",
+    "Сейчас, как видите, весь трафик у нас через TLS. Мы можем сказать, что это определенно DNS-запросы, просто взглянув на исходный и целевой IP-адреса. В данном случае это основной DNS-сервер cloudflare.",
+    "Теперь, когда мы уверены, что нам удалось зашифровать трафик с помощью TLS, мы немного изменим нашу конфигурацию.",
     {
       "type": "subsubtitle",
-      "content": "Enabling DNS over TLS and DNSSEC"
+      "content": "Включение DNS через TLS и DNSSEC"
     },
-    "We are going to start securing our DNS connection by making it encrypted. DNS over TLS will provide traffic encryption between DNS servers. If we consider that I am going to use Raspberry Pi as my local DNS server, traffic from my computer to Raspberry Pi will by still in plaintext (this could be a problem as it's possible place for Man-in-the-Middle attack, but we will discuss that a little later), but from my Raspberry Pi to an external server, it's going to be already encrypted.",
-    "So, here is how we are going to change our configuration to make it work via TLS:",
+    "Мы собираемся начать защищать наше DNS-соединение, сделав его зашифрованным. DNS поверх TLS обеспечит шифрование трафика между DNS-серверами. Если учесть, что я собираюсь использовать Raspberry Pi в качестве локального DNS-сервера, трафик с моего компьютера на Raspberry Pi будет по-прежнему в виде открытого текста (это может быть проблемой, так как это возможное место для атаки \"Человек посередине\", но мы обсудим это чуть позже), но с моего Raspberry Pi на внешний сервер он уже будет зашифрован.",
+    "Итак, вот как мы собираемся изменить нашу конфигурацию, чтобы она работала через TLS:",
     {
       "type": "code",
       "lang": "nginx",
@@ -249,39 +250,39 @@
     },
     {
       "type": "subsubtitle",
-      "content": "How to generate self-signed certificates"
+      "content": "Как генерировать самоподписанные сертификаты"
     },
-    "Before we start discussion about how we can encrypt traffic between 2 DNS resolver, we need to figure out how to generate certificates for them. Generally speaking, we have 2 approaches in this case:",
+    "Прежде чем мы начнем обсуждение того, как мы можем зашифровать трафик между двумя преобразователями DNS, нам нужно выяснить, как генерировать для них сертификаты. Вообще говоря, у нас есть 2 подхода в этом случае:",
     {
       "type": "list-bullet",
       "items": [
-        "We can create CSR and get it signed by CA.",
-        "We can create self-signed certificate."
+        "Мы можем создать CSR и подписать его CA.",
+        "Мы можем создать самоподписанный сертификат."
       ]
     },
-    "Honestly, there is no big difference between them. As you probably already have guessed from title of this subtopic, we are going to generate self-signed certificate and the only additional thing we need to do in this case is to add this certificate to trusted (because of self-signing).",
-    "We are not going to discuss all PKI infrastructure in this article, but if you are not familiar with that, I would highly recommend you to go here and read about that (must have, in my opinion).",
-    "So, first of all, create file named <span class='code-block'>config.cnf</span> and paste next content:",
+    "Честно говоря, большой разницы между ними нет. Как вы, наверное, уже догадались из названия этой подтемы, мы собираемся сгенерировать самоподписанный сертификат, и единственное, что нам нужно сделать в этом случае, — добавить этот сертификат в доверенные (из-за самоподписания).",
+    "Мы не собираемся обсуждать всю инфраструктуру PKI в этой статье, но если вы не знакомы с этим, я настоятельно рекомендую вам зайти <a href='https://blog.mikhailbahdashych.me/en/blog/pki-infrastructure-or-how-to-build-your-own-vpn' class='inline-link non-en'>сюда</a> и прочитать об этом (на мой взгляд, обязательно).",
+    "Итак, прежде всего, создайте файл с именем <span class='code-block'>config.cnf</span> и вставьте следующее содержимое:",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# --------------------------------------------------------------\n# First of all we need to generate certificates that we will use\n# to encrypt traffic between our servers. It can be either by CA\n# or, like here, self-signed one.\n# --------------------------------------------------------------\n# SSLeay example configuration file.\n#\n# Touch /home/user/.rnd\nRANDFILE \t= $ENV::HOME/.rnd\n\n[ req ]\ndefault_bits \t= 4096\ndefault_keyfile \t= privkey.pem\ndistinguished_name \t= req_distinguished_name\nprompt \t= no\npolicy \t= policy_anything\nreq_extensions = v3_req\n\n[ req_distinguished_name ]\ncountryName \t= US\nstateOrProvinceName \t= New York\nlocalityName \t= Troy\norganizationName \t= OrgName\norganizationalUnitName \t= IT\ncommonName \t= cn.commonname.org\nemailAddress \t= it@orgname.org\n\n[ v3_req ]\n# Extensions to add to a certificate request\nbasicConstraints = CA:FALSE\nkeyUsage = nonRepudiation, digitalSignature, keyEncipherment\nsubjectAltName = @alt_names\n\n[alt_names]\nDNS.1 = cn.commonname.org\n#DNS.2 = cisecurity.org\n#DNS.3 = www.example.com\n#DNS.4 = www.sub.example.com\n#DNS.5 = mx.example.com\n#DNS.6 = support.example.com"
     },
-    "Change data in <span class='code-block'>req_distinguished_name</span> section and <span class='code-block'>alt_names</span> to your data. Next, use this command that will generate certificate and private key (change names, is you want).",
+    "Измените данные в разделе <span class='code-block'>req_distinguished_name</span> и <span class='code-block'>alt_names</span> на свои данные. Затем используйте эту команду, которая сгенерирует сертификат и закрытый ключ (измените имена, если хотите).",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# --------------------------------------------------------------\n# This is how we generate the certificate and the private key.\n# --------------------------------------------------------------\n$ openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out dns_server_cert.crt -keyout dns_key.key -config config.cnf"
     },
-    "Now you have certificate and private key and we can move forward and start configure DNS over TLS between 2 DNS resolvers.",
+    "Теперь у вас есть сертификат и закрытый ключ, и мы можем двигаться дальше и начать настройку DNS через TLS между двумя преобразователями DNS.",
     {
       "type": "subsubtitle",
-      "content": "DNS over TLS Between 2 Resolvers"
+      "content": "DNS через TLS между двумя резолверами"
     },
-    "When two DNS resolvers communicate with each other using DoT, they first establish a TLS connection by exchanging certificates and negotiating encryption parameters. Once the connection is established, the client resolver sends a DNS query over the encrypted channel, and the server resolver sends back a response over the same channel. Because the entire exchange is encrypted, it's much harder for attackers to intercept or modify the DNS traffic.",
-    "DoT between DNS resolvers provides an additional layer of security, privacy, and reliability for DNS traffic. By establishing a secure, encrypted channel between DNS resolvers, it can help prevent DNS-related attacks, improve the speed and reliability of DNS queries, and enable load balancing and redundancy. As more and more users and organizations prioritize security and privacy in their online activities, DoT is becoming an increasingly important protocol for secure and private DNS communications.",
-    "I bet you can tell me: \"Okay, but what's the point of it? It seems like this is server-to-server communication, therefore, it's unlikely that someone is going eavesdropping my communication.\" Well, technically, you are right. You can use public DNS over TLS servers like one by cloudflare that has been already mention above — <b>1.1.1.1@853</b> — and when traffic will be leaving your network it'll be already encrypted, but we are considering different type of communication.",
-    "Establishing of this communication may be useful, when you have one on-premise DNS server and one offsite. Therefore, you would like to encrypt this traffic. Also, before we start, I am going to show the structure of my network from the perspective of DNS protocol:",
+    "Когда два преобразователя DNS взаимодействуют друг с другом с помощью DoT, они сначала устанавливают соединение TLS, обмениваясь сертификатами и согласовывая параметры шифрования. После установления соединения клиентский преобразователь отправляет DNS-запрос по зашифрованному каналу, а серверный преобразователь отправляет ответ по тому же каналу. Поскольку весь обмен зашифрован, злоумышленникам гораздо сложнее перехватить или изменить трафик DNS.",
+    "DoT между преобразователями DNS обеспечивает дополнительный уровень безопасности, конфиденциальности и надежности для трафика DNS. Установив безопасный зашифрованный канал между преобразователями DNS, можно предотвратить атаки, связанные с DNS, повысить скорость и надежность запросов DNS, а также обеспечить балансировку нагрузки и избыточность. По мере того, как все больше и больше пользователей и организаций отдают приоритет безопасности и конфиденциальности в своей онлайн-активности, DoT становится все более важным протоколом для безопасной и частной связи DNS.",
+    "Бьюсь об заклад, вы можете сказать мне: \"Хорошо, но какой в этом смысл? Похоже, что это межсерверное общение, поэтому маловероятно, что кто-то собирается подслушивать мое общение\". Ну, технически вы правы. Вы можете использовать общедоступные серверы DNS через TLS-серверы, такие как сервер cloudflare, о котором уже упоминалось выше — <b>1.1.1.1@853</b> — и когда трафик будет покидать вашу сеть, он уже будет зашифрован, но мы рассматривает другой тип коммуникации.",
+    "Установление этой связи может быть полезно, когда у вас есть один локальный DNS-сервер и один внешний. Поэтому вы хотели бы зашифровать этот трафик. Кроме того, прежде чем мы начнем, я собираюсь показать структуру моей сети с точки зрения протокола DNS:",
     {
       "type": "code",
       "lang": "",
@@ -290,75 +291,75 @@
     {
       "type": "list-bullet",
       "items": [
-        "<b>Raspberry PI</b> — Internal DNS caching resolver.",
-        "<b>AWS Unbound Server</b> — External DNS caching resolver."
+        "<b>Raspberry PI</b> — Внутренний резолвер кэширования DNS.",
+        "<b>AWS Unbound Server</b> — Внешний резолвер кэширования DNS."
       ]
     },
-    "If we take a closer look at this structure right now we can notice a couple of things:",
+    "Если мы внимательно посмотрим на эту структуру прямо сейчас, мы можем заметить пару вещей:",
     {
       "type": "list-numeric",
       "items": [
-        "Depending on the configuration of the AWS Unbound Server this the traffic of this part of this scheme — <span class='code-block'>AWS Unbound Server --- Internet</span> — is going to be either encrypted or not. In the previous section we discussed how we can encrypt this traffic.",
-        "For now, this part of the network — <span class='code-block'>MacBook --- Raspberry PI --- Router --- AWS Unbound Server</span> — is still transferring traffic in plain text. As you can see, traffic leaves our network unencrypted, we definitely don't want that. Yes, as it's been shown in previous section, I can use Raspberry PI as my local DNS server and make it forward traffic via port 853 using DNS over TLS, but in this scenario, I would have to use public DNS servers, like Cloudflare or Google, but we want to encrypt communication between 2 our servers.",
-        "Maybe some of you noticed that even though we can encrypt traffic from internal caching resolver to the destination server, the traffic that goes from my Mac to Raspberry PI is still unencrypted, and this is the issue. Basically, we can protect traffic that leaves our network, but if someone is sniffing traffic internally, they can sniff it between my Mac and router as the plaintext. The problem of this situation is that it depend on what kind of system you have. Anyway, I am going to show you how you can protect against this."
+        "В зависимости от конфигурации сервера AWS Unbound, трафик этой части этой схемы — <span class='code-block'>Unbound Server AWS --- Интернет</span> — будет либо зашифрован, либо нет. В предыдущем разделе мы обсуждали, как мы можем зашифровать этот трафик.",
+        "На данный момент эта часть сети — <span class='code-block'>MacBook --- Raspberry PI --- Router --- AWS Unbound Server</span> - по-прежнему передает трафик в виде обычного текста. Как видите, трафик выходит из нашей сети незашифрованным, чего мы точно не хотим. Да, как было показано в предыдущем разделе, я могу использовать Raspberry PI в качестве своего локального DNS-сервера и заставить его перенаправлять трафик через порт 853, используя DNS через TLS, но в этом случае мне придется использовать общедоступные DNS-серверы, такие как Cloudflare или Google, но мы хотим зашифровать связь между двумя нашими серверами.",
+        "Возможно, некоторые из вас заметили, что хотя мы можем шифровать трафик от внутреннего кэширующего преобразователя к целевому серверу, трафик, идущий с моего Mac на Raspberry PI, по-прежнему не зашифрован, и в этом проблема. По сути, мы можем защитить трафик, выходящий из нашей сети, но если кто-то прослушивает трафик внутри, он может прослушивать его между моим Mac и маршрутизатором в виде открытого текста. Проблема этой ситуации в том, что она зависит от того, какая у вас система. В любом случае, я собираюсь показать вам, как вы можете защититься от этого."
       ]
     },
-    "As you probably guessed, we are going to encrypt the traffic between Raspberry Pi and AWS Unbound server, to make it leave our network encrypted and to make AWS Unbound server be able to decrypt this traffic. Then, considering that we are utilizing DoT of Cloudflare, DNS Google or Quad9, AWS Unbound server will send this traffic to the Internet encrypted. Therefore, we will have only one place, where we should encrypt traffic to prevent Man-in-the-Middle attack — <span class='code-block'>MacBook --- Router</span>.",
-    "First of all, we need to generate private key and certificate using configuration and command provided above. I have already done it on my Raspberry PI and put them into server's folder.",
+    "Как вы, наверное, догадались, мы собираемся зашифровать трафик между Raspberry Pi и сервером AWS Unbound, чтобы он оставил нашу сеть зашифрованной и чтобы сервер AWS Unbound мог расшифровать этот трафик. Затем, учитывая, что мы используем DoT Cloudflare, DNS Google или Quad9, сервер AWS Unbound будет отправлять этот трафик в Интернет в зашифрованном виде. Таким образом, у нас будет только одно место, где мы должны шифровать трафик для предотвращения атаки Человек посередине — <span class='code-block'>MacBook --- Router</span>.",
+    "Прежде всего, нам нужно сгенерировать закрытый ключ и сертификат, используя приведенную выше конфигурацию и команду. Я уже сделал это на своем Raspberry PI и поместил их в папку сервера.",
     {
       "type": "code",
       "lang": "shell",
       "content": "root@raspberrypi:/etc/unbound# ll\ntotal 48\ndrwxr-xr-x   3 root root 4096 Feb 25 20:29 ./\ndrwxr-xr-x 101 root root 4096 Feb 25 13:00 ../\n-rw-r--r--   1 root root 1000 Feb 25 20:29 config.cnf\n-rw-------   1 root root 3272 Feb 25 20:29 dns_key.key\n-rw-r--r--   1 root root 2004 Feb 25 20:29 dns_server_cert.crt\n-rw-r--r--   1 root root 3314 Feb 25 07:50 root.hints\n-rw-r--r--   1 root root 2759 Feb 25 16:21 unbound.conf\ndrwxr-xr-x   2 root root 4096 Feb 25 15:17 unbound.conf.d/\n-rw-------   1 root root 2484 Feb 25 13:00 unbound_control.key\n-rw-r-----   1 root root 1501 Feb 25 13:00 unbound_control.pem\n-rw-------   1 root root 2484 Feb 25 13:00 unbound_server.key\n-rw-r-----   1 root root 1549 Feb 25 13:00 unbound_server.pem"
     },
-    "Now, we need to do 2 things:",
+    "Теперь нам нужно сделать 2 вещи:",
     {
       "type": "list-bullet",
       "items": [
-        "Install a root CA certificate in the trust store.",
-        "Transfer this certificate and private key to the remote AWS Unbound server and change configuration a little."
+        "Установить корневой сертификат ЦС в хранилище доверенных сертификатов.",
+        "Перенести этот сертификат и закрытый ключ на удаленный сервер AWS Unbound и немного изменить конфигурацию."
       ]
     },
-    "The first one is quite easy to do, but it's important to mention that even those there is no difference between <span class='code-block'>.pem</span> and <span class='code-block'>.crt</span> format unbound, there is still difference for installation process.",
+    "Первый довольно легко сделать, но важно отметить, что даже в этом нет никакой разницы между <span class='code-block'>.pem</span> и <span class='code-block'>.crt</span> для Unbound, все еще есть разница в процессе установки.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# --------------------------------------------------------------\n# On our local server we need to add this certificate to tursted\n# --------------------------------------------------------------\n$ sudo apt-get install -y ca-certificates\n$ sudo cp dns_server_cert.crt /usr/local/share/ca-certificates\n$ sudo update-ca-certificates"
     },
-    "Now we have our certificate in trusted store, remember this line we put in our configuration for Raspberry PI Unbound server? This is where it is stored.",
+    "Теперь у нас есть наш сертификат в доверенном хранилище, помните эту строку, которую мы добавили в нашу конфигурацию для сервера Raspberry PI Unbound? Здесь он хранится.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "tls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\""
     },
-    "For the second one everything is also not so complicated. Using <span class='code-block'>scp</span>, or just copying, transfer both certificate and key to your other server and put them into Unbound directory.",
+    "Со вторым тоже все не так сложно. Используя <span class='code-block'>scp</span> или просто скопировав, перенесите сертификат и ключ на другой сервер и поместите их в каталог Unbound.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# --------------------------------------------------------------\n# Send certificates to remote server\n# -------------------------------------------------------------- \n$ scp -i ssh.pem dns_* ubuntu@<ip-address-of-remote-server>:/tmp"
     },
-    "On the remote server, move those 2 files to the Unbound directory and change ownership to root or unbound, depending on your configuration:",
+    "На удаленном сервере переместите эти 2 файла в каталог Unbound и измените владельца на root или unbound, в зависимости от вашей конфигурации:",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# -------------------------------------------------------------- \n# After cetificate and key have been send to                     \n# remote server we need to put then into unbound directory and   \n# and change ownership to either root or unbound user           \n# --------------------------------------------------------------\n$ cd /etc/unbound\n$ mv /tmp/dns_* .\n$ chown root:root dns_*"
     },
-    "How, we need to modify our remote server configuration a little. First of all, we need to tell that from now on we are using 2 interfaces — port 53, which is common DNS, and port 853, which is DNS over TLS default port. Also, we need to point our server that it needs to use private key and certificate for encryption process.",
-    "Also, as you probably noticed, in forward-zone we are forcing our server to use TLS and tell that only servers via DoT port 853 for our Unbound resolver are available to use. Also, as you can see, we set our certificate and private key to be able to use TLS connection:",
+    "Теперь, нам нужно немного изменить конфигурацию нашего удаленного сервера. Прежде всего, нам нужно сказать, что с этого момента мы используем 2 интерфейса — порт 53, который является обычным DNS, и порт 853, который является портом DNS через TLS по умолчанию. Кроме того, нам нужно указать нашему серверу, что ему необходимо использовать закрытый ключ и сертификат для процесса шифрования.",
+    "Кроме того, как вы, наверное, заметили, в форвард-зоне мы заставляем наш сервер использовать TLS и сообщаем, что доступны для использования только серверы через DoT-порт 853 для нашего резолвера Unbound. Также, как видите, мы установили наш сертификат и закрытый ключ, чтобы иметь возможность использовать TLS-соединение:",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# -----------------------------------------------------------------\n# Here, we need to add interface on port 853                        \n# add our certificate and private key                             \n# and (optionally, but recommended) use TLS also to forward traffic\n# -----------------------------------------------------------------\n\ninclude-toplevel: \"/etc/unbound/unbound.conf.d/*.conf\"\n\nserver:\n\tinterface: 0.0.0.0@53\n\tinterface: 0.0.0.0@853\n\n\ttls-service-key: \"/etc/unbound/dns_key.key\"\n\ttls-service-pem: \"/etc/unbound/dns_server_cert.crt\"\n\n\t# Enabled or disable whether the queries to this stub use TLS for transport.\n\ttls-upstream: yes\n\ttls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\"\n\nforward-zone:\n\tname: \".\"\n\n\t# DNS over TLS\n\tforward-tls-upstream: yes\n\tforward-addr: 1.0.0.1@853 # Cloudflare secondary\n\tforward-addr: 1.1.1.1@853 # Cloudflare primary"
     },
-    "But that's not it, we also need to change the configuration of the Raspberry PI to make it now forward traffic not to public DNS server (even though it was encrypted connection to Cloudflare), but to forward to to our remote DNS server.",
-    "The only we need to change in the configuration file of our Raspberry PI Unbound server is <span class='code-block'>forward-zone</span> section. We need to set <span class='code-block'>forward-tls-upstream</span> to <span class='code-block'>yes</span> and change <span class='code-block'>forward-addr</span> to IP address of the remote server (don't forget about port 853):",
+    "Но это не так, нам также нужно изменить конфигурацию Raspberry PI, чтобы теперь он перенаправлял трафик не на публичный DNS-сервер (даже если это было зашифрованное соединение с Cloudflare), а на наш удаленный DNS-сервер.",
+    "Единственное, что нам нужно изменить в файле конфигурации нашего сервера Raspberry PI Unbound, — это раздел <span class='code-block'>forward-zone</span>. Нам нужно установить для <span class='code-block'>forward-tls-upstream</span> значение <span class='code-block'>yes</span> и изменить <span class='code-block'>forward-addr</span> на IP-адрес удаленного сервера (не забудьте про порт 853):",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# --------------------------------------------------------------\n# Also make sure that for forward-addr you use                   \n# IP address of your remote server                               \n# --------------------------------------------------------------\n\nforward-zone:\n\tname: \".\"\n\tforward-tls-upstream: yes\n\tforward-addr: <ip-address-of-remote-server>@853"
     },
-    "So, what do we have in the result? Let's summarise! We are using 2 Unbound servers. The first one is on-premise located in our local network. It works on Raspberry PI. The second one is located within cloud. We have encrypted communication between them, so traffic leaves the network encrypted, in this form it goes to the remote server and then, also using DNS over TLS, is sent to the Internet — to an external DNS server. I have done a couple of tests and here is how.",
-    "I performed traffic capturing between Raspberry PI and router to make sure that traffic leaves the network encrypted and I am still able to resolve domain name and get an IP address of requested resource.",
-    "Once I have started traffic capturing, I flushed the cache of the local server and tried to resolve domain name. 192.168.8.112 is the IP address of the Raspberry PI on my local network.",
+    "Итак, что мы имеем в результате? Подведем итоги! Мы используем 2 Unbound сервера. Первый находится локально в нашей локальной сети. Работает на Raspberry PI. Второй находится в облаке. У нас зашифровано общение между ними, поэтому трафик выходит из сети в зашифрованном виде, в таком виде идет на удаленный сервер и далее, также используя DNS over TLS, отправляется в интернет — на внешний DNS-сервер. Я сделал пару тестов, и вот как.",
+    "Я выполнил захват трафика между Raspberry PI и маршрутизатором, чтобы убедиться, что трафик покидает сеть в зашифрованном виде, и я все еще могу разрешить доменное имя и получить IP-адрес запрошенного ресурса.",
+    "После того, как я начал захват трафика, я очистил кеш локального сервера и попытался разрешить доменное имя. 192.168.8.112 — это IP-адрес Raspberry PI в моей локальной сети.",
     {
       "type": "code",
       "lang": "shell",
@@ -369,47 +370,47 @@
       "width": "w100",
       "resource": "end-to-end-dot.jpeg"
     },
-    "And voila! We were able to resolve an IP address, and captured traffic shows us that it goes to the destination server via TLS. Great! Don't worry if it's too much for your, check my <a href='https://gist.github.com/bl4drnnr' class='inline-link en'>GitHub Gists</a> to find all configuration files.",
-    "Also, here you can see proof that DNS traffic that goes from my computer to the router is still unencrypted, so, let's fix that.",
+    "И вуаля! Мы смогли разрешить IP-адрес, и захваченный трафик показывает нам, что он идет на целевой сервер через TLS. Отлично! Не волнуйтесь, если это слишком сложно для вас, проверьте мои <a href='https://gist.github.com/bl4drnnr' class='inline-link non-en'>GitHub Gists</a>, чтобы найти все файлы конфигурации.",
+    "Кроме того, здесь вы можете увидеть доказательство того, что DNS-трафик, который идет с моего компьютера на маршрутизатор, все еще не зашифрован, так что давайте это исправим.",
     {
       "type": "code",
       "lang": "nginx",
       "content": ";; SERVER: 192.168.8.112#53(192.168.8.112)"
     },
-    "By the way, remember this network datagram? This is how we had this before establishing encrypted connection between 2 DNS resolvers:",
+    "Кстати, помните эту сетевую дейтаграмму? Вот как это было у нас до установления зашифрованного соединения между двумя преобразователями DNS:",
     {
       "type": "code",
       "lang": "",
       "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|\n|_____Unencrypted_______|__Unencrypted__|___ Encrypted (optionally)___|"
     },
-    "And this is how it looks like after:",
+    "А вот так это выглядит после:",
     {
       "type": "code",
       "lang": "",
       "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|\n|_____Unencrypted_______|___Encrypted___|______Encrypted______________|"
     },
-    "As you see, we have only last one place where we need to protect our network. And this is communicate between endpoint and on-premise DNS server.",
+    "Как видите, у нас осталось только одно место, где нам нужно защитить нашу сеть. И это связь между конечной точкой и локальным DNS-сервером.",
     {
       "type": "subsubtitle",
-      "content": "DNS over TLS for endpoints"
+      "content": "DNS через TLS для конечных пользователей"
     },
     {
       "type": "subsubtitle",
-      "content": "How to block Ad servers or other traffic"
+      "content": "Как заблокировать рекламные серверы или другой трафик"
     },
-    "But wait a second, if we are controlling all sources of the traffic, we can manipulate it, right? I have seen this spark in your eyes. You are 100% correct. If you're looking for a way to block ads or unwanted traffic on your network, using an Unbound DNS server is a powerful and flexible solution. By setting up an Unbound DNS server and configuring it to block queries to known ad servers and other problematic domains, you can greatly improve your browsing experience and protect your network from potential threats.",
-    "Now, we are going to discuss how we can manipulate the traffic handled by our Unbound server. Honestly, here, we are going to talk mostly about blocking different Ad servers or just blocking traffic. Of course, you can, for example, change the IP address of cached domain and this way redirect the traffic, but you know, seems like shady zone, isn't it? Basically, it's possible to implement, but the only obstacle on your way is certificates. It won't be enough to just replace the domain with different IP address, you will also need to make client machines or other endpoints trust this certificate.",
-    "Here, we are going to consider only the end implementation of it. What about sources of different Ad servers? Well, you will find a lot of them on the Internet, but for this example I used this <a href='https://github.com/StevenBlack/hosts' class='inline-link en'>repo</a>.",
-    "One obvious thing is that, talking about infrastructure that we have build in previous sections, in this case, it doesn't matter, which server we will reconfigure to block the traffic.",
+    "Но подождите секунду, если мы контролируем все источники трафика, мы можем им манипулировать, верно? Я видел эту искру в твоих глазах. Вы правы на 100%. Если вы ищете способ заблокировать рекламу или нежелательный трафик в вашей сети, использование несвязанного DNS-сервера — мощное и гибкое решение. Установив несвязанный DNS-сервер и настроив его для блокировки запросов к известным рекламным серверам и другим проблемным доменам, вы можете значительно улучшить работу в Интернете и защитить свою сеть от потенциальных угроз.",
+    "Теперь мы собираемся обсудить, как мы можем манипулировать трафиком, обрабатываемым нашим сервером Unbound. Честно говоря, здесь мы будем говорить в основном о блокировке различных рекламных серверов или просто о блокировке трафика. Конечно, можно, например, изменить IP-адрес кешируемого домена и таким образом перенаправить трафик, но, знаете, похоже на теневую зону, не так ли? В принципе реализовать можно, но единственная преграда на пути — сертификаты. Недостаточно просто заменить домен другим IP-адресом, вам также нужно будет заставить клиентские машины или другие конечные точки доверять этому сертификату.",
+    "Здесь мы рассмотрим только конечную реализацию. А как насчет источников разных рекламных серверов? Что ж, вы найдете их много в Интернете, но для этого примера я использовал этот <a href='https://github.com/StevenBlack/hosts' class='inline-link non-en'>репозиторий</a>.",
+    "Одна очевидная вещь заключается в том, что, говоря об инфраструктуре, которую мы построили в предыдущих разделах, в данном случае не имеет значения, какой сервер мы будем перенастраивать для блокировки трафика.",
     {
       "type": "title",
-      "content": "Conclusions"
+      "content": "Выводы"
     },
-    "In conclusion, choosing the right DNS server configuration is crucial to ensure a reliable and secure internet browsing experience. Unbound and NSD DNS servers offer various configurations that can cater to different needs and preferences. From simple, standalone installations to more complex setups that involve load balancing and redundancy, there's a configuration that can suit your specific requirements. Whether you're a network administrator, a business owner, or a casual user, it's worth exploring these options to see how they can enhance your online experience. By leveraging the power of Unbound and NSD DNS servers, you can enjoy faster, safer, and more efficient internet browsing, regardless of your location or device.",
-    "In today's article we have taken a look at different types of configurations that you may find useful for your own DNS infrastructure. Remember, there is no one switch that you can either turn on or turn off to enable of disable functions. It's always a set of different options that you may or not use. Everything is based on what role you want your DNS server to play and in what environment. Hope you found it useful, as I said, I am going to update this post time-to-time by adding new types of configuration sets or updating the old ones. ",
+    "В заключение, выбор правильной конфигурации DNS-сервера имеет решающее значение для обеспечения надежной и безопасной работы в Интернете. DNS-серверы Unbound и NSD предлагают различные конфигурации, которые могут удовлетворить различные потребности и предпочтения. От простых автономных установок до более сложных установок, включающих балансировку нагрузки и резервирование, есть конфигурация, которая может удовлетворить ваши конкретные требования. Независимо от того, являетесь ли вы сетевым администратором, владельцем бизнеса или обычным пользователем, стоит изучить эти параметры, чтобы увидеть, как они могут улучшить вашу работу в Интернете. Используя возможности DNS-серверов Unbound и NSD, вы можете наслаждаться более быстрым, безопасным и эффективным просмотром Интернета независимо от вашего местоположения или устройства.",
+    "В сегодняшней статье мы рассмотрели различные типы конфигураций, которые могут оказаться полезными для вашей собственной инфраструктуры DNS. Помните, что нет ни одного переключателя, который можно включить или выключить, чтобы включить или отключить функции. Это всегда набор различных опций, которые вы можете использовать или не использовать. Все зависит от того, какую роль вы хотите, чтобы ваш DNS-сервер играл и в какой среде. Надеюсь, вы нашли его полезным, как я уже сказал, я буду время от времени обновлять этот пост, добавляя новые типы наборов конфигурации или обновляя старые.",
     {
       "type": "title",
-      "content": "References and contact"
+      "content": "Рекомендации и контакты"
     }
   ],
   "references": [{
@@ -419,7 +420,7 @@
     "name": "Сравнение программного обеспечения DNS-сервера",
     "link": "https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software"
   }, {
-    "name": "Документация по Unbound файлу конфигурации",
+    "name": "Документация по файлу конфигурации Unbound",
     "link": "https://unbound.docs.nlnetlabs.nl/en/latest/manpages/unbound.conf.html"
   }, {
     "name": "Настройка Unbound DNS на сервере Ubuntu 22.04/20.04",
