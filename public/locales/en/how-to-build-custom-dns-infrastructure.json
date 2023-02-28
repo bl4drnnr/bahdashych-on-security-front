@@ -3,6 +3,7 @@
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
   "description": "",
   "pageDescription": "Let me guess, if you have ever heard about DNS and you have been playing around with those settings on your computer, the most thing you have done is change DNS server IP address from your local router to 1.1.1.1 or 8.8.8.8. Well, not bad, but what about building your own DNS infrastructure, huh? Sounds cool! You will have almost complete control over your network, but take your time, we will have time...",
+  "searchTags": "dns,dnssec",
   "intro": "This writeup contains different scenarios that you can utilize while building your own custom DNS infrastructure. Just your DNS cheatsheet.",
   "timestamp": "2023-03-25",
   "footer": "",

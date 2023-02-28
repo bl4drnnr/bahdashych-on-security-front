@@ -3,6 +3,7 @@
   "tags": "",
   "description": "",
   "pageDescription": "Hardening instancji odnosi się do procesu zabezpieczenia instancji, która jest pojedynczym występowaniem maszyny wirtualnej lub fizycznej, która prowadzi system operacyjny oraz aplikacje lub usługi hostingowe. Celem hardeningu instancji jest zminimalizowanie ryzyka nieautoryzowanego dostępu do instancji, ochrona danych i aplikacji hostowanych na niej oraz zapobieganie kompromisowi systemu.",
+  "searchTags": "server,hardening,instance",
   "intro": "",
   "timestamp": "2023-02-19",
   "footer": "",

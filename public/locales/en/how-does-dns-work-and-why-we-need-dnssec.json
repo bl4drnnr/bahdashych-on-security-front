@@ -3,6 +3,7 @@
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
   "description": "Have you ever heard about DNS? I bet you have! Also I bet that if you tried to figure out what this is all about you have seen DNSSEC. Well... it's time to figure out how deep this rabbit hole actually is...",
   "pageDescription": "I guess all you guys have ever heard about DNS. This is phone book of the Internet, and it converts human-readable domain names into IP addresses parsed by machines and blah-blah-blah. Honestly, this is literally rabbit hole, and I have decided to figure out how deep it is. Well, trust me, you are going to be surprised and I have hella interesting stuff to share with you. So, let's dive into it!",
+  "searchTags": "dns,dnssec",
   "intro": "Rabbit hole — I guess this is the best description I found for DNS. I was enough naive to think that the only thing it does is converting domain names to IP address to ensure that human-readable names are understood by machines. I have no clue how wrong I was thinking that way.",
   "timestamp": "2023-02-20",
   "footer": "Phew... That was kinda complicated, wasn't it? But now you what DNS and DNSSEC actually are and how they work. If after reading you have even more questions than before, congratulations, from now on you will be able to find all answers on your own, but that's it for now. Thank you so much for reading.",

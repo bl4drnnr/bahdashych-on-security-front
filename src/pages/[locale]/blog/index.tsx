@@ -33,6 +33,7 @@ interface PostProps {
   description: string;
   link: string;
   timestamp: string;
+  searchTags: string;
 }
 
 const Blog = ({ locale }: BlogProps) => {
@@ -47,27 +48,32 @@ const Blog = ({ locale }: BlogProps) => {
     title: t('nextjs-nginx-deployment:title'),
     description: t('nextjs-nginx-deployment:pageDescription'),
     link: '/blog/nextjs-nginx-deployment',
-    timestamp: t('nextjs-nginx-deployment:timestamp')
+    timestamp: t('nextjs-nginx-deployment:timestamp'),
+    searchTags: t('nextjs-nginx-deployment:searchTags')
   }, {
     title: t('how-does-dns-work-and-why-we-need-dnssec:title'),
     description: t('how-does-dns-work-and-why-we-need-dnssec:pageDescription'),
     link: '/blog/how-does-dns-work-and-why-we-need-dnssec',
-    timestamp: t('how-does-dns-work-and-why-we-need-dnssec:timestamp')
+    timestamp: t('how-does-dns-work-and-why-we-need-dnssec:timestamp'),
+    searchTags: t('how-does-dns-work-and-why-we-need-dnssec:searchTags')
   }, {
     title: t('how-to-build-custom-dns-infrastructure:title'),
     description: t('how-to-build-custom-dns-infrastructure:pageDescription'),
     link: '/blog/how-to-build-custom-dns-infrastructure',
-    timestamp: t('how-to-build-custom-dns-infrastructure:timestamp')
+    timestamp: t('how-to-build-custom-dns-infrastructure:timestamp'),
+    searchTags: t('how-to-build-custom-dns-infrastructure:searchTags')
   }, {
     title: t('everything-you-need-to-know-about-hardening:title'),
     description: t('everything-you-need-to-know-about-hardening:pageDescription'),
     link: '/blog/everything-you-need-to-know-about-hardening',
-    timestamp: t('everything-you-need-to-know-about-hardening:timestamp')
+    timestamp: t('everything-you-need-to-know-about-hardening:timestamp'),
+    searchTags: t('everything-you-need-to-know-about-hardening:searchTags')
   }, {
     title: t('pki-infrastructure-or-how-to-build-your-own-vpn:title'),
     description: t('pki-infrastructure-or-how-to-build-your-own-vpn:pageDescription'),
     link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
-    timestamp: t('pki-infrastructure-or-how-to-build-your-own-vpn:timestamp')
+    timestamp: t('pki-infrastructure-or-how-to-build-your-own-vpn:timestamp'),
+    searchTags: t('pki-infrastructure-or-how-to-build-your-own-vpn:searchTags')
   }]);
 
   React.useEffect(() => {
@@ -187,6 +193,7 @@ const Blog = ({ locale }: BlogProps) => {
                   <PostTitle>{post.title}</PostTitle>
                   <PostTimestamp>{post.timestamp}</PostTimestamp>
                   <PostDescription>{post.description}</PostDescription>
+                  <PostDescription>{post.searchTags}</PostDescription>
                 </TestimonialArticle>
               ))}
             </TestimonialGrid>
