@@ -1,5 +1,6 @@
 import React from 'react';
 
+import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -21,7 +22,6 @@ import {
   TestimonialArticle,
   TestimonialGrid
 } from '@styles/blog.style';
-// import * as dayjs from 'dayjs';
 
 
 interface BlogProps {
@@ -87,9 +87,18 @@ const Blog = ({ locale }: BlogProps) => {
   };
 
   const sortByDate = (date: string) => {
-    if (date === '') setDateSort('ASC');
-    else if (date !== '' && date === 'ASC') setDateSort('DESC');
-    else setDateSort('ASC');
+    const currentPosts = allPosts;
+
+    if (date !== '' && date === 'ASC') {
+      setDateSort('DESC');
+      currentPosts.sort((a, b) => dayjs(b.timestamp).diff(a.timestamp));
+    }
+    else {
+      setDateSort('ASC');
+      currentPosts.sort((a, b) => dayjs(a.timestamp).diff(b.timestamp));
+    }
+
+    setAllPosts(currentPosts);
   };
 
   const sortByName = (sortType: string) => {
