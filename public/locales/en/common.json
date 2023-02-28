@@ -1,5 +1,6 @@
 {
   "tocTitle": "Table of contents",
   "searchPosts": "Search posts",
-  "searchProjects": "Search projects"
+  "searchProjects": "Search projects",
+  "postsNotFound": "Posts not found..."
 }

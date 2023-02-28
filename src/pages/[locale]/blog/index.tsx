@@ -14,11 +14,16 @@ import {
   AllPostsWrapper,
   BlogIntroWrapper,
   BlogPostsDescription,
-  BlogPostsTitle, ButtonWrapper, FoundPostWrapper,
+  BlogPostsTitle,
+  ButtonWrapper,
+  FoundPostWrapper,
   InputWrapper,
   PostDescription,
+  PostTag,
+  PostTags,
   PostTimestamp,
-  PostTitle, SettingsWrapper,
+  PostTitle,
+  SettingsWrapper,
   TestimonialArticle,
   TestimonialGrid
 } from '@styles/blog.style';
@@ -80,7 +85,10 @@ const Blog = ({ locale }: BlogProps) => {
     const foundSearchPosts: PostProps[] = [];
 
     allPosts.forEach((post) => {
-      if (searchString && post.title.toLowerCase().includes(searchString.toLowerCase())) {
+      if (
+        (searchString && post.title.toLowerCase().includes(searchString.toLowerCase())) ||
+        (searchString && post.searchTags.includes(searchString.toLowerCase()))
+      ) {
         foundSearchPosts.push(post);
       }
     });
@@ -182,10 +190,19 @@ const Blog = ({ locale }: BlogProps) => {
                     <PostTitle>{post.title}</PostTitle>
                     <PostTimestamp>{post.timestamp}</PostTimestamp>
                     <PostDescription>{post.description}</PostDescription>
+                    <PostTags>
+                      {post.searchTags.split(',').map((item, index) => (
+                        <PostTag key={index}>{item}</PostTag>
+                      ))}
+                    </PostTags>
                   </FoundPostWrapper>
                 </BlogIntroWrapper>
               ))}
             </>
+          ) : ((foundPosts.length === 0 && searchString.length > 0) ? (
+            <BlogPostsTitle>
+              {t('common:postsNotFound')}
+            </BlogPostsTitle>
           ) : (
             <TestimonialGrid>
               {allPosts.map((post, key) => (
@@ -193,11 +210,16 @@ const Blog = ({ locale }: BlogProps) => {
                   <PostTitle>{post.title}</PostTitle>
                   <PostTimestamp>{post.timestamp}</PostTimestamp>
                   <PostDescription>{post.description}</PostDescription>
-                  <PostDescription>{post.searchTags}</PostDescription>
+                  <PostTags>
+                    {post.searchTags.split(',').map((item, index) => (
+                      <PostTag key={index}>{item}</PostTag>
+                    ))}
+                  </PostTags>
                 </TestimonialArticle>
               ))}
             </TestimonialGrid>
-          )}
+
+          ))}
         </AllPostsWrapper>
       </DefaultLayout>
     </>

@@ -136,3 +136,15 @@ export const ButtonWrapper = styled.div`
     margin-left: 5px;
   }
 `;
+
+export const PostTags = styled.div`
+  display: flex;
+  margin-top: 1rem;
+`;
+
+export const PostTag = styled.p`
+  background: rgba(${(props) => props.theme.colors.darkBackground});
+  margin: 3px;
+  padding: 5px;
+  border-radius: 5px;
+`;
