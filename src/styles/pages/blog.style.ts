@@ -120,3 +120,19 @@ export const PostDescription = styled.p`
   font-weight: 300;
   color: rgb(${(props) => props.theme.colors.textColor}, .75);
 `;
+
+export const SettingsWrapper = styled.div`
+  position: relative;
+  display: flex;
+  margin: 15px 0;
+`;
+
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  :first-child {
+    margin-right: 5px;
+  }
+  :last-child {
+    margin-left: 5px;
+  }
+`;

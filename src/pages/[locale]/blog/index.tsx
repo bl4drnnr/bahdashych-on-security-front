@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import BasicButton from '@components/BasicButton/BasicButton.component';
 import BasicInput from '@components/BasicInput/BasicInput.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
@@ -12,14 +13,15 @@ import {
   AllPostsWrapper,
   BlogIntroWrapper,
   BlogPostsDescription,
-  BlogPostsTitle, FoundPostWrapper,
+  BlogPostsTitle, ButtonWrapper, FoundPostWrapper,
   InputWrapper,
   PostDescription,
   PostTimestamp,
-  PostTitle,
+  PostTitle, SettingsWrapper,
   TestimonialArticle,
   TestimonialGrid
 } from '@styles/blog.style';
+// import * as dayjs from 'dayjs';
 
 
 interface BlogProps {
@@ -38,7 +40,10 @@ const Blog = ({ locale }: BlogProps) => {
   const router = useRouter();
 
   const [searchString, setSearchString] = React.useState('');
-  const [allPosts,] = React.useState<PostProps[]>([{
+  const [dateSort, setDateSort] = React.useState('');
+  const [nameSort, setNameSort] = React.useState('');
+  const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
+  const [allPosts, setAllPosts] = React.useState<PostProps[]>([{
     title: t('nextjs-nginx-deployment:title'),
     description: t('nextjs-nginx-deployment:pageDescription'),
     link: '/blog/nextjs-nginx-deployment',
@@ -49,6 +54,11 @@ const Blog = ({ locale }: BlogProps) => {
     link: '/blog/how-does-dns-work-and-why-we-need-dnssec',
     timestamp: t('how-does-dns-work-and-why-we-need-dnssec:timestamp')
   }, {
+    title: t('how-to-build-custom-dns-infrastructure:title'),
+    description: t('how-to-build-custom-dns-infrastructure:pageDescription'),
+    link: '/blog/how-to-build-custom-dns-infrastructure',
+    timestamp: t('how-to-build-custom-dns-infrastructure:timestamp')
+  }, {
     title: t('everything-you-need-to-know-about-hardening:title'),
     description: t('everything-you-need-to-know-about-hardening:pageDescription'),
     link: '/blog/everything-you-need-to-know-about-hardening',
@@ -58,13 +68,7 @@ const Blog = ({ locale }: BlogProps) => {
     description: t('pki-infrastructure-or-how-to-build-your-own-vpn:pageDescription'),
     link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
     timestamp: t('pki-infrastructure-or-how-to-build-your-own-vpn:timestamp')
-  }, {
-    title: t('how-to-build-custom-dns-infrastructure:title'),
-    description: t('how-to-build-custom-dns-infrastructure:pageDescription'),
-    link: '/blog/how-to-build-custom-dns-infrastructure',
-    timestamp: t('how-to-build-custom-dns-infrastructure:timestamp')
   }]);
-  const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
 
   React.useEffect(() => {
     const foundSearchPosts: PostProps[] = [];
@@ -80,6 +84,26 @@ const Blog = ({ locale }: BlogProps) => {
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
+  };
+
+  const sortByDate = (date: string) => {
+    if (date === '') setDateSort('ASC');
+    else if (date !== '' && date === 'ASC') setDateSort('DESC');
+    else setDateSort('ASC');
+  };
+
+  const sortByName = (sortType: string) => {
+    const currentPosts = allPosts;
+
+    if (sortType !== '' && sortType === 'A -> Z') {
+      setNameSort('Z -> A');
+      currentPosts.sort((a, b) => b.title.localeCompare(a.title));
+    } else {
+      setNameSort('A -> Z');
+      currentPosts.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    setAllPosts(currentPosts);
   };
 
   return (
@@ -115,6 +139,20 @@ const Blog = ({ locale }: BlogProps) => {
               placeholder={t('common:searchPosts')}
               onChange={(e) => setSearchString(e.target.value)}
             />
+            <SettingsWrapper>
+              <ButtonWrapper>
+                <BasicButton
+                  text={dateSort !== '' ? dateSort : 'ASC/DESC'}
+                  onClick={() => sortByDate(dateSort)}
+                />
+              </ButtonWrapper>
+              <ButtonWrapper>
+                <BasicButton
+                  text={nameSort !== '' ? nameSort : 'A-Z'}
+                  onClick={() => sortByName(nameSort)}
+                />
+              </ButtonWrapper>
+            </SettingsWrapper>
           </InputWrapper>
 
           {foundPosts.length > 0 ? (
