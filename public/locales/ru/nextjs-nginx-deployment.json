@@ -1,6 +1,7 @@
 {
   "title": "NextJS Nginx Deployment",
   "tags": "nextjs,nginx,deployment,mikhail,bahdashych,mikhail bahdashych,blog",
+  "type": ["practice"],
   "description": "NextJS Nginx deployment process",
   "pageDescription": "Процесс развертывания всегда довольно напряженный, особенно если вы разработчик и не знакомы с тем, чем занимается команда DevOps. Что ж, вот самое простое решение о том, как вы можете развернуть свое приложение Next.js, используя Nginx и Let's encrypt для безопасной связи HTTPS. Ваша шпаргалка.",
   "searchTags": "nextjs,nginx,digitalocean,deployment",

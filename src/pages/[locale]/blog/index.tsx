@@ -27,6 +27,7 @@ import {
   TestimonialArticle,
   TestimonialGrid
 } from '@styles/blog.style';
+import Image from "next/image";
 
 
 interface BlogProps {
@@ -39,6 +40,7 @@ interface PostProps {
   link: string;
   timestamp: string;
   searchTags: string;
+  postType: string[];
 }
 
 const Blog = ({ locale }: BlogProps) => {
@@ -54,31 +56,36 @@ const Blog = ({ locale }: BlogProps) => {
     description: t('nextjs-nginx-deployment:pageDescription'),
     link: '/blog/nextjs-nginx-deployment',
     timestamp: t('nextjs-nginx-deployment:timestamp'),
-    searchTags: t('nextjs-nginx-deployment:searchTags')
+    searchTags: t('nextjs-nginx-deployment:searchTags'),
+    postType: t('nextjs-nginx-deployment:type', { returnObjects: true })
   }, {
     title: t('how-does-dns-work-and-why-we-need-dnssec:title'),
     description: t('how-does-dns-work-and-why-we-need-dnssec:pageDescription'),
     link: '/blog/how-does-dns-work-and-why-we-need-dnssec',
     timestamp: t('how-does-dns-work-and-why-we-need-dnssec:timestamp'),
-    searchTags: t('how-does-dns-work-and-why-we-need-dnssec:searchTags')
+    searchTags: t('how-does-dns-work-and-why-we-need-dnssec:searchTags'),
+    postType: t('how-does-dns-work-and-why-we-need-dnssec:type', { returnObjects: true })
   }, {
     title: t('how-to-build-custom-dns-infrastructure:title'),
     description: t('how-to-build-custom-dns-infrastructure:pageDescription'),
     link: '/blog/how-to-build-custom-dns-infrastructure',
     timestamp: t('how-to-build-custom-dns-infrastructure:timestamp'),
-    searchTags: t('how-to-build-custom-dns-infrastructure:searchTags')
+    searchTags: t('how-to-build-custom-dns-infrastructure:searchTags'),
+    postType: t('how-to-build-custom-dns-infrastructure:type', { returnObjects: true })
   }, {
     title: t('everything-you-need-to-know-about-hardening:title'),
     description: t('everything-you-need-to-know-about-hardening:pageDescription'),
     link: '/blog/everything-you-need-to-know-about-hardening',
     timestamp: t('everything-you-need-to-know-about-hardening:timestamp'),
-    searchTags: t('everything-you-need-to-know-about-hardening:searchTags')
+    searchTags: t('everything-you-need-to-know-about-hardening:searchTags'),
+    postType: t('everything-you-need-to-know-about-hardening:type', { returnObjects: true })
   }, {
     title: t('pki-infrastructure-or-how-to-build-your-own-vpn:title'),
     description: t('pki-infrastructure-or-how-to-build-your-own-vpn:pageDescription'),
     link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
     timestamp: t('pki-infrastructure-or-how-to-build-your-own-vpn:timestamp'),
-    searchTags: t('pki-infrastructure-or-how-to-build-your-own-vpn:searchTags')
+    searchTags: t('pki-infrastructure-or-how-to-build-your-own-vpn:searchTags'),
+    postType: t('pki-infrastructure-or-how-to-build-your-own-vpn:type', { returnObjects: true })
   }]);
 
   React.useEffect(() => {
@@ -194,6 +201,16 @@ const Blog = ({ locale }: BlogProps) => {
                       {post.searchTags.split(',').map((item, index) => (
                         <PostTag key={index}>{item}</PostTag>
                       ))}
+                      {post.postType.map((typeItem, index) => (
+                        <Image
+                          key={index}
+                          className={'icon'}
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
+                          alt={'icon'}
+                          width={22}
+                          height={22}
+                        />
+                      ))}
                     </PostTags>
                   </FoundPostWrapper>
                 </BlogIntroWrapper>
@@ -213,6 +230,16 @@ const Blog = ({ locale }: BlogProps) => {
                   <PostTags>
                     {post.searchTags.split(',').map((item, index) => (
                       <PostTag key={index}>{item}</PostTag>
+                    ))}
+                    {post.postType.map((typeItem, index) => (
+                      <Image
+                        key={index}
+                        className={'icon'}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
+                        alt={'icon'}
+                        width={22}
+                        height={22}
+                      />
                     ))}
                   </PostTags>
                 </TestimonialArticle>

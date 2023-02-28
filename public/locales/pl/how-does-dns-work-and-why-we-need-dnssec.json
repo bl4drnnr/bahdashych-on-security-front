@@ -1,6 +1,7 @@
 {
   "title": "Jak działa DNS i dlaczego potrzebujemy DNSSEC",
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+  "type": ["theory"],
   "description": "Słyszałeś kiedyś o DNS? Założę się, że tak! Założę się również, że jeśli próbowałeś dowiedzieć się, o co w tym wszystkim chodzi, widziałeś DNSSEC. Cóż... czas dowiedzieć się, jak głęboka jest ta królicza nora...",
   "pageDescription": "Chyba wszyscy słyszeliście o DNS. To jest internetowa książka telefoniczna, która konwertuje czytelne dla człowieka nazwy domen na adresy IP przetwarzane przez maszyny i bla-bla-bla. Szczerze mówiąc, to dosłownie królicza nora i postanowiłem dowiedzieć się, jak głęboka jest. Cóż, zaufaj mi, będziesz zaskoczony, a ja mam cholernie ciekawe rzeczy do podzielenia się z tobą. Więc zanurzmy się w to!",
   "searchTags": "dns,dnssec",

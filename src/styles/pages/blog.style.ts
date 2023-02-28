@@ -140,6 +140,7 @@ export const ButtonWrapper = styled.div`
 export const PostTags = styled.div`
   display: flex;
   margin-top: 1rem;
+  align-items: center;
 `;
 
 export const PostTag = styled.p`

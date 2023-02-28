@@ -1,6 +1,7 @@
 {
   "title": "Jak zbudować własną DNS infrastrukturę",
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+  "type": ["practice"],
   "description": "",
   "pageDescription": "Niech zgadnę, jeśli kiedykolwiek słyszałeś o DNS i bawiłeś się tymi ustawieniami na swoim komputerze, większość rzeczy, które zrobiłeś, to zmiana adresu IP serwera DNS z lokalnego routera na 1.1.1.1 lub 8.8.8.8. Cóż, nieźle, ale co z budowaniem własnej infrastruktury DNS, co? Brzmi nieźle! Będziesz miał prawie całkowitą kontrolę nad swoją siecią, ale nie spiesz się, my będziemy mieli czas...",
   "searchTags": "dns,dnssec",
