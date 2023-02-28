@@ -1,8 +1,10 @@
 {
   "title": "How to build custom DNS infrastructure",
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
+  "type": ["practice"],
   "description": "",
   "pageDescription": "Let me guess, if you have ever heard about DNS and you have been playing around with those settings on your computer, the most thing you have done is change DNS server IP address from your local router to 1.1.1.1 or 8.8.8.8. Well, not bad, but what about building your own DNS infrastructure, huh? Sounds cool! You will have almost complete control over your network, but take your time, we will have time...",
+  "searchTags": "dns,dnssec",
   "intro": "This writeup contains different scenarios that you can utilize while building your own custom DNS infrastructure. Just your DNS cheatsheet.",
   "timestamp": "2023-03-25",
   "footer": "",
@@ -401,7 +403,32 @@
     "But wait a second, if we are controlling all sources of the traffic, we can manipulate it, right? I have seen this spark in your eyes. You are 100% correct. If you're looking for a way to block ads or unwanted traffic on your network, using an Unbound DNS server is a powerful and flexible solution. By setting up an Unbound DNS server and configuring it to block queries to known ad servers and other problematic domains, you can greatly improve your browsing experience and protect your network from potential threats.",
     "Now, we are going to discuss how we can manipulate the traffic handled by our Unbound server. Honestly, here, we are going to talk mostly about blocking different Ad servers or just blocking traffic. Of course, you can, for example, change the IP address of cached domain and this way redirect the traffic, but you know, seems like shady zone, isn't it? Basically, it's possible to implement, but the only obstacle on your way is certificates. It won't be enough to just replace the domain with different IP address, you will also need to make client machines or other endpoints trust this certificate.",
     "Here, we are going to consider only the end implementation of it. What about sources of different Ad servers? Well, you will find a lot of them on the Internet, but for this example I used this <a href='https://github.com/StevenBlack/hosts' class='inline-link en'>repo</a>.",
-    "One obvious thing is that, talking about infrastructure that we have build in previous sections, in this case, it doesn't matter, which server we will reconfigure to block the traffic.",
+    "One obvious thing is that, talking about infrastructure that we have build in previous sections, in this case, it doesn't matter, which server we will reconfigure to block the traffic. So, here is how you can do that, let's say, we want to block access to facebook.com. The only thing you need to do is to add this line:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "local-zone: \"facebook.com\" always_nxdomain"
+    },
+    "And that's it, now, if you try to dig this domain name, you will see that there is no IP address in a response:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig facebook.com\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> facebook.com\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 63607\n;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;facebook.com.\t\t\tIN\tA\n\n;; Query time: 0 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Tue Feb 28 10:42:56 CET 2023\n;; MSG SIZE  rcvd: 41"
+    },
+    "In the similar way you can block traffic from ad servers (I have sent above where you can find list of them). Also, in some writeups you will see that they are blocking traffic this way:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "local-zone: \"doubleclick.net\" redirect\nlocal-data: \"doubleclick.net A 127.0.0.1\""
+    },
+    "Well, even though it works also correctly, I wouldn't use it, and here is why. There are 2 main reasons for that:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "<b>Performance</b> — as you can see, in that case we are trying to redirect our traffic to localhost, and the issue is that it requires resources to do that. In case of <span class='code-block'>always_nxdomain</span> we just tell: \"Okay, this is dead end.\"",
+        "<b>Behaviour of the end client</b> — different machines differently react on an attempt to redirection traffic to localhost. But they almost similar behaviour, when getting <span class='code-block'>nxdomain</span>. This won't be a problem, if you have access to all devices on your network and have ability to manage their software (browser, in this particular case). Especially, it can create problems on Linux machines with Firefox as a browser."
+      ]
+    },
     {
       "type": "title",
       "content": "Conclusions"

@@ -1,10 +1,12 @@
 {
   "title": "Infrastruktura PKI, czyli jak zbudować własny VPN",
   "tags": "",
+  "type": ["theory", "practice"],
   "description": "",
   "pageDescription": "Czy kiedykolwiek myślałeś o tym, jak działa VPN? Myślę, że ta technologia stała się tak dużą częścią nowoczesnego biznesu i całej jej infrastruktury, której nawet o tym nie myślimy. I byłoby tego warte! Dzisiaj omówimy, w jaki sposób możemy zbudować naszą infrastrukturę VPN i ogólnie dowiemy się, jak to wszystko działa.",
+  "searchTags": "pki,vpn,digitalocean,terraform",
   "intro": "",
-  "timestamp": "",
+  "timestamp": "2023-02-18",
   "footer": "",
   "toc": {
     "intro": "Introduction"

@@ -20,11 +20,11 @@ export const InputField = styled.input`
   font-weight: 100;
   
   &:focus {
-    border: 1px solid rgba(${(props) => props.theme.colors.primaryDark}, .6);
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight}, .6);
   }
 
   &:hover {
-    border: 1px solid rgba(${(props) => props.theme.colors.primaryDark}, .6);
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight}, .6);
   }
 
   &.en {

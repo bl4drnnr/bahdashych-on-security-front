@@ -1,5 +1,6 @@
 {
   "tocTitle": "Оглавление",
   "searchPosts": "Поиск постов",
-  "searchProjects": "Поиск проектов"
+  "searchProjects": "Поиск проектов",
+  "postsNotFound": "Посты не найдены..."
 }

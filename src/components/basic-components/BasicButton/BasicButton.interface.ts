@@ -1,3 +1,5 @@
 export interface BasicButtonProps {
-  title: string;
+  text: string;
+  small?: boolean;
+  onClick?: () => void | never;
 }

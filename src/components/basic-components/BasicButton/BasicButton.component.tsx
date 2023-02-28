@@ -1,10 +1,20 @@
 import React from 'react';
 
-const BasicButton = () => {
-  return (
-    <div>
+import classNames from 'classnames';
 
-    </div>
+import { BasicButtonProps } from '@components/BasicButton/BasicButton.interface';
+import { ButtonContent, Container, BasicButtonBox } from '@styles/BasicButton.style';
+
+const BasicButton = ({
+ text,
+ onClick,
+}: BasicButtonProps) => {
+  return (
+    <Container>
+      <BasicButtonBox onClick={onClick}>
+        <ButtonContent>{text}</ButtonContent>
+      </BasicButtonBox>
+    </Container>
   );
 };
 
