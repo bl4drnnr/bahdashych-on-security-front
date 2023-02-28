@@ -401,7 +401,32 @@
     "Ale chwileczkę, jeśli kontrolujemy wszystkie źródła ruchu, możemy nim manipulować, prawda? Widziałem tę iskierkę w twoich oczach. Masz 100% racji. Jeśli szukasz sposobu na blokowanie reklam lub niechcianego ruchu w swojej sieci, skorzystanie z Unbound serwera DNS to wydajne i elastyczne rozwiązanie. Konfigurując Unbound serwer DNS i konfigurując go tak, aby blokował zapytania do znanych serwerów reklam i innych problematycznych domen, możesz znacznie poprawić jakość przeglądania i chronić swoją sieć przed potencjalnymi zagrożeniami.",
     "Teraz omówimy, w jaki sposób możemy manipulować ruchem obsługiwanym przez nasz serwer Unbound. Szczerze mówiąc, tutaj będziemy rozmawiać głównie o blokowaniu różnych serwerów reklam lub po prostu blokowaniu ruchu. Oczywiście można na przykład zmienić adres IP domeny z pamięci podręcznej iw ten sposób przekierować ruch, ale wiesz, wydaje się to zacienioną strefą, prawda? Zasadniczo jest to możliwe do wdrożenia, ale jedyną przeszkodą na drodze są certyfikaty. Nie wystarczy po prostu zamienić domenę na inny adres IP, trzeba będzie również sprawić, aby komputery klienckie lub inne punkty końcowe zaufały temu certyfikatowi.",
     "Tutaj rozważymy tylko końcową implementację. Co ze źródłami różnych serwerów reklam? Cóż, znajdziesz ich wiele w Internecie, ale w tym przykładzie użyłem tego <a href='https://github.com/StevenBlack/hosts' class='inline-link en'>repo</a >.",
-    "Jedną oczywistą rzeczą jest to, że mówiąc o infrastrukturze, którą zbudowaliśmy w poprzednich sekcjach, w tym przypadku nie ma znaczenia, który serwer przekonfigurujemy, aby zablokować ruch.",
+    "Jedną oczywistą rzeczą jest to, że mówiąc o infrastrukturze, którą zbudowaliśmy w poprzednich sekcjach, w tym przypadku nie ma znaczenia, który serwer przekonfigurujemy, aby zablokować ruch. Oto jak możesz to zrobić, powiedzmy, że chcemy zablokować dostęp do facebook.com. Jedyne, co musisz zrobić, to dodać tę linię:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "local-zone: \"facebook.com\" always_nxdomain"
+    },
+    "I to wszystko, teraz, jeśli spróbujesz wykopać tę nazwę domeny, zobaczysz, że w odpowiedzi nie ma adresu IP:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig facebook.com\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> facebook.com\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 63607\n;; flags: qr aa rd ra; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;facebook.com.\t\t\tIN\tA\n\n;; Query time: 0 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Tue Feb 28 10:42:56 CET 2023\n;; MSG SIZE  rcvd: 41"
+    },
+    "W podobny sposób możesz zablokować ruch z serwerów reklamowych (przesłałem powyżej, gdzie znajdziesz ich listę). Ponadto w niektórych opisach zobaczysz, że blokują ruch w ten sposób:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "local-zone: \"doubleclick.net\" redirect\nlocal-data: \"doubleclick.net A 127.0.0.1\""
+    },
+    "Cóż, mimo że działa również poprawnie, nie użyłbym go, a oto dlaczego. Są ku temu 2 główne powody:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "<b>Wydajność</b> — jak widać, w takim przypadku próbujemy przekierować nasz ruch na localhost, a problem polega na tym, że wymaga to zasobów. W przypadku <span class='code-block'>always_nxdomain</span> mówimy po prostu: \"Dobra, to ślepy zaułek\".",
+        "<b>Zachowanie klienta końcowego</b> — różne maszyny różnie reagują na próbę przekierowania ruchu do hosta lokalnego. Ale zachowują się prawie podobnie, gdy otrzymują <span class='code-block'>nxdomain</span>. Nie będzie to problemem, jeśli masz dostęp do wszystkich urządzeń w sieci i potrafisz zarządzać ich oprogramowaniem (w tym przypadku przeglądarką). Szczególnie może powodować problemy na komputerach z systemem Linux z przeglądarką Firefox."
+      ]
+    },
     {
       "type": "title",
       "content": "Wnioski"
