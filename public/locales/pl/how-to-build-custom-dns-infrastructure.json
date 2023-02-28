@@ -1,14 +1,432 @@
 {
-  "title": "",
+  "title": "Jak zbudować własną DNS infrastrukturę",
   "tags": "mikhail,bahdashych,mikhail bahdashych,blog,dns,dnssec",
   "description": "",
   "pageDescription": "Niech zgadnę, jeśli kiedykolwiek słyszałeś o DNS i bawiłeś się tymi ustawieniami na swoim komputerze, większość rzeczy, które zrobiłeś, to zmiana adresu IP serwera DNS z lokalnego routera na 1.1.1.1 lub 8.8.8.8. Cóż, nieźle, ale co z budowaniem własnej infrastruktury DNS, co? Brzmi nieźle! Będziesz miał prawie całkowitą kontrolę nad swoją siecią, ale nie spiesz się, my będziemy mieli czas...",
-  "intro": "",
-  "timestamp": "",
+  "intro": "Ten zapis zawiera różne scenariusze, które można wykorzystać podczas tworzenia własnej niestandardowej infrastruktury DNS. Tylko twoja ściągawka DNS.",
+  "timestamp": "2023-03-25",
   "footer": "",
   "toc": {
-    "intro": "Wstęp"
+    "intro": "Wstęp",
+    "reqs": "Wymagania wstępne",
+    "Scenariusze": {
+      "Konfiguracja Unbound DNS": {
+        "dnsRecCachingResolver": "DNS Recursive Caching Resolver",
+        "testDns": "Testowanie DNS przez TLS i normalny DNS",
+        "dnssecAndDot": "Włączanie DNS przez TLS i DNSSEC",
+        "certificateGenerating": "Jak generować certyfikaty z podpisem własnym",
+        "dotBetweenResolvers": "DNS przez TLS między 2 resolwerami",
+        "dnsTlsEndpoints": "DNS przez TLS dla klientów",
+        "blockAd": "Jak zablokować serwery reklam lub inny ruch"
+      }
+    },
+    "conclusions": "Wnioski",
+    "referencesAndContact": "Referencje i kontakt"
   },
-  "content": [],
-  "references": []
+  "content": [
+    {
+      "type": "title",
+      "content": "Wstęp"
+    },
+    "Cóż, zanim zaczniemy naszą podróż w świecie niestandardowych serwerów DNS, chciałbym powiedzieć kilka słów. Po pierwsze, domyślam się, że z tytułu artykułu domyśliliście się, że coś zbudujemy, a więc będzie to coś bardzo praktycznego, dlatego nie będę omawiał DNS od podstaw. Jeśli chcesz dowiedzieć się więcej o DNS, zapraszamy <a href='https://blog.mikhailbahdashych.me/en/blog/how-does-dns-work-and-why-we-need-dnssec' class='inline-link en'>tutaj</a>, w tym artykule uznano, że wiesz, jaka jest różnica między rekursywnym programem rozpoznawania nazw DNS, serwerem głównym, głównym serwerem nazw itp.",
+    "Po drugie, należy pamiętać o tym, że każdy przypadek jest wyjątkowy. DNS dotyczy ról, a role dotyczą po prostu różnych zestawów konfiguracji. I zamierzam tutaj opisać różne scenariusze implementacji, bardziej trafne byłoby stwierdzenie, że tutaj zostaną zaimplementowane tylko komponenty. Chciałem tylko o tym wspomnieć, ponieważ być może szukasz jakiegoś konkretnego przypadku użycia, który omówię lub nie. Nie będę więc omawiał takich przypadków. Zamiast tego chcę po prostu pokazać, jak zbudować różne komponenty, których możesz używać lub nie w swojej konfiguracji, takie jak komunikacja DoT między 2 resolwerami DNS.",
+    "Ostatnią rzeczą, o której chcę wspomnieć, jest to, że zamierzam stale aktualizować ten opis, dodając (lub edytując, w zależności od problemu) nowe konfiguracje. Zobaczysz więc znacznik czasu, w którym momencie działała wersja.",
+    {
+      "type": "title",
+      "content": "Wymagania wstępne"
+    },
+    "Chyba nie muszę opisywać, czego możesz lub powinieneś użyć do zbudowania tego, co chcesz. Jeśli tu jesteś, założę się, że już wiesz, czego chcesz. W każdym razie chciałbym powiedzieć, czego używałem podczas budowania i testowania, abyś nie miał kłopotów z powodu niekompatybilności.",
+    {
+      "type": "list-bullet",
+      "items": [
+        "<b>Raspberry PI Model 4B (Ubuntu Server 22.04)</b> — był używany jako instancja lokalna w mojej sieci lokalnej.",
+        "<b>AWS Ubuntu Server 22.04 (t2.micro)</b> — został użyty jako zdalna instancja.",
+        "<b>MacBook Pro 2019 Intel Core i5 (mój Mac)</b> — był używany jako klient końcowy."
+      ]
+    },
+    "Jako nasze oprogramowanie serwerowe zamierzamy używać Unbound (wersja 1.13.1) oraz NSD.",
+    {
+      "type": "title",
+      "content": "Scenariusze"
+    },
+    "Jak wspomniałem powyżej, napiszę o różnych przypadkach, które mogą okazać się przydatne dla tego, co możesz zrobić ze swoją infrastrukturą. Każdy scenariusz to tylko konfiguracja, możesz je łatwo mieszać, aby zbudować to, co chcesz. Po prostu eksperymentuj, koleś, tak się uczysz!",
+    {
+      "type": "subtitle",
+      "content": "Konfiguracja Unbound DNS"
+    },
+    "Unbound DNS Server to potężny i elastyczny mechanizm rozpoznawania nazw DNS, który został zaprojektowany z myślą o szybkości i bezpieczeństwie. Dzięki Unbound DNS Server możesz mieć niezawodne i bezpieczne narzędzie do rozpoznawania nazw DNS, które zapewnia szybkie i dokładne rozpoznawanie zapytań DNS. Jak zwykle pierwszy krok:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo apt update && sudo apt upgrade\n$ sudo apt install unbound resolvconf"
+    },
+    "Prawdopodobnie już zauważyłeś, oprócz samego Unbound, instalujemy pakiet <span class='code-block'>resolvconf</span>. Z uwagi na to, że Unbound ma zastąpić domyślny DNS stub-resolver systemu Ubuntu i przejąć jego port, wyraźnie powiemy, z jakiego serwera nazw DNS będziemy korzystać.",
+    {
+      "type": "subsubtitle",
+      "content": "DNS Recursive Caching Resolver"
+    },
+    "Przede wszystkim rozważmy scenariusz, w którym chcemy po prostu zastąpić domyślny serwer DNS przez dostawcę usług internetowych własnym, niestandardowym. Więc, jak możemy to zrobić? Cóż, wszystko jest dość proste, musimy skonfigurować <b>DNS Recursive Caching Resolver</b>. Widać więc, że ma już 2 role:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "<b>Recursive</b> — rekurencyjne oznacza, że żądanie rekordu DNS będzie wyglądać następująco: Daj mi to, czego potrzebuję, i poproś wszystkich, których chcesz.",
+        "<b>Caching</b> — nasz serwer będzie przechowywał dane przez jakiś czas. Zazwyczaj jest to 24 godziny."
+      ]
+    },
+    "Po zainstalowaniu serwera przejdźmy więc do katalogu konfiguracyjnego Unbound:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ cd /etc/unbound"
+    },
+    "Tutaj jest przechowywany plik konfiguracyjny Unbound. Zanim przystąpimy do edycji tego pliku, dobrze byłoby uzyskać jeszcze jedną rzecz — a jest to plik zawierający listę serwerów root. Ten plik zawiera informacje o serwerach głównych potrzebne do zainicjowania pamięci podręcznej serwerów nazw domen internetowych.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo ftp -o /etc/unbound/root.hints https://www.internic.net/domain/named.root"
+    },
+    "A teraz jesteśmy gotowi do pracy i konfiguracji naszego serwera DNS. W pliku konfiguracyjnym znajdziesz również moje komentarze z opisem różnych opcji ustawień, z którymi możesz się pobawić, abyś mógł je zmienić według swoich potrzeb. Nie będę opisywał tego wszystkiego, ponieważ jest to bezużyteczne, ale możesz sprawdzić dokumentację Unbound.",
+    "Jedna ważna uwaga dotycząca tej konfiguracji. To jest bardzo waniliowe. Nie ma ani DNSSEC (ale musimy to wyraźnie wyłączyć), ani DoT czy DoH. Należy również wziąć pod uwagę protokół IPv6 dla konkretnej konfiguracji, ponieważ niektóre sieci i/lub dostawca usług internetowych po prostu nie obsługują tej wersji protokołu internetowego, więc może być konieczne jego wyłączenie.",
+    "Otwórz plik <span class='code-block'>unbound.conf</span> i wklej następną zawartość:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo nano unbound.conf"
+    },
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# Unbound configuration file for Debian.\n#\n# See the unbound.conf(5) man page.\n#\n# See /usr/share/doc/unbound/examples/unbound.conf for a commented\n# reference config file.\n#\n# The following line includes additional configuration files from the\n# /etc/unbound/unbound.conf.d directory.\ninclude-toplevel: \"/etc/unbound/unbound.conf.d/*.conf\"\n\nremote-control:\n\tcontrol-enable: yes\n\tcontrol-use-cert: no\n\n# ---------------------------------------------\n# Server configuration\n# ---------------------------------------------\n\nserver:\n\t# Basically, this line tell us that interface is listened\n\t# to for queries from clients, and answers to client are give from it.\n\t# This line tells that our server is listening to all interfaces on port 53.\n\t# The fisrt one is for IPv4. The second one is for IPv4.\n\tinterface: 0.0.0.0@53\n\tinterface: ::1@53\n\n\taccess-control: 127.0.0.0/8 allow\n\taccess-control: 0.0.0.0/0 allow\n\taccess-control: ::0/0 allow\n\n# ---------------------------------------------\n# Functionality settings\n# ---------------------------------------------\n\nroot-hints: \"/etc/unbound/root.hints\"\n\n# Hide version and identity of the server\nhide-identity: yes\nhide-version: yes\n\ndo-ip4: yes\t# Enable IPv4\ndo-ip6: yes\t# Enable IPv6\ndo-udp: yes\t# Enable UDP\ndo-tcp: yes\t# Enable TCP\n\n# Optimizations. Change it depending on your instance\nnum-threads: 1\n# Number of ports to open. This number of file descriptors can be opened per thread.\noutgoing-range: 1024\n\n# Mininum and maximum time to live for cache. Number of hosts for which information is cached\ncache-min-ttl: 2400\ncache-max-ttl: 86400\ninfra-cache-numhosts: 100000\n\n# Use 0x20-encoded random bits in the query to foil spoof attempts\nuse-caps-for-id: yes\n\n# If yes, message cache elements are prefetched before they expire to keep the cache up to date.\n# Turning it on gives about 10 percent more traffic and load on the machine, but popular items do not expire from the cache.\nprefetch: yes\n\n# Have the validator print validation failures to the log.\n# Regardless of the verbosity setting.\nval-log-level: 2\n\n# Local Resolver Functions\ndo-not-query-localhost: no\n\n# ---------------------------------------------\n# DNS (Regular)\n# ---------------------------------------------\nforward-zone:\n\tname: \".\"\n\n\t# Regular DNS\n\tforward-addr: 1.1.1.1@53 # Cloudflare primary\n\tforward-addr: 1.0.0.1@53 # Cloudflare secondary\n\n\t# Google\n\tforward-addr: 8.8.8.8@53 # Google primary\n\tforward-addr: 8.8.4.4@53 # Google secondary\n\n\t# Quad9 (Slowest, only serve as backup when the faster are temporarily down.)\n\tforward-addr: 9.9.9.9@53  # Quad9 primary\n\tforward-addr: 9.9.9.10@53 # Quad9 secondary"
+    },
+    "Nie spiesz się z ponownym uruchomieniem serwera Unbound. Chcemy również mieć pewność, że nawet po restarcie instancji:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "Nasz Unbound serwer uruchomi się automatycznie podczas uruchamiania.",
+        "Domyślnym programem rozpoznawania nazw DNS będzie 127.0.0.1 nawet po ponownym uruchomieniu."
+      ]
+    },
+    "Z pierwszym wszystko jest dość łatwe:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo systemctl enable unbound"
+    },
+    "Sprawy stają się nieco bardziej interesujące, jeśli chodzi o drugą rzecz. Domyślnie Ubuntu uruchamia systemd-resolved stub resolver, który nasłuchuje na <span class='code-block'>127.0.0.53:53</span>. Musisz go zatrzymać, aby Unbound mógł powiązać się z <span class='code-block'>0.0.0.0:53</span>. Możesz się upewnić, że systemd-resolved stub resolver wykorzystuje port 53:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo lsof -i:53\nCOMMAND    PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\nsystemd-r  733 systemd-resolve   13u  IPv4  22619      0t0  UDP 127.0.0.53:domain\nsystemd-r  733 systemd-resolve   14u  IPv4  22620      0t0  TCP 127.0.0.53:domain (LISTEN)\nunbound   3447         unbound    3u  IPv6  32974      0t0  UDP localhost:domain\nunbound   3447         unbound    4u  IPv6  32975      0t0  TCP localhost:domain (LISTEN)\nunbound   3447         unbound    5u  IPv4  32976      0t0  UDP localhost:domain\nunbound   3447         unbound    6u  IPv4  32977      0t0  TCP localhost:domain (LISTEN)"
+    },
+    "Ciekawe, prawda? Widzisz, teraz, po instalacji Unbound, został on automatycznie skonfigurowany i dlatego widzisz 2 różne procesy — Unbound i systemd-resolved — korzystające z tego samego portu.",
+    "Możesz także sprawdzić plik <span class='code-block'>/etc/resolv.conf</span> i zobaczyć, że Unbound zastąpił systemd-resolved stub resolver, który nasłuchuje na <span class='code-block'>127.0.0.53:53</span> z własnym:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "$ cat /etc/resolv.conf\n# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)\n#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN\n# 127.0.0.53 is the systemd-resolved stub resolver.\n# run \"systemd-resolve --status\" to see details about the actual nameservers.\n\nnameserver 127.0.0.1\noptions edns0 trust-ad"
+    },
+    "Ale nie myśl, że wszystko jest w porządku, po pierwsze, wcześniej zmodyfikowaliśmy Unbound, więc musimy go zrestartować, ale ponieważ domyślne Ubuntu korzysta teraz z tego portu, otrzymamy błąd, dlatego musimy wyłączyć systemd-resolved stub resolver:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo systemctl disable systemd-resolved --now"
+    },
+    "Zapewni to, że po restarcie serwera Unbound systemd-resolved nie zajmie tego portu 53. Mamy jednak jeszcze 2 rzeczy do dokończenia:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "Zamienić domyślny program rozpoznawania nazw DNS na ten z Unbound.",
+        "Upewnić się, że po ponownym uruchomieniu DNS resolver jest taki sam, jak ustawiliśmy."
+      ]
+    },
+    "Musimy sprawić, aby serwer Ubuntu 22.04/20.04 używał 127.0.0.1 jako mechanizmu rozpoznawania nazw DNS, więc Unbound będzie odpowiadać na zapytania DNS. Pakiet Unbound na Ubuntu jest dostarczany z usługą systemową <span class='code-block'>unbound-resolvconf.service</span>, która ma nam w tym pomóc. Stwierdziłem jednak, że to nie zadziała.",
+    "Zamiast tego możesz utworzyć niestandardowy plik <span class='code-block'>unbound-resolvconf.service</span>.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo nano /etc/systemd/system/unbound-resolvconf.service"
+    },
+    "Dodaj następujące wiersze w tym pliku.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "[Unit]\nDescription=local unbound via resolvconf\nAfter=unbound.service\nConditionFileIsExecutable=/sbin/resolvconf\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/bin/sh -c 'echo nameserver 127.0.0.1 | /sbin/resolvconf -a lo.unbound'\nExecStop=/sbin/resolvconf -d lo.unbound\n\n[Install]\nWantedBy=unbound.service"
+    },
+    "Zapisz i zamknij ten plik. Następnie ponownie załaduj systemd i uruchom ponownie tę usługę.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo systemctl daemon-reload\n$ sudo systemctl restart unbound-resolvconf.service"
+    },
+    "Teraz sprawdź zawartość <span class='code-block'>/etc/resolv.conf</span>.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "$ cat /etc/resolv.conf\n# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)\n#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN\n# 127.0.0.53 is the systemd-resolved stub resolver.\n# run \"systemd-resolve --status\" to see details about the actual nameservers.\n\nnameserver 127.0.0.1"
+    },
+    "I skończyliśmy tutaj! W tej chwili masz w pełni skonfigurowany prosty mechanizm rekurencyjnego buforowania DNS. Jeśli chcesz to przetestować, po prostu wykonaj kilka poleceń <span class='code-block'>dig</span>. Przede wszystkim sprawdźmy, czy proste dig działa. Następnie testujemy go za pomocą TLS.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig google.com\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 2312\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t2400\tIN\tA\t172.217.16.142\n\n;; Query time: 163 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Sat Feb 25 15:00:09 CET 2023\n;; MSG SIZE  rcvd: 55"
+    },
+    "Możesz zobaczyć, że używamy naszego adresu lokalnego hosta w celu wykonywania próśb o rozwiązanie problemu. Teraz sprawdźmy, czy DoT jest włączone lokalnie i czy faktycznie działa. Aby to zrobić, musimy zaznaczyć flagę <span class='code-block'>+tls</span>:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig google.com +tls\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n;; Connection to 127.0.0.1#853(127.0.0.1) for google.com failed: connection refused.\n\nroot@raspberrypi:/etc/unbound# dig google.com +tls @1.1.1.1\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com +tls @1.1.1.1\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39720\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n; PAD: (409 bytes)\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t235\tIN\tA\t142.250.186.206\n\n;; Query time: 83 msec\n;; SERVER: 1.1.1.1#853(1.1.1.1) (TLS)\n;; WHEN: Sat Feb 25 15:01:41 CET 2023\n;; MSG SIZE  rcvd: 468"
+    },
+    "Widać, że nie działa to w przypadku żądania lokalnego, ale jeśli zmienimy adres serwera DNS za pomocą <span class='code-block'>@</span> na inny (na przykład cloudflare), możemy zobaczyć, że faktycznie działa, a w sekcji SERVER odpowiedzi możemy zobaczyć adres IP serwera cloudflare DNS oraz port 853, który odpowiada za DoT.",
+    "A co z DNSSEC? Jak wspomniałem na początku, musimy to wyraźnie wyłączyć. Nic wielkiego, jest tylko linia, którą musimy skomentować w naszym pliku konfiguracyjnym.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "auto-trust-anchor-file: \"/var/lib/unbound/root.key\""
+    },
+    "Myślę, że (przynajmniej na mojej wersji serwera Unbound — 1.13.1) nie zobaczysz tej linii w pliku <span class='code-block'>unbound.conf</span>, ale tak naprawdę jest. Aby go znaleźć, przejdź do <span class='code-block'>/ect/unbound/unbound.conf.d</span>. Znajdziesz tam plik <span class='code-block'>root-auto-trust-anchor-file.conf</span>, który domyślnie wygląda tak:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "server:\n\t# The following line will configure unbound to perform cryptographic\n\t# DNSSEC validation using the root trust anchor.\n\tauto-trust-anchor-file: \"/var/lib/unbound/root.key\""
+    },
+    "Skomentuj tę linię i sprawdźmy, czy wszystko działa (lub nie działa w tym przypadku). Jest jednak jedna ważna rzecz, o której należy wspomnieć wcześniej, aby upewnić się, że DNSSEC działa, podczas wykonywania <span class='code-block'>dig</span> należy zwrócić uwagę na 2 rzeczy — <span class ='code-block'>AD</span> w sekcji <span class='code-block'>HEADER</span> i podpis <span class='code-block'>RRSIG</span>. Kolejną ważną rzeczą, o której należy wspomnieć, jest to, że nie każda nazwa domeny obsługuje DNSSEC. Dobra, dość teorii, wszystko lepiej na przykładach.",
+    "Na początek weźmiemy domenę cyberciti.biz i przyjrzymy się, jak działa domyślnie, gdy DNSSEC jest włączony po naszej stronie. Aby to sprawdzić podczas kopania wstaw opcję <span class='code-block'>+dnssec</span>:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig cyberciti.biz +dnssec\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> cyberciti.biz +dnssec\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19105\n;; flags: qr rd ra ad; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.40.203\ncyberciti.biz.\t\t2400\tIN\tRRSIG\tA 13 2 300 20230228173208 20230226153208 34505 cyberciti.biz. jcb7Qtuld4Pdqv1BQGArBIEmBJwqh3aXWvjzzSeMXvZ5fBISOyEd9Y/o 6VIELt8jBtlYcf6pw7l745MhUxFX+A==\n\n;; Query time: 1068 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Mon Feb 27 17:32:09 CET 2023\n;; MSG SIZE  rcvd: 183"
+    },
+    "Patrząc na tę odpowiedź, możemy upewnić się, że DNSSEC jest włączony — mamy AD (Authentic Data): wskazuje, że resolver uważa odpowiedzi za autentyczne — to znaczy zweryfikowane przez DNSSEC, widzimy RRSIG: podpis kryptograficzny, w sekcji SERWER widzimy że odpytujemy localhost, w zasadzie nasz serwer Unbound. Teraz skomentujemy tę linię i przyjrzymy się, co się stanie:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig cyberciti.biz +dnssec\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> cyberciti.biz +dnssec\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 1086\n;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.40.203\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t2400\tIN\tRRSIG\tA 13 2 300 20230228173722 20230226153722 34505 cyberciti.biz. KMI1240BcJb2EOdURgnujU/qUeClQOtQKYd46IoMT1MjYHc2Cuxn8l2E f6SmWgOD3d+dx39enUsQgN0tXCNOZA==\n\n;; Query time: 223 msec\n;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)\n;; WHEN: Mon Feb 27 17:37:22 CET 2023\n;; MSG SIZE  rcvd: 183"
+    },
+    "Ok, nadal używamy naszego serwera Unbound, nadal widzimy podpis <span class='code-block'>RRSIG</span> (ale ten podpis zawsze był <span class='code-block'>+dnssec</span > właśnie to pokazałem), ale nie ma flagi AD. Oznacza to, że rekord nie został zweryfikowany, dlatego DNSSEC jest wyłączone.",
+    "Jest jeszcze jedna rzecz, którą powinieneś rozważyć. Jeśli twój serwer nie ma włączonej ochrony DNSSEC, nie oznacza to, że serwer, którego używasz jako przekierowanie, również jej nie ma. Spróbujmy użyć innego serwera DNS do rozpoznawania adresów, na przykład cloudflare.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig cyberciti.biz +dnssec @1.1.1.1\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> cyberciti.biz +dnssec @1.1.1.1\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21077\n;; flags: qr rd ra ad; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t300\tIN\tA\t172.66.40.203\ncyberciti.biz.\t\t300\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t300\tIN\tRRSIG\tA 13 2 300 20230228174212 20230226154212 34505 cyberciti.biz. 6J5JY30o9nYfqO1uErRZvsQW8/bkIa4v/j7lNeSOkHiMjIGUydrNTvTL OGgH8tvY6XkAuULogNqJHinj21ltQw==\n\n;; Query time: 47 msec\n;; SERVER: 1.1.1.1#53(1.1.1.1) (UDP)\n;; WHEN: Mon Feb 27 17:42:12 CET 2023\n;; MSG SIZE  rcvd: 183"
+    },
+    "Widzisz, wyłączyliśmy walidację DNSSEC, ale cloudflare DNS nadal ją ma. Ponadto, jak powiedziałem, uważaj na nazwy domen, których używasz do testowania sprawdzania poprawności DNSSEC, na przykład nazwa domeny google.com nie ma DNSSEC, nawet jeśli używamy serwera DNS, który ma sprawdzanie poprawności DNSSEC.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# dig google.com +dnssec @1.1.1.1\n\n; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> google.com +dnssec @1.1.1.1\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 63160\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags: do; udp: 1232\n;; QUESTION SECTION:\n;google.com.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ngoogle.com.\t\t190\tIN\tA\t142.250.203.206\n\n;; Query time: 35 msec\n;; SERVER: 1.1.1.1#53(1.1.1.1) (UDP)\n;; WHEN: Mon Feb 27 17:43:36 CET 2023\n;; MSG SIZE  rcvd: 55"
+    },
+    {
+      "type": "subsubtitle",
+      "content": "Testowanie DNS przez TLS i normalny DNS"
+    },
+    "Teraz omówmy, jak możemy włączyć <b>DoT — DNS przez TLS</b>. Właściwie jest to całkiem proste, wystarczy dodać kilka linii do naszej konfiguracji. Zanim to nastąpi, chcę Wam pokazać, że taka konfiguracja rzeczywiście działa i żeby to zaimplementować, zdecydowałem się na sniffowanie ruchu, aby przyjrzeć się, jak to wygląda z perspektywy sieci.",
+    "Istnieje mnóstwo różnych narzędzi, których możesz użyć do wąchania ruchu. Najpopularniejsze to <span class='code-block'>tcpdump</span> i <span class='code-block'>ettercap</span>, więc używaj tego, co chcesz. W moim przypadku używałem <span class='code-block'>ettercap</span>, ponieważ mój Unbound serwer DNS został umieszczony w mojej sieci lokalnej na moim Raspberry PI. Zasadniczo po prostu wykonuję atak Man-in-the-middle i przechwytuję ruch między moim routerem a Raspberry PI. <b>To nielegalne, nie rób tego NIE we własnych sieciach.</b>",
+    "Przeprowadziłem 2 testy — pierwszy dotyczył podstawowej konfiguracji (bez DNS przez TLS). Do tego testu użyłem konfiguracji, którą można znaleźć w poprzedniej sekcji. Drugi dotyczył konfiguracji z DoT. Zmieniłem nieco poprzednią konfigurację (można ją znaleźć w następnej sekcji), aby działała przez DoT.",
+    "Użyłem <span class='code-block'>dig google.com</span> do obu testów, a także opróżniałem pamięć podręczną dla tej nazwy domeny przed każdym testem. A oto co mam. Dla podstawowej konfiguracji mamy to:",
+    {
+      "type": "picture",
+      "width": "w100",
+      "resource": "no-dns-over-tls.jpeg"
+    },
+    "Adres IP 192.168.8.112 to adres IP Raspberry PI w mojej sieci lokalnej i, jak widać, wysyła on żądania rozpoznawania DNS w postaci zwykłego tekstu dla google.com do drugiego serwera cloudflare o adresie IP 1.0.0.1.",
+    "Wyczyśćmy pamięć podręczną dla tego rekordu, zmieńmy nieco nasz plik konfiguracyjny, aby działał przez TLS i spójrzmy, co mamy:",
+    {
+      "type": "picture",
+      "width": "w80",
+      "resource": "dns-over-tls.jpeg"
+    },
+    "W tej chwili, jak widać, mamy cały ruch przez TLS. Możemy stwierdzić, że to zdecydowanie żądania DNS, po prostu patrząc na źródłowy i docelowy adres IP. W tym przypadku jest to główny serwer DNS cloudflare.",
+    "Teraz, mając pewność, że udało nam się zaszyfrować ruch przy użyciu TLS, zmienimy nieco naszą konfigurację.",
+    {
+      "type": "subsubtitle",
+      "content": "Włączanie DNS przez TLS i DNSSEC"
+    },
+    "Zaczniemy zabezpieczać nasze połączenie DNS, szyfrując je. DNS przez TLS zapewni szyfrowanie ruchu między serwerami DNS. Jeśli weźmiemy pod uwagę, że zamierzam używać Raspberry Pi jako mojego lokalnego serwera DNS, ruch z mojego komputera do Raspberry Pi będzie nadal w postaci zwykłego tekstu (może to być problem, ponieważ jest to możliwe miejsce ataku Man-in-the-Middle, ale omówimy to trochę później), ale z mojego Raspberry Pi na zewnętrzny serwer będzie już zaszyfrowany.",
+    "Oto jak zmienimy naszą konfigurację, aby działała przez TLS:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# These certificates are used for authenticating connections made to outside peers.\ntls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\"\n\nforward-zone:\n\tname: \".\"\n\t# Enabled or disable whether the queries to this forwarder use TLS for transport.\n\t# If you enable this, also configure a tls-cert-bundle: or use tls-win-cert: to load CA certs,\n\t# otherwise the connections cannot be authenticated.\n\tforward-tls-upstream: yes\n\n\t# Here, as you can see, we are using the same servers,\n\t# But instead of port 53, which is default DNS, \n\t# we are using 853, which is DNS over TLS\n\tforward-addr: 1.0.0.1@853 # Cloudflare secondary\n\tforward-addr: 1.1.1.1@853 # Cloudflare primary"
+    },
+    {
+      "type": "subsubtitle",
+      "content": "Jak generować certyfikaty z podpisem własnym"
+    },
+    "Zanim zaczniemy dyskusję o tym, jak możemy zaszyfrować ruch między 2 resolwerami DNS, musimy dowiedzieć się, jak wygenerować dla nich certyfikaty. Ogólnie rzecz biorąc, mamy w tym przypadku 2 podejścia:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "Możemy stworzyć CSR i uzyskać podpisanie go przez CA.",
+        "Możemy stworzyć certyfikat z podpisem własnym."
+      ]
+    },
+    "Szczerze mówiąc, nie ma między nimi dużej różnicy. Jak zapewne już się domyśliłeś z tytułu tego podtematu, będziemy generować certyfikat samopodpisany i jedyną dodatkową rzeczą, którą musimy w tym przypadku zrobić, to dodać ten certyfikat do zaufanych (ze względu na samopodpisanie).",
+    "W tym artykule nie będziemy omawiać całej infrastruktury PKI, ale jeśli nie jesteś z nią zaznajomiony, gorąco polecam przejście do <a href='https://blog.mikhailbahdashych.me/en/blog/pki- Infrastructure-or-how-to-build-your-own-vpn' class='inline-link en'>tutaj</a> i przeczytaj o tym (moim zdaniem musi to mieć).",
+    "Więc przede wszystkim utwórz plik o nazwie <span class='code-block'>config.cnf</span> i wklej następną zawartość:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# --------------------------------------------------------------\n# First of all we need to generate certificates that we will use\n# to encrypt traffic between our servers. It can be either by CA\n# or, like here, self-signed one.\n# --------------------------------------------------------------\n# SSLeay example configuration file.\n#\n# Touch /home/user/.rnd\nRANDFILE \t= $ENV::HOME/.rnd\n\n[ req ]\ndefault_bits \t= 4096\ndefault_keyfile \t= privkey.pem\ndistinguished_name \t= req_distinguished_name\nprompt \t= no\npolicy \t= policy_anything\nreq_extensions = v3_req\n\n[ req_distinguished_name ]\ncountryName \t= US\nstateOrProvinceName \t= New York\nlocalityName \t= Troy\norganizationName \t= OrgName\norganizationalUnitName \t= IT\ncommonName \t= cn.commonname.org\nemailAddress \t= it@orgname.org\n\n[ v3_req ]\n# Extensions to add to a certificate request\nbasicConstraints = CA:FALSE\nkeyUsage = nonRepudiation, digitalSignature, keyEncipherment\nsubjectAltName = @alt_names\n\n[alt_names]\nDNS.1 = cn.commonname.org\n#DNS.2 = cisecurity.org\n#DNS.3 = www.example.com\n#DNS.4 = www.sub.example.com\n#DNS.5 = mx.example.com\n#DNS.6 = support.example.com"
+    },
+    "Zmień dane w sekcji <span class='code-block'>req_distinguished_name</span> i <span class='code-block'>alt_names</span> na swoje dane. Następnie użyj tego polecenia, które wygeneruje certyfikat i klucz prywatny (zmień nazwy, jeśli chcesz).",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# --------------------------------------------------------------\n# This is how we generate the certificate and the private key.\n# --------------------------------------------------------------\n$ openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out dns_server_cert.crt -keyout dns_key.key -config config.cnf"
+    },
+    "Teraz masz certyfikat i klucz prywatny i możemy przejść dalej i rozpocząć konfigurację DNS przez TLS między 2 resolwerami DNS.",
+    {
+      "type": "subsubtitle",
+      "content": "DNS przez TLS między 2 resolwerami"
+    },
+    "Kiedy dwa resolwery DNS komunikują się ze sobą za pomocą DoT, najpierw ustanawiają połączenie TLS, wymieniając certyfikaty i negocjując parametry szyfrowania. Po nawiązaniu połączenia program tłumaczący klienta wysyła zapytanie DNS przez zaszyfrowany kanał, a program tłumaczący serwera odsyła odpowiedź tym samym kanałem. Ponieważ cała wymiana jest zaszyfrowana, atakującym jest znacznie trudniej przechwycić lub zmodyfikować ruch DNS.",
+    "DoT między resolwerami DNS zapewnia dodatkową warstwę bezpieczeństwa, prywatności i niezawodności dla ruchu DNS. Ustanawiając bezpieczny, zaszyfrowany kanał między programami rozpoznawania nazw DNS, może pomóc w zapobieganiu atakom związanym z DNS, poprawić szybkość i niezawodność zapytań DNS oraz umożliwić równoważenie obciążenia i redundancję. Ponieważ coraz więcej użytkowników i organizacji traktuje priorytetowo bezpieczeństwo i prywatność w swoich działaniach online, DoT staje się coraz ważniejszym protokołem bezpiecznej i prywatnej komunikacji DNS.",
+    "Założę się, że możesz mi powiedzieć: \"Dobra, ale o co w tym chodzi? Wygląda na to, że jest to komunikacja między serwerami, dlatego jest mało prawdopodobne, że ktoś będzie podsłuchiwał moją komunikację\". Cóż, technicznie rzecz biorąc, masz rację. Możesz używać publicznego DNS przez serwery TLS, takie jak wspomniany wcześniej cloudflare — <b>1.1.1.1@853</b> — a kiedy ruch będzie opuszczał Twoją sieć, będzie już zaszyfrowany, ale nie biorąc pod uwagę różne rodzaje komunikacji.",
+    "Nawiązanie tej komunikacji może być przydatne, gdy masz jeden serwer DNS w siedzibie firmy i jeden poza nią. Dlatego chcesz zaszyfrować ten ruch. Ponadto, zanim zaczniemy, pokażę strukturę mojej sieci z perspektywy protokołu DNS:",
+    {
+      "type": "code",
+      "lang": "",
+      "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|"
+    },
+    {
+      "type": "list-bullet",
+      "items": [
+        "<b>Raspberry PI</b> — Wewnętrzny DNS caching resolver.",
+        "<b>AWS Unbound Server</b> — Zewnętrzny DNS caching resolver."
+      ]
+    },
+    "Jeśli przyjrzymy się teraz bliżej tej strukturze, możemy zauważyć kilka rzeczy:",
+    {
+      "type": "list-numeric",
+      "items": [
+        "W zależności od konfiguracji AWS Unbound Server ruch w tej części tego schematu — <span class='code-block'>AWS Unbound Server --- Internet</span> — będzie szyfrowany lub nie. W poprzedniej sekcji omówiliśmy, w jaki sposób możemy zaszyfrować ten ruch.",
+        "Na razie ta część sieci — <span class='code-block'>MacBook --- Raspberry PI --- Router --- AWS Unbound Server</span> — nadal przesyła ruch w postaci zwykłego tekstu. Jak widać, ruch opuszcza naszą sieć niezaszyfrowaną, czego zdecydowanie nie chcemy. Tak, jak pokazano w poprzedniej sekcji, mogę używać Raspberry PI jako lokalnego serwera DNS i przekazywać ruch przez port 853 przy użyciu DNS przez TLS, ale w tym scenariuszu musiałbym użyć publicznych serwerów DNS, takich jak Cloudflare lub Google, ale chcemy zaszyfrować komunikację między 2 naszymi serwerami.",
+        "Być może niektórzy z was zauważyli, że chociaż możemy zaszyfrować ruch z wewnętrznego mechanizmu rozpoznawania pamięci podręcznej do serwera docelowego, ruch przechodzący z mojego komputera Mac do Raspberry PI jest nadal niezaszyfrowany i na tym polega problem. Zasadniczo możemy chronić ruch wychodzący z naszej sieci, ale jeśli ktoś węszy ruch wewnętrznie, może go wąchać między moim komputerem Mac a routerem jako zwykły tekst. Problem w tej sytuacji polega na tym, że zależy to od rodzaju posiadanego systemu. W każdym razie pokażę ci, jak możesz się przed tym chronić."
+      ]
+    },
+    "Jak zapewne się domyślacie, będziemy szyfrować ruch między Raspberry Pi a serwerem AWS Unbound, aby opuszczał on naszą sieć w postaci zaszyfrowanej i aby serwer AWS Unbound mógł ten ruch odszyfrować. Następnie, biorąc pod uwagę, że korzystamy z DoT Cloudflare, DNS Google lub Quad9, serwer AWS Unbound prześle ten ruch do Internetu w postaci zaszyfrowanej. Dlatego będziemy mieli tylko jedno miejsce, w którym powinniśmy szyfrować ruch, aby zapobiec atakowi typu Man-in-the-Middle — <span class='code-block'>MacBook --- Router</span>.",
+    "Przede wszystkim musimy wygenerować klucz prywatny i certyfikat za pomocą konfiguracji i polecenia podanego powyżej. Zrobiłem to już na moim Raspberry PI i umieściłem je w folderze serwera.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@raspberrypi:/etc/unbound# ll\ntotal 48\ndrwxr-xr-x   3 root root 4096 Feb 25 20:29 ./\ndrwxr-xr-x 101 root root 4096 Feb 25 13:00 ../\n-rw-r--r--   1 root root 1000 Feb 25 20:29 config.cnf\n-rw-------   1 root root 3272 Feb 25 20:29 dns_key.key\n-rw-r--r--   1 root root 2004 Feb 25 20:29 dns_server_cert.crt\n-rw-r--r--   1 root root 3314 Feb 25 07:50 root.hints\n-rw-r--r--   1 root root 2759 Feb 25 16:21 unbound.conf\ndrwxr-xr-x   2 root root 4096 Feb 25 15:17 unbound.conf.d/\n-rw-------   1 root root 2484 Feb 25 13:00 unbound_control.key\n-rw-r-----   1 root root 1501 Feb 25 13:00 unbound_control.pem\n-rw-------   1 root root 2484 Feb 25 13:00 unbound_server.key\n-rw-r-----   1 root root 1549 Feb 25 13:00 unbound_server.pem"
+    },
+    "Teraz musimy zrobić 2 rzeczy:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "Zainstalować certyfikat głównego urzędu certyfikacji w magazynie zaufanych certyfikatów.",
+        "Przenieść ten certyfikat i klucz prywatny na zdalny serwer AWS Unbound i zmienić trochę konfigurację."
+      ]
+    },
+    "Pierwszy punkt jest dość łatwy do wykonania, ale należy wspomnieć, że nawet jeśli nie ma różnicy <span class='code-block'>.pem</span> a <span class='code-block'>. crt</span> dla Unbound, nadal istnieje różnica w procesie instalacji.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# --------------------------------------------------------------\n# On our local server we need to add this certificate to tursted\n# --------------------------------------------------------------\n$ sudo apt-get install -y ca-certificates\n$ sudo cp dns_server_cert.crt /usr/local/share/ca-certificates\n$ sudo update-ca-certificates"
+    },
+    "Teraz mamy nasz certyfikat w zaufanym sklepie, pamiętasz tę linijkę, którą umieściliśmy w naszej konfiguracji dla serwera Raspberry PI Unbound? Tutaj jest przechowywany.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "tls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\""
+    },
+    "Dla drugiego też wszystko nie jest takie skomplikowane. Używając <span class='code-block'>scp</span> lub po prostu kopiując, przenieś zarówno certyfikat, jak i klucz na inny serwer i umieść je w katalogu Unbound.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# --------------------------------------------------------------\n# Send certificates to remote server\n# -------------------------------------------------------------- \n$ scp -i ssh.pem dns_* ubuntu@<ip-address-of-remote-server>:/tmp"
+    },
+    "Na zdalnym serwerze przenieś te 2 pliki do katalogu Unbound i zmień właściciela na root lub unbound, w zależności od konfiguracji:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# -------------------------------------------------------------- \n# After cetificate and key have been send to                     \n# remote server we need to put then into unbound directory and   \n# and change ownership to either root or unbound user           \n# --------------------------------------------------------------\n$ cd /etc/unbound\n$ mv /tmp/dns_* .\n$ chown root:root dns_*"
+    },
+    "Teraz musimy trochę zmodyfikować konfigurację naszego zdalnego serwera. Przede wszystkim musimy powiedzieć, że od teraz używamy 2 interfejsów — portu 53, który jest wspólnym DNS, oraz portu 853, który jest domyślnym portem DNS przez TLS. Musimy również wskazać naszemu serwerowi, że musi używać klucza prywatnego i certyfikatu do procesu szyfrowania.",
+    "Ponadto, jak zapewne zauważyłeś, w forward-zone zmuszamy nasz serwer do korzystania z TLS i informujemy, że dostępne są tylko serwery przez port DoT 853 dla naszego Unbound resolvera. Ponadto, jak widać, ustawiliśmy nasz certyfikat i klucz prywatny, aby móc korzystać z połączenia TLS:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# -----------------------------------------------------------------\n# Here, we need to add interface on port 853                        \n# add our certificate and private key                             \n# and (optionally, but recommended) use TLS also to forward traffic\n# -----------------------------------------------------------------\n\ninclude-toplevel: \"/etc/unbound/unbound.conf.d/*.conf\"\n\nserver:\n\tinterface: 0.0.0.0@53\n\tinterface: 0.0.0.0@853\n\n\ttls-service-key: \"/etc/unbound/dns_key.key\"\n\ttls-service-pem: \"/etc/unbound/dns_server_cert.crt\"\n\n\t# Enabled or disable whether the queries to this stub use TLS for transport.\n\ttls-upstream: yes\n\ttls-cert-bundle: \"/etc/ssl/certs/ca-certificates.crt\"\n\nforward-zone:\n\tname: \".\"\n\n\t# DNS over TLS\n\tforward-tls-upstream: yes\n\tforward-addr: 1.0.0.1@853 # Cloudflare secondary\n\tforward-addr: 1.1.1.1@853 # Cloudflare primary"
+    },
+    "Ale to nie wszystko, musimy jeszcze zmienić konfigurację Raspberry PI, aby teraz przekierowywał ruch nie na publiczny serwer DNS (mimo, że było to szyfrowane połączenie z Cloudflare), ale na nasz zdalny serwer DNS.",
+    "Jedyne, co musimy zmienić w pliku konfiguracyjnym naszego serwera Raspberry PI Unbound, to sekcja <span class='code-block'>forward-zone</span>. Musimy ustawić <span class='code-block'>forward-tls-upstream</span> na <span class='code-block'>yes</span> i zmienić <span class='code-block' >forward-addr</span> na adres IP zdalnego serwera (nie zapomnij o porcie 853):",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# --------------------------------------------------------------\n# Also make sure that for forward-addr you use                   \n# IP address of your remote server                               \n# --------------------------------------------------------------\n\nforward-zone:\n\tname: \".\"\n\tforward-tls-upstream: yes\n\tforward-addr: <ip-address-of-remote-server>@853"
+    },
+    "Co zatem mamy w rezultacie? Podsumujmy! Używamy 2 Unbound serwerów. Pierwszy jest on-premise zlokalizowany w naszej sieci lokalnej. Działa na Raspberry PI. Drugi znajduje się w chmurze. Mamy zaszyfrowaną komunikację między nimi, więc ruch wychodzący z sieci jest zaszyfrowany, w tej formie trafia na zdalny serwer, a następnie, również przy użyciu DNS przez TLS, jest przesyłany do Internetu — na zewnętrzny serwer DNS. Zrobiłem kilka testów i oto jak to zrobić.",
+    "Wykonałem przechwytywanie ruchu między Raspberry PI a routerem, aby upewnić się, że ruch opuszcza sieć w postaci zaszyfrowanej i nadal jestem w stanie rozwiązać nazwę domeny i uzyskać adres IP żądanego zasobu.",
+    "Po rozpoczęciu przechwytywania ruchu opróżniłem pamięć podręczną serwera lokalnego i spróbowałem rozwiązać nazwę domeny. 192.168.8.112 to adres IP Raspberry PI w mojej sieci lokalnej.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ dig cyberciti.biz @192.168.8.112\n\n; <<>> DiG 9.10.6 <<>> cyberciti.biz @192.168.8.112\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55757\n;; flags: qr rd ra ad; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;cyberciti.biz.\t\t\tIN\tA\n\n;; ANSWER SECTION:\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.43.53\ncyberciti.biz.\t\t2400\tIN\tA\t172.66.40.203\n\n;; Query time: 534 msec\n;; SERVER: 192.168.8.112#53(192.168.8.112)\n;; WHEN: Sun Feb 26 11:55:30 CET 2023\n;; MSG SIZE  rcvd: 74"
+    },
+    {
+      "type": "picture",
+      "width": "w100",
+      "resource": "end-to-end-dot.jpeg"
+    },
+    "I voila! Udało nam się rozwiązać adres IP, a przechwycony ruch pokazuje nam, że trafia on do serwera docelowego przez TLS. Świetnie! Nie martw się, jeśli to dla Ciebie za dużo, sprawdź moje <a href='https://gist.github.com/bl4drnnr' class='inline-link en'>GitHub Gists</a>, aby znaleźć wszystkie pliki konfiguracyjne .",
+    "Ponadto tutaj możesz zobaczyć dowód, że ruch DNS, który przechodzi z mojego komputera do routera, jest nadal niezaszyfrowany, więc naprawmy to.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": ";; SERVER: 192.168.8.112#53(192.168.8.112)"
+    },
+    "Przy okazji, pamiętasz ten datagram sieciowy? W ten sposób mieliśmy to przed nawiązaniem szyfrowanego połączenia między 2 resolwerami DNS:",
+    {
+      "type": "code",
+      "lang": "",
+      "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|\n|_____Unencrypted_______|__Unencrypted__|___ Encrypted (optionally)___|"
+    },
+    "A tak to wygląda po:",
+    {
+      "type": "code",
+      "lang": "",
+      "content": "MacBook --- Raspberry PI --- Router --- AWS Unbound Server --- Internet\n|__________Internal network________|_________External network_________|\n|_____Unencrypted_______|___Encrypted___|______Encrypted______________|"
+    },
+    "Jak widzisz, mamy tylko jedno ostatnie miejsce, w którym musimy chronić naszą sieć. I to jest komunikacja między punktem końcowym a lokalnym serwerem DNS.",
+    {
+      "type": "subsubtitle",
+      "content": "DNS przez TLS dla klientów"
+    },
+    {
+      "type": "subsubtitle",
+      "content": "Jak zablokować serwery reklam lub inny ruch"
+    },
+    "Ale chwileczkę, jeśli kontrolujemy wszystkie źródła ruchu, możemy nim manipulować, prawda? Widziałem tę iskierkę w twoich oczach. Masz 100% racji. Jeśli szukasz sposobu na blokowanie reklam lub niechcianego ruchu w swojej sieci, skorzystanie z Unbound serwera DNS to wydajne i elastyczne rozwiązanie. Konfigurując Unbound serwer DNS i konfigurując go tak, aby blokował zapytania do znanych serwerów reklam i innych problematycznych domen, możesz znacznie poprawić jakość przeglądania i chronić swoją sieć przed potencjalnymi zagrożeniami.",
+    "Teraz omówimy, w jaki sposób możemy manipulować ruchem obsługiwanym przez nasz serwer Unbound. Szczerze mówiąc, tutaj będziemy rozmawiać głównie o blokowaniu różnych serwerów reklam lub po prostu blokowaniu ruchu. Oczywiście można na przykład zmienić adres IP domeny z pamięci podręcznej iw ten sposób przekierować ruch, ale wiesz, wydaje się to zacienioną strefą, prawda? Zasadniczo jest to możliwe do wdrożenia, ale jedyną przeszkodą na drodze są certyfikaty. Nie wystarczy po prostu zamienić domenę na inny adres IP, trzeba będzie również sprawić, aby komputery klienckie lub inne punkty końcowe zaufały temu certyfikatowi.",
+    "Tutaj rozważymy tylko końcową implementację. Co ze źródłami różnych serwerów reklam? Cóż, znajdziesz ich wiele w Internecie, ale w tym przykładzie użyłem tego <a href='https://github.com/StevenBlack/hosts' class='inline-link en'>repo</a >.",
+    "Jedną oczywistą rzeczą jest to, że mówiąc o infrastrukturze, którą zbudowaliśmy w poprzednich sekcjach, w tym przypadku nie ma znaczenia, który serwer przekonfigurujemy, aby zablokować ruch.",
+    {
+      "type": "title",
+      "content": "Wnioski"
+    },
+    "Podsumowując, wybór odpowiedniej konfiguracji serwera DNS ma kluczowe znaczenie dla zapewnienia niezawodnego i bezpiecznego przeglądania Internetu. Serwery DNS Unbound i NSD oferują różne konfiguracje, które mogą zaspokoić różne potrzeby i preferencje. Od prostych, samodzielnych instalacji po bardziej złożone konfiguracje, które obejmują równoważenie obciążenia i redundancję, istnieje konfiguracja, która może spełnić Twoje specyficzne wymagania. Niezależnie od tego, czy jesteś administratorem sieci, właścicielem firmy, czy zwykłym użytkownikiem, warto zapoznać się z tymi opcjami, aby zobaczyć, w jaki sposób mogą poprawić Twoje wrażenia z korzystania z Internetu. Wykorzystując moc serwerów Unbound i NSD DNS, możesz cieszyć się szybszym, bezpieczniejszym i wydajniejszym przeglądaniem Internetu, niezależnie od lokalizacji lub urządzenia.",
+    "W dzisiejszym artykule przyjrzeliśmy się różnym typom konfiguracji, które mogą okazać się przydatne we własnej infrastrukturze DNS. Pamiętaj, że nie ma jednego przełącznika, który można włączyć lub wyłączyć, aby włączyć lub wyłączyć funkcje. Zawsze jest to zestaw różnych opcji, których możesz użyć lub nie. Wszystko zależy od tego, jaką rolę ma pełnić Twój serwer DNS iw jakim środowisku. Mam nadzieję, że uznałeś to za przydatne, tak jak powiedziałem, zamierzam od czasu do czasu aktualizować ten post, dodając nowe typy zestawów konfiguracyjnych lub aktualizując stare.",
+    {
+      "type": "title",
+      "content": "Referencje i kontakt"
+    }
+  ],
+  "references": [{
+    "name": "Mój GitHub gists zawiera wszystkie pliki konfiguracyjne",
+    "link": "https://gist.github.com/bl4drnnr"
+  }, {
+    "name": "Porównanie oprogramowania serwera DNS",
+    "link": "https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software"
+  }, {
+    "name": "Dokumentacja pliku konfiguracyjnego Unbound",
+    "link": "https://unbound.docs.nlnetlabs.nl/en/latest/manpages/unbound.conf.html"
+  }, {
+    "name": "Konfiguracja Unbound DNS Resolver na serwerze Ubuntu 22.04/20.04",
+    "link": "https://www.linuxbabe.com/ubuntu/set-up-unbound-dns-resolver-on-ubuntu-20-04-server"
+  }, {
+    "name": "Instalowanie certyfikatu głównego urzędu certyfikacji w magazynie zaufanych certyfikatów",
+    "link": "https://ubuntu.com/server/docs/security-trust-store"
+  }]
 }
