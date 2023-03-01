@@ -39,7 +39,7 @@ interface PostProps {
   description: string;
   link: string;
   timestamp: string;
-  searchTags: string;
+  searchTags: string[];
   postType: string[];
   show: boolean;
 }
@@ -70,7 +70,7 @@ const Blog = ({ locale }: BlogProps) => {
         description: t(`${post}:pageDescription`),
         link: `/blog/${post}`,
         timestamp: t(`${post}:timestamp`),
-        searchTags: t(`${post}:searchTags`),
+        searchTags: t(`${post}:searchTags`, { returnObjects: true }),
         postType: t(`${post}:type`, { returnObjects: true }),
         show: true
       });
@@ -132,7 +132,7 @@ const Blog = ({ locale }: BlogProps) => {
 
     if (t.includes(sortType)) t.splice(t.indexOf(sortType), 1);
     else t.push(sortType);
-    
+
     setPostTypeSort(t);
 
     const localTheory = t.includes('theory');
@@ -245,7 +245,7 @@ const Blog = ({ locale }: BlogProps) => {
                     <PostTimestamp>{post.timestamp}</PostTimestamp>
                     <PostDescription>{post.description}</PostDescription>
                     <PostTags>
-                      {post.searchTags.split(',').map((item, index) => (
+                      {post.searchTags.map((item, index) => (
                         <PostTag key={index}>{item}</PostTag>
                       ))}
                       {post.postType.map((typeItem, index) => (
@@ -276,7 +276,7 @@ const Blog = ({ locale }: BlogProps) => {
                     <PostTimestamp>{post.timestamp}</PostTimestamp>
                     <PostDescription>{post.description}</PostDescription>
                     <PostTags>
-                      {post.searchTags.split(',').map((item, index) => (
+                      {post.searchTags.map((item, index) => (
                         <PostTag key={index}>{item}</PostTag>
                       ))}
                       {post.postType.map((typeItem, index) => (

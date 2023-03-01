@@ -4,7 +4,7 @@
   "type": ["theory", "practice"],
   "description": "",
   "pageDescription": "Instance hardening refers to the process of securing an instance, which is a single occurrence of a virtual or physical machine that is running an operating system and hosting applications or services. The objective of instance hardening is to minimize the risk of unauthorized access to the instance, protect the data and applications hosted on it, and prevent any compromise of the system.",
-  "searchTags": "server,hardening,instance",
+  "searchTags": ["server", "hardening", "instance"],
   "intro": "",
   "timestamp": "2023-02-19",
   "footer": "",

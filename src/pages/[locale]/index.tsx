@@ -12,17 +12,24 @@ import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
   BlogPostDescription,
   BlogPostPreview,
-  BlogPostsContainer, BlogPostTitle,
-  Container, InterestingPosts,
+  BlogPostsContainer,
+  BlogPostTimestamp,
+  BlogPostTitle,
+  Container,
+  InterestingPosts,
   IntroTextBox,
   IntroTextWrapper,
-  TypewritingText
+  TypewritingText,
+  PostTag,
+  PostTagsWrapper
 } from '@styles/home.style';
 
 interface PostProps {
   title: string;
   description: string;
   link: string;
+  timestamp: string;
+  searchTags: string[];
 }
 
 interface HomeProps {
@@ -33,19 +40,36 @@ const Home = ({ locale }: HomeProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
+  const [interestingPosts, setInterestingPosts] = React.useState<PostProps[]>([]);
+  const [scroll, setScroll] = React.useState(false);
+
+  React.useEffect(() => {
+    // @ts-ignore
+    const allInterestingPosts = process.env.NEXT_PUBLIC_INTERESTING_POSTS.split(',');
+    const posts: PostProps[] = [];
+
+    allInterestingPosts.forEach((post) => {
+      posts.push({
+        title: t(`${post}:title`),
+        description: t(`${post}:pageDescription`),
+        link: `/blog/${post}`,
+        timestamp: t(`${post}:timestamp`),
+        searchTags: t(`${post}:searchTags`, { returnObjects: true })
+      });
+    });
+
+    setInterestingPosts(posts);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', () => {
+      setScroll(window.scrollY > 250);
+    });
+  }, []);
+
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
   };
-
-  const [bestPosts,] = React.useState<PostProps[]>([{
-    title: t('nextjs-nginx-deployment:title'),
-    description: t('nextjs-nginx-deployment:pageDescription'),
-    link: '/blog/nextjs-nginx-deployment'
-  }, {
-    title: t('how-does-dns-work-and-why-we-need-dnssec:title'),
-    description: t('how-does-dns-work-and-why-we-need-dnssec:pageDescription'),
-    link: '/blog/how-does-dns-work-and-why-we-need-dnssec'
-  }]);
 
   return (
     <>
@@ -108,13 +132,20 @@ const Home = ({ locale }: HomeProps) => {
               />
             </InterestingPosts>
 
-            {bestPosts.map((post, key) => (
+
+            {interestingPosts.map((post, key) => (
               <BlogPostPreview
                 key={key}
                 onClick={() => handleRedirect(post.link)}
               >
                 <BlogPostTitle>{post.title}</BlogPostTitle>
                 <BlogPostDescription>{post.description}</BlogPostDescription>
+                <BlogPostTimestamp>{post.timestamp}</BlogPostTimestamp>
+                <PostTagsWrapper>
+                  {post.searchTags.map((item, index) => (
+                    <PostTag key={index}>{item}</PostTag>
+                  ))}
+                </PostTagsWrapper>
               </BlogPostPreview>
             ))}
           </BlogPostsContainer>

@@ -149,4 +149,8 @@ export const PostTag = styled.p`
   margin: 3px;
   padding: 5px;
   border-radius: 5px;
+  
+  :first-child {
+    margin-left: 0;
+  }
 `;
