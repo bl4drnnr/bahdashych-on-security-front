@@ -8,10 +8,14 @@ import { ButtonContent, Container, BasicButtonBox } from '@styles/BasicButton.st
 const BasicButton = ({
  text,
  onClick,
+ active
 }: BasicButtonProps) => {
   return (
     <Container>
-      <BasicButtonBox onClick={onClick}>
+      <BasicButtonBox
+        onClick={onClick}
+        className={classNames({ active })}
+      >
         <ButtonContent>{text}</ButtonContent>
       </BasicButtonBox>
     </Container>
