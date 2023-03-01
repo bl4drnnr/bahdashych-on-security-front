@@ -61,6 +61,10 @@ export const AllPostsWrapper = styled.div`
       font-size: 1.2em;
     }
   }
+  
+  .icon {
+    margin: 0 3px;
+  }
 `;
 
 export const FoundPostWrapper = styled.div`

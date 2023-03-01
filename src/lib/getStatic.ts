@@ -23,7 +23,9 @@ export async function getI18nProps(
     'errors',
     'common',
     // @ts-ignore
-    ...process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(',')
+    ...process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(','),
+    // @ts-ignore
+    ...process.env.NEXT_PUBLIC_AVAILABLE_PROJECTS.split(',')
   ]) {
   const locale = await ctx?.params?.locale;
   const postName = await ctx?.params?.postName || null;

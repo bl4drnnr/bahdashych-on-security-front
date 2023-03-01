@@ -53,9 +53,6 @@ const Blog = ({ locale }: BlogProps) => {
   const [nameSort, setNameSort] = React.useState('');
   const [postTypeSort, setPostTypeSort] = React.useState<Array<string>>([]);
 
-  const [showPractice, setShowPractice] = React.useState(false);
-  const [showTheory, setShowTheory] = React.useState(false);
-
   const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
   const [allPosts, setAllPosts] = React.useState<PostProps[]>([]);
 
@@ -233,36 +230,34 @@ const Blog = ({ locale }: BlogProps) => {
           </InputWrapper>
 
           {foundPosts.length > 0 ? (
-            <>
-              {foundPosts.map((post, key) => (
-                <BlogIntroWrapper
-                  key={key}
-                  className={'found-posts'}
-                  onClick={() => handleRedirect(post.link)}
-                >
-                  <FoundPostWrapper>
-                    <PostTitle>{post.title}</PostTitle>
-                    <PostTimestamp>{post.timestamp}</PostTimestamp>
-                    <PostDescription>{post.description}</PostDescription>
-                    <PostTags>
-                      {post.searchTags.map((item, index) => (
-                        <PostTag key={index}>{item}</PostTag>
-                      ))}
-                      {post.postType.map((typeItem, index) => (
-                        <Image
-                          key={index}
-                          className={'icon'}
-                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
-                          alt={'icon'}
-                          width={22}
-                          height={22}
-                        />
-                      ))}
-                    </PostTags>
-                  </FoundPostWrapper>
-                </BlogIntroWrapper>
-              ))}
-            </>
+            foundPosts.map((post, key) => (
+              <BlogIntroWrapper
+                key={key}
+                className={'found-posts'}
+                onClick={() => handleRedirect(post.link)}
+              >
+                <FoundPostWrapper>
+                  <PostTitle>{post.title}</PostTitle>
+                  <PostTimestamp>{post.timestamp}</PostTimestamp>
+                  <PostDescription>{post.description}</PostDescription>
+                  <PostTags>
+                    {post.searchTags.map((item, index) => (
+                      <PostTag key={index}>{item}</PostTag>
+                    ))}
+                    {post.postType.map((typeItem, index) => (
+                      <Image
+                        key={index}
+                        className={'icon'}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
+                        alt={'icon'}
+                        width={22}
+                        height={22}
+                      />
+                    ))}
+                  </PostTags>
+                </FoundPostWrapper>
+              </BlogIntroWrapper>
+            ))
           ) : ((foundPosts.length === 0 && searchString.length > 0) ? (
             <BlogPostsTitle>
               {t('common:postsNotFound')}
