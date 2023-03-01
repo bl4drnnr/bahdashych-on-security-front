@@ -39,7 +39,7 @@ interface PostProps {
   description: string;
   link: string;
   timestamp: string;
-  searchTags: string;
+  searchTags: string[];
   postType: string[];
   show: boolean;
 }
@@ -52,9 +52,6 @@ const Blog = ({ locale }: BlogProps) => {
   const [dateSort, setDateSort] = React.useState('');
   const [nameSort, setNameSort] = React.useState('');
   const [postTypeSort, setPostTypeSort] = React.useState<Array<string>>([]);
-
-  const [showPractice, setShowPractice] = React.useState(false);
-  const [showTheory, setShowTheory] = React.useState(false);
 
   const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
   const [allPosts, setAllPosts] = React.useState<PostProps[]>([]);
@@ -70,7 +67,7 @@ const Blog = ({ locale }: BlogProps) => {
         description: t(`${post}:pageDescription`),
         link: `/blog/${post}`,
         timestamp: t(`${post}:timestamp`),
-        searchTags: t(`${post}:searchTags`),
+        searchTags: t(`${post}:searchTags`, { returnObjects: true }),
         postType: t(`${post}:type`, { returnObjects: true }),
         show: true
       });
@@ -85,7 +82,7 @@ const Blog = ({ locale }: BlogProps) => {
     allPosts.forEach((post) => {
       if (
         (searchString && post.title.toLowerCase().includes(searchString.toLowerCase())) ||
-        (searchString && post.searchTags.includes(searchString.toLowerCase()))
+        (searchString && post.searchTags.join(',').includes(searchString.toLowerCase()))
       ) {
         foundSearchPosts.push(post);
       }
@@ -132,7 +129,7 @@ const Blog = ({ locale }: BlogProps) => {
 
     if (t.includes(sortType)) t.splice(t.indexOf(sortType), 1);
     else t.push(sortType);
-    
+
     setPostTypeSort(t);
 
     const localTheory = t.includes('theory');
@@ -233,36 +230,34 @@ const Blog = ({ locale }: BlogProps) => {
           </InputWrapper>
 
           {foundPosts.length > 0 ? (
-            <>
-              {foundPosts.map((post, key) => (
-                <BlogIntroWrapper
-                  key={key}
-                  className={'found-posts'}
-                  onClick={() => handleRedirect(post.link)}
-                >
-                  <FoundPostWrapper>
-                    <PostTitle>{post.title}</PostTitle>
-                    <PostTimestamp>{post.timestamp}</PostTimestamp>
-                    <PostDescription>{post.description}</PostDescription>
-                    <PostTags>
-                      {post.searchTags.split(',').map((item, index) => (
-                        <PostTag key={index}>{item}</PostTag>
-                      ))}
-                      {post.postType.map((typeItem, index) => (
-                        <Image
-                          key={index}
-                          className={'icon'}
-                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
-                          alt={'icon'}
-                          width={22}
-                          height={22}
-                        />
-                      ))}
-                    </PostTags>
-                  </FoundPostWrapper>
-                </BlogIntroWrapper>
-              ))}
-            </>
+            foundPosts.map((post, key) => (
+              <BlogIntroWrapper
+                key={key}
+                className={'found-posts'}
+                onClick={() => handleRedirect(post.link)}
+              >
+                <FoundPostWrapper>
+                  <PostTitle>{post.title}</PostTitle>
+                  <PostTimestamp>{post.timestamp}</PostTimestamp>
+                  <PostDescription>{post.description}</PostDescription>
+                  <PostTags>
+                    {post.searchTags.map((item, index) => (
+                      <PostTag key={index}>{item}</PostTag>
+                    ))}
+                    {post.postType.map((typeItem, index) => (
+                      <Image
+                        key={index}
+                        className={'icon'}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
+                        alt={'icon'}
+                        width={22}
+                        height={22}
+                      />
+                    ))}
+                  </PostTags>
+                </FoundPostWrapper>
+              </BlogIntroWrapper>
+            ))
           ) : ((foundPosts.length === 0 && searchString.length > 0) ? (
             <BlogPostsTitle>
               {t('common:postsNotFound')}
@@ -276,7 +271,7 @@ const Blog = ({ locale }: BlogProps) => {
                     <PostTimestamp>{post.timestamp}</PostTimestamp>
                     <PostDescription>{post.description}</PostDescription>
                     <PostTags>
-                      {post.searchTags.split(',').map((item, index) => (
+                      {post.searchTags.map((item, index) => (
                         <PostTag key={index}>{item}</PostTag>
                       ))}
                       {post.postType.map((typeItem, index) => (

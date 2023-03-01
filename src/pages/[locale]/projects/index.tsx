@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import BasicButton from '@components/BasicButton/BasicButton.component';
 import BasicInput from '@components/BasicInput/BasicInput.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
@@ -20,7 +21,10 @@ import {
   ProjectTitle,
   TestimonialArticle,
   TestimonialGrid,
-  InputWrapper
+  InputWrapper,
+  SettingsWrapper,
+  PostTag,
+  PostTags, FoundProjectWrapper
 } from '@styles/projects.style';
 
 interface ProjectProps {
@@ -29,86 +33,50 @@ interface ProjectProps {
   description: string;
   link: string;
   icon: string;
+  searchTags: string[];
 }
 
-interface ProjectsProps {
+interface ProjectPageProps {
   locale: string;
 }
 
-const Projects = ({ locale }: ProjectsProps) => {
+const Projects = ({ locale }: ProjectPageProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const testimonialGridAreas = ['one', 'two', 'three', 'four', 'five'];
 
   const [searchString, setSearchString] = React.useState('');
-  const [allProjects,] = React.useState<ProjectProps[]>([{
-    title: 'Daniel Clifford1',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford2',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford3',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford4',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford5',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford6',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford7',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford8',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford9',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }, {
-    title: 'Daniel Clifford10',
-    brief: 'I received a job offer mid-course, and the subjects I learned were current, if not more so, in the company I joined. I honestly feel I got every penny’s worth.',
-    description: 'I was an EMT for many years before I joined the bootcamp. I’ve been looking to make a transition and have heard some people who had an amazing experience here. I signed up for the free intro course and found it incredibly fun! I enrolled shortly thereafter. The next 12 weeks was the best - and most grueling - time of my life. Since completing the course, I’ve successfully switched careers, working as a Software Engineer at a VR startup.',
-    link: '',
-    icon: 'fire.png'
-  }]);
+  const [nameSort, setNameSort] = React.useState('');
+
+  const [allProjects, setAllProjects] = React.useState<ProjectProps[]>([]);
   const [foundProjects, setFoundProjects] = React.useState<ProjectProps[]>([]);
+
+  React.useEffect(() => {
+    // @ts-ignore
+    const allAvailableProjects = process.env.NEXT_PUBLIC_AVAILABLE_PROJECTS.split(',');
+    const projects: ProjectProps[] = [];
+
+    allAvailableProjects.forEach((project) => {
+      projects.push({
+        title: t(`${project}:title`),
+        brief: t(`${project}:brief`),
+        description: t(`${project}:description`),
+        link: `/projects/${project}`,
+        icon: 'fire.png',
+        searchTags: t(`${project}:searchTags`, { returnObjects: true }),
+      });
+    });
+
+    setAllProjects(projects);
+  }, []);
 
   React.useEffect(() => {
     const foundSearchProjects: ProjectProps[] = [];
 
     allProjects.forEach((project) => {
-      if (searchString && project.title.toLowerCase().includes(searchString.toLowerCase())) {
+      if (
+        (searchString && project.title.toLowerCase().includes(searchString.toLowerCase())) ||
+        (searchString && project.searchTags.join(',').includes(searchString.toLowerCase()))
+      ) {
         foundSearchProjects.push(project);
       }
     });
@@ -118,6 +86,20 @@ const Projects = ({ locale }: ProjectsProps) => {
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
+  };
+
+  const sortByName = (sortType: string) => {
+    const currentProjects = allProjects;
+
+    if (sortType !== '' && sortType === 'A -> Z') {
+      setNameSort('Z -> A');
+      currentProjects.sort((a, b) => b.title.localeCompare(a.title));
+    } else {
+      setNameSort('A -> Z');
+      currentProjects.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    setAllProjects(currentProjects);
   };
 
   return (
@@ -150,34 +132,80 @@ const Projects = ({ locale }: ProjectsProps) => {
               placeholder={t('common:searchProjects')}
               onChange={(e) => setSearchString(e.target.value)}
             />
+            <SettingsWrapper>
+              <BasicButton
+                text={nameSort !== '' ? nameSort : 'A-Z'}
+                onClick={() => sortByName(nameSort)}
+              />
+            </SettingsWrapper>
           </InputWrapper>
-          {allProjects.map((_, index) => {
-            if ((index + 1) % 5 === 1 || index === 0) {
-              return (
-                <TestimonialGrid>
-                  {allProjects.slice(index, index + 5).map((item, idx) => (
-                    <TestimonialArticle
-                      key={idx}
-                      onClick={() => handleRedirect(item.link)}
-                    >
-                      <FlexWrapper>
-                        <Image
-                          className={'icon'}
-                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${item.icon}`}
-                          alt={'Fire'}
-                          width={22}
-                          height={22}
-                        />
-                        <Name>{item.title}</Name>
-                      </FlexWrapper>
-                      <Title>{item.title}</Title>
-                      <Description>{item.description}</Description>
-                    </TestimonialArticle>
-                  ))}
-                </TestimonialGrid>
-              );
-            }
-          })}
+
+          {foundProjects.length > 0 ? (
+            foundProjects.map((project, index) => (
+              <ProjectsWrapper
+                key={index}
+                className={'found-projects'}
+                onClick={() => handleRedirect(project.link)}
+              >
+                <FoundProjectWrapper>
+                  <FlexWrapper>
+                    <Image
+                      className={'icon'}
+                      src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${project.icon}`}
+                      alt={'Fire'}
+                      width={22}
+                      height={22}
+                    />
+                    <Name>{project.title}</Name>
+                  </FlexWrapper>
+                  <Title>{project.brief}</Title>
+                  <Description>{project.description}</Description>
+                  <PostTags>
+                    {project.searchTags.map((item, index) => (
+                      <PostTag key={index}>{item}</PostTag>
+                    ))}
+                  </PostTags>
+                </FoundProjectWrapper>
+              </ProjectsWrapper>
+            ))
+          ) : ((foundProjects.length === 0 && searchString.length > 0) ? (
+            <ProjectTitle>
+              {t('common:projectsNotFound')}
+            </ProjectTitle>
+          ) : (
+            allProjects.map((_, index) => {
+              if ((index + 1) % 5 === 1 || index === 0) {
+                return (
+                  <TestimonialGrid>
+                    {allProjects.slice(index, index + 5).map((project, idx) => (
+                      <TestimonialArticle
+                        key={idx}
+                        onClick={() => handleRedirect(project.link)}
+                      >
+                        <FlexWrapper>
+                          <Image
+                            className={'icon'}
+                            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${project.icon}`}
+                            alt={'Fire'}
+                            width={22}
+                            height={22}
+                          />
+                          <Name>{project.title}</Name>
+                        </FlexWrapper>
+                        <Title>{project.brief}</Title>
+                        <Description>{project.description}</Description>
+                        <PostTags>
+                          {project.searchTags.map((item, index) => (
+                            <PostTag key={index}>{item}</PostTag>
+                          ))}
+                        </PostTags>
+                      </TestimonialArticle>
+                    ))}
+                  </TestimonialGrid>
+                );
+              }
+            })
+          ))}
         </Container>
       </DefaultLayout>
     </>

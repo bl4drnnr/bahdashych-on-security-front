@@ -4,7 +4,7 @@
   "type": ["theory"],
   "description": "Słyszałeś kiedyś o DNS? Założę się, że tak! Założę się również, że jeśli próbowałeś dowiedzieć się, o co w tym wszystkim chodzi, widziałeś DNSSEC. Cóż... czas dowiedzieć się, jak głęboka jest ta królicza nora...",
   "pageDescription": "Chyba wszyscy słyszeliście o DNS. To jest internetowa książka telefoniczna, która konwertuje czytelne dla człowieka nazwy domen na adresy IP przetwarzane przez maszyny i bla-bla-bla. Szczerze mówiąc, to dosłownie królicza nora i postanowiłem dowiedzieć się, jak głęboka jest. Cóż, zaufaj mi, będziesz zaskoczony, a ja mam cholernie ciekawe rzeczy do podzielenia się z tobą. Więc zanurzmy się w to!",
-  "searchTags": "dns,dnssec",
+  "searchTags": ["dns", "dnssec"],
   "intro": "Królicza dziura — to chyba najlepszy opis DNS, jaki znalazłem. Byłem wystarczająco naiwny, by sądzić, że jedyne, co robi, to konwertowanie nazw domen na adresy IP, aby zapewnić, że nazwy czytelne dla człowieka są zrozumiałe dla maszyn. Nie mam pojęcia, jak bardzo się myliłem, myśląc w ten sposób.",
   "timestamp": "2023-02-20",
   "footer": "Phew... To było trochę skomplikowane, prawda? Ale teraz wiesz, czym właściwie są DNS i DNSSEC i jak działają. Jeśli po przeczytaniu masz jeszcze więcej pytań niż wcześniej, gratuluję, od teraz będziesz mógł sam znaleźć wszystkie odpowiedzi, ale na razie to wszystko. Dziękuję bardzo za przeczytanie.",

@@ -61,6 +61,10 @@ export const AllPostsWrapper = styled.div`
       font-size: 1.2em;
     }
   }
+  
+  .icon {
+    margin: 0 3px;
+  }
 `;
 
 export const FoundPostWrapper = styled.div`
@@ -149,4 +153,8 @@ export const PostTag = styled.p`
   margin: 3px;
   padding: 5px;
   border-radius: 5px;
+  
+  :first-child {
+    margin-left: 0;
+  }
 `;
