@@ -128,35 +128,32 @@ const Blog = ({ locale }: BlogProps) => {
   };
 
   const sortByType = (sortType: string) => {
-    let t = [...postTypeSort];
-    if (postTypeSort.includes(sortType)) {
-      t = t.filter(item => item !== sortType);
-    } else {
-      t.push(sortType);
-    }
+    const t = [...postTypeSort];
+
+    if (t.includes(sortType)) t.splice(t.indexOf(sortType), 1);
+    else t.push(sortType);
+    
     setPostTypeSort(t);
 
     const localTheory = t.includes('theory');
     const localPractice = t.includes('practice');
 
-    const sortedPosts: PostProps[] = [];
-    allPosts.forEach((post) => {
+    const sortedPosts: PostProps[] = allPosts.map((post) => {
       const hasPractice = post.postType.includes('practice');
       const hasTheory = post.postType.includes('theory');
       const showPost = (localPractice && hasPractice) || (localTheory && hasTheory);
 
-      if (localTheory && localPractice) {
-        if (hasPractice && hasTheory) {
-          sortedPosts.push({ ...post, show: true });
-        }
-      } else if (showPost) {
-        sortedPosts.push({ ...post, show: true });
+      if (t.length === 0) {
+        return { ...post, show: true };
+      } else {
+        if (localTheory && localPractice) return { ...post, show: hasPractice && hasTheory };
+        else if (showPost) return { ...post, show: true };
+        else return { ...post, show: false };
       }
     });
 
     setAllPosts(sortedPosts);
   };
-
 
   return (
     <>
