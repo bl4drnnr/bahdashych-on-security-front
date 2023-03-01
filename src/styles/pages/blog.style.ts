@@ -129,11 +129,11 @@ export const SettingsWrapper = styled.div`
 
 export const ButtonWrapper = styled.div`
   width: 100%;
-  :first-child {
-    margin-right: 5px;
+  :nth-child(2) {
+    margin: 0 5px;
   }
-  :last-child {
-    margin-left: 5px;
+  :nth-child(3) {
+    margin-right: 5px;
   }
 `;
 
@@ -144,6 +144,7 @@ export const PostTags = styled.div`
 `;
 
 export const PostTag = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
   background: rgba(${(props) => props.theme.colors.darkBackground});
   margin: 3px;
   padding: 5px;

@@ -13,7 +13,6 @@ export const ButtonContent = styled.p`
   padding: 0 5px;
 `;
 
-
 export const BasicButtonBox = styled.button`
   height: 36px;
   width: 100%;
@@ -23,11 +22,7 @@ export const BasicButtonBox = styled.button`
   background-color: rgba(${(props) => props.theme.colors.darkBackground});
   transition: .3s;
 
-  &.highHeight {
-    height: 48px;
-  }
-
-  &:hover {
+  &:hover, &.active {
     border: 1px solid rgba(${(props) => props.theme.colors.primaryLight}, 1);
     background-color: rgba(${(props) => props.theme.colors.primaryLight}, .20);
   }

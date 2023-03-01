@@ -3,6 +3,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
@@ -27,7 +28,6 @@ import {
   TestimonialArticle,
   TestimonialGrid
 } from '@styles/blog.style';
-import Image from "next/image";
 
 
 interface BlogProps {
@@ -41,6 +41,7 @@ interface PostProps {
   timestamp: string;
   searchTags: string;
   postType: string[];
+  show: boolean;
 }
 
 const Blog = ({ locale }: BlogProps) => {
@@ -50,43 +51,30 @@ const Blog = ({ locale }: BlogProps) => {
   const [searchString, setSearchString] = React.useState('');
   const [dateSort, setDateSort] = React.useState('');
   const [nameSort, setNameSort] = React.useState('');
+  const [postTypeSort, setPostTypeSort] = React.useState<Array<string>>([]);
+
   const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
-  const [allPosts, setAllPosts] = React.useState<PostProps[]>([{
-    title: t('nextjs-nginx-deployment:title'),
-    description: t('nextjs-nginx-deployment:pageDescription'),
-    link: '/blog/nextjs-nginx-deployment',
-    timestamp: t('nextjs-nginx-deployment:timestamp'),
-    searchTags: t('nextjs-nginx-deployment:searchTags'),
-    postType: t('nextjs-nginx-deployment:type', { returnObjects: true })
-  }, {
-    title: t('how-does-dns-work-and-why-we-need-dnssec:title'),
-    description: t('how-does-dns-work-and-why-we-need-dnssec:pageDescription'),
-    link: '/blog/how-does-dns-work-and-why-we-need-dnssec',
-    timestamp: t('how-does-dns-work-and-why-we-need-dnssec:timestamp'),
-    searchTags: t('how-does-dns-work-and-why-we-need-dnssec:searchTags'),
-    postType: t('how-does-dns-work-and-why-we-need-dnssec:type', { returnObjects: true })
-  }, {
-    title: t('how-to-build-custom-dns-infrastructure:title'),
-    description: t('how-to-build-custom-dns-infrastructure:pageDescription'),
-    link: '/blog/how-to-build-custom-dns-infrastructure',
-    timestamp: t('how-to-build-custom-dns-infrastructure:timestamp'),
-    searchTags: t('how-to-build-custom-dns-infrastructure:searchTags'),
-    postType: t('how-to-build-custom-dns-infrastructure:type', { returnObjects: true })
-  }, {
-    title: t('everything-you-need-to-know-about-hardening:title'),
-    description: t('everything-you-need-to-know-about-hardening:pageDescription'),
-    link: '/blog/everything-you-need-to-know-about-hardening',
-    timestamp: t('everything-you-need-to-know-about-hardening:timestamp'),
-    searchTags: t('everything-you-need-to-know-about-hardening:searchTags'),
-    postType: t('everything-you-need-to-know-about-hardening:type', { returnObjects: true })
-  }, {
-    title: t('pki-infrastructure-or-how-to-build-your-own-vpn:title'),
-    description: t('pki-infrastructure-or-how-to-build-your-own-vpn:pageDescription'),
-    link: '/blog/pki-infrastructure-or-how-to-build-your-own-vpn',
-    timestamp: t('pki-infrastructure-or-how-to-build-your-own-vpn:timestamp'),
-    searchTags: t('pki-infrastructure-or-how-to-build-your-own-vpn:searchTags'),
-    postType: t('pki-infrastructure-or-how-to-build-your-own-vpn:type', { returnObjects: true })
-  }]);
+  const [allPosts, setAllPosts] = React.useState<PostProps[]>([]);
+
+  React.useEffect(() => {
+    // @ts-ignore
+    const allAvailablePosts = process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(',');
+    const posts: PostProps[] = [];
+
+    allAvailablePosts.forEach((post) => {
+      posts.push({
+        title: t(`${post}:title`),
+        description: t(`${post}:pageDescription`),
+        link: `/blog/${post}`,
+        timestamp: t(`${post}:timestamp`),
+        searchTags: t(`${post}:searchTags`),
+        postType: t(`${post}:type`, { returnObjects: true }),
+        show: true
+      });
+    });
+
+    setAllPosts(posts);
+  }, []);
 
   React.useEffect(() => {
     const foundSearchPosts: PostProps[] = [];
@@ -136,6 +124,23 @@ const Blog = ({ locale }: BlogProps) => {
     setAllPosts(currentPosts);
   };
 
+  const sortByType = (sortType: string) => {
+    let t = [ ...postTypeSort, sortType ];
+    setPostTypeSort(t);
+
+    if (postTypeSort.includes(sortType)) {
+      t = postTypeSort.filter(item => item !== sortType);
+      setPostTypeSort(t);
+    }
+
+    // const sortedPosts: PostProps[] = [];
+    // allPosts.forEach((post) => {
+    //
+    // });
+    //
+    // setAllPosts(sortedPosts);
+  };
+
   return (
     <>
       <Head>
@@ -182,6 +187,34 @@ const Blog = ({ locale }: BlogProps) => {
                   onClick={() => sortByName(nameSort)}
                 />
               </ButtonWrapper>
+              <ButtonWrapper>
+                <BasicButton
+                  text={
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/practice.png`}
+                      alt={'icon'}
+                      width={22}
+                      height={22}
+                    />
+                  }
+                  active={postTypeSort.includes('practice')}
+                  onClick={() => sortByType('practice')}
+                />
+              </ButtonWrapper>
+              <ButtonWrapper>
+                <BasicButton
+                  text={
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/theory.png`}
+                      alt={'icon'}
+                      width={22}
+                      height={22}
+                    />
+                  }
+                  active={postTypeSort.includes('theory')}
+                  onClick={() => sortByType('theory')}
+                />
+              </ButtonWrapper>
             </SettingsWrapper>
           </InputWrapper>
 
@@ -223,26 +256,28 @@ const Blog = ({ locale }: BlogProps) => {
           ) : (
             <TestimonialGrid>
               {allPosts.map((post, key) => (
-                <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
-                  <PostTitle>{post.title}</PostTitle>
-                  <PostTimestamp>{post.timestamp}</PostTimestamp>
-                  <PostDescription>{post.description}</PostDescription>
-                  <PostTags>
-                    {post.searchTags.split(',').map((item, index) => (
-                      <PostTag key={index}>{item}</PostTag>
-                    ))}
-                    {post.postType.map((typeItem, index) => (
-                      <Image
-                        key={index}
-                        className={'icon'}
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
-                        alt={'icon'}
-                        width={22}
-                        height={22}
-                      />
-                    ))}
-                  </PostTags>
-                </TestimonialArticle>
+                post.show && (
+                  <TestimonialArticle key={key} onClick={() => handleRedirect(post.link)}>
+                    <PostTitle>{post.title}</PostTitle>
+                    <PostTimestamp>{post.timestamp}</PostTimestamp>
+                    <PostDescription>{post.description}</PostDescription>
+                    <PostTags>
+                      {post.searchTags.split(',').map((item, index) => (
+                        <PostTag key={index}>{item}</PostTag>
+                      ))}
+                      {post.postType.map((typeItem, index) => (
+                        <Image
+                          key={index}
+                          className={'icon'}
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${typeItem}.png`}
+                          alt={'icon'}
+                          width={22}
+                          height={22}
+                        />
+                      ))}
+                    </PostTags>
+                  </TestimonialArticle>
+                )
               ))}
             </TestimonialGrid>
 
