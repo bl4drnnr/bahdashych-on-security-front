@@ -82,7 +82,7 @@ const Blog = ({ locale }: BlogProps) => {
     allPosts.forEach((post) => {
       if (
         (searchString && post.title.toLowerCase().includes(searchString.toLowerCase())) ||
-        (searchString && post.searchTags.includes(searchString.toLowerCase()))
+        (searchString && post.searchTags.join(',').includes(searchString.toLowerCase()))
       ) {
         foundSearchPosts.push(post);
       }

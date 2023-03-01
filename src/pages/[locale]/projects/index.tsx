@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Typewriter from 'typewriter-effect';
 
+import BasicButton from '@components/BasicButton/BasicButton.component';
 import BasicInput from '@components/BasicInput/BasicInput.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
@@ -20,7 +21,10 @@ import {
   ProjectTitle,
   TestimonialArticle,
   TestimonialGrid,
-  InputWrapper
+  InputWrapper,
+  SettingsWrapper,
+  PostTag,
+  PostTags, FoundProjectWrapper
 } from '@styles/projects.style';
 
 interface ProjectProps {
@@ -71,7 +75,7 @@ const Projects = ({ locale }: ProjectPageProps) => {
     allProjects.forEach((project) => {
       if (
         (searchString && project.title.toLowerCase().includes(searchString.toLowerCase())) ||
-        (searchString && project.searchTags.includes(searchString.toLowerCase()))
+        (searchString && project.searchTags.join(',').includes(searchString.toLowerCase()))
       ) {
         foundSearchProjects.push(project);
       }
@@ -128,11 +132,41 @@ const Projects = ({ locale }: ProjectPageProps) => {
               placeholder={t('common:searchProjects')}
               onChange={(e) => setSearchString(e.target.value)}
             />
+            <SettingsWrapper>
+              <BasicButton
+                text={nameSort !== '' ? nameSort : 'A-Z'}
+                onClick={() => sortByName(nameSort)}
+              />
+            </SettingsWrapper>
           </InputWrapper>
 
           {foundProjects.length > 0 ? (
             foundProjects.map((project, index) => (
-              <div key={index}></div>
+              <ProjectsWrapper
+                key={index}
+                className={'found-projects'}
+                onClick={() => handleRedirect(project.link)}
+              >
+                <FoundProjectWrapper>
+                  <FlexWrapper>
+                    <Image
+                      className={'icon'}
+                      src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${project.icon}`}
+                      alt={'Fire'}
+                      width={22}
+                      height={22}
+                    />
+                    <Name>{project.title}</Name>
+                  </FlexWrapper>
+                  <Title>{project.brief}</Title>
+                  <Description>{project.description}</Description>
+                  <PostTags>
+                    {project.searchTags.map((item, index) => (
+                      <PostTag key={index}>{item}</PostTag>
+                    ))}
+                  </PostTags>
+                </FoundProjectWrapper>
+              </ProjectsWrapper>
             ))
           ) : ((foundProjects.length === 0 && searchString.length > 0) ? (
             <ProjectTitle>
@@ -143,23 +177,28 @@ const Projects = ({ locale }: ProjectPageProps) => {
               if ((index + 1) % 5 === 1 || index === 0) {
                 return (
                   <TestimonialGrid>
-                    {allProjects.slice(index, index + 5).map((item, idx) => (
+                    {allProjects.slice(index, index + 5).map((project, idx) => (
                       <TestimonialArticle
                         key={idx}
-                        onClick={() => handleRedirect(item.link)}
+                        onClick={() => handleRedirect(project.link)}
                       >
                         <FlexWrapper>
                           <Image
                             className={'icon'}
-                            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${item.icon}`}
+                            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/icons/${project.icon}`}
                             alt={'Fire'}
                             width={22}
                             height={22}
                           />
-                          <Name>{item.title}</Name>
+                          <Name>{project.title}</Name>
                         </FlexWrapper>
-                        <Title>{item.title}</Title>
-                        <Description>{item.description}</Description>
+                        <Title>{project.brief}</Title>
+                        <Description>{project.description}</Description>
+                        <PostTags>
+                          {project.searchTags.map((item, index) => (
+                            <PostTag key={index}>{item}</PostTag>
+                          ))}
+                        </PostTags>
                       </TestimonialArticle>
                     ))}
                   </TestimonialGrid>

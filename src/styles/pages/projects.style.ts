@@ -7,6 +7,10 @@ export const ProjectsWrapper = styled.div`
   @media only screen and (max-width: 780px) {
     width: 90%;
   }
+
+  &.found-projects {
+    margin: 25px auto 0 auto;
+  }
 `;
 
 export const ProjectTitle = styled.h1`
@@ -155,3 +159,40 @@ export const Description = styled.p`
   font-family: "Charter", sans-serif;
   color: rgb(${(props) => props.theme.colors.textColor});
 `;
+
+export const SettingsWrapper = styled.div`
+  position: relative;
+  display: flex;
+  margin: 15px 0;
+`;
+
+export const PostTags = styled.div`
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+`;
+
+export const PostTag = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  background: rgba(${(props) => props.theme.colors.darkBackground});
+  margin: 3px;
+  padding: 5px;
+  border-radius: 5px;
+  
+  :first-child {
+    margin-left: 0;
+  }
+`;
+
+export const FoundProjectWrapper = styled.div`
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  padding: 20px;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: .2s;
+
+  :hover {
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
+  }
+`;
+
