@@ -53,6 +53,9 @@ const Blog = ({ locale }: BlogProps) => {
   const [nameSort, setNameSort] = React.useState('');
   const [postTypeSort, setPostTypeSort] = React.useState<Array<string>>([]);
 
+  const [showPractice, setShowPractice] = React.useState(false);
+  const [showTheory, setShowTheory] = React.useState(false);
+
   const [foundPosts, setFoundPosts] = React.useState<PostProps[]>([]);
   const [allPosts, setAllPosts] = React.useState<PostProps[]>([]);
 
@@ -125,21 +128,35 @@ const Blog = ({ locale }: BlogProps) => {
   };
 
   const sortByType = (sortType: string) => {
-    let t = [ ...postTypeSort, sortType ];
+    let t = [...postTypeSort];
+    if (postTypeSort.includes(sortType)) {
+      t = t.filter(item => item !== sortType);
+    } else {
+      t.push(sortType);
+    }
     setPostTypeSort(t);
 
-    if (postTypeSort.includes(sortType)) {
-      t = postTypeSort.filter(item => item !== sortType);
-      setPostTypeSort(t);
-    }
+    const localTheory = t.includes('theory');
+    const localPractice = t.includes('practice');
 
-    // const sortedPosts: PostProps[] = [];
-    // allPosts.forEach((post) => {
-    //
-    // });
-    //
-    // setAllPosts(sortedPosts);
+    const sortedPosts: PostProps[] = [];
+    allPosts.forEach((post) => {
+      const hasPractice = post.postType.includes('practice');
+      const hasTheory = post.postType.includes('theory');
+      const showPost = (localPractice && hasPractice) || (localTheory && hasTheory);
+
+      if (localTheory && localPractice) {
+        if (hasPractice && hasTheory) {
+          sortedPosts.push({ ...post, show: true });
+        }
+      } else if (showPost) {
+        sortedPosts.push({ ...post, show: true });
+      }
+    });
+
+    setAllPosts(sortedPosts);
   };
+
 
   return (
     <>
