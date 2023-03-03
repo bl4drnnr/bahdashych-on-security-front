@@ -16,23 +16,24 @@ export const Container = styled.div`
 
 export const Box = styled.div`
   width: 45%;
-  margin: 100px auto 0 auto;
+  margin: 50px auto 0 auto;
 
   @media only screen and (max-width: 780px) {
     width: 90%;
     margin: 50px auto 0 auto;
   }
-  
-  .sharing-ul {
-    margin-left: 20px;
-  }
-  .sharing-li {
-    font-family: "Charter", sans-serif;
-    margin: 15px 0;
-    color: rgb(${(props) => props.theme.colors.textColor});
-    font-size: 1.1em;
-    font-weight: 200;
-  }
+`;
+
+export const SharingUl = styled.ul`
+  margin-left: 20px;
+`;
+
+export const SharingLi = styled.li`
+  font-family: "Charter", sans-serif;
+  margin: 15px 0;
+  color: rgb(${(props) => props.theme.colors.textColor});
+  font-size: 1.1em;
+  font-weight: 200;
 `;
 
 export const AboutTitle = styled.h3`
@@ -60,4 +61,12 @@ export const AboutParagraph = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
   font-size: 1.1em;
   text-indent: 25px;
+`;
+
+export const ImageBox = styled.div`
+  text-align: center;
+  
+  .img {
+    margin: 0 3px;
+  }
 `;

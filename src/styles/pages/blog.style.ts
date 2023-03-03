@@ -89,6 +89,10 @@ export const TestimonialGrid = styled.div`
   padding-block: 2rem;
   width: min(95%, 70rem);
   margin-inline: auto;
+
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const TestimonialArticle = styled.article`
