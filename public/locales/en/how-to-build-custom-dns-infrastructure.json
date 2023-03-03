@@ -20,6 +20,10 @@
         "dotBetweenResolvers": "DNS over TLS Between 2 Resolvers",
         "dnsTlsEndpoints": "DNS over TLS for endpoints",
         "blockAd": "How to block Ad servers or other traffic"
+      },
+      "Configuration of NSD Authoritative server": {
+        "nsdConfig": "Configuration of NSD",
+        "unboundConfig": "Configuration of Unbound"
       }
     },
     "conclusions": "Conclusions",
@@ -429,6 +433,96 @@
         "<b>Behaviour of the end client</b> — different machines differently react on an attempt to redirection traffic to localhost. But they almost similar behaviour, when getting <span class='code-block'>nxdomain</span>. This won't be a problem, if you have access to all devices on your network and have ability to manage their software (browser, in this particular case). Especially, it can create problems on Linux machines with Firefox as a browser."
       ]
     },
+    {
+      "type": "subtitle",
+      "content": "Configuration of NSD Authoritative server"
+    },
+    "Generally speaking, during configuration of DNS servers mostly you are going to work with a couple of different roles. Those are caching, recursive and authoritative servers. As we mention before, our Unbound server, either local or remote, has 2.5 roles. It’s caching, recursive and semi-authoritative. More information about <a href='https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software' class='inline-link en'>comparison of DNS server software</a> in terms of roles you can find here.",
+    "Okay, so, now we need to figure our how we can configure authoritative server. If you take a look at that table, you will see that a lot of servers are able to handle that role. We are going to work with NSD, as you already know. I had the choice between BIND and NSD, we are going to do it on the example of NSD, because BIND has security issues. Even though that the most (8/13) of <a href='https://en.wikipedia.org/wiki/Root_name_server' class='inline-link en'>DNS root servers</a> utilize BIND, we still stay with NSD.",
+    "Also, before we continue, let’s remind what this authoritative role is about. Authoritative nameserver — the final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative name server has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
+    "If DNS is about roles, we can configure multiple roles on the same physical machine, right? Exactly! This is what we are going to do, basically, on the same local machine — Raspberry PI — we will have our both Unbound and NSD servers. Our NSD server is going to resolve IP addresses of devices on my network. Of course, you are free to make this NSD authoritative nameserver public and resolve public IP addresses, but for us, at this moment, there is no such need. Also, I want to show you that if you have similar configuration you will have to change configuration of your Unbound server also.",
+    "Technically, authoritative nameserver is where actually IP addresses are mapped to the domain names. It holds different types of records, like A, AAAA, TXT, MX etc. If you are here, I bet you at least once have configured domains, subdomains, TXT records and so on for domain name. And on those hosting services you had this fine GUI, where there is no need to go to config files and change something there. Well, right now we are going to take a loot at what is happening behind the scene and how it looks like on the backend of what you are doing on page configuring your domain.",
+    {
+      "type": "subsubtitle",
+      "content": "Configuration of NSD"
+    },
+    "The same as usual, we will start with updating of our system and installation of the NSD:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ sudo apt update && sudo apt upgrade\n$ sudo apt install nsd"
+    },
+    "Once everything is installed, the same as with Unbound server, go to this directory and open configuration file:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ cd /etc/nsd\n$ sudo nano nsd.conf"
+    },
+    "There you should paste next content and change settings if you want. Even though there is one thing I would like to draw your attention to. As you see, we have 2 <span class='code-block'>zone</span> sections, the first one if forward, and the second one if for reverse. The IP address of my local network looks like this — <span class='code-block'>192.168.8.0/24</span>. If you literally reverse that, you will get <span class='code-block'>8.168.192</span>.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "# NSD configuration file for Debian.\n#\n# See the nsd.conf(5) man page.\n#\n# See /usr/share/doc/nsd/examples/nsd.conf for a commented\n# reference config file.\n\nserver:\n        # log only to syslog.\n        log-only-syslog: yes\n\n# The following line includes additional configuration files from the\n# /etc/nsd/nsd.conf.d directory.\n\ninclude: \"/etc/nsd/nsd.conf.d/*.conf\"\n\n# Number of servers to fork. Number of CPUs to use.\nserver-count: 1\n\n# NSD will bind to the listed ip-address.\nip-address: 127.0.0.1\n\n# Listen on IPv4 connections\ndo-ip4: yes\n# Listen on IPv6 connections\ndo-ip6: no\n\n# Port to answer queries on.\n# You should be careful here with port. Both 53 and 853 are used\n# by DNS and DNS over TLS (unless you turn it off), therefore\n# we are going to use our custom port.\nport: 8053\n\n# Directory for zone files\nzonesdir: \"/etc/nsd/zones\"\n# Identify the server\nidentity: \"Mikhail authoritative DNS\"\n\nzone:\n   name: \"mikhailbahdashych.com\"\n   zonefile: \"mikhailbahdashych.com.zone\"\n\nzone:\n   name: \"8.168.192.in-addr.arpa\"\n   zonefile: \"8.168.192.in-addr.arpa.zone\""
+    },
+    "We also need to create a folder where we are going to write down our actual resolution for forward and reverse zones.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ mkdir zones && cd zones"
+    },
+    "Configuration for forward zone:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "$ORIGIN mikhailbahdashych.com.\n\n$TTL 86400\n\n@       IN      SOA     ns1.mikhailbahdashych.com.      admin.mikhailbahdashych.com. (\n                        2023022801             ; serial number Feb 28, 2023, version 01\n                        3600                   ; refresh\n                        900                    ; retry\n                        864000                 ; expire\n                        86400                  ; negative\n                        )\n\n; Name servers\n                           NS      ns1.mikhailbahdashych.com.\n\n; A records for name servers\nns1             A       192.168.8.1\n\n; Additional A records\nmac\tA\t192.168.8.102\nmac\tMX 10\tmac.mikhailbahdashych.com.\niphone\tA\t192.168.8.109\nrouter\tA\t192.168.8.1\nstella\tCNAME\trouter\nrouter\tIN TXT  \"hello, I am router stella\"\nrpi\tA\t192.168.8.112"
+    },
+    "Configuration for reverse zone:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": ";## NSD authoritative only DNS\n;## REVERSE Zone\n\n$ORIGIN 8.168.192.in-addr.arpa.\n$TTL 86400\n@       IN      SOA     ns1.mikhailbahdashych.com.      admin.mikhailbahdashych.com. (\n                        2023022801             ; serial number Feb 28, 2023, version 01\n                        3600                   ; refresh\n                        900                    ; retry\n                        864000                 ; expire\n                        86400                  ; negative\n                        )\n\n; Name servers\n                          NS      ns1.mikhailbahdashych.com.\n\n; PTR records\n\n1\tPTR\tns1.mikhailbahdashych.com.\n102\tPTR\tmac.mikhailbahdashych.com.\n109\tPTR\tiphone.mikhailbahdashych.com.\n1\tPTR\trouter.mikhailbahdashych.com.\n1\tPTR\tstella.mikhailbahdashych.com.\n112\tPTR\trpi.mikhailbahdashych.com."
+    },
+    {
+      "type": "subsubtitle",
+      "content": "Configuration of Unbound"
+    },
+    "Remember that we also have Unbound DNS server? Well, we also need to change our configuration a little to make sure that we would be able to use our Unbound server in order to resolve the domain name.",
+    "Since we have included authoritative nameserver in our infrastructure, we need to tell Unbound that it is allowed to use this authoritative nameserver to resolve local domain names.",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "private-address: 192.168.8.0/24\n\nprivate-domain: \"mikhailbahdashych.com\"\nprivate-domain: \"8.168.192.in-addr.arpa\"\n\ndomain-insecure: \"mikhailbahdashych.com\"\ndomain-insecure: \"8.168.192.in-addr.arpa\"\n\n# Settings for NSD resolver\nlocal-zone: \"8.168.192.in-addr.arpa.\" transparent\n\nstub-zone:\n\tname: \"mikhailbahdashych.com\"\n\tstub-addr: 127.0.0.1@8053\n\nstub-zone:\n\tname: \"8.168.192.in-addr.arpa\"\n\tstub-addr: 127.0.0.1@8053"
+    },
+    "If you take a closer look at this updated Unbound documentation, you will notice that:",
+    {
+      "type": "list-bullet",
+      "items": [
+        "We have defined our private network — <span class='code-block'>192.168.8.0/24</span>.",
+        "We have defined our private forward domain — <span class='code-block'>mikhailbahdashych.com</span>.",
+        "We have defined our private reverse domain — <span class='code-block'>8.168.192.in-addr.arpa</span>.",
+        "We have defined 2 stub-zone for forward and reverse zones.",
+        "We specified the port that is being utilized by our authoritative nameserver."
+      ]
+    },
+    "You can perform a couple of tests to make sure that it works how it supposed to work. For example, you saw that there was domain name for my iPhone. So, using our Unbound server we can do both forward and reverse lookups.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ dig iphone.mikhailbahdashych.com @192.168.8.112\n\n; <<>> DiG 9.10.6 <<>> iphone.mikhailbahdashych.com @192.168.8.112\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 9923\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;iphone.mikhailbahdashych.com.\tIN\tA\n\n;; ANSWER SECTION:\niphone.mikhailbahdashych.com. 86374 IN\tA\t192.168.8.109\n\n;; Query time: 85 msec\n;; SERVER: 192.168.8.112#53(192.168.8.112)\n;; WHEN: Fri Mar 03 16:43:22 CET 2023\n;; MSG SIZE  rcvd: 73"
+    },
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ dig -x 192.168.8.109 @192.168.8.112\n\n; <<>> DiG 9.10.6 <<>> -x 192.168.8.109 @192.168.8.112\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 28260\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;109.8.168.192.in-addr.arpa.\tIN\tPTR\n\n;; ANSWER SECTION:\n109.8.168.192.in-addr.arpa. 86400 IN\tPTR\tiphone.mikhailbahdashych.com.\n\n;; Query time: 118 msec\n;; SERVER: 192.168.8.112#53(192.168.8.112)\n;; WHEN: Fri Mar 03 16:43:38 CET 2023\n;; MSG SIZE  rcvd: 97"
+    },
+    "Keep in mind that those <span class='code-block'>dig</span> requests are actually handled by the Unbound server. This is why we had to modify the configuration file. Also, if you change configuration of your NSD server, you will have to restart Unbound server, since, as you know, it’s caching server.",
+    "Also, we can take a look if our <span class='code-block'>TXT</span> records are also handled. In order to do that, just add <span class='code-block'>TXT</span> after the domain name while doing <span class='code-block'>dig</span>:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ dig router.mikhailbahdashych.com TXT @192.168.8.112\n\n; <<>> DiG 9.10.6 <<>> router.mikhailbahdashych.com TXT @192.168.8.112\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 21120\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;router.mikhailbahdashych.com.\tIN\tTXT\n\n;; ANSWER SECTION:\nrouter.mikhailbahdashych.com. 86400 IN\tTXT\t\"hello, I am router stella\"\n\n;; Query time: 15 msec\n;; SERVER: 192.168.8.112#53(192.168.8.112)\n;; WHEN: Fri Mar 03 17:02:52 CET 2023\n;; MSG SIZE  rcvd: 95"
+    },
+    "<b>Oh, one important thing to be mentioned</b>. You should consider that <b>DHCP</b> time-to-time automatically will be changing IP addresses of your devices, therefore, for this configuration, you will have to change those IP addresses manually. Of course, we can configure dynamic DNS, but this is topic for a different discussion.",
     {
       "type": "title",
       "content": "Conclusions"
