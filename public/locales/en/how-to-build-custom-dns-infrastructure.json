@@ -4,7 +4,7 @@
   "type": ["practice"],
   "description": "",
   "pageDescription": "Let me guess, if you have ever heard about DNS and you have been playing around with those settings on your computer, the most thing you have done is change DNS server IP address from your local router to 1.1.1.1 or 8.8.8.8. Well, not bad, but what about building your own DNS infrastructure, huh? Sounds cool! You will have almost complete control over your network, but take your time, we will have time...",
-  "searchTags": ["dns", "dnssec"],
+  "searchTags": ["dns", "dnssec", "unbound", "nsd"],
   "intro": "This writeup contains different scenarios that you can utilize while building your own custom DNS infrastructure. Just your DNS cheatsheet.",
   "timestamp": "2023-03-25",
   "footer": "",
@@ -437,9 +437,9 @@
       "type": "subtitle",
       "content": "Configuration of NSD Authoritative server"
     },
-    "Generally speaking, during configuration of DNS servers mostly you are going to work with a couple of different roles. Those are caching, recursive and authoritative servers. As we mention before, our Unbound server, either local or remote, has 2.5 roles. It’s caching, recursive and semi-authoritative. More information about <a href='https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software' class='inline-link en'>comparison of DNS server software</a> in terms of roles you can find here.",
+    "Generally speaking, during configuration of DNS servers mostly you are going to work with a couple of different roles. Those are caching, recursive and authoritative servers. As we mention before, our Unbound server, either local or remote, has 2.5 roles. It's caching, recursive and semi-authoritative. More information about <a href='https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software' class='inline-link en'>comparison of DNS server software</a> in terms of roles you can find here.",
     "Okay, so, now we need to figure our how we can configure authoritative server. If you take a look at that table, you will see that a lot of servers are able to handle that role. We are going to work with NSD, as you already know. I had the choice between BIND and NSD, we are going to do it on the example of NSD, because BIND has security issues. Even though that the most (8/13) of <a href='https://en.wikipedia.org/wiki/Root_name_server' class='inline-link en'>DNS root servers</a> utilize BIND, we still stay with NSD.",
-    "Also, before we continue, let’s remind what this authoritative role is about. Authoritative nameserver — the final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative name server has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
+    "Also, before we continue, let's remind what this authoritative role is about. Authoritative nameserver — the final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative name server has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
     "If DNS is about roles, we can configure multiple roles on the same physical machine, right? Exactly! This is what we are going to do, basically, on the same local machine — Raspberry PI — we will have our both Unbound and NSD servers. Our NSD server is going to resolve IP addresses of devices on my network. Of course, you are free to make this NSD authoritative nameserver public and resolve public IP addresses, but for us, at this moment, there is no such need. Also, I want to show you that if you have similar configuration you will have to change configuration of your Unbound server also.",
     "Technically, authoritative nameserver is where actually IP addresses are mapped to the domain names. It holds different types of records, like A, AAAA, TXT, MX etc. If you are here, I bet you at least once have configured domains, subdomains, TXT records and so on for domain name. And on those hosting services you had this fine GUI, where there is no need to go to config files and change something there. Well, right now we are going to take a loot at what is happening behind the scene and how it looks like on the backend of what you are doing on page configuring your domain.",
     {
@@ -459,29 +459,52 @@
       "content": "$ cd /etc/nsd\n$ sudo nano nsd.conf"
     },
     "There you should paste next content and change settings if you want. Even though there is one thing I would like to draw your attention to. As you see, we have 2 <span class='code-block'>zone</span> sections, the first one if forward, and the second one if for reverse. The IP address of my local network looks like this — <span class='code-block'>192.168.8.0/24</span>. If you literally reverse that, you will get <span class='code-block'>8.168.192</span>.",
+    "For identity and name of zones provide information on how you want to call your authoritative DNS server and how you want to call your domain zone. Event thought that domain name <span class='code-block'>mikhailbahdashych.com</span> is not registered, you are still able to call it like that, cuz you are boss here.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "# NSD configuration file for Debian.\n#\n# See the nsd.conf(5) man page.\n#\n# See /usr/share/doc/nsd/examples/nsd.conf for a commented\n# reference config file.\n\nserver:\n        # log only to syslog.\n        log-only-syslog: yes\n\n# The following line includes additional configuration files from the\n# /etc/nsd/nsd.conf.d directory.\n\ninclude: \"/etc/nsd/nsd.conf.d/*.conf\"\n\n# Number of servers to fork. Number of CPUs to use.\nserver-count: 1\n\n# NSD will bind to the listed ip-address.\nip-address: 127.0.0.1\n\n# Listen on IPv4 connections\ndo-ip4: yes\n# Listen on IPv6 connections\ndo-ip6: no\n\n# Port to answer queries on.\n# You should be careful here with port. Both 53 and 853 are used\n# by DNS and DNS over TLS (unless you turn it off), therefore\n# we are going to use our custom port.\nport: 8053\n\n# Directory for zone files\nzonesdir: \"/etc/nsd/zones\"\n# Identify the server\nidentity: \"Mikhail authoritative DNS\"\n\nzone:\n   name: \"mikhailbahdashych.com\"\n   zonefile: \"mikhailbahdashych.com.zone\"\n\nzone:\n   name: \"8.168.192.in-addr.arpa\"\n   zonefile: \"8.168.192.in-addr.arpa.zone\""
     },
-    "We also need to create a folder where we are going to write down our actual resolution for forward and reverse zones.",
+    "We also need to create a folder where we are going to write down our actual resolution for forward and reverse zones. This is where we specified <span class='code-block'>zonesdir</span> in our configuration file.",
     {
       "type": "code",
       "lang": "shell",
       "content": "$ mkdir zones && cd zones"
     },
-    "Configuration for forward zone:",
+    "Okay, now we need to create 2 files for forward and reverse zones. Their name should match the value you provide for <span class='code-block'>zonefile</span> in NSD configuration.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ touch 8.168.192.in-addr.arpa.zone\n$ touch mikhailbahdashych.com.zone"
+    },
+    "Before we move forward and discuss both forward and reverse zones configuration, let’s briefly talk about what forward and reverse zones actually are. Everything is quite simple.",
+    {
+      "type": "list-bullet",
+      "items": [
+        "<b>Forward lookup zone</b> — maps a domain name with its IP address.",
+        "<b>Reverse lookup zone</b> — maps an IP address to its domain record."
+      ]
+    },
+    "Therefore, if you create forward record, you also should create reverse record. Now, let’s break down the forward and reverse zone files and figure our with what we can play around. Well, you know, this is DNS, you can do whatever you want to.",
     {
       "type": "code",
       "lang": "nginx",
       "content": "$ORIGIN mikhailbahdashych.com.\n\n$TTL 86400\n\n@       IN      SOA     ns1.mikhailbahdashych.com.      admin.mikhailbahdashych.com. (\n                        2023022801             ; serial number Feb 28, 2023, version 01\n                        3600                   ; refresh\n                        900                    ; retry\n                        864000                 ; expire\n                        86400                  ; negative\n                        )\n\n; Name servers\n                           NS      ns1.mikhailbahdashych.com.\n\n; A records for name servers\nns1             A       192.168.8.1\n\n; Additional A records\nmac\tA\t192.168.8.102\nmac\tMX 10\tmac.mikhailbahdashych.com.\niphone\tA\t192.168.8.109\nrouter\tA\t192.168.8.1\nstella\tCNAME\trouter\nrouter\tIN TXT  \"hello, I am router stella\"\nrpi\tA\t192.168.8.112"
     },
-    "Configuration for reverse zone:",
+    "Here is the configuration of reverse zone. As you can see it has the similar configuration as forward configuration, the only difference is that here we put reverse, <span class='code-block'>PTR</span> records. The number you see in front of every record is basically the last octet of an IP address.",
+    "Also you can see that 3 records share the same last octet and technically, it is one device — my router. It plays role of an authoritative namesrever (<span class='code-block'>ns1</span> — which stands for nameserver, but you can name it whatever you want) and it also has 2 domain names — <span class='code-block'>router</span> and CNAME <span class='code-block'>stella</span>.",
     {
       "type": "code",
       "lang": "nginx",
-      "content": ";## NSD authoritative only DNS\n;## REVERSE Zone\n\n$ORIGIN 8.168.192.in-addr.arpa.\n$TTL 86400\n@       IN      SOA     ns1.mikhailbahdashych.com.      admin.mikhailbahdashych.com. (\n                        2023022801             ; serial number Feb 28, 2023, version 01\n                        3600                   ; refresh\n                        900                    ; retry\n                        864000                 ; expire\n                        86400                  ; negative\n                        )\n\n; Name servers\n                          NS      ns1.mikhailbahdashych.com.\n\n; PTR records\n\n1\tPTR\tns1.mikhailbahdashych.com.\n102\tPTR\tmac.mikhailbahdashych.com.\n109\tPTR\tiphone.mikhailbahdashych.com.\n1\tPTR\trouter.mikhailbahdashych.com.\n1\tPTR\tstella.mikhailbahdashych.com.\n112\tPTR\trpi.mikhailbahdashych.com."
+      "content": ";## NSD authoritative only DNS\n;## REVERSE Zone\n\n$ORIGIN 8.168.192.in-addr.arpa.\n$TTL 86400\n\n@       IN      SOA     ns1.mikhailbahdashych.com.      admin.mikhailbahdashych.com. (\n                        2023022801             ; serial number Feb 28, 2023, version 01\n                        3600                   ; refresh\n                        900                    ; retry\n                        864000                 ; expire\n                        86400                  ; negative\n                        )\n\n; Name servers\n                          NS      ns1.mikhailbahdashych.com.\n\n; PTR records\n\n1\tPTR\tns1.mikhailbahdashych.com.\n1\tPTR\trouter.mikhailbahdashych.com.\n1\tPTR\tstella.mikhailbahdashych.com.\n102\tPTR\tmac.mikhailbahdashych.com.\n109\tPTR\tiphone.mikhailbahdashych.com.\n112\tPTR\trpi.mikhailbahdashych.com."
     },
+    "By the way, here is how you can check the authoritative nameserver for a domain name using <span class='code-block'>nslookup</span> utility. As you can see, domain name <span class='code-block'>mikhailbahdashych.me</span> is held by Google Domains. This way you can make sure that <span class='code-block'>ns</span> in DNS stands for <span class='code-block'>nameserver</span>.",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "$ nslookup\n> set querytype=soa\n> blog.mikhailbahdashych.me\nServer:\t\t1.1.1.1\nAddress:\t1.1.1.1#53\n\nNon-authoritative answer:\n*** Can't find blog.mikhailbahdashych.me: No answer\n\nAuthoritative answers can be found from:\nmikhailbahdashych.me\n\torigin = ns-cloud-e1.googledomains.com\n\tmail addr = cloud-dns-hostmaster.google.com\n\tserial = 7\n\trefresh = 21600\n\tretry = 3600\n\texpire = 259200\n\tminimum = 300"
+    },
+    "One small, but annoying thing you can forget about is trailing dots. Make sure that you haven't miss then, otherwise, very painful process of debugging is waiting for you. Also watch out for typos in folder, files and paths.",
     {
       "type": "subsubtitle",
       "content": "Configuration of Unbound"
@@ -515,7 +538,7 @@
       "lang": "shell",
       "content": "$ dig -x 192.168.8.109 @192.168.8.112\n\n; <<>> DiG 9.10.6 <<>> -x 192.168.8.109 @192.168.8.112\n;; global options: +cmd\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 28260\n;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;109.8.168.192.in-addr.arpa.\tIN\tPTR\n\n;; ANSWER SECTION:\n109.8.168.192.in-addr.arpa. 86400 IN\tPTR\tiphone.mikhailbahdashych.com.\n\n;; Query time: 118 msec\n;; SERVER: 192.168.8.112#53(192.168.8.112)\n;; WHEN: Fri Mar 03 16:43:38 CET 2023\n;; MSG SIZE  rcvd: 97"
     },
-    "Keep in mind that those <span class='code-block'>dig</span> requests are actually handled by the Unbound server. This is why we had to modify the configuration file. Also, if you change configuration of your NSD server, you will have to restart Unbound server, since, as you know, it’s caching server.",
+    "Keep in mind that those <span class='code-block'>dig</span> requests are actually handled by the Unbound server. This is why we had to modify the configuration file. Also, if you change configuration of your NSD server, you will have to restart Unbound server, since, as you know, it's caching server.",
     "Also, we can take a look if our <span class='code-block'>TXT</span> records are also handled. In order to do that, just add <span class='code-block'>TXT</span> after the domain name while doing <span class='code-block'>dig</span>:",
     {
       "type": "code",
