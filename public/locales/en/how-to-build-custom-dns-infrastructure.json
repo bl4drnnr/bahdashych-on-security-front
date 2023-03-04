@@ -7,7 +7,7 @@
   "searchTags": ["dns", "dnssec", "unbound", "nsd"],
   "intro": "This writeup contains different scenarios that you can utilize while building your own custom DNS infrastructure. Just your DNS cheatsheet.",
   "timestamp": "2023-03-25",
-  "footer": "",
+  "footer": "Hope you found it useful, as I said, I am going to update this post time-to-time by adding new types of configuration sets or updating the old ones.",
   "toc": {
     "intro": "Introduction",
     "reqs": "Prerequirements",
@@ -21,7 +21,7 @@
         "dnsTlsEndpoints": "DNS over TLS for endpoints",
         "blockAd": "How to block Ad servers or other traffic"
       },
-      "Configuration of NSD Authoritative server": {
+      "Configuration of NSD Authoritative nameserver": {
         "nsdConfig": "Configuration of NSD",
         "unboundConfig": "Configuration of Unbound"
       }
@@ -435,7 +435,7 @@
     },
     {
       "type": "subtitle",
-      "content": "Configuration of NSD Authoritative server"
+      "content": "Configuration of NSD Authoritative nameserver"
     },
     "Generally speaking, during configuration of DNS servers mostly you are going to work with a couple of different roles. Those are caching, recursive and authoritative servers. As we mention before, our Unbound server, either local or remote, has 2.5 roles. It's caching, recursive and semi-authoritative. More information about <a href='https://en.wikipedia.org/wiki/Comparison_of_DNS_server_software' class='inline-link en'>comparison of DNS server software</a> in terms of roles you can find here.",
     "Okay, so, now we need to figure our how we can configure authoritative server. If you take a look at that table, you will see that a lot of servers are able to handle that role. We are going to work with NSD, as you already know. I had the choice between BIND and NSD, we are going to do it on the example of NSD, because BIND has security issues. Even though that the most (8/13) of <a href='https://en.wikipedia.org/wiki/Root_name_server' class='inline-link en'>DNS root servers</a> utilize BIND, we still stay with NSD.",
@@ -458,7 +458,7 @@
       "lang": "shell",
       "content": "$ cd /etc/nsd\n$ sudo nano nsd.conf"
     },
-    "There you should paste next content and change settings if you want. Even though there is one thing I would like to draw your attention to. As you see, we have 2 <span class='code-block'>zone</span> sections, the first one if forward, and the second one if for reverse. The IP address of my local network looks like this — <span class='code-block'>192.168.8.0/24</span>. If you literally reverse that, you will get <span class='code-block'>8.168.192</span>.",
+    "There you should paste next content and change settings if you want. Even though there is one thing I would like to draw your attention to. As you see, we have 2 <span class='code-block'>zone</span> sections, the first one is forward, and the second one is for reverse. The IP address of my local network looks like this — <span class='code-block'>192.168.8.0/24</span>. If you literally reverse that, you will get <span class='code-block'>8.168.192</span>.",
     "For identity and name of zones provide information on how you want to call your authoritative DNS server and how you want to call your domain zone. Event thought that domain name <span class='code-block'>mikhailbahdashych.com</span> is not registered, you are still able to call it like that, cuz you are boss here.",
     {
       "type": "code",
@@ -504,7 +504,7 @@
       "content": "; FQDN format domain\n$ORIGIN mikhailbahdashych.com.\n; Default time-to-live\n$TTL 86400\n\n; SOA, or start of authority record configuration\n@       IN      SOA     ns1.mikhailbahdashych.com.      admin.mikhailbahdashych.com. (\n                        2023022801             ; serial number Feb 28, 2023, version 01\n                        3600                   ; refresh\n                        900                    ; retry\n                        864000                 ; expire\n                        86400                  ; negative\n                        )\n\n; NS records to define the name servers that are authoritative for this zone\n                           NS      ns1.mikhailbahdashych.com.\n\n; A records that will actually tell clients how to reach the name servers we specified\nns1             A       192.168.8.1\n\n; Additional A records\nmac\tA\t192.168.8.102\nmac\tMX 10\tmac.mikhailbahdashych.com.\niphone\tA\t192.168.8.109\nrouter\tA\t192.168.8.1\nstella\tCNAME\trouter\nrouter\tIN TXT  \"hello, I am router stella\"\nrpi\tA\t192.168.8.112"
     },
     "Here is the configuration of reverse zone. As you can see it has the similar configuration as forward configuration, the only difference is that here we put reverse, <span class='code-block'>PTR</span> records. The number you see in front of every record is basically the last octet of an IP address.",
-    "Also you can see that 3 records share the same last octet and technically, it is one device — my router. It plays role of an authoritative namesrever (<span class='code-block'>ns1</span> — which stands for nameserver, but you can name it whatever you want) and it also has 2 domain names — <span class='code-block'>router</span> and CNAME <span class='code-block'>stella</span>.",
+    "Also you can see that 3 records share the same last octet and technically, it is one device — my router. It plays role of an authoritative nameserver (<span class='code-block'>ns1</span> — which stands for nameserver, but you can name it whatever you want) and it also has 2 domain names — <span class='code-block'>router</span> and CNAME <span class='code-block'>stella</span>.",
     {
       "type": "code",
       "lang": "nginx",
@@ -563,7 +563,7 @@
       "content": "Conclusions"
     },
     "In conclusion, choosing the right DNS server configuration is crucial to ensure a reliable and secure internet browsing experience. Unbound and NSD DNS servers offer various configurations that can cater to different needs and preferences. From simple, standalone installations to more complex setups that involve load balancing and redundancy, there's a configuration that can suit your specific requirements. Whether you're a network administrator, a business owner, or a casual user, it's worth exploring these options to see how they can enhance your online experience. By leveraging the power of Unbound and NSD DNS servers, you can enjoy faster, safer, and more efficient internet browsing, regardless of your location or device.",
-    "In today's article we have taken a look at different types of configurations that you may find useful for your own DNS infrastructure. Remember, there is no one switch that you can either turn on or turn off to enable of disable functions. It's always a set of different options that you may or not use. Everything is based on what role you want your DNS server to play and in what environment. Hope you found it useful, as I said, I am going to update this post time-to-time by adding new types of configuration sets or updating the old ones.",
+    "In today's article we have taken a look at different types of configurations that you may find useful for your own DNS infrastructure. Remember, there is no one switch that you can either turn on or turn off to enable of disable functions. It's always a set of different options that you may or not use. Everything is based on what role you want your DNS server to play and in what environment.",
     {
       "type": "title",
       "content": "References and contact"
