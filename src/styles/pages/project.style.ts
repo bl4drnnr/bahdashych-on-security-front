@@ -15,6 +15,20 @@ export const ProjectParagraph = styled.p`
   padding: 10px;
 `;
 
+export const SideBarTitle = styled.h3`
+  padding: 5px 0;
+  margin: 5px 0;
+  border-top: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  
+  :first-child {
+    border-top: none;
+    margin: 0;
+    padding: 0;
+  }
+`;
+
+export const SideBarParagraph = styled.p``;
+
 export const ProjectHr = styled.hr`
   margin: 15px;
   opacity: .5;
@@ -25,13 +39,23 @@ export const Container = styled.div`
   margin: 0 auto;
 
   &.en {
-    ${ProjectTitle}, ${ProjectBrief}, ${ProjectParagraph}, b {
+    ${ProjectTitle},
+    ${ProjectBrief},
+    ${ProjectParagraph},
+    ${SideBarTitle},
+    ${SideBarParagraph},
+    b {
       color: rgb(${(props) => props.theme.colors.textColor});
       font-family: 'Charter', sans-serif;
     }
   }
   &.non-en {
-    ${ProjectTitle}, ${ProjectBrief}, ${ProjectParagraph}, b {
+    ${ProjectTitle},
+    ${ProjectBrief},
+    ${ProjectParagraph},
+    ${SideBarTitle},
+    ${SideBarParagraph},
+    b {
       color: rgb(${(props) => props.theme.colors.textColor});
       font-family: 'Crimson', serif;
     }
@@ -43,17 +67,26 @@ export const Container = styled.div`
 `;
 
 export const SideBar = styled.div`
+  display: block;
   float: right; 
-  width: 200px;
-  height: 500px;
+  width: 300px;
   margin: 30px;
   border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
   border-radius: 8px;
+  padding: 10px;
+  
+  .img {
+    border-radius: 8px;
+    margin-right: 5px;
+  }
   
   @media only screen and (max-width: 1200px) {
     width: 100%;
-    height: 200px;
     margin: 0 auto;
     float: none;
   }
+`;
+
+export const ImageWrapper = styled.div`
+  overflow: auto;
 `;
