@@ -185,7 +185,7 @@ const Project = ({ locale, projectName }: ProjectProps) => {
               }
 
               <SideBarTitle>{t('projects:license')}</SideBarTitle>
-              <SideBarParagraph>Licensed by: MIT</SideBarParagraph>
+              <SideBarParagraph>{t('projects:licensedBy')} {t(`${projectName}:license`)}</SideBarParagraph>
 
               <SideBarTitle>{t('projects:techStack')}</SideBarTitle>
               <ImageWrapper>

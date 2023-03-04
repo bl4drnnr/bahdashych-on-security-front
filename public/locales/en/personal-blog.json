@@ -1,9 +1,10 @@
 {
   "title": "Personal blog",
   "brief": "How is constructed what you are reading now",
-  "description": "The React + Next.js Typescript FE",
+  "description": "The React + Next.js Typescript personal blog and portfolio page web application. The place where I share my thoughts and knowledge.",
   "searchTags": ["blog", "typescript", "nextjs"],
   "briefDescription": "You may be wondering how this blog was created from the programming side, so I wanted to give you a brief overview of the tools and technologies I used.",
+  "license": "MIT license",
   "techStack": [
     { "src": "javascript", "width": 126, "height": 28 },
     { "src": "typescript", "width": 126, "height": 28 },
@@ -29,9 +30,7 @@
       "lightDarkThemes": "Light/Dark Themes",
       "pageRendering": "Page rendering"
     },
-    "secIssues": "Security issues",
-    "contactAndRef": "Contact and references",
-    "license": "License"
+    "secIssues": "Security issues"
   },
   "content": [
     {
@@ -112,6 +111,11 @@
       "content": "import { useMemo } from 'react';\n\nimport { useRecoilState } from 'recoil';\n\nimport { theme as storeTheme } from '@store/global/global.state';\nimport { DarkTheme } from '@styles/Dark.theme';\nimport { LightTheme } from '@styles/Light.theme';\n\nconst useDarkMode = () => {\n\tconst [theme, setTheme] = useRecoilState(storeTheme);\n\n\tconst toggleTheme = () => {\n\t\tsetTheme(theme === 'light' ? 'dark' : 'light');\n\t};\n\n\tconst themeMode = useMemo(() => (theme === 'light' ? LightTheme : DarkTheme), [theme]);\n\n\treturn [theme, toggleTheme, themeMode] as const;\n};\n\nexport default useDarkMode;"
     },
     "Used in <span class='code-block'>Global.layout.tsx</span> by <span class='code-block'>ThemeProvider<span class='code-block'>:",
+    {
+      "type": "code",
+      "lang": "typescript",
+      "content": "import React from 'react';\n\nimport { ThemeProvider } from 'styled-components';\n\nimport useDarkMode from '@hooks/useDarkMode.hook';\nimport { DarkTheme } from '@styles/Dark.theme';\nimport { LightTheme } from '@styles/Light.theme';\n\nconst GlobalLayout = ({ children, loading = false }: GlobalLayoutProps) => {\n\tconst [theme] = useDarkMode();\n\n\treturn (\n\t\t<ThemeProvider theme={theme === 'light' ? LightTheme : DarkTheme}>\n\t\t\t...\n\t\t</ThemeProvider>\n\t);\n};\n\nexport default GlobalLayout;"
+    },
     "Handler for theme changing has been implemented within <span class='code-block'>Header</span> component.",
     "Two themes described in <span class='code-block'>themes</span> folder. They are implementing interface, that describes what fields are allowed to be used:",
     {
@@ -156,14 +160,6 @@
     },
     "Above you have seen an example of how I render simple paragraph. You can easily inject there <span class='code-block'>script</span> tag and do your dirty things. Fortunately, there is only one source, and it's trusted, and it's me :)",
     "As I have mentioned previously, I had a couple of ideas on how to implement that. The way it's been implemented is actually the easiest one. The other quite easy method is simple sanitization. The only thing that would be excluded in this case is <span class='code-block'>script</span> tag. The exact same situation with projects page.",
-    "The most completed is to create \"your own tags\" and after pages gets JSON, instead of rendering it at this exact moment, you would pass it to function, that would interpret your tags to normal HTML and return it to the page. Also, it would be the sort of sanitization, as it could be implemented right in that function. Why did I do this way? Well... You know... I'm kinda lazy :)",
-    {
-      "type": "title",
-      "content": "Contact and references"
-    },
-    {
-      "type": "title",
-      "content": "License"
-    }
+    "The most completed is to create \"your own tags\" and after pages gets JSON, instead of rendering it at this exact moment, you would pass it to function, that would interpret your tags to normal HTML and return it to the page. Also, it would be the sort of sanitization, as it could be implemented right in that function. Why did I do this way? Well... You know... I'm kinda lazy :)"
   ]
 }
