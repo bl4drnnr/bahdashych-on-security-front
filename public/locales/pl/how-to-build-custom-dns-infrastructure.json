@@ -34,7 +34,7 @@
       "type": "title",
       "content": "Wstęp"
     },
-    "Cóż, zanim zaczniemy naszą podróż w świecie niestandardowych serwerów DNS, chciałbym powiedzieć kilka słów. Po pierwsze, domyślam się, że z tytułu artykułu domyśliliście się, że coś zbudujemy, a więc będzie to coś bardzo praktycznego, dlatego nie będę omawiał DNS od podstaw. Jeśli chcesz dowiedzieć się więcej o DNS, zapraszamy <a href='https://blog.mikhailbahdashych.me/en/blog/how-does-dns-work-and-why-we-need-dnssec' class='inline-link en'>tutaj</a>, w tym artykule uznano, że wiesz, jaka jest różnica między rekursywnym programem rozpoznawania nazw DNS, serwerem głównym, głównym serwerem nazw itp.",
+    "Cóż, zanim zaczniemy naszą podróż w świecie niestandardowych serwerów DNS, chciałbym powiedzieć kilka słów. Po pierwsze, domyślam się, że z tytułu artykułu domyśliliście się, że coś zbudujemy, a więc będzie to coś bardzo praktycznego, dlatego nie będę omawiał DNS od podstaw. Jeśli chcesz dowiedzieć się więcej o DNS, zapraszamy <a href='https://blog.mikhailbahdashych.me/en/blog/how-does-dns-work-and-why-we-need-dnssec' class='inline-link non-en'>tutaj</a>, w tym artykule uznano, że wiesz, jaka jest różnica między rekursywnym programem rozpoznawania nazw DNS, serwerem głównym, głównym serwerem nazw itp.",
     "Po drugie, należy pamiętać o tym, że każdy przypadek jest wyjątkowy. DNS dotyczy ról, a role dotyczą po prostu różnych zestawów konfiguracji. I zamierzam tutaj opisać różne scenariusze implementacji, bardziej trafne byłoby stwierdzenie, że tutaj zostaną zaimplementowane tylko komponenty. Chciałem tylko o tym wspomnieć, ponieważ być może szukasz jakiegoś konkretnego przypadku użycia, który omówię lub nie. Nie będę więc omawiał takich przypadków. Zamiast tego chcę po prostu pokazać, jak zbudować różne komponenty, których możesz używać lub nie w swojej konfiguracji, takie jak komunikacja DoT między 2 resolwerami DNS.",
     "Ostatnią rzeczą, o której chcę wspomnieć, jest to, że zamierzam stale aktualizować ten opis, dodając (lub edytując, w zależności od problemu) nowe konfiguracje. Zobaczysz więc znacznik czasu, w którym momencie działała wersja.",
     {
@@ -267,7 +267,7 @@
       ]
     },
     "Szczerze mówiąc, nie ma między nimi dużej różnicy. Jak zapewne już się domyśliłeś z tytułu tego podtematu, będziemy generować certyfikat samopodpisany i jedyną dodatkową rzeczą, którą musimy w tym przypadku zrobić, to dodać ten certyfikat do zaufanych (ze względu na samopodpisanie).",
-    "W tym artykule nie będziemy omawiać całej infrastruktury PKI, ale jeśli nie jesteś z nią zaznajomiony, gorąco polecam przejście do <a href='https://blog.mikhailbahdashych.me/en/blog/pki- Infrastructure-or-how-to-build-your-own-vpn' class='inline-link en'>tutaj</a> i przeczytaj o tym (moim zdaniem musi to mieć).",
+    "W tym artykule nie będziemy omawiać całej infrastruktury PKI, ale jeśli nie jesteś z nią zaznajomiony, gorąco polecam przejście do <a href='https://blog.mikhailbahdashych.me/en/blog/pki- Infrastructure-or-how-to-build-your-own-vpn' class='inline-link non-en'>tutaj</a> i przeczytaj o tym (moim zdaniem musi to mieć).",
     "Więc przede wszystkim utwórz plik o nazwie <span class='code-block'>config.cnf</span> i wklej następną zawartość:",
     {
       "type": "code",
@@ -376,7 +376,7 @@
       "width": "w100",
       "resource": "end-to-end-dot.jpeg"
     },
-    "I voila! Udało nam się rozwiązać adres IP, a przechwycony ruch pokazuje nam, że trafia on do serwera docelowego przez TLS. Świetnie! Nie martw się, jeśli to dla Ciebie za dużo, sprawdź moje <a href='https://gist.github.com/bl4drnnr' class='inline-link en'>GitHub Gists</a>, aby znaleźć wszystkie pliki konfiguracyjne .",
+    "I voila! Udało nam się rozwiązać adres IP, a przechwycony ruch pokazuje nam, że trafia on do serwera docelowego przez TLS. Świetnie! Nie martw się, jeśli to dla Ciebie za dużo, sprawdź moje <a href='https://gist.github.com/bl4drnnr' class='inline-link non-en'>GitHub Gists</a>, aby znaleźć wszystkie pliki konfiguracyjne .",
     "Ponadto tutaj możesz zobaczyć dowód, że ruch DNS, który przechodzi z mojego komputera do routera, jest nadal niezaszyfrowany, więc naprawmy to.",
     {
       "type": "code",
@@ -406,7 +406,7 @@
     },
     "Ale chwileczkę, jeśli kontrolujemy wszystkie źródła ruchu, możemy nim manipulować, prawda? Widziałem tę iskierkę w twoich oczach. Masz 100% racji. Jeśli szukasz sposobu na blokowanie reklam lub niechcianego ruchu w swojej sieci, skorzystanie z Unbound serwera DNS to wydajne i elastyczne rozwiązanie. Konfigurując Unbound serwer DNS i konfigurując go tak, aby blokował zapytania do znanych serwerów reklam i innych problematycznych domen, możesz znacznie poprawić jakość przeglądania i chronić swoją sieć przed potencjalnymi zagrożeniami.",
     "Teraz omówimy, w jaki sposób możemy manipulować ruchem obsługiwanym przez nasz serwer Unbound. Szczerze mówiąc, tutaj będziemy rozmawiać głównie o blokowaniu różnych serwerów reklam lub po prostu blokowaniu ruchu. Oczywiście można na przykład zmienić adres IP domeny z pamięci podręcznej iw ten sposób przekierować ruch, ale wiesz, wydaje się to zacienioną strefą, prawda? Zasadniczo jest to możliwe do wdrożenia, ale jedyną przeszkodą na drodze są certyfikaty. Nie wystarczy po prostu zamienić domenę na inny adres IP, trzeba będzie również sprawić, aby komputery klienckie lub inne punkty końcowe zaufały temu certyfikatowi.",
-    "Tutaj rozważymy tylko końcową implementację. Co ze źródłami różnych serwerów reklam? Cóż, znajdziesz ich wiele w Internecie, ale w tym przykładzie użyłem tego <a href='https://github.com/StevenBlack/hosts' class='inline-link en'>repo</a >.",
+    "Tutaj rozważymy tylko końcową implementację. Co ze źródłami różnych serwerów reklam? Cóż, znajdziesz ich wiele w Internecie, ale w tym przykładzie użyłem tego <a href='https://github.com/StevenBlack/hosts' class='inline-link non-en'>repo</a >.",
     "Jedną oczywistą rzeczą jest to, że mówiąc o infrastrukturze, którą zbudowaliśmy w poprzednich sekcjach, w tym przypadku nie ma znaczenia, który serwer przekonfigurujemy, aby zablokować ruch. Oto jak możesz to zrobić, powiedzmy, że chcemy zablokować dostęp do facebook.com. Jedyne, co musisz zrobić, to dodać tę linię:",
     {
       "type": "code",
@@ -437,11 +437,11 @@
       "type": "subtitle",
       "content": "Konfiguracja NSD Authoritative nameserver"
     },
-    "Ogólnie rzecz biorąc, podczas konfiguracji serwerów DNS głównie będziesz pracować z kilkoma różnymi rolami. Są to buforowanie, rekurencyjne i autorytatywne serwery. Jak wspominamy wcześniej, nasz niezwiązany serwer, lokalny lub zdalny, ma 2,5 role. To buforowanie, rekurencyjne i półautoryczne. Więcej informacji o <a href='https://en.wikipedia.org/wiki/comparison_of_dns_server_software' class='inline-link en'>porównaniu oprogramowania serwera DNS pod względem ról tutaj</a>.",
-    "Okej, więc teraz musimy wymyślić sposób, w jaki możemy skonfigurować autorytatywny serwer. Jeśli spojrzysz na ten stół, zobaczysz, że wiele serwerów jest w stanie poradzić sobie z tą rolą. Będziemy pracować z NSD, jak już wiesz. Miałem wybór między BIND a NSD, zrobimy to na przykładzie NSD, ponieważ BIND ma problemy z bezpieczeństwem. Mimo że najwięcej (8/13) <a href='https://en.wikipedia.org/wiki/root_name_server' class='inline-link en'>serwery root DNS </a>używają BIND, my nadal zostaniemy z NSD.",
+    "Ogólnie rzecz biorąc, podczas konfiguracji serwerów DNS głównie będziesz pracować z kilkoma różnymi rolami. Są to buforowanie, rekurencyjne i autorytatywne serwery. Jak wspominamy wcześniej, nasz niezwiązany serwer, lokalny lub zdalny, ma 2,5 role. To buforowanie, rekurencyjne i półautoryczne. Więcej informacji o <a href='https://en.wikipedia.org/wiki/comparison_of_dns_server_software' class='inline-link non-en'>porównaniu oprogramowania serwera DNS pod względem ról tutaj</a>.",
+    "Okej, więc teraz musimy wymyślić sposób, w jaki możemy skonfigurować autorytatywny serwer. Jeśli spojrzysz na ten stół, zobaczysz, że wiele serwerów jest w stanie poradzić sobie z tą rolą. Będziemy pracować z NSD, jak już wiesz. Miałem wybór między BIND a NSD, zrobimy to na przykładzie NSD, ponieważ BIND ma problemy z bezpieczeństwem. Mimo że najwięcej (8/13) <a href='https://en.wikipedia.org/wiki/root_name_server' class='inline-link non-en'>serwery root DNS </a>używają BIND, my nadal zostaniemy z NSD.",
     "Ponadto, zanim będziemy kontynuować, przypomnijmy, o czym polega ta autorytatywna rola. Autorytatywny serwer nazw - ostateczny serwer nazw można traktować jako słownik na stojaku książek, w którym konkretne imię można przełożyć na jego definicję. Autorytatywny serwer nazw jest ostatnim przystankiem w zapytaniu serwerowym. Jeśli autorytatywny serwer nazw ma dostęp do żądanego rekordu, zwróci adres IP dla żądanej nazwy hosta z powrotem do rekursora DNS, który złożył początkowe żądanie.",
     "Jeśli DNS dotyczy ról, możemy skonfigurować wiele ról na tej samej maszynie fizycznej, prawda? Dokładnie! To właśnie zamierzamy, w zasadzie na tej samej lokalnej maszynie - Raspberry Pi - będziemy mieli nasze serwery niezwiązane i NSD. Nasz serwer NSD rozwiąże adresy IP urządzeń w mojej sieci. Oczywiście możesz swobodnie uczynić ten autorytatywny nazwy nazw i rozwiązać publiczne adresy IP, ale dla nas w tej chwili nie ma takiej potrzeby. Chcę również pokazać, że jeśli masz podobną konfigurację, będziesz musiał również zmienić konfigurację niezwiązanego serwera.",
-    "Technicznie, autorytatywny serwer nazw to miejsce, w którym faktycznie adresy IP są mapowane na nazwy domeny. Posiada różne rodzaje rekordów, takie jak A, AAAA, TXT, MX itp. Jeśli tu jesteś, założę się, że przynajmniej raz masz domeny, subdomeny, rekordy TXT i tak dalej dla nazwy domeny. A na tych usługach hostingowych miałeś ten wspaniały GUI, w którym nie trzeba chodzić na pliki konfiguracyjne i coś tam zmieniać. Cóż, teraz zabierzemy łup w tym, co dzieje się za sceną i jak to wygląda na zapleczu tego, co robisz na stronie konfigurując domenę.",
+    "Technicznie, autorytatywny serwer nazw to miejsce, w którym faktycznie adresy IP są mapowane na nazwy domeny. Posiada różne rodzaje rekordów, takie jak A, AAAA, TXT, MX itp. Jeśli tu jesteś, założę się, że przynajmniej raz masz domeny, subdomeny, rekordy TXT i tak dalej dla nazwy domeny. A na tych usługach hostingowych miałeś ten wspaniały GUI, w którym nie trzeba chodzić na pliki konfiguracyjne i coś tam zmieniać. Cóż, teraz popatrzymy, co dzieje się za sceną i jak to wygląda na zapleczu tego, co robisz na stronie konfigurując domenę.",
     {
       "type": "subsubtitle",
       "content": "Konfiguracja NSD"
@@ -459,7 +459,7 @@
       "content": "$ cd /etc/nsd\n$ sudo nano nsd.conf"
     },
     "Tam powinieneś wkleić następną treść i zmienić ustawienia, jeśli chcesz. Mimo że jest jedna rzecz, na którą chciałbym zwrócić twoją uwagę. Jak widać, mamy 2 <span class='code-block'> strefy</span>, pierwsza, naprzód, a druga, jest odwrotna. Adres IP mojej sieci lokalnej wygląda tak - <span class='code-block'>192.168.8.0/24</pan>. Jeśli dosłownie to odwrócisz, otrzymasz <span class='code-block'>8.168.192</span>.",
-    "W przypadku tożsamości i nazwy stref podaj informacje o tym, jak chcesz nazwać autorytatywny serwer DNS i jak chcesz nazwać swoją strefę domeny. Wydarzenie myślą, że nazwa domeny <span class='code-block'>mikhailbahdashych.com</span> nie jest zarejestrowana, nadal możesz to nazwać tak, bo jesteś tu szefem.",
+    "W przypadku tożsamości i nazwy stref podaj informacje o tym, jak chcesz nazwać autorytatywny serwer DNS i jak chcesz nazwać swoją strefę domeny. Nazwa domeny <span class='code-block'>mikhailbahdashych.com</span> nie jest zarejestrowana, nadal możesz to nazwać tak, bo jesteś tu szefem.",
     {
       "type": "code",
       "lang": "nginx",
@@ -528,7 +528,7 @@
       "lang": "nginx",
       "content": "private-address: 192.168.8.0/24\n\nprivate-domain: \"mikhailbahdashych.com\"\nprivate-domain: \"8.168.192.in-addr.arpa\"\n\ndomain-insecure: \"mikhailbahdashych.com\"\ndomain-insecure: \"8.168.192.in-addr.arpa\"\n\n# Settings for NSD resolver\nlocal-zone: \"8.168.192.in-addr.arpa.\" transparent\n\nstub-zone:\n\tname: \"mikhailbahdashych.com\"\n\tstub-addr: 127.0.0.1@8053\n\nstub-zone:\n\tname: \"8.168.192.in-addr.arpa\"\n\tstub-addr: 127.0.0.1@8053"
     },
-    "Jeśli przyjrzysz się bliżej tej zaktualizowanej nieograniczonej dokumentacji, zauważysz, że:",
+    "Jeśli przyjrzysz się bliżej tej zaktualizowanej konfiguracji Unbound, zauważysz, że:",
     {
       "type": "list-bullet",
       "items": [

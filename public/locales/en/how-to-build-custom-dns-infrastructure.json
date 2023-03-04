@@ -441,7 +441,7 @@
     "Okay, so, now we need to figure our how we can configure authoritative server. If you take a look at that table, you will see that a lot of servers are able to handle that role. We are going to work with NSD, as you already know. I had the choice between BIND and NSD, we are going to do it on the example of NSD, because BIND has security issues. Even though that the most (8/13) of <a href='https://en.wikipedia.org/wiki/Root_name_server' class='inline-link en'>DNS root servers</a> utilize BIND, we still stay with NSD.",
     "Also, before we continue, let's remind what this authoritative role is about. Authoritative nameserver — the final nameserver can be thought of as a dictionary on a rack of books, in which a specific name can be translated into its definition. The authoritative nameserver is the last stop in the nameserver query. If the authoritative name server has access to the requested record, it will return the IP address for the requested hostname back to the DNS Recursor that made the initial request.",
     "If DNS is about roles, we can configure multiple roles on the same physical machine, right? Exactly! This is what we are going to do, basically, on the same local machine — Raspberry PI — we will have our both Unbound and NSD servers. Our NSD server is going to resolve IP addresses of devices on my network. Of course, you are free to make this NSD authoritative nameserver public and resolve public IP addresses, but for us, at this moment, there is no such need. Also, I want to show you that if you have similar configuration you will have to change configuration of your Unbound server also.",
-    "Technically, authoritative nameserver is where actually IP addresses are mapped to the domain names. It holds different types of records, like A, AAAA, TXT, MX etc. If you are here, I bet you at least once have configured domains, subdomains, TXT records and so on for domain name. And on those hosting services you had this fine GUI, where there is no need to go to config files and change something there. Well, right now we are going to take a loot at what is happening behind the scene and how it looks like on the backend of what you are doing on page configuring your domain.",
+    "Technically, authoritative nameserver is where actually IP addresses are mapped to the domain names. It holds different types of records, like A, AAAA, TXT, MX etc. If you are here, I bet you at least once have configured domains, subdomains, TXT records and so on for domain name. And on those hosting services you had this fine GUI, where there is no need to go to config files and change something there. Well, right now we are going to take a look at what is happening behind the scene and how it looks like on the backend of what you are doing on page configuring your domain.",
     {
       "type": "subsubtitle",
       "content": "Configuration of NSD"
@@ -459,7 +459,7 @@
       "content": "$ cd /etc/nsd\n$ sudo nano nsd.conf"
     },
     "There you should paste next content and change settings if you want. Even though there is one thing I would like to draw your attention to. As you see, we have 2 <span class='code-block'>zone</span> sections, the first one is forward, and the second one is for reverse. The IP address of my local network looks like this — <span class='code-block'>192.168.8.0/24</span>. If you literally reverse that, you will get <span class='code-block'>8.168.192</span>.",
-    "For identity and name of zones provide information on how you want to call your authoritative DNS server and how you want to call your domain zone. Event thought that domain name <span class='code-block'>mikhailbahdashych.com</span> is not registered, you are still able to call it like that, cuz you are boss here.",
+    "For identity and name of zones provide information on how you want to call your authoritative DNS server and how you want to call your domain zone. Even thought that domain name <span class='code-block'>mikhailbahdashych.com</span> is not registered, you are still able to call it like that, cuz you are boss here.",
     {
       "type": "code",
       "lang": "nginx",
@@ -528,7 +528,7 @@
       "lang": "nginx",
       "content": "private-address: 192.168.8.0/24\n\nprivate-domain: \"mikhailbahdashych.com\"\nprivate-domain: \"8.168.192.in-addr.arpa\"\n\ndomain-insecure: \"mikhailbahdashych.com\"\ndomain-insecure: \"8.168.192.in-addr.arpa\"\n\n# Settings for NSD resolver\nlocal-zone: \"8.168.192.in-addr.arpa.\" transparent\n\nstub-zone:\n\tname: \"mikhailbahdashych.com\"\n\tstub-addr: 127.0.0.1@8053\n\nstub-zone:\n\tname: \"8.168.192.in-addr.arpa\"\n\tstub-addr: 127.0.0.1@8053"
     },
-    "If you take a closer look at this updated Unbound documentation, you will notice that:",
+    "If you take a closer look at this updated Unbound configuration, you will notice that:",
     {
       "type": "list-bullet",
       "items": [
