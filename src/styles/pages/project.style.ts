@@ -13,6 +13,25 @@ export const ProjectBrief = styled.h3`
 export const ProjectParagraph = styled.p`
   text-indent: 50px;
   padding: 10px;
+
+  &.title {
+      font-weight: 900;
+      text-indent: 0;
+      margin-top: 30px;
+      font-size: 32px;
+  }
+
+  &.subtitle {
+      font-weight: 700;
+      text-indent: 0;
+      font-size: 24px;
+  }
+
+  &.subsubtitle {
+      text-indent: 0;
+      font-weight: 600;
+      font-size: 1.2em;
+  }
 `;
 
 export const SideBarTitle = styled.h3`
@@ -35,7 +54,7 @@ export const ProjectHr = styled.hr`
 `;
 
 export const Container = styled.div`
-  width: 60%;
+  width: 45%;
   margin: 0 auto;
 
   &.en {
@@ -120,7 +139,7 @@ export const SideBar = styled.div`
   width: 300px;
   margin: 0 15px 30px 30px;
   
-  .img {
+  .tech-stack-img {
     border-radius: 8px;
     margin-right: 5px;
   }
@@ -147,4 +166,43 @@ export const SideBarProjectInfo = styled.div`
   border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
   border-radius: 8px;
   padding: 10px;
+`;
+
+export const ImageContainer = styled.div`
+  margin: 30px auto 0 auto;
+  &.w20 {
+    width: 20%;
+  }
+  &.w30 {
+    width: 30%;
+  }
+  &.w50 {
+    width: 50%;
+  }
+  &.w60 {
+    width: 60%;
+  }
+  &.w70 {
+    width: 70%;
+  }
+  &.w80 {
+    width: 80%;
+  }
+  &.w90 {
+    width: 90%;
+  }
+  &.w100 {
+    width: 100%;
+  }
+
+  > div {
+    position: unset !important;
+  }
+
+  .image {
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+  }
 `;

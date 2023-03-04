@@ -5,10 +5,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
+import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { makeStaticProps } from '@lib/getStatic';
 import {
   Container,
+  ImageContainer,
   ImageWrapper,
   ProjectBrief,
   ProjectHr,
@@ -20,6 +22,7 @@ import {
   SideBarTableOfContents,
   SideBarTitle
 } from '@styles/project.style';
+import { generateLists } from '@utils/GeneraeList.util';
 
 interface BadgeProps {
   src: string;
@@ -34,7 +37,23 @@ interface ProjectProps {
 
 interface ProjectContentObject {
   type?: string | undefined;
+  lang?: string | undefined;
   content?: string | undefined;
+  resource?: string | undefined;
+  width?: string | undefined;
+  style?: string | undefined;
+  items?: Array<any>
+}
+
+interface TechStackProps {
+  src: string;
+  width: number;
+  height: number;
+}
+
+interface ProjectPageProps {
+  link: string;
+  text: string;
 }
 
 const Project = ({ locale, projectName }: ProjectProps) => {
@@ -94,6 +113,14 @@ const Project = ({ locale, projectName }: ProjectProps) => {
     return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
   };
 
+  const scrollTo = (ref: any) => {
+    if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const isArticleCode = (object: any) => {
+    return 'lang' in object;
+  };
+
   React.useEffect(() => {
     // @ts-ignore
     const availablePosts = process.env.NEXT_PUBLIC_AVAILABLE_PROJECTS.split(',');
@@ -119,16 +146,6 @@ const Project = ({ locale, projectName }: ProjectProps) => {
     setRefNames(allRefs);
   }, [t]);
 
-  const [otherTechs, ] = React.useState<Array<BadgeProps>>([
-    { src: 'javascript', width: 126, height: 28 },
-    { src: 'typescript', width: 126, height: 28 },
-    { src: 'react', width: 85, height: 28 },
-    { src: 'next.js', width: 85, height: 28 },
-    { src: 'digitalOcean', width: 130, height: 28 },
-    { src: 'amazon-aws', width: 74, height: 28 },
-    { src: 'nginx', width: 88, height: 28 },
-  ]);
-
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
   };
@@ -153,31 +170,79 @@ const Project = ({ locale, projectName }: ProjectProps) => {
             </SideBarTableOfContents>
 
             <SideBarProjectInfo>
-              <SideBarTitle>Brief:</SideBarTitle>
+              <SideBarTitle>{t('projects:brief')}</SideBarTitle>
               <SideBarParagraph>{t(`${projectName}:briefDescription`)}</SideBarParagraph>
-              <SideBarTitle>GitHub page:</SideBarTitle>
-              <SideBarParagraph>github.com/bl4drnnr/personal-blog</SideBarParagraph>
-              <SideBarTitle>License:</SideBarTitle>
+
+              <SideBarTitle>{t('projects:projectPage')}</SideBarTitle>
+              {
+                Object.entries(t(`${projectName}:projectPages`,
+                  { returnObjects: true }) as ProjectPageProps[]
+                ).map(([key, value]) => (
+                  <SideBarParagraph key={value.link}>
+                    <a className={'inline-link en'} href={value.link}>{value.text}</a>
+                  </SideBarParagraph>
+                ))
+              }
+
+              <SideBarTitle>{t('projects:license')}</SideBarTitle>
               <SideBarParagraph>Licensed by: MIT</SideBarParagraph>
-              <SideBarTitle>Project technology stack:</SideBarTitle>
+
+              <SideBarTitle>{t('projects:techStack')}</SideBarTitle>
               <ImageWrapper>
-                {otherTechs.map((item, index) => (
-                  <Image
-                    key={index}
-                    src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
-                    className={'img'}
-                    alt={item.src}
-                    width={item.width}
-                    height={item.height}
-                  />
-                ))}
+                {
+                  (t(`${projectName}:techStack`, { returnObjects: true }) as TechStackProps[])
+                    .map((item: TechStackProps, index) => (
+                      <Image
+                        key={index}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
+                        className={'tech-stack-img'}
+                        width={item.width}
+                        height={item.height}
+                        alt={item.src}
+                      />
+                    ))
+                }
               </ImageWrapper>
             </SideBarProjectInfo>
           </SideBar>
 
-          <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
-          <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
-          <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
+
+          {
+            (t(`${projectName}:content`, { returnObjects: true }) as ProjectContentObject[])
+              .map((item: ProjectContentObject | string, index) => (
+                <div key={index}>
+                  {typeof item === 'string' ? (
+                    <ProjectParagraph
+                      dangerouslySetInnerHTML={{ __html: item }}
+                    />
+                  ) : (item.type === 'title' || item.type === 'subtitle' || item.type === 'subsubtitle') ? (
+                    <ProjectParagraph
+                      className={item.type}
+                      ref={getRefByName(item.content)}
+                    >{item.content}</ProjectParagraph>
+                  ) : ((isArticleCode(item)) ? (
+                    <CodeHighlighter
+                      language={item.lang}
+                      code={item.content}
+                    />
+                  ) : ((item.type === 'list-bullet' || item.type === 'list-numeric') ? (
+                    generateLists(item.items, locale, item.type, item.style)
+                  ) : (
+                    ((item.type === 'picture') ? (
+                      <ImageContainer className={`${item.width}`}>
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${projectName}/${item.resource}`}
+                          alt={item.resource as string}
+                          className={'image'}
+                          fill
+                        />
+                      </ImageContainer>
+                    ) : (<></>))
+                    )
+                  ))}
+                </div>
+              ))
+          }
         </Container>
       </DefaultLayout>
     </>
