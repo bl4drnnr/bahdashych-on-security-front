@@ -15,7 +15,9 @@ import {
   ProjectParagraph,
   ProjectTitle,
   SideBar,
-  SideBarParagraph, SideBarProjectInfo, SideBarTableOfContents,
+  SideBarParagraph,
+  SideBarProjectInfo,
+  SideBarTableOfContents,
   SideBarTitle
 } from '@styles/project.style';
 
@@ -144,35 +146,20 @@ const Project = ({ locale, projectName }: ProjectProps) => {
           <ProjectTitle>{t(`${projectName}:title`)}</ProjectTitle>
           <ProjectBrief>{t(`${projectName}:brief`)}</ProjectBrief>
           <ProjectHr />
+
           <SideBar>
             <SideBarTableOfContents>
-              <SideBarParagraph>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt enim id maiores maxime molestias repudiandae saepe sequi suscipit temporibus veniam.
-              </SideBarParagraph>
+              {generateTableOfContents(t(`${projectName}:toc`, { returnObjects: true }))}
             </SideBarTableOfContents>
 
             <SideBarProjectInfo>
-              <SideBarTitle>
-                Brief:
-              </SideBarTitle>
-              <SideBarParagraph>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi commodi cupiditate debitis dolor eum in incidunt labore optio, quasi quis quisquam quod reprehenderit similique tempora tenetur veritatis. Odio, praesentium.
-              </SideBarParagraph>
-              <SideBarTitle>
-                GitHub page:
-              </SideBarTitle>
-              <SideBarParagraph>
-                github.com/bl4drnnr/personal-blog
-              </SideBarParagraph>
-              <SideBarTitle>
-                License:
-              </SideBarTitle>
-              <SideBarParagraph>
-                Licensed by: MIT
-              </SideBarParagraph>
-              <SideBarTitle>
-                Project technology stack:
-              </SideBarTitle>
+              <SideBarTitle>Brief:</SideBarTitle>
+              <SideBarParagraph>{t(`${projectName}:briefDescription`)}</SideBarParagraph>
+              <SideBarTitle>GitHub page:</SideBarTitle>
+              <SideBarParagraph>github.com/bl4drnnr/personal-blog</SideBarParagraph>
+              <SideBarTitle>License:</SideBarTitle>
+              <SideBarParagraph>Licensed by: MIT</SideBarParagraph>
+              <SideBarTitle>Project technology stack:</SideBarTitle>
               <ImageWrapper>
                 {otherTechs.map((item, index) => (
                   <Image
@@ -187,6 +174,7 @@ const Project = ({ locale, projectName }: ProjectProps) => {
               </ImageWrapper>
             </SideBarProjectInfo>
           </SideBar>
+
           <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
           <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
           <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>

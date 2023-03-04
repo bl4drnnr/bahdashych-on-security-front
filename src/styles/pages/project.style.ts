@@ -48,6 +48,9 @@ export const Container = styled.div`
       color: rgb(${(props) => props.theme.colors.textColor});
       font-family: 'Charter', sans-serif;
     }
+    ol, li, span {
+      font-family: 'Charter', sans-serif;
+    }
   }
   &.non-en {
     ${ProjectTitle},
@@ -59,10 +62,55 @@ export const Container = styled.div`
       color: rgb(${(props) => props.theme.colors.textColor});
       font-family: 'Crimson', serif;
     }
+    ol, li, span {
+      font-family: 'Crimson', serif;
+    }
   }
 
   @media only screen and (max-width: 1200px) {
     width: 90%;
+  }
+
+  .table-of-contents-ul {
+    font-size: 1.1em;
+    color: rgb(${(props) => props.theme.colors.primaryDark});
+    text-decoration: underline;
+    margin-bottom: 0.6em;
+    transition: .2s;
+    margin-left: 20px;
+
+    :hover {
+      cursor: pointer;
+    }
+  }
+
+  .table-of-contents-li {
+    font-size: 1em;
+    color: rgb(${(props) => props.theme.colors.primaryDark});
+    text-decoration: underline;
+    display: table;
+    counter-increment: item;
+    margin-bottom: 0.6em;
+    transition: .2s;
+
+    :hover {
+      cursor: pointer;
+    }
+    li:first-child {
+      margin-top: 0.6em;
+    }
+    ::before {
+      content: counters(item, ".") ". ";
+      display: table-cell;
+      padding-right: 0.6em;
+    }
+  }
+
+  .table-of-contents-ol {
+    list-style-type: none;
+    counter-reset: item;
+    margin: 0;
+    padding: 0;
   }
 `;
 

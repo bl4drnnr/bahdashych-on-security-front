@@ -2,5 +2,46 @@
   "title": "Personal blog",
   "brief": "How is constructed what you are reading now",
   "description": "The React + Next.js Typescript FE",
-  "searchTags": ["blog", "typescript", "nextjs"]
+  "searchTags": ["blog", "typescript", "nextjs"],
+  "briefDescription": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi commodi cupiditate debitis dolor eum in incidunt labore optio, quasi quis quisquam quod reprehenderit similique tempora tenetur veritatis. Odio, praesentium.",
+  "toc": {
+    "Structure and implementation": {
+      "multiLang": "Multi-languages",
+      "lightDarkThemes": "Light/Dark Themes",
+      "pageRendering": "Page rendering"
+    },
+    "secIssues": "Security issues",
+    "contactAndRef": "Contact and references",
+    "license": "License"
+  },
+  "content": [
+    {
+      "type": "title",
+      "content": "Structure and implementation"
+    },
+    {
+      "type": "subtitle",
+      "content": "Multi-languages"
+    },
+    {
+      "type": "subtitle",
+      "content": "Light/Dark Themes"
+    },
+    {
+      "type": "subtitle",
+      "content": "Page rendering"
+    },
+    {
+      "type": "title",
+      "content": "Security issues"
+    },
+    {
+      "type": "title",
+      "content": "Contact and references"
+    },
+    {
+      "type": "title",
+      "content": "License"
+    }
+  ]
 }
