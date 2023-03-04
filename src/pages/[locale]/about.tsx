@@ -35,87 +35,34 @@ const About = ({ locale }: AboutProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [programmingLanguages, ] = React.useState<Array<BadgeProps>>([{
-    src: 'https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E',
-    width: 126,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white',
-    width: 126,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54',
-    width: 98,
-    height: 28
-  }]);
-  const [frontFrameworks, ] = React.useState<Array<BadgeProps>>([{
-    src: 'https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D',
-    width: 85,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/Nuxt-002E3B?style=for-the-badge&logo=nuxtdotjs&logoColor=#00DC82',
-    width: 85,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB',
-    width: 85,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white',
-    width: 85,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white',
-    width: 106,
-    height: 28
-  }]);
-  const [backFrameworks, ] = React.useState<Array<BadgeProps>>([{
-    src: 'https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB',
-    width: 122,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white',
-    width: 92,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white',
-    width: 92,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white',
-    width: 92,
-    height: 28
-  }]);
+  const [programmingLanguages, ] = React.useState<Array<BadgeProps>>([
+    { src: 'javascript', width: 126, height: 28 },
+    { src: 'typescript', width: 126, height: 28 },
+    { src: 'python', width: 98, height: 28 }
+  ]);
+  const [frontFrameworks, ] = React.useState<Array<BadgeProps>>([
+    { src: 'vuedotjs', width: 85, height: 28 },
+    { src: 'nuxtdotjs', width: 85, height: 28 },
+    { src: 'react', width: 85, height: 28 },
+    { src: 'next.js', width: 85, height: 28 },
+    { src: 'angular', width: 106, height: 28 }
+  ]);
+  const [backFrameworks, ] = React.useState<Array<BadgeProps>>([
+    { src: 'express', width: 122, height: 28 },
+    { src: 'nestjs', width: 92, height: 28 },
+    { src: 'django', width: 92, height: 28 },
+    { src: 'flask', width: 92, height: 28 }
+  ]);
 
-  const [otherTechs, ] = React.useState<Array<BadgeProps>>([{
-    src: 'https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white',
-    width: 74,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white',
-    width: 130,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white',
-    width: 130,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white',
-    width: 92,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white',
-    width: 120,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/ansible-%231A1918.svg?style=for-the-badge&logo=ansible&logoColor=white',
-    width: 100,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white',
-    width: 120,
-    height: 28
-  }]);
+  const [otherTechs, ] = React.useState<Array<BadgeProps>>([
+    { src: 'amazon-aws', width: 74, height: 28 },
+    { src: 'digitalOcean', width: 130, height: 28 },
+    { src: 'Cloudflare', width: 130, height: 28 },
+    { src: 'docker', width: 92, height: 28 },
+    { src: 'kubernetes', width: 120, height: 28 },
+    { src: 'ansible', width: 100, height: 28 },
+    { src: 'terraform', width: 120, height: 28 }
+  ]);
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
@@ -192,7 +139,7 @@ const About = ({ locale }: AboutProps) => {
               {programmingLanguages.map((item, index) => (
                 <Image
                   key={index}
-                  src={item.src}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
                   className={'img'}
                   alt={item.src}
                   width={item.width}
@@ -207,7 +154,7 @@ const About = ({ locale }: AboutProps) => {
               {frontFrameworks.map((item, index) => (
                 <Image
                   key={index}
-                  src={item.src}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
                   className={'img'}
                   alt={item.src}
                   width={item.width}
@@ -219,7 +166,7 @@ const About = ({ locale }: AboutProps) => {
               {backFrameworks.map((item, index) => (
                 <Image
                   key={index}
-                  src={item.src}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
                   className={'img'}
                   alt={item.src}
                   width={item.width}
@@ -234,7 +181,7 @@ const About = ({ locale }: AboutProps) => {
               {otherTechs.slice(0, 3).map((item, index) => (
                 <Image
                   key={index}
-                  src={item.src}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
                   className={'img'}
                   alt={item.src}
                   width={item.width}
@@ -246,7 +193,7 @@ const About = ({ locale }: AboutProps) => {
               {otherTechs.slice(3).map((item, index) => (
                 <Image
                   key={index}
-                  src={item.src}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
                   className={'img'}
                   alt={item.src}
                   width={item.width}

@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
+import CodeHighlighter from '@components/CodeHighlighter/CodeHighlighter.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { makeStaticProps } from '@lib/getStatic';
 import {
   Container,
+  ImageContainer,
   ImageWrapper,
   ProjectBrief,
   ProjectHr,
   ProjectParagraph,
   ProjectTitle,
   SideBar,
-  SideBarParagraph, SideBarProjectInfo, SideBarTableOfContents,
+  SideBarParagraph,
+  SideBarProjectInfo,
+  SideBarTableOfContents,
   SideBarTitle
 } from '@styles/project.style';
+import { generateLists } from '@utils/GeneraeList.util';
 
 interface BadgeProps {
   src: string;
@@ -30,39 +35,116 @@ interface ProjectProps {
   projectName: string;
 }
 
+interface ProjectContentObject {
+  type?: string | undefined;
+  lang?: string | undefined;
+  content?: string | undefined;
+  resource?: string | undefined;
+  width?: string | undefined;
+  style?: string | undefined;
+  items?: Array<any>
+}
+
+interface TechStackProps {
+  src: string;
+  width: number;
+  height: number;
+}
+
+interface ProjectPageProps {
+  link: string;
+  text: string;
+}
+
 const Project = ({ locale, projectName }: ProjectProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [otherTechs, ] = React.useState<Array<BadgeProps>>([{
-    src: 'https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white',
-    width: 74,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white',
-    width: 130,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white',
-    width: 130,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white',
-    width: 92,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white',
-    width: 120,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/ansible-%231A1918.svg?style=for-the-badge&logo=ansible&logoColor=white',
-    width: 100,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white',
-    width: 120,
-    height: 28
-  }]);
+  const [listTocRefs, setListTocRefs] = React.useState<RefObject<unknown>[]>([]);
+  const [refNames, setRefNames] = React.useState<Array<string>>([]);
+
+  const getRefByName = (refName: string | undefined): any => {
+    let matchingRef = null;
+    refNames.forEach((item, index) => {
+      if (item === refName && !refName.includes('.')) {
+        matchingRef = listTocRefs[index];
+      } else {
+        const splitRefName = refName?.split('.');
+        if (splitRefName && splitRefName[splitRefName.length - 1] === item) {
+          matchingRef = listTocRefs[index];
+        }
+      }
+    });
+    return matchingRef;
+  };
+
+  const generateTableOfContents = (toc: any, parentKeyName?: string) => {
+    const CreateTableOfContents = ({ toc, parentKeyName }: { toc: any, parentKeyName?: string }): JSX.Element => {
+      return (
+        <ol className={'table-of-contents-ol'}>
+          {Object.entries(toc).map(([key, value]: any) => {
+            const keyName = parentKeyName ? `${parentKeyName}.${key}` : key;
+            if (typeof value === 'string') {
+              return (
+                <li
+                  className={'table-of-contents-li'}
+                  key={key}
+                  onClick={() => scrollTo(getRefByName(t(`${projectName}:toc.${keyName}`) as string))}
+                >
+                  {t(`${projectName}:toc.${keyName}`)}
+                </li>
+              );
+            } else {
+              return (
+                <li
+                  className={'table-of-contents-li'}
+                  key={key}
+                >
+                  <span onClick={() => scrollTo(getRefByName(keyName))}>{key}</span>
+                  {generateTableOfContents(value, keyName)}
+                </li>
+              );
+            }
+          })}
+        </ol>
+      );
+    };
+
+    return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
+  };
+
+  const scrollTo = (ref: any) => {
+    if (ref && ref.current) ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const isArticleCode = (object: any) => {
+    return 'lang' in object;
+  };
+
+  React.useEffect(() => {
+    // @ts-ignore
+    const availablePosts = process.env.NEXT_PUBLIC_AVAILABLE_PROJECTS.split(',');
+    if (!availablePosts.includes(projectName)) handleRedirect('/404').then();
+
+    let quantityOfTitles = 0;
+    const allRefs: Array<string> = [];
+
+    const contentObj: ProjectContentObject[] = t(`${projectName}:content`, { returnObjects: true });
+
+    contentObj.forEach((item: ProjectContentObject | string) => {
+      if (
+        typeof item !== 'string' &&
+        (item.type === 'title' || item.type === 'subtitle' || item.type === 'subsubtitle')
+      ) {
+        quantityOfTitles += 1;
+        allRefs.push(item.content as string);
+      }
+    });
+
+    setListTocRefs(Array(quantityOfTitles).fill(null).map(() => React.createRef()));
+
+    setRefNames(allRefs);
+  }, [t]);
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
@@ -81,52 +163,86 @@ const Project = ({ locale, projectName }: ProjectProps) => {
           <ProjectTitle>{t(`${projectName}:title`)}</ProjectTitle>
           <ProjectBrief>{t(`${projectName}:brief`)}</ProjectBrief>
           <ProjectHr />
+
           <SideBar>
             <SideBarTableOfContents>
-              <SideBarParagraph>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt enim id maiores maxime molestias repudiandae saepe sequi suscipit temporibus veniam.
-              </SideBarParagraph>
+              {generateTableOfContents(t(`${projectName}:toc`, { returnObjects: true }))}
             </SideBarTableOfContents>
 
             <SideBarProjectInfo>
-              <SideBarTitle>
-                Brief:
-              </SideBarTitle>
-              <SideBarParagraph>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi commodi cupiditate debitis dolor eum in incidunt labore optio, quasi quis quisquam quod reprehenderit similique tempora tenetur veritatis. Odio, praesentium.
-              </SideBarParagraph>
-              <SideBarTitle>
-                GitHub page:
-              </SideBarTitle>
-              <SideBarParagraph>
-                github.com/bl4drnnr/personal-blog
-              </SideBarParagraph>
-              <SideBarTitle>
-                License:
-              </SideBarTitle>
-              <SideBarParagraph>
-                Licensed by: MIT
-              </SideBarParagraph>
-              <SideBarTitle>
-                Project technology stack:
-              </SideBarTitle>
+              <SideBarTitle>{t('projects:brief')}</SideBarTitle>
+              <SideBarParagraph>{t(`${projectName}:briefDescription`)}</SideBarParagraph>
+
+              <SideBarTitle>{t('projects:projectPage')}</SideBarTitle>
+              {
+                Object.entries(t(`${projectName}:projectPages`,
+                  { returnObjects: true }) as ProjectPageProps[]
+                ).map(([key, value]) => (
+                  <SideBarParagraph key={value.link}>
+                    <a className={'inline-link en'} href={value.link}>{value.text}</a>
+                  </SideBarParagraph>
+                ))
+              }
+
+              <SideBarTitle>{t('projects:license')}</SideBarTitle>
+              <SideBarParagraph>{t('projects:licensedBy')} {t(`${projectName}:license`)}</SideBarParagraph>
+
+              <SideBarTitle>{t('projects:techStack')}</SideBarTitle>
               <ImageWrapper>
-                {otherTechs.map((item, index) => (
-                  <Image
-                    key={index}
-                    src={item.src}
-                    className={'img'}
-                    alt={item.src}
-                    width={item.width}
-                    height={item.height}
-                  />
-                ))}
+                {
+                  (t(`${projectName}:techStack`, { returnObjects: true }) as TechStackProps[])
+                    .map((item: TechStackProps, index) => (
+                      <Image
+                        key={index}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
+                        className={'tech-stack-img'}
+                        width={item.width}
+                        height={item.height}
+                        alt={item.src}
+                      />
+                    ))
+                }
               </ImageWrapper>
             </SideBarProjectInfo>
           </SideBar>
-          <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
-          <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
-          <ProjectParagraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium delectus doloribus ex expedita necessitatibus neque nobis, nulla quam repellat tenetur! Aspernatur beatae doloremque, enim eos error, esse excepturi facilis ipsam laboriosam magni molestias nam officiis quis soluta unde! Ad alias amet atque beatae consequatur delectus dicta ducimus eaque eligendi eos est eum ex facilis laudantium natus nemo nesciunt obcaecati ratione reiciendis, similique sint sit temporibus vel voluptatibus voluptatum! Architecto asperiores assumenda consequuntur cupiditate debitis dignissimos distinctio eaque fugiat iusto maxime molestiae nihil nobis quas quod recusandae, vel veritatis, vero. Accusamus alias aliquam aperiam aspernatur consectetur consequuntur deserunt, dignissimos, eius, fugit itaque labore nesciunt non nostrum odit officia perspiciatis possimus quo quod rem repellat sed ut voluptas. At consectetur consequatur cumque distinctio, dolores eaque est exercitationem facere illum laboriosam magnam necessitatibus perferendis perspiciatis possimus provident, quae quos ratione sapiente similique sint ut veritatis, vitae. A accusamus accusantium atque consectetur delectus laudantium molestiae nam officia omnis possimus repellat, vitae? A ad, autem consectetur consequatur corporis dignissimos distinctio ducimus ea eligendi esse facere fugit impedit inventore labore molestiae molestias natus nemo non possimus provident qui quidem quisquam quo reiciendis repellendus repudiandae rerum saepe soluta sunt tempore temporibus totam unde, ut voluptate voluptatem voluptatum?</ProjectParagraph>
+
+
+          {
+            (t(`${projectName}:content`, { returnObjects: true }) as ProjectContentObject[])
+              .map((item: ProjectContentObject | string, index) => (
+                <div key={index}>
+                  {typeof item === 'string' ? (
+                    <ProjectParagraph
+                      dangerouslySetInnerHTML={{ __html: item }}
+                    />
+                  ) : (item.type === 'title' || item.type === 'subtitle' || item.type === 'subsubtitle') ? (
+                    <ProjectParagraph
+                      className={item.type}
+                      ref={getRefByName(item.content)}
+                    >{item.content}</ProjectParagraph>
+                  ) : ((isArticleCode(item)) ? (
+                    <CodeHighlighter
+                      language={item.lang}
+                      code={item.content}
+                    />
+                  ) : ((item.type === 'list-bullet' || item.type === 'list-numeric') ? (
+                    generateLists(item.items, locale, item.type, item.style)
+                  ) : (
+                    ((item.type === 'picture') ? (
+                      <ImageContainer className={`${item.width}`}>
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${projectName}/${item.resource}`}
+                          alt={item.resource as string}
+                          className={'image'}
+                          fill
+                        />
+                      </ImageContainer>
+                    ) : (<></>))
+                    )
+                  ))}
+                </div>
+              ))
+          }
         </Container>
       </DefaultLayout>
     </>

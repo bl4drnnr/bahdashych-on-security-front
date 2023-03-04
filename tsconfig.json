@@ -35,6 +35,7 @@
       "@layouts/*": ["src/layouts/*"],
       "@store/*": ["src/store/*"],
       "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src"],

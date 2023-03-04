@@ -22,6 +22,7 @@ export async function getI18nProps(
     'components',
     'errors',
     'common',
+    'projects',
     // @ts-ignore
     ...process.env.NEXT_PUBLIC_AVAILABLE_POSTS.split(','),
     // @ts-ignore
