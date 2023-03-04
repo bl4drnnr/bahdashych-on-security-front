@@ -41,5 +41,4 @@ next-env.d.ts
 *.key
 *.pub
 
-test.js
-test.js
+test.mjs

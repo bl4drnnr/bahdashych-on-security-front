@@ -1,0 +1,6 @@
+{
+  "title": "Personal blog",
+  "brief": "How is constructed what you are reading now",
+  "description": "The React + Next.js Typescript FE",
+  "searchTags": ["blog", "typescript", "nextjs"]
+}
