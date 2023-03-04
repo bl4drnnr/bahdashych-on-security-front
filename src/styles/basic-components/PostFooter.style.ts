@@ -36,18 +36,12 @@ export const Container = styled.div`
   padding-top: 30px;
 
   &.en {
-    ${Message} {
-      font-family: 'Charter', sans-serif;
-    }
-    b {
+    ${Message}, b {
       font-family: 'Charter', sans-serif;
     }
   }
   &.non-en {
-    ${Message} {
-      font-family: 'Crimson', serif;
-    }
-    b {
+    ${Message}, b {
       font-family: 'Crimson', serif;
     }
   }
