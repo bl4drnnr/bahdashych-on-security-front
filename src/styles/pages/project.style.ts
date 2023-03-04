@@ -70,10 +70,7 @@ export const SideBar = styled.div`
   display: block;
   float: right; 
   width: 300px;
-  margin: 30px;
-  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
-  border-radius: 8px;
-  padding: 10px;
+  margin: 0 15px 30px 30px;
   
   .img {
     border-radius: 8px;
@@ -89,4 +86,17 @@ export const SideBar = styled.div`
 
 export const ImageWrapper = styled.div`
   overflow: auto;
+`;
+
+export const SideBarTableOfContents = styled.div`
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+`;
+
+export const SideBarProjectInfo = styled.div`
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  border-radius: 8px;
+  padding: 10px;
 `;
