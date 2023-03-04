@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import { useTranslation } from 'next-i18next';
 import Head from 'next/head';
@@ -30,39 +30,102 @@ interface ProjectProps {
   projectName: string;
 }
 
+interface ProjectContentObject {
+  type?: string | undefined;
+  content?: string | undefined;
+}
+
 const Project = ({ locale, projectName }: ProjectProps) => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [otherTechs, ] = React.useState<Array<BadgeProps>>([{
-    src: 'https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white',
-    width: 74,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white',
-    width: 130,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white',
-    width: 130,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white',
-    width: 92,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white',
-    width: 120,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/ansible-%231A1918.svg?style=for-the-badge&logo=ansible&logoColor=white',
-    width: 100,
-    height: 28
-  }, {
-    src: 'https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white',
-    width: 120,
-    height: 28
-  }]);
+  const [listTocRefs, setListTocRefs] = React.useState<RefObject<unknown>[]>([]);
+  const [refNames, setRefNames] = React.useState<Array<string>>([]);
+
+  const getRefByName = (refName: string | undefined): any => {
+    let matchingRef = null;
+    refNames.forEach((item, index) => {
+      if (item === refName && !refName.includes('.')) {
+        matchingRef = listTocRefs[index];
+      } else {
+        const splitRefName = refName?.split('.');
+        if (splitRefName && splitRefName[splitRefName.length - 1] === item) {
+          matchingRef = listTocRefs[index];
+        }
+      }
+    });
+    return matchingRef;
+  };
+
+  const generateTableOfContents = (toc: any, parentKeyName?: string) => {
+    const CreateTableOfContents = ({ toc, parentKeyName }: { toc: any, parentKeyName?: string }): JSX.Element => {
+      return (
+        <ol className={'table-of-contents-ol'}>
+          {Object.entries(toc).map(([key, value]: any) => {
+            const keyName = parentKeyName ? `${parentKeyName}.${key}` : key;
+            if (typeof value === 'string') {
+              return (
+                <li
+                  className={'table-of-contents-li'}
+                  key={key}
+                  onClick={() => scrollTo(getRefByName(t(`${projectName}:toc.${keyName}`) as string))}
+                >
+                  {t(`${projectName}:toc.${keyName}`)}
+                </li>
+              );
+            } else {
+              return (
+                <li
+                  className={'table-of-contents-li'}
+                  key={key}
+                >
+                  <span onClick={() => scrollTo(getRefByName(keyName))}>{key}</span>
+                  {generateTableOfContents(value, keyName)}
+                </li>
+              );
+            }
+          })}
+        </ol>
+      );
+    };
+
+    return <CreateTableOfContents toc={toc} parentKeyName={parentKeyName} />;
+  };
+
+  React.useEffect(() => {
+    // @ts-ignore
+    const availablePosts = process.env.NEXT_PUBLIC_AVAILABLE_PROJECTS.split(',');
+    if (!availablePosts.includes(projectName)) handleRedirect('/404').then();
+
+    let quantityOfTitles = 0;
+    const allRefs: Array<string> = [];
+
+    const contentObj: ProjectContentObject[] = t(`${projectName}:content`, { returnObjects: true });
+
+    contentObj.forEach((item: ProjectContentObject | string) => {
+      if (
+        typeof item !== 'string' &&
+        (item.type === 'title' || item.type === 'subtitle' || item.type === 'subsubtitle')
+      ) {
+        quantityOfTitles += 1;
+        allRefs.push(item.content as string);
+      }
+    });
+
+    setListTocRefs(Array(quantityOfTitles).fill(null).map(() => React.createRef()));
+
+    setRefNames(allRefs);
+  }, [t]);
+
+  const [otherTechs, ] = React.useState<Array<BadgeProps>>([
+    { src: 'javascript', width: 126, height: 28 },
+    { src: 'typescript', width: 126, height: 28 },
+    { src: 'react', width: 85, height: 28 },
+    { src: 'next.js', width: 85, height: 28 },
+    { src: 'digitalOcean', width: 130, height: 28 },
+    { src: 'amazon-aws', width: 74, height: 28 },
+    { src: 'nginx', width: 88, height: 28 },
+  ]);
 
   const handleRedirect = async (path: string) => {
     await router.push(`/${locale}${path}`);
@@ -114,7 +177,7 @@ const Project = ({ locale, projectName }: ProjectProps) => {
                 {otherTechs.map((item, index) => (
                   <Image
                     key={index}
-                    src={item.src}
+                    src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
                     className={'img'}
                     alt={item.src}
                     width={item.width}
