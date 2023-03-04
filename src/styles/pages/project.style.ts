@@ -131,6 +131,14 @@ export const Container = styled.div`
     margin: 0;
     padding: 0;
   }
+
+  .code-block {
+    font-size: 16px;
+    font-family: 'Hack', sans-serif;
+    padding: 2px;
+    border-radius: 5px;
+    background: rgb(${(props) => props.theme.colors.darkBackground});
+  }
 `;
 
 export const SideBar = styled.div`

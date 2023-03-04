@@ -110,7 +110,7 @@
       "lang": "typescript",
       "content": "import { useMemo } from 'react';\n\nimport { useRecoilState } from 'recoil';\n\nimport { theme as storeTheme } from '@store/global/global.state';\nimport { DarkTheme } from '@styles/Dark.theme';\nimport { LightTheme } from '@styles/Light.theme';\n\nconst useDarkMode = () => {\n\tconst [theme, setTheme] = useRecoilState(storeTheme);\n\n\tconst toggleTheme = () => {\n\t\tsetTheme(theme === 'light' ? 'dark' : 'light');\n\t};\n\n\tconst themeMode = useMemo(() => (theme === 'light' ? LightTheme : DarkTheme), [theme]);\n\n\treturn [theme, toggleTheme, themeMode] as const;\n};\n\nexport default useDarkMode;"
     },
-    "Używany w <span class='code-block'>Global.layout.tsx</span> przez <span class='code-block'>ThemeProvider<span class='code-block'>:",
+    "Używany w <span class='code-block'>Global.layout.tsx</span> przez <span class='code-block'>ThemeProvider</span>:",
     {
       "type": "code",
       "lang": "typescript",
