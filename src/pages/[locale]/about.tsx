@@ -130,10 +130,10 @@ const About = ({ locale }: AboutProps) => {
           </Box>
           <Box>
             <AboutParagraph>
-              As an engineer, I would like to share with you about what I can work with. First of all I should start with that I started my career as the software engineer. I have been working in small startup.
+              {/*As an engineer, I would like to share with you about what I can work with. First of all I should start with that I started my career as the software engineer. I have been working in small startup.*/}
             </AboutParagraph>
             <AboutParagraph>
-              As usually, lets start with programming languages. For my entire career I have been working with different programming languages, some of them have been used only once for my (mostly university) projects, some of the have been used for a long period of time. But here are 3 most important and well-known by me:
+              {/*As usually, lets start with programming languages. For my entire career I have been working with different programming languages, some of them have been used only once for my (mostly university) projects, some of the have been used for a long period of time. But here are 3 most important and well-known by me:*/}
             </AboutParagraph>
             <ImageBox>
               {programmingLanguages.map((item, index) => (
@@ -148,7 +148,7 @@ const About = ({ locale }: AboutProps) => {
               ))}
             </ImageBox>
             <AboutParagraph>
-              There were a lot of different framework though.
+              {/*There were a lot of different framework though.*/}
             </AboutParagraph>
             <ImageBox>
               {frontFrameworks.map((item, index) => (
@@ -175,7 +175,7 @@ const About = ({ locale }: AboutProps) => {
               ))}
             </ImageBox>
             <AboutParagraph>
-              Here is the list of other technologies
+              {/*Here is the list of other technologies*/}
             </AboutParagraph>
             <ImageBox>
               {otherTechs.slice(0, 3).map((item, index) => (
