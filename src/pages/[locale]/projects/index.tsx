@@ -24,8 +24,9 @@ import {
   InputWrapper,
   SettingsWrapper,
   PostTag,
-  PostTags, FoundProjectWrapper
+  PostTags, FoundProjectWrapper, ButtonWrapper
 } from '@styles/projects.style';
+import Modal from "@components/Modal/Modal.component";
 
 interface ProjectProps {
   title: string;
@@ -46,6 +47,7 @@ const Projects = ({ locale }: ProjectPageProps) => {
 
   const [searchString, setSearchString] = React.useState('');
   const [nameSort, setNameSort] = React.useState('');
+  const [showFiltersModal, setShowFiltersModal] = React.useState(false);
 
   const [allProjects, setAllProjects] = React.useState<ProjectProps[]>([]);
   const [foundProjects, setFoundProjects] = React.useState<ProjectProps[]>([]);
@@ -133,10 +135,28 @@ const Projects = ({ locale }: ProjectPageProps) => {
               onChange={(e) => setSearchString(e.target.value)}
             />
             <SettingsWrapper>
-              <BasicButton
-                text={nameSort !== '' ? nameSort : 'A-Z'}
-                onClick={() => sortByName(nameSort)}
-              />
+              <ButtonWrapper>
+                <BasicButton
+                  text={nameSort !== '' ? nameSort : 'A-Z'}
+                  onClick={() => sortByName(nameSort)}
+                />
+              </ButtonWrapper>
+              <ButtonWrapper>
+                <BasicButton
+                  text={'Show filters'}
+                  onClick={() => setShowFiltersModal(!showFiltersModal)}
+                />
+              </ButtonWrapper>
+
+              {showFiltersModal && (
+                <Modal
+                  onClose={() => setShowFiltersModal(false)}
+                  header={'Filters'}
+                  description={''}
+                >
+                  <p>Test</p>
+                </Modal>
+              )}
             </SettingsWrapper>
           </InputWrapper>
 
