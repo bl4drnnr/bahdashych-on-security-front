@@ -166,6 +166,16 @@ export const SettingsWrapper = styled.div`
   margin: 15px 0;
 `;
 
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  :nth-child(1) {
+    margin-right: 5px;
+  }
+  :nth-child(2) {
+    margin-left: 5px;
+  }
+`;
+
 export const PostTags = styled.div`
   display: flex;
   margin-top: 1rem;
