@@ -29,9 +29,50 @@
       "career": "Awans zawodowy - dzielenie się swoją wiedzą może prowadzić do nowych możliwości i uznania, co może pomóc w rozwoju kariery.",
       "givingBack": "Oddawanie - dzielenie się swoją wiedzą może być sposobem na odwdzięczenie się innym i wywarcie pozytywnego wpływu na ich życie."
     },
+    "whatDoIKnow": "Co ja wiem?",
+    "whatIKnow": {
+      "p0": "Jak przystało na prawdziwego inżyniera cyberbezpieczeństwa, muszę wymienić wszystkie języki programowania i frameworki, z którymi kiedykolwiek pracowałem. Mimo, że nie jestem już zawodowym programistą i nie sądzę, żebym kiedykolwiek wrócił na tę ścieżkę, sprawia mi ona wiele przyjemności. Powiem więcej, naprawdę zaczęło mi to sprawiać przyjemność, kiedy przestałem robić to dla pieniędzy.",
+      "p1": "W związku z tym, że swoją karierę zawodową zaczynałem jako full stack web developer, zaczynałem i kończyłem w językach programowania, które są z tym ściśle związane. Szczerze mówiąc, nigdy nie pociągały mnie języki programowania niskiego poziomu, ale to, jak działa Internet, zawsze mnie interesowało. Dlatego oto główne:",
+      "p2": "Oczywiście, będąc programistą internetowym, nie ma sensu wymieniać języków programowania, ponieważ wszystkie nowoczesne aplikacje internetowe są pisane przy użyciu frameworków. Wypróbowałem różne frameworki zarówno dla frontendu, jak i backendu i oto najważniejsze z nich:",
+      "p3": "Im bardziej chciałem zostać inżynierem cyberbezpieczeństwa, tym dalej musiałem oddalać się od wszystkiego, co choćby częściowo było związane z programowaniem. Ale nie przeszkadzało mi to, zawsze lubiłem uczyć się czegoś nowego, więc zacząłem głębiej studiować, jak działają systemy operacyjne. I oczywiście zacząłem budować własne różne serwery, takie jak serwery WWW, serwery DNS, serwery NTP itd., i bawiłem się nimi:",
+      "p4": "Im bardziej chciałem zostać inżynierem cyberbezpieczeństwa, tym dalej musiałem oddalać się od wszystkiego, co choćby częściowo było związane z programowaniem. Ale nie przeszkadzało mi to, zawsze lubiłem uczyć się czegoś nowego, więc zacząłem głębiej studiować, jak działają systemy operacyjne:",
+      "p5": "Cóż, oto gdzie jestem i co wiem. Szczerze wierzę, że ta pogoń za wiedzą będzie mi trwała całe życie, ale skłamię, jeśli powiem, że ten układ rzeczy mi nie odpowiada, zawsze będzie coś, czego będę musiał się nauczyć, a jak powiedział Sokrates: \"Ja wiem, że nic nie wiem\". Więc goń dalej!"
+    },
+    "careerPath": {
+      "title": "Moja ścieżka zawodowa",
+      "careers": [{
+        "image": "knowde.jpeg",
+        "workingPeriod": "Sep 2022 - Present",
+        "name": "Knowde",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "page": "https://knowde.com"
+      }, {
+        "image": "cv.jpeg",
+        "workingPeriod": "Jun 2021 - Sep 2022 / 1 yr 4 mos",
+        "name": "Cryptovoucher",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "page": "https://cryptovoucher.io"
+      }]
+    },
+    "achievements": {
+      "title": "Rzeczy, z których jestem dumny",
+      "certs": [{
+        "title": "CompTIA Security+",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }, {
+        "title": "CCNAv7: Networking Essentials",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }, {
+        "title": "CCNAv7: Introduction to Networks",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }]
+    },
     "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie. Swoją drogą, jeśli interesuje Cię bardziej techniczna część tego bloga, dotycząca jego implementacji, nie znajdziesz tego tutaj, wystarczy przeczytać plik README na <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link non-en'>stronie repo</a>.",
     "contactMe": "Jak się ze mną skontaktować",
-    "contactInfo": "Jeśli masz jakieś problemy/propozycje lub z jakiegokolwiek powodu musisz się ze mną skontaktować, możesz to zrobić za pomocą kolejnych kanałów. Nie wahaj się tego zrobić, zawsze chętnie porozmawiam, więc proszę bardzo:"
+    "contactInfo": "Jeśli masz jakieś problemy/propozycje lub z jakiegokolwiek powodu musisz się ze mną skontaktować, możesz to zrobić za pomocą kolejnych kanałów, nie wahaj się tego zrobić. Chętnie poznam Twoje przemyślenia i pomysły, więc nie krępuj się i zawsze chętnie porozmawiam, więc proszę bardzo:"
   },
   "error": {
     "title": "Nie znaleziono",

@@ -70,3 +70,100 @@ export const ImageBox = styled.div`
     margin: 0 3px;
   }
 `;
+
+export const Timeline = styled.div`
+  margin: 50px 0;
+`;
+
+export const TimelineItem = styled.div`
+  padding-bottom: 25px;
+  position: relative;
+  display: flex;
+  background: linear-gradient(
+          rgb(${(props) => props.theme.colors.primaryDark}),
+          rgb(${(props) => props.theme.colors.primaryDark})
+  ) left 9px top 19px/2px 100% no-repeat;
+  margin-bottom: -2px;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    color: rgb(${(props) => props.theme.colors.primaryDark});
+    background: rgb(${(props) => props.theme.colors.primaryDark}) content-box;
+    padding: 4px;
+    margin-right: 35px;
+    border: 2px solid rgb(${(props) => props.theme.colors.primaryDark});
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+  }
+`;
+
+export const TimelineItemWrapper = styled.div`
+  width: 100%;
+  margin-top: 35px;
+  display: flex;
+  padding: 10px;
+  border-radius: 8px;
+  transition: .2s;
+  border: 1px solid rgba(0, 0, 0, 0);
+  
+  :hover {
+    cursor: pointer;
+    border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  }
+  
+  .image {
+    border-radius: 8px;
+    border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  }
+`;
+
+export const TimelineItemDescription = styled.div`
+  padding-left: 20px;
+`;
+
+export const TimelineItemText = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  
+  &.title {
+    font-weight: 900;
+  }
+  &.date {
+    font-weight: 500;
+    opacity: .5;
+    margin: 5px 0;
+  }
+`;
+
+
+export const TestimonialGrid = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-auto-columns: 1fr;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  padding-block: 2rem;
+  width: min(95%, 70rem);
+  margin-inline: auto;
+
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+export const TestimonialArticle = styled.article`
+  font-size: 0.8125rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2.5rem 3.75rem 3rem -3rem hsl(217 19% 35% / 0.25);
+  cursor: pointer;
+  transition: .2s;
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+
+  :hover {
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
+  }
+`;

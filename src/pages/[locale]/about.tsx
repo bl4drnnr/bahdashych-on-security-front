@@ -14,10 +14,17 @@ import {
   AboutParagraph,
   AboutTitle,
   Box,
+  Timeline,
   Container,
   ImageBox,
   SharingLi,
-  SharingUl
+  SharingUl,
+  TimelineItem,
+  TimelineItemWrapper,
+  TimelineItemDescription,
+  TimelineItemText,
+  TestimonialGrid,
+  TestimonialArticle
 } from '@styles/about.style';
 
 
@@ -29,6 +36,20 @@ interface BadgeProps {
   src: string;
   width: number;
   height: number;
+}
+
+interface CareerPath {
+  image: string;
+  name: string;
+  workingPeriod: string;
+  description: string;
+  page: string;
+}
+
+interface Cert {
+  title: string;
+  link: string;
+  description: string;
 }
 
 const About = ({ locale }: AboutProps) => {
@@ -64,9 +85,44 @@ const About = ({ locale }: AboutProps) => {
     { src: 'terraform', width: 120, height: 28 }
   ]);
 
-  const handleRedirect = async (path: string) => {
-    await router.push(`/${locale}${path}`);
+  const [osTechs, ] = React.useState<Array<BadgeProps>>([
+    { src: 'windows', width: 113, height: 28 },
+    { src: 'linux', width: 86, height: 28 },
+    { src: 'macos', width: 94, height: 28 },
+    { src: 'Raspberry-Pi', width: 138, height: 28 }
+  ]);
+
+  const [careers, setCareers] = React.useState<Array<CareerPath>>([]);
+  const [certs, setCerts] = React.useState<Array<Cert>>([]);
+
+  const getImage = (item: BadgeProps) => {
+    return (
+      <Image
+        key={item.src}
+        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
+        className={'img'}
+        alt={item.src}
+        width={item.width}
+        height={item.height}
+      />
+    );
   };
+
+  const handleRedirect = async (path: string) => {
+    await router.push(path);
+  };
+
+  React.useEffect(() => {
+    const previousJobs: CareerPath[] = t(
+      'pages:about.careerPath.careers', { returnObjects: true }
+    );
+    const allCerts: Cert[] = t(
+      'pages:about.achievements.certs', { returnObjects: true }
+    );
+
+    setCerts(allCerts);
+    setCareers(previousJobs);
+  }, []);
 
   return (
     <>
@@ -122,85 +178,102 @@ const About = ({ locale }: AboutProps) => {
                 onInit={(typewriter) => {
                   typewriter
                     .changeDelay(75)
-                    .typeString('What do I know?')
+                    .typeString(t('pages:about.whatDoIKnow'))
                     .start();
                 }}
               />
             </AboutTitle>
           </Box>
           <Box>
-            <AboutParagraph>
-              {/*As an engineer, I would like to share with you about what I can work with. First of all I should start with that I started my career as the software engineer. I have been working in small startup.*/}
-            </AboutParagraph>
-            <AboutParagraph>
-              {/*As usually, lets start with programming languages. For my entire career I have been working with different programming languages, some of them have been used only once for my (mostly university) projects, some of the have been used for a long period of time. But here are 3 most important and well-known by me:*/}
-            </AboutParagraph>
+            {[...Array(2)].map((item, index) => (
+              <AboutParagraph key={index}>
+                {t(`pages:about.whatIKnow.p${index}`)}
+              </AboutParagraph>
+            ))}
             <ImageBox>
-              {programmingLanguages.map((item, index) => (
-                <Image
-                  key={index}
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
-                  className={'img'}
-                  alt={item.src}
-                  width={item.width}
-                  height={item.height}
-                />
-              ))}
+              {programmingLanguages.map((item) => ( getImage(item) ))}
             </ImageBox>
             <AboutParagraph>
-              {/*There were a lot of different framework though.*/}
+              {t('pages:about.whatIKnow.p2')}
             </AboutParagraph>
             <ImageBox>
-              {frontFrameworks.map((item, index) => (
-                <Image
-                  key={index}
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
-                  className={'img'}
-                  alt={item.src}
-                  width={item.width}
-                  height={item.height}
-                />
-              ))}
+              {frontFrameworks.map((item) => ( getImage(item) ))}
             </ImageBox>
             <ImageBox>
-              {backFrameworks.map((item, index) => (
-                <Image
-                  key={index}
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
-                  className={'img'}
-                  alt={item.src}
-                  width={item.width}
-                  height={item.height}
-                />
-              ))}
+              {backFrameworks.map((item) => ( getImage(item) ))}
             </ImageBox>
             <AboutParagraph>
-              {/*Here is the list of other technologies*/}
+              {t('pages:about.whatIKnow.p3')}
             </AboutParagraph>
             <ImageBox>
-              {otherTechs.slice(0, 3).map((item, index) => (
-                <Image
-                  key={index}
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
-                  className={'img'}
-                  alt={item.src}
-                  width={item.width}
-                  height={item.height}
-                />
-              ))}
+              {otherTechs.slice(0, 3).map((item) => ( getImage(item) ))}
             </ImageBox>
             <ImageBox>
-              {otherTechs.slice(3).map((item, index) => (
-                <Image
-                  key={index}
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/technologies-badges/${item.src}.svg`}
-                  className={'img'}
-                  alt={item.src}
-                  width={item.width}
-                  height={item.height}
-                />
-              ))}
+              {otherTechs.slice(3).map((item) => ( getImage(item) ))}
             </ImageBox>
+            <AboutParagraph>
+              {t('pages:about.whatIKnow.p4')}
+            </AboutParagraph>
+            <ImageBox>
+              {osTechs.map((item) => ( getImage(item) ))}
+            </ImageBox>
+            <AboutParagraph>
+              {t('pages:about.whatIKnow.p5')}
+            </AboutParagraph>
+          </Box>
+          <Box>
+            <AboutTitle>
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.careerPath.title'))
+                    .start();
+                }}
+              />
+            </AboutTitle>
+            <Timeline>
+              {careers.map((item) => (
+                <TimelineItem key={item.name}>
+                  <TimelineItemWrapper onClick={() => handleRedirect(item.page)}>
+                    <Image
+                      className={'image'}
+                      src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/career/${item.image}`}
+                      alt={item.name}
+                      width={100}
+                      height={100}
+                    />
+                    <TimelineItemDescription>
+                      <TimelineItemText className={'title'}>{item.name}</TimelineItemText>
+                      <TimelineItemText className={'date'}>{item.workingPeriod}</TimelineItemText>
+                      <TimelineItemText>{item.description}</TimelineItemText>
+                    </TimelineItemDescription>
+                  </TimelineItemWrapper>
+                </TimelineItem>
+              ))}
+            </Timeline>
+          </Box>
+          <Box>
+            <AboutTitle>
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.achievements.title'))
+                    .start();
+                }}
+              />
+            </AboutTitle>
+            <TestimonialGrid>
+              {certs.map((cert) => (
+                <TestimonialArticle
+                  key={cert.title}
+                  onClick={() => handleRedirect(cert.link)}
+                >
+                  {cert.title}
+                </TestimonialArticle>
+              ))}
+            </TestimonialGrid>
           </Box>
           <Box>
             <AboutTitle>
