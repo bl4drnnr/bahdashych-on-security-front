@@ -44,13 +44,23 @@
         "image": "knowde.jpeg",
         "workingPeriod": "Sep 2022 - Present",
         "name": "Knowde",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "description": [
+          "At Knowde I started my career as a security engineer.",
+          "The history was quite interesting though. Originally, all security department was provided by third party (sorry, but they did their duties just awful). Then, Knowde decided that it would be nice to have their own, internal security team - and I became its the very first member as a SecOps. So, we had to clean up after the previous team.",
+          "Anyway, I am very grateful to them for my first security certificate, which they were able to provide me."
+        ],
         "page": "https://knowde.com"
       }, {
         "image": "cv.jpeg",
         "workingPeriod": "Jun 2021 - Sep 2022 / 1 yr 4 mos",
         "name": "Cryptovoucher",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "description": [
+          "This is where everything has started. It was quite small polish startup (when I was there was ~10 people) highly specialized on cryptocurrencies.",
+          "In Cryptovoucher I have got my first experience as a developer. We have been working mostly on 2 projects - the first one is cryptovoucher.io - cryptocurrency marketplace - and the second one was basically the copy of g2a.com, but with cryptocurrencies - simplebuy.io. Unfortunately, the last one was closed... Sad story...",
+          "Both of those projects were built based on Vue.js and Express.js. ~1 year",
+          "Then, there was one more project - P100, it was financial banking & crypto mobile application. If you have ever used Revolut application or at least know what it is, you know what is P100.",
+          "For that project we have changed technology stack to Next.js and Nest.js. ~4 mos."
+        ],
         "page": "https://cryptovoucher.io"
       }]
     },
@@ -58,16 +68,9 @@
       "title": "Things I am proud of",
       "certs": [{
         "title": "CompTIA Security+",
-        "link": "",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
-      }, {
-        "title": "CCNAv7: Networking Essentials",
-        "link": "",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
-      }, {
-        "title": "CCNAv7: Introduction to Networks",
-        "link": "",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+        "link": "comptia_sec_plus.pdf",
+        "image": "comptia_sec_plus.jpg",
+        "description": "My very first CompTIA Security+ cert. Looking at what I had to go through then, I now understand that it was not such a difficult task, but at that time it did not seem so. Expires on January 25, 2026."
       }]
     },
     "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience. By the way, if you are interested in more technical part of this blog, about its implementation, you won't find it here, just read README file on <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link en'>repository page</a>.",

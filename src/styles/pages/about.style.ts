@@ -126,9 +126,11 @@ export const TimelineItemDescription = styled.div`
 
 export const TimelineItemText = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
+  margin: 10px 0;
   
   &.title {
     font-weight: 900;
+    margin: 0;
   }
   &.date {
     font-weight: 500;
@@ -149,7 +151,7 @@ export const TestimonialGrid = styled.div`
   width: min(95%, 70rem);
   margin-inline: auto;
 
-  @media only screen and (max-width: 1200px) {
+  @media only screen and (max-width: 1600px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
@@ -166,4 +168,23 @@ export const TestimonialArticle = styled.article`
   :hover {
     border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
   }
+  
+  .image {
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  }
+`;
+
+export const CertTitle = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  text-align: center;
+  margin: 10px 0;
+`;
+
+export const CertDescription = styled.p`
+  color: rgba(${(props) => props.theme.colors.textColor}, .5);
 `;
