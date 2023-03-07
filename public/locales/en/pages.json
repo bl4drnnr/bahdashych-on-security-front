@@ -55,7 +55,20 @@
       }]
     },
     "achievements": {
-      "title": "Things I am proud of"
+      "title": "Things I am proud of",
+      "certs": [{
+        "title": "CompTIA Security+",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }, {
+        "title": "CCNAv7: Networking Essentials",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }, {
+        "title": "CCNAv7: Introduction to Networks",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }]
     },
     "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience. By the way, if you are interested in more technical part of this blog, about its implementation, you won't find it here, just read README file on <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link en'>repository page</a>.",
     "contactMe": "How to contact me",

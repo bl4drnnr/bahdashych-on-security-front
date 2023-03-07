@@ -136,3 +136,34 @@ export const TimelineItemText = styled.p`
     margin: 5px 0;
   }
 `;
+
+
+export const TestimonialGrid = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-auto-columns: 1fr;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  padding-block: 2rem;
+  width: min(95%, 70rem);
+  margin-inline: auto;
+
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+export const TestimonialArticle = styled.article`
+  font-size: 0.8125rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 2.5rem 3.75rem 3rem -3rem hsl(217 19% 35% / 0.25);
+  cursor: pointer;
+  transition: .2s;
+  border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+
+  :hover {
+    border: 1px solid rgba(${(props) => props.theme.colors.primaryLight});
+  }
+`;

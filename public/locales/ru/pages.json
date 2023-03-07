@@ -39,10 +39,36 @@
       "p5": "Ну, вот где я и что я знаю. Я искренне верю, что это стремление к знаниям продлится всю мою жизнь, но я солгу, если скажу, что такой расклад вещей меня не устраивает, всегда будет что-то, чему я должен научиться, и как сказал Сократ: \"Я знаю, что я ничего не знаю\". Итак, продолжайте погоню!"
     },
     "careerPath": {
-      "title": "Мой карьерный путь"
+      "title": "Мой карьерный путь",
+      "careers": [{
+        "image": "knowde.jpeg",
+        "workingPeriod": "Sep 2022 - Present",
+        "name": "Knowde",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "page": "https://knowde.com"
+      }, {
+        "image": "cv.jpeg",
+        "workingPeriod": "Jun 2021 - Sep 2022 / 1 yr 4 mos",
+        "name": "Cryptovoucher",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "page": "https://cryptovoucher.io"
+      }]
     },
     "achievements": {
-      "title": "Вещи, которыми я горжусь"
+      "title": "Вещи, которыми я горжусь",
+      "certs": [{
+        "title": "CompTIA Security+",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }, {
+        "title": "CCNAv7: Networking Essentials",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }, {
+        "title": "CCNAv7: Introduction to Networks",
+        "link": "",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+      }]
     },
     "overall": "В целом, обмен знаниями с другими может иметь ряд личных, профессиональных и социальных преимуществ, что делает его ценным и полезным опытом. Кстати, если вам интересна более техническая часть этого блога, о его реализации, вы не найдете ее здесь, просто прочитайте файл README на <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link non-en'>странице репозитория</a>.",
     "contactMe": "Как связаться со мной",

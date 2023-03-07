@@ -22,7 +22,9 @@ import {
   TimelineItem,
   TimelineItemWrapper,
   TimelineItemDescription,
-  TimelineItemText
+  TimelineItemText,
+  TestimonialGrid,
+  TestimonialArticle
 } from '@styles/about.style';
 
 
@@ -42,6 +44,12 @@ interface CareerPath {
   workingPeriod: string;
   description: string;
   page: string;
+}
+
+interface Cert {
+  title: string;
+  link: string;
+  description: string;
 }
 
 const About = ({ locale }: AboutProps) => {
@@ -85,6 +93,7 @@ const About = ({ locale }: AboutProps) => {
   ]);
 
   const [careers, setCareers] = React.useState<Array<CareerPath>>([]);
+  const [certs, setCerts] = React.useState<Array<Cert>>([]);
 
   const getImage = (item: BadgeProps) => {
     return (
@@ -107,6 +116,11 @@ const About = ({ locale }: AboutProps) => {
     const previousJobs: CareerPath[] = t(
       'pages:about.careerPath.careers', { returnObjects: true }
     );
+    const allCerts: Cert[] = t(
+      'pages:about.achievements.certs', { returnObjects: true }
+    );
+
+    setCerts(allCerts);
     setCareers(previousJobs);
   }, []);
 
@@ -250,6 +264,16 @@ const About = ({ locale }: AboutProps) => {
                 }}
               />
             </AboutTitle>
+            <TestimonialGrid>
+              {certs.map((cert) => (
+                <TestimonialArticle
+                  key={cert.title}
+                  onClick={() => handleRedirect(cert.link)}
+                >
+                  {cert.title}
+                </TestimonialArticle>
+              ))}
+            </TestimonialGrid>
           </Box>
           <Box>
             <AboutTitle>
