@@ -39,7 +39,20 @@
       "p5": "Well, this is where I am and what I know. I sincerely believe that this pursuit of knowledge will last all my life, but I will be lying if I say that this alignment of things does not suit me, there will always be something that I have to learn, and as Socrates said: \"I know that I do not know anything\". So, keep chasing!"
     },
     "careerPath": {
-      "title": "My career path"
+      "title": "My career path",
+      "careers": [{
+        "image": "knowde.jpeg",
+        "workingPeriod": "Sep 2022 - Present",
+        "name": "Knowde",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "page": "https://knowde.com"
+      }, {
+        "image": "cv.jpeg",
+        "workingPeriod": "Jun 2021 - Sep 2022 / 1 yr 4 mos",
+        "name": "Cryptovoucher",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "page": "https://cryptovoucher.io"
+      }]
     },
     "achievements": {
       "title": "Things I am proud of"

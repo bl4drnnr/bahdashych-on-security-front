@@ -76,23 +76,63 @@ export const Timeline = styled.div`
 `;
 
 export const TimelineItem = styled.div`
-  padding-bottom: 35px;
+  padding-bottom: 25px;
   position: relative;
   display: flex;
-  background: linear-gradient(red, red) left 9px top 19px/2px 100% no-repeat;
+  background: linear-gradient(
+          rgb(${(props) => props.theme.colors.primaryDark}),
+          rgb(${(props) => props.theme.colors.primaryDark})
+  ) left 9px top 19px/2px 100% no-repeat;
   margin-bottom: -2px;
 
   &::before {
     content: "";
     display: inline-block;
     vertical-align: middle;
-    color: red;
-    background: red content-box;
+    color: rgb(${(props) => props.theme.colors.primaryDark});
+    background: rgb(${(props) => props.theme.colors.primaryDark}) content-box;
     padding: 4px;
     margin-right: 35px;
-    border: 2px solid red;
+    border: 2px solid rgb(${(props) => props.theme.colors.primaryDark});
     border-radius: 50%;
     width: 8px;
     height: 8px;
+  }
+`;
+
+export const TimelineItemWrapper = styled.div`
+  width: 100%;
+  margin-top: 35px;
+  display: flex;
+  padding: 10px;
+  border-radius: 8px;
+  transition: .2s;
+  border: 1px solid rgba(0, 0, 0, 0);
+  
+  :hover {
+    cursor: pointer;
+    border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  }
+  
+  .image {
+    border-radius: 8px;
+    border: 1px solid rgba(${(props) => props.theme.colors.textColor}, .25);
+  }
+`;
+
+export const TimelineItemDescription = styled.div`
+  padding-left: 20px;
+`;
+
+export const TimelineItemText = styled.p`
+  color: rgb(${(props) => props.theme.colors.textColor});
+  
+  &.title {
+    font-weight: 900;
+  }
+  &.date {
+    font-weight: 500;
+    opacity: .5;
+    margin: 5px 0;
   }
 `;

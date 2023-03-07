@@ -8,6 +8,7 @@ import Typewriter from 'typewriter-effect';
 
 import BasicButton from '@components/BasicButton/BasicButton.component';
 import BasicInput from '@components/BasicInput/BasicInput.component';
+import Modal from '@components/Modal/Modal.component';
 import DefaultLayout from '@layouts/Default.layout';
 import { getStaticPaths, makeStaticProps } from '@lib/getStatic';
 import {
@@ -26,7 +27,6 @@ import {
   PostTag,
   PostTags, FoundProjectWrapper, ButtonWrapper
 } from '@styles/projects.style';
-import Modal from "@components/Modal/Modal.component";
 
 interface ProjectProps {
   title: string;

@@ -18,7 +18,11 @@ import {
   Container,
   ImageBox,
   SharingLi,
-  SharingUl, TimelineItem
+  SharingUl,
+  TimelineItem,
+  TimelineItemWrapper,
+  TimelineItemDescription,
+  TimelineItemText
 } from '@styles/about.style';
 
 
@@ -30,6 +34,14 @@ interface BadgeProps {
   src: string;
   width: number;
   height: number;
+}
+
+interface CareerPath {
+  image: string;
+  name: string;
+  workingPeriod: string;
+  description: string;
+  page: string;
 }
 
 const About = ({ locale }: AboutProps) => {
@@ -72,6 +84,8 @@ const About = ({ locale }: AboutProps) => {
     { src: 'Raspberry-Pi', width: 138, height: 28 }
   ]);
 
+  const [careers, setCareers] = React.useState<Array<CareerPath>>([]);
+
   const getImage = (item: BadgeProps) => {
     return (
       <Image
@@ -84,6 +98,17 @@ const About = ({ locale }: AboutProps) => {
       />
     );
   };
+
+  const handleRedirect = async (path: string) => {
+    await router.push(path);
+  };
+
+  React.useEffect(() => {
+    const previousJobs: CareerPath[] = t(
+      'pages:about.careerPath.careers', { returnObjects: true }
+    );
+    setCareers(previousJobs);
+  }, []);
 
   return (
     <>
@@ -194,12 +219,24 @@ const About = ({ locale }: AboutProps) => {
               />
             </AboutTitle>
             <Timeline>
-              <TimelineItem>
-                Sample text.
-              </TimelineItem>
-              <TimelineItem>
-                Sample text.
-              </TimelineItem>
+              {careers.map((item) => (
+                <TimelineItem key={item.name}>
+                  <TimelineItemWrapper onClick={() => handleRedirect(item.page)}>
+                    <Image
+                      className={'image'}
+                      src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/career/${item.image}`}
+                      alt={item.name}
+                      width={100}
+                      height={100}
+                    />
+                    <TimelineItemDescription>
+                      <TimelineItemText className={'title'}>{item.name}</TimelineItemText>
+                      <TimelineItemText className={'date'}>{item.workingPeriod}</TimelineItemText>
+                      <TimelineItemText>{item.description}</TimelineItemText>
+                    </TimelineItemDescription>
+                  </TimelineItemWrapper>
+                </TimelineItem>
+              ))}
             </Timeline>
           </Box>
           <Box>
