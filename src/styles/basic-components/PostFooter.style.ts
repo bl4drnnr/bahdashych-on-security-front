@@ -31,9 +31,8 @@ export const Message = styled.p`
 `;
 
 export const Container = styled.div`
-  min-height: 500px;
+  min-height: 350px;
   width: 100%;
-  padding-top: 30px;
 
   &.en {
     ${Message}, b {
