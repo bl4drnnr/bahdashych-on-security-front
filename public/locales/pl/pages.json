@@ -42,15 +42,25 @@
       "title": "Moja ścieżka zawodowa",
       "careers": [{
         "image": "knowde.jpeg",
-        "workingPeriod": "Sep 2022 - Present",
+        "workingPeriod": "Wrzesień 2022 - obecnie",
         "name": "Knowde",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "description": [
+          "W Knowde rozpocząłem swoją karierę jako inżynier ds. bezpieczeństwa.",
+          "Historia była jednak dość ciekawa. Pierwotnie cały dział bezpieczeństwa był zapewniany przez stronę trzecią (przepraszam, ale wykonywali swoje obowiązki po prostu okropnie). Wtedy Knowde zdecydowało, że fajnie byłoby mieć własny, wewnętrzny zespół ds. bezpieczeństwa – a ja zostałem jego pierwszym członkiem jako SecOps. Musieliśmy więc posprzątać po poprzednim zespole.",
+          "W każdym razie jestem im bardzo wdzięczny za mój pierwszy certyfikat bezpieczeństwa, który byli w stanie mi dostarczyć."
+        ],
         "page": "https://knowde.com"
       }, {
         "image": "cv.jpeg",
-        "workingPeriod": "Jun 2021 - Sep 2022 / 1 yr 4 mos",
+        "workingPeriod": "Czerwiec 2021 - Wrzesień 2022 / 1 rok 4 mies",
         "name": "Cryptovoucher",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex maiores nulla odio perspiciatis possimus quos rem.",
+        "description": [
+          "Tutaj wszystko się zaczęło. Był to dość mały polski startup (kiedy ja tam byłem liczył ~10 osób) wysoce wyspecjalizowany w kryptowalutach.",
+          "W Cryptovoucher zdobyłem swoje pierwsze doświadczenie jako programista. Pracowaliśmy głównie nad 2 projektami - pierwszy to cryptovoucher.io - giełda kryptowalut - a drugi to w zasadzie kopia g2a.com, ale z kryptowalutami - simplebuy.io. Niestety ostatni był zamknięty... Smutna historia...",
+          "Oba te projekty zostały zbudowane w oparciu o Vue.js i Express.js. ~ 1 rok",
+          "Potem był jeszcze jeden projekt - P100, była to bankowość finansowa i krypto aplikacja mobilna. Jeśli kiedykolwiek korzystałeś z aplikacji Revolut lub przynajmniej wiesz, co to jest, wiesz, co to jest P100.",
+          "W tym projekcie zmieniliśmy stos technologiczny na Next.js i Nest.js. ~4 mies."
+        ],
         "page": "https://cryptovoucher.io"
       }]
     },

@@ -24,7 +24,9 @@ import {
   TimelineItemDescription,
   TimelineItemText,
   TestimonialGrid,
-  TestimonialArticle
+  TestimonialArticle,
+  CertTitle,
+  CertDescription
 } from '@styles/about.style';
 
 
@@ -42,13 +44,14 @@ interface CareerPath {
   image: string;
   name: string;
   workingPeriod: string;
-  description: string;
+  description: string[];
   page: string;
 }
 
 interface Cert {
   title: string;
   link: string;
+  image: string;
   description: string;
 }
 
@@ -246,7 +249,9 @@ const About = ({ locale }: AboutProps) => {
                     <TimelineItemDescription>
                       <TimelineItemText className={'title'}>{item.name}</TimelineItemText>
                       <TimelineItemText className={'date'}>{item.workingPeriod}</TimelineItemText>
-                      <TimelineItemText>{item.description}</TimelineItemText>
+                      {item.description.map((descItem) => (
+                        <TimelineItemText key={descItem}>{descItem}</TimelineItemText>
+                      ))}
                     </TimelineItemDescription>
                   </TimelineItemWrapper>
                 </TimelineItem>
@@ -268,9 +273,16 @@ const About = ({ locale }: AboutProps) => {
               {certs.map((cert) => (
                 <TestimonialArticle
                   key={cert.title}
-                  onClick={() => handleRedirect(cert.link)}
+                  onClick={() => handleRedirect(`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/career/${cert.link}`)}
                 >
-                  {cert.title}
+                  <Image
+                    className={'image'}
+                    src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/career/${cert.image}`}
+                    alt={cert.title}
+                    fill
+                  />
+                  <CertTitle>{cert.title}</CertTitle>
+                  <CertDescription>{cert.description}</CertDescription>
                 </TestimonialArticle>
               ))}
             </TestimonialGrid>
