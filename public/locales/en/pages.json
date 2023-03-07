@@ -38,6 +38,12 @@
       "p4": "The more I wanted to become a cybersecurity engineer, the further I had to move away from everything that, even if partially, was related to programming. But I didn't mind, I always liked to learn something new, so I started to study more deeply how operating systems work:",
       "p5": "Well, this is where I am and what I know. I sincerely believe that this pursuit of knowledge will last all my life, but I will be lying if I say that this alignment of things does not suit me, there will always be something that I have to learn, and as Socrates said: \"I know that I do not know anything\". So, keep chasing!"
     },
+    "careerPath": {
+      "title": "My career path"
+    },
+    "achievements": {
+      "title": "Things I am proud of"
+    },
     "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience. By the way, if you are interested in more technical part of this blog, about its implementation, you won't find it here, just read README file on <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link en'>repository page</a>.",
     "contactMe": "How to contact me",
     "contactInfo": "In case if you have any issues/propositions or whatever reason you have to contact me you can do that using next channels, do not hesitate to do that. I'd love to hear your thoughts and ideas, so feel free to reach out and I will always be glad to have a small talk, so, here you go:"

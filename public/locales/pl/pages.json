@@ -38,6 +38,12 @@
       "p4": "Im bardziej chciałem zostać inżynierem cyberbezpieczeństwa, tym dalej musiałem oddalać się od wszystkiego, co choćby częściowo było związane z programowaniem. Ale nie przeszkadzało mi to, zawsze lubiłem uczyć się czegoś nowego, więc zacząłem głębiej studiować, jak działają systemy operacyjne:",
       "p5": "Cóż, oto gdzie jestem i co wiem. Szczerze wierzę, że ta pogoń za wiedzą będzie mi trwała całe życie, ale skłamię, jeśli powiem, że ten układ rzeczy mi nie odpowiada, zawsze będzie coś, czego będę musiał się nauczyć, a jak powiedział Sokrates: \"Ja wiem, że nic nie wiem\". Więc goń dalej!"
     },
+    "careerPath": {
+      "title": "Moja ścieżka zawodowa"
+    },
+    "achievements": {
+      "title": "Rzeczy, z których jestem dumny"
+    },
     "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie. Swoją drogą, jeśli interesuje Cię bardziej techniczna część tego bloga, dotycząca jego implementacji, nie znajdziesz tego tutaj, wystarczy przeczytać plik README na <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link non-en'>stronie repo</a>.",
     "contactMe": "Jak się ze mną skontaktować",
     "contactInfo": "Jeśli masz jakieś problemy/propozycje lub z jakiegokolwiek powodu musisz się ze mną skontaktować, możesz to zrobić za pomocą kolejnych kanałów, nie wahaj się tego zrobić. Chętnie poznam Twoje przemyślenia i pomysły, więc nie krępuj się i zawsze chętnie porozmawiam, więc proszę bardzo:"

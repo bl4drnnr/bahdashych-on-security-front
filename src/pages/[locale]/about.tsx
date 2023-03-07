@@ -14,10 +14,11 @@ import {
   AboutParagraph,
   AboutTitle,
   Box,
+  Timeline,
   Container,
   ImageBox,
   SharingLi,
-  SharingUl
+  SharingUl, TimelineItem
 } from '@styles/about.style';
 
 
@@ -180,6 +181,38 @@ const About = ({ locale }: AboutProps) => {
             <AboutParagraph>
               {t('pages:about.whatIKnow.p5')}
             </AboutParagraph>
+          </Box>
+          <Box>
+            <AboutTitle>
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.careerPath.title'))
+                    .start();
+                }}
+              />
+            </AboutTitle>
+            <Timeline>
+              <TimelineItem>
+                Sample text.
+              </TimelineItem>
+              <TimelineItem>
+                Sample text.
+              </TimelineItem>
+            </Timeline>
+          </Box>
+          <Box>
+            <AboutTitle>
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter
+                    .changeDelay(75)
+                    .typeString(t('pages:about.achievements.title'))
+                    .start();
+                }}
+              />
+            </AboutTitle>
           </Box>
           <Box>
             <AboutTitle>

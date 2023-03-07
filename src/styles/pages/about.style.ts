@@ -70,3 +70,29 @@ export const ImageBox = styled.div`
     margin: 0 3px;
   }
 `;
+
+export const Timeline = styled.div`
+  margin: 50px 0;
+`;
+
+export const TimelineItem = styled.div`
+  padding-bottom: 35px;
+  position: relative;
+  display: flex;
+  background: linear-gradient(red, red) left 9px top 19px/2px 100% no-repeat;
+  margin-bottom: -2px;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    color: red;
+    background: red content-box;
+    padding: 4px;
+    margin-right: 35px;
+    border: 2px solid red;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+  }
+`;
