@@ -69,15 +69,7 @@
       "certs": [{
         "title": "CompTIA Security+",
         "link": "",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
-      }, {
-        "title": "CCNAv7: Networking Essentials",
-        "link": "",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
-      }, {
-        "title": "CCNAv7: Introduction to Networks",
-        "link": "",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+        "description": "Мой самый первый CompTI Security+ сертификат. Глядя на то, через что мне пришлось пройти тогда, я сейчас понимаю, что это была не такая уж и сложная задача, но тогда это так не казалось. Истекает 25 января 2026 года."
       }]
     },
     "overall": "Ogólnie rzecz biorąc, dzielenie się wiedzą z innymi może przynieść wiele osobistych, zawodowych i społecznych korzyści, czyniąc z tego cenne i satysfakcjonujące doświadczenie. Swoją drogą, jeśli interesuje Cię bardziej techniczna część tego bloga, dotycząca jego implementacji, nie znajdziesz tego tutaj, wystarczy przeczytać plik README na <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link non-en'>stronie repo</a>.",

@@ -70,17 +70,7 @@
         "title": "CompTIA Security+",
         "link": "comptia_sec_plus.pdf",
         "image": "comptia_sec_plus.jpg",
-        "description": "My very first CompTIA Security+. Looking at what I had to go through then, I now understand that it was not such a difficult task, but at that time it did not seem so"
-      }, {
-        "title": "CCNAv7: Networking Essentials",
-        "link": "ccnav7_networking_essentials.pdf",
-        "image": "ccnav7_networking_essentials.jpg",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
-      }, {
-        "title": "CCNAv7: Introduction to Networks",
-        "link": "ccnav7_intro_to_networks.pdf",
-        "image": "ccnav7_intro_to_networks.jpg",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores cum doloremque enim ex."
+        "description": "My very first CompTIA Security+ cert. Looking at what I had to go through then, I now understand that it was not such a difficult task, but at that time it did not seem so. Expires on January 25, 2026."
       }]
     },
     "overall": "Overall, sharing knowledge with others can have a number of personal, professional, and societal benefits, making it a valuable and rewarding experience. By the way, if you are interested in more technical part of this blog, about its implementation, you won't find it here, just read README file on <a href='https://github.com/bl4drnnr/personal-blog' class='inline-link en'>repository page</a>.",

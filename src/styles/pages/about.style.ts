@@ -181,6 +181,8 @@ export const TestimonialArticle = styled.article`
 
 export const CertTitle = styled.p`
   color: rgb(${(props) => props.theme.colors.textColor});
+  text-align: center;
+  margin: 10px 0;
 `;
 
 export const CertDescription = styled.p`
