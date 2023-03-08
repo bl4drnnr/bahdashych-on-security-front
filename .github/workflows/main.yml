@@ -18,4 +18,4 @@ jobs:
       - name: Create the known hosts file
         run: echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
       - name: Remotely trigger building and deployment script
-        run: ssh -i ~/.ssh/deploy deployer@blog.mikhailbahdashych.me
+        run: ssh -i ~/.ssh/deploy deployer@{{ secrets.HOST_IP }}
