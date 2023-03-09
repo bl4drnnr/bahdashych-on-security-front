@@ -433,6 +433,42 @@
         "<b>Поведение конечного клиента</b> — разные машины по-разному реагируют на попытку перенаправления трафика на localhost. Но они почти одинаково ведут себя при получении <span class='code-block'>nxdomain</span>. Это не будет проблемой, если у вас есть доступ ко всем устройствам в вашей сети и возможность управлять их программным обеспечением (в данном случае браузером). В частности, это может создать проблемы на машинах Linux с Firefox в качестве браузера."
       ]
     },
+    "Позвольте мне показать один трюк, как вы можете загрузить огромный список различных рекламных серверов и использовать его в своей конфигурации сервера Unbound. Прежде всего, вам нужно найти этот список, например, мы собираемся использовать список, который был предоставлен в репозитории выше.",
+    {
+      "type": "picture",
+      "width": "w80",
+      "resource": "adware_malware.png"
+    },
+    "Если вы нажмете на ссылку <span class='code-block'>Raw hosts</span>, вы увидите, что формат, в котором были предоставлены хосты, не будет совместим с форматом конфигурации сервера Unbound, поэтому нам нужно изменить это:",
+    {
+      "type": "code",
+      "lang": "",
+      "content": "0.0.0.0 ck.getcookiestxt.com\n0.0.0.0 eu1.clevertap-prod.com\n0.0.0.0 wizhumpgyros.com\n0.0.0.0 coccyxwickimp.com\n0.0.0.0 webmail-who-int.000webhostapp.com\n..."
+    },
+    "Но прежде всего мы перейдем в папку конфигурации нашего Unbound сервера, скачаем и сохраним этот файл в этой папке с помощью <span class='code-block'>wget</span>:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "cd /etc/unbound\nwget https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts"
+    },
+    "Теперь нам нужно изменить структуру этого файла, чтобы мы могли импортировать его в конфигурацию Unbound. Вот как мы собираемся это сделать:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "cat hosts | grep '^0\\.0\\.0\\.0' | awk '{print \"local-zone: \\\"\"$2\"\\\" always_nxdomain\"}' > ads.conf"
+    },
+    "Итак, теперь, если вы посмотрите, как выглядит этот файл, вы увидите, что теперь мы можем импортировать его в нашу конфигурацию сервера Unbound:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@ip-172-31-60-139:/etc/unbound# tail ads.conf\nlocal-zone: \"coffeemeetsbagel.com\" always_nxdomain\nlocal-zone: \"happn.com\" always_nxdomain\nlocal-zone: \"weareher.com\" always_nxdomain\nlocal-zone: \"clover.co\" always_nxdomain\nlocal-zone: \"pof.com\" always_nxdomain\nlocal-zone: \"match.com\" always_nxdomain\nlocal-zone: \"mbga.jp\" always_nxdomain\nlocal-zone: \"mixi.jp\" always_nxdomain\nlocal-zone: \"mixch.tv\" always_nxdomain\nlocal-zone: \"lobi.co\" always_nxdomain"
+    },
+    "Кроме того, нет необходимости копировать и вставлять его в файл конфигурации, мы можем просто использовать ключевое слово <span class='code-block'>include</span> и \"подключить\" файл, содержащий список рекламных серверов, к Unbound. Достаточно будет добавить эту строку:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "include: /etc/unbound/ads.conf"
+    },
     {
       "type": "subtitle",
       "content": "Конфигурация авторитетного сервера имен NSD"
@@ -584,5 +620,8 @@
   }, {
     "name": "Установка корневого сертификата ЦС в хранилище доверенных сертификатов",
     "link": "https://ubuntu.com/server/docs/security-trust-store"
+  }, {
+    "name": "Репозиторий, где вы можете найти миллионы рекламных серверов",
+    "link": "https://github.com/StevenBlack/hosts"
   }]
 }

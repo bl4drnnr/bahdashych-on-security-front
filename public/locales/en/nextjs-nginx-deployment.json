@@ -107,7 +107,7 @@
     {
       "type": "code",
       "lang": "bash",
-      "content": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\nssl_prefer_server_ciphers on;\nssl_ciphers \"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH\";\nssl_ecdh_curvesecp384r1;\nssl_session_cache shared:SSL:10m;\nssl_session_tickets off;\nssl_stapling on;\nssl_stapling_verify on;\n\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\n\nadd_header Strict-Transport-Security \"max-age=63072000;includeSubdomains\";\nadd_header X-Frame-Options DENY;\nadd_headerX-Content-Type-Options nosniff;\n\nssl_dhparam /etc/ssl/certs/dhparam.pem;"
+      "content": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\nssl_prefer_server_ciphers on;\nssl_ciphers \"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH\";\nssl_ecdh_curve secp384r1;\nssl_session_cache shared:SSL:10m;\nssl_session_tickets off;\nssl_stapling on;\nssl_stapling_verify on;\n\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\n\nadd_header Strict-Transport-Security \"max-age=63072000;includeSubdomains\";\nadd_header X-Frame-Options DENY;\nadd_header X-Content-Type-Options nosniff;\n\nssl_dhparam /etc/ssl/certs/dhparam.pem;"
     },
     {
       "type": "title",
@@ -213,7 +213,7 @@
     {
       "type": "code",
       "lang": "bash",
-      "content": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\nssl_prefer_server_ciphers on;\nssl_ciphers \"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH\";\nssl_ecdh_curvesecp384r1;\nssl_session_cache shared:SSL:10m;\nssl_session_tickets off;\nssl_stapling on;\nssl_stapling_verify on;\n\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\n\nadd_header Strict-Transport-Security \"max-age=63072000;includeSubdomains\";\nadd_header X-Frame-Options DENY;\nadd_headerX-Content-Type-Options nosniff;\n\nssl_dhparam /etc/ssl/certs/dhparam.pem;"
+      "content": "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;\nssl_prefer_server_ciphers on;\nssl_ciphers \"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH\";\nssl_ecdh_curve secp384r1;\nssl_session_cache shared:SSL:10m;\nssl_session_tickets off;\nssl_stapling on;\nssl_stapling_verify on;\n\nresolver 8.8.8.8 8.8.4.4 valid=300s;\nresolver_timeout 5s;\n\nadd_header Strict-Transport-Security \"max-age=63072000;includeSubdomains\";\nadd_header X-Frame-Options DENY;\nadd_header X-Content-Type-Options nosniff;\n\nssl_dhparam /etc/ssl/certs/dhparam.pem;"
     },
     {
       "type": "code",

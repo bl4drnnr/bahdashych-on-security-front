@@ -433,6 +433,42 @@
         "<b>Behaviour of the end client</b> — different machines differently react on an attempt to redirection traffic to localhost. But they almost similar behaviour, when getting <span class='code-block'>nxdomain</span>. This won't be a problem, if you have access to all devices on your network and have ability to manage their software (browser, in this particular case). Especially, it can create problems on Linux machines with Firefox as a browser."
       ]
     },
+    "Let me show one trick how you can download the huge list of the different Ad servers and use it in your Unbound server configuration. First of all, you need to find this list, for instance, we are going to use the list that has been provided in repo above.",
+    {
+      "type": "picture",
+      "width": "w80",
+      "resource": "adware_malware.png"
+    },
+    "If you click at <span class='code-block'>Raw hosts</span> link, you will see that format, in which hosts have been provided, won't be compatible with format of Unbound server configuration, therefore, we need to change that:",
+    {
+      "type": "code",
+      "lang": "",
+      "content": "0.0.0.0 ck.getcookiestxt.com\n0.0.0.0 eu1.clevertap-prod.com\n0.0.0.0 wizhumpgyros.com\n0.0.0.0 coccyxwickimp.com\n0.0.0.0 webmail-who-int.000webhostapp.com\n..."
+    },
+    "But first of all, we will go to our Unbound server configuration folder, download and save this file in this folder using <span class='code-block'>wget</span>:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "cd /etc/unbound\nwget https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social/hosts"
+    },
+    "Now, we need to change the structure of this file so we can import it in Unbound configuration. Here is how we are going to do this:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "cat hosts | grep '^0\\.0\\.0\\.0' | awk '{print \"local-zone: \\\"\"$2\"\\\" always_nxdomain\"}' > ads.conf"
+    },
+    "So now, if you take a look at how this file looks like, you will see that now we can import it in our Unbound server configuration:",
+    {
+      "type": "code",
+      "lang": "shell",
+      "content": "root@ip-172-31-60-139:/etc/unbound# tail ads.conf\nlocal-zone: \"coffeemeetsbagel.com\" always_nxdomain\nlocal-zone: \"happn.com\" always_nxdomain\nlocal-zone: \"weareher.com\" always_nxdomain\nlocal-zone: \"clover.co\" always_nxdomain\nlocal-zone: \"pof.com\" always_nxdomain\nlocal-zone: \"match.com\" always_nxdomain\nlocal-zone: \"mbga.jp\" always_nxdomain\nlocal-zone: \"mixi.jp\" always_nxdomain\nlocal-zone: \"mixch.tv\" always_nxdomain\nlocal-zone: \"lobi.co\" always_nxdomain"
+    },
+    "Also, there is no need to copy and paste it in the configuration file, we can just use <span class='code-block'>include</span> keyword and \"connect\" file containing list of Ads server to the Unbound. It'll be enough to add this line:",
+    {
+      "type": "code",
+      "lang": "nginx",
+      "content": "include: /etc/unbound/ads.conf"
+    },
     {
       "type": "subtitle",
       "content": "Configuration of NSD Authoritative nameserver"
@@ -584,5 +620,8 @@
   }, {
     "name": "Installing a root CA certificate in the trust store",
     "link": "https://ubuntu.com/server/docs/security-trust-store"
+  }, {
+    "name": "Repository, where you can finds millions Ad servers",
+    "link": "https://github.com/StevenBlack/hosts"
   }]
 }
