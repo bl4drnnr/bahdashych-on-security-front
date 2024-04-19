@@ -1,0 +1,15 @@
+@import 'variables';
+
+* {
+  background-color: var(--background);
+  color: #333;
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-size: .75vw;
+  line-height: 20px;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
