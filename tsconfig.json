@@ -1,7 +1,7 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -18,10 +18,29 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "strictPropertyInitialization": false,
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@components/*": [
+        "src/app/components/*",
+        "src/app/components/basic-components/*",
+        "src/app/components/pages-components/*",
+        "src/app/components/layout-components/*",
+        "src/app/components/dashboard-components/*"
+      ],
+      "@env/*": ["src/app/environments/*"],
+      "@pages/*": [
+        "src/app/pages/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*",
+        "src/app/shared/api/*",
+        "src/app/shared/global-components-services/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,1 +1,129 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+  --background: #1a1a1a;
+  --main-font: Montserrat, sans-serif;
+  --secondary-font: "Roboto Mono", sans-serif;
+  --lines: #727272;
+  --standard-heading: 1rem;
+  --standard-subheading: .75rem;
+  --dividers: rgba(255, 255, 255, .07);
+  --button: rgba(255, 255, 255, .6);
+}
+
+body {
+  background-color: var(--background);
+  color: #333;
+  font-size: .75vw;
+  line-height: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  font-family: Montserrat, sans-serif;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h2 {
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h3 {
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h4 {
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h5 {
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h6 {
+  color: #fff;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+p {
+  font-family: var(--secondary-font);
+  color: #cacaca;
+  margin-bottom: 10px;
+  font-size: .75rem;
+  line-height: 1.5;
+}
+
+a {
+  border-bottom: 1px solid var(--lines);
+  color: #fff;
+  font-family: Roboto Mono, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: all .35s;
+
+  &:hover {
+    border-bottom-color: #fff;
+  }
+}
+
+ul {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 40px;
+  font-family: Roboto Mono, sans-serif;
+  font-size: 1em;
+}
+
+ol {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 40px;
+  font-family: Roboto Mono, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+li {
+  color: #fff;
+  font-family: Roboto Mono, sans-serif;
+  font-size: 1rem;
+}
