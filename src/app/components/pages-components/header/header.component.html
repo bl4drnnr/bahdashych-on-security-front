@@ -1,0 +1,64 @@
+<div class="navbar-logo-left-container shadow-three">
+  <div *ngIf="showHeaderBurger" class="navbar-wrapper">
+    <h2 (click)="handleRedirect('/')" class="logo-heading">Blog</h2>
+
+    <div class="menu-wrapper">
+      <div (click)="toggleSearch()" class="nav-search-icon">
+        <img [src]="searchIcon" loading="lazy" alt="search" class="search-bar-icon">
+      </div>
+
+      <div (click)="toggleMenu()" class="hamburger">
+        <div class="menu-box">
+          <div [@crossTransformFirst]="hamburgerState" class="menu-line first"></div>
+          <div [@crossTransformSecond]="hamburgerState" class="menu-line second"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!showHeaderBurger" class="navbar">
+    <div class="navbar-content-wrapper">
+      <h2 (click)="handleRedirect('/')" class="logo-heading">Blog</h2>
+      <div>
+        <a href="" class="navbar-links">Blog</a>
+        <a href="" class="navbar-links">About</a>
+        <a href="" class="navbar-links">Contact</a>
+      </div>
+      <div class="menu-wrapper">
+        <div (click)="toggleSearch()" class="nav-search-icon">
+          <img [src]="searchIcon" loading="lazy" alt="search" class="search-bar-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    [@slideInOut]="showNavigationBarMenu ? 'in' : 'out'"
+    class="navbar-open-menu-background"
+  >
+    <div class="nav-right-list">
+      <div *ngFor="let navLink of navigationBarLinks" class="nav-menu-header-row">
+        <a [href]="navLink.link" class="nav-menu-link">
+          <div class="nav-heading">{{ navLink.value }}</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="nav-left-list">
+      <div class="nav-left-list-block">
+        <h1 class="nav-left-list-link">Stay Connected!</h1>
+      </div>
+      <div class="nav-left-list-block">
+        <a href="http://instagram.com" class="social-link">Instagram</a>
+        <a href="http://twitter.com" class="social-link">Twitter</a>
+        <a href="http://facebook.com" class="social-link">Facebook</a>
+      </div>
+    </div>
+  </div>
+
+  <div [@slideInOut]="showNavigationSearch ? 'in' : 'out'" class="search-wrapper">
+    <div class="search">
+      <component-navigation-search/>
+    </div>
+  </div>
+</div>

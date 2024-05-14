@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { NavigationBarComponent } from '@components/navigation-bar/navigation-bar.component';
+import { HeaderComponent } from '@components/header/header.component';
+import { FooterComponent } from '@components/footer/footer.component';
+import { NavigationSearchComponent } from '@components/navigation-search/navigation-search.component';
 
-const components: any = [NavigationBarComponent]
+const components: any = [
+  FooterComponent,
+  HeaderComponent,
+  NavigationSearchComponent
+];
 
 @NgModule({
   declarations: [...components],
@@ -10,4 +16,3 @@ const components: any = [NavigationBarComponent]
   exports: [...components]
 })
 export class PagesComponentsModule {}
-

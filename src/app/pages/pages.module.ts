@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from '@pages/home/home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from '@components/components.module';
+import { PageNotFoundComponent } from '@pages/page-not-found/page-not-found.component';
+import { LayoutsModule } from '@layouts/layouts.module';
 
-const components: any = [HomeComponent];
+const components: any = [HomeComponent, PageNotFoundComponent];
 
 const routes: Routes = [
   {
@@ -18,17 +20,21 @@ const routes: Routes = [
   {
     path: 'index',
     redirectTo: ''
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
-
 
 @NgModule({
   declarations: [...components],
   imports: [
     RouterModule.forRoot(routes),
     CommonModule,
-    ComponentsModule
+    ComponentsModule,
+    LayoutsModule
   ],
   exports: [...components]
 })
-export class PagesModule { }
+export class PagesModule {}

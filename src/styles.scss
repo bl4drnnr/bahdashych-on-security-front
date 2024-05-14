@@ -82,7 +82,7 @@ h6 {
 }
 
 p {
-  font-family: var(--secondary-font);
+  font-family: var(--secondary-font), sans-serif;
   color: #cacaca;
   margin-bottom: 10px;
   font-size: .75rem;
@@ -126,4 +126,117 @@ li {
   color: #fff;
   font-family: Roboto Mono, sans-serif;
   font-size: 1rem;
+}
+
+.heading-xxl {
+  text-align: left;
+  width: 75%;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Montserrat, sans-serif;
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1;
+
+  &.not-found-page {
+    text-align: center;
+    font-size: 12em;
+    font-weight: 600;
+
+    @media screen and (max-width: 991px) {
+      width: 100%;
+    }
+
+    @media screen and (max-width: 767px) {
+      font-size: 8em;
+    }
+  }
+}
+
+.w-input {
+  display: block;
+  width: 100%;
+  height: 38px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333333;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+}
+
+.w-input:-moz-placeholder {
+  color: #999;
+}
+
+.w-input::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+.w-input::-webkit-input-placeholder {
+  color: #999;
+}
+
+.w-input:focus {
+  border-color: #3898EC;
+  outline: 0;
+}
+
+.w-input[disabled],
+.w-input[readonly],
+fieldset[disabled] .w-input {
+  cursor: not-allowed;
+}
+
+.w-input[disabled]:not(.w-input-disabled),
+.w-input[readonly],
+fieldset[disabled]:not(.w-input-disabled) .w-input {
+  background-color: #eeeeee;
+}
+
+.w-dyn-empty {
+  padding: 10px;
+  background-color: #dddddd;
+}
+
+.message {
+  font-family: var(--secondary-font), sans-serif;
+  font-size: var(--standard-subheading);
+}
+
+.w-inline-block {
+  max-width: 100%;
+  display: inline-block;
+}
+
+.w-form {
+  margin: 0 0 15px;
+}
+
+.w-button {
+  display: inline-block;
+  padding: 9px 15px;
+  background-color: #3898EC;
+  color: white;
+  border: 0;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.social-link {
+  color: #fff;
+  margin-right: 1em;
+  line-height: 1;
+  text-decoration: none;
+  font-size: .75rem;
+
+  &.white-heading-highlight {
+    font-family: var(--secondary-font), sans-serif;
+    font-size: var(--standard-subheading);
+  }
 }

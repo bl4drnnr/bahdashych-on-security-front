@@ -1,1 +1,66 @@
-<component-navigation-bar />
+<layout-default>
+  <div class="hero-section">
+    <div class="hero-content-wrapper">
+      <div class="left-here-section">
+        <h1 class="heading-xxl">Unveiling All Unseen AI Knowledge.</h1>
+      </div>
+      <div class="right-hero-section">
+        <div class="intro-wrapper">
+          <p class="intro-paragraph">Dive into a world where artificial intelligence becomes your ultimate ally in revolutionizing IT operations. Join us on a journey where data-driven decisions, automation, and predictive insights are the norm.<br><br>Expect in-depth articles, hands-on demos, and expert guidance on harnessing the full potential of AI to optimize your IT infrastructure. Whether you&#x27;re an IT professional, a tech enthusiast, or a curious mind, we&#x27;ll demystify the world of AI in IT, making it accessible and actionable for all.</p>
+        </div>
+        <div class="cta-wrapper">
+          <a class="cta-heading">About →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-list-wrapper">
+      <h2 class="category-main-heading">Some Of Our Covered Topics →</h2>
+      <div class="collection-list-wrapper">
+        <div *ngIf="categoriesList.length > 0" class="collection-list">
+          <div *ngFor="let category of categoriesList">
+            <a [href]="category.link" class="category-link-header">{{ category.value }}</a>
+          </div>
+        </div>
+        <div *ngIf="categoriesList.length === 0" class="w-dyn-empty">
+          <div class="message">No items found.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-grid-section">
+    <div class="collection-list-grid">
+      <div class="collection-cell">
+        <a href="#" class="card-main-category">Security</a>
+        <a href="#" class="card-link-block w-inline-block">
+          <div class="image-holder">
+            <img alt="" loading="lazy" src="https://assets-global.website-files.com/64f8a5805a1caa95358b298b/64f8aab91657617febc2e016_image3.jpeg" class="main-collection-image">
+            <div class="card-content">
+              <h3 class="card-main-additional-information">October 23, 2024</h3>
+              <h2 class="card-main-title">Emerging Trends in the IT Space: Navigating the Digital Future</h2>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="collection-cell">
+        <a href="#" class="card-main-category">Implementation</a>
+        <a href="#" class="card-link-block w-inline-block">
+          <div class="image-holder">
+            <img alt="" loading="lazy" src="https://assets-global.website-files.com/64f8a5805a1caa95358b298b/64f8aab91657617febc2e016_image3.jpeg" class="main-collection-image">
+            <div class="card-content">
+              <h3 class="card-main-additional-information">October 23, 2024</h3>
+              <h2 class="card-main-title">Emerging Trends in the IT Space: Navigating the Digital Future</h2>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!--  <div class="w-dyn-empty">-->
+    <!--    <div class="message">No items found.</div>-->
+    <!--  </div>-->
+  </div>
+</layout-default>

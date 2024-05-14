@@ -1,0 +1,50 @@
+<section class="footer-subscribe">
+  <div class="footer-container">
+    <div class="footer-form-two w-form">
+      <div class="footer-form-container-two">
+        <div class="footer-form-title">Subscribe To Our Newsletters</div>
+        <div class="footer-form-block-two">
+          <input class="footer-form-input w-input" placeholder="Enter your email" type="email">
+          <button class="button-primary w-button">Subscribe Now</button>
+        </div>
+      </div>
+<!--      <div class="w-form-done">-->
+<!--        <div class="text-block">Thank you! Your submission has been received!</div>-->
+<!--      </div>-->
+<!--      <div class="w-form-fail">-->
+<!--        <div class="text-block-2">Oops! Something went wrong while submitting the form.</div>-->
+<!--      </div>-->
+    </div>
+    <div class="footer-wrapper-three">
+      <div class="footer-block-three">
+        <a
+          class="footer-link-three"
+          *ngFor="let footerLink of footerLinksListLeft"
+          [href]="footerLink.link"
+        >{{ footerLink.value }}</a>
+      </div>
+      <div class="footer-block-three">
+        <a
+          class="footer-link-three"
+          *ngFor="let footerLink of footerLinksListRight"
+          [href]="footerLink.link"
+        >{{ footerLink.value }}</a>
+      </div>
+    </div>
+    <div class="footer-divider-two"></div>
+  </div>
+  <div class="minimal-footer">
+    <div class="footer-content-wrapper-minimal">
+      <div class="footer-content-holder">
+        <a href="http://instagram.com" class="social-link white-heading-highlight">Instagram</a>
+        <a href="http://facebook.com" class="social-link white-heading-highlight">Facebook</a>
+        <a href="http://twitter.com" class="social-link white-heading-highlight">Twitter</a>
+      </div>
+      <div class="footer-content-holder">
+        <h3 class="footer-eyebrow-heading">
+          <span class="span">2024 Maverick.</span> All Rights Reserved.
+        </h3>
+      </div>
+    </div>
+  </div>
+</section>
