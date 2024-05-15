@@ -1,0 +1,18 @@
+.btn-container {
+  width: 100%;
+  position: relative;
+}
+
+.btn {
+  width: 100%;
+  background-color: var(--button);
+  color: var(--background);
+  font-family: Roboto Mono, sans-serif;
+  font-size: var(--standard-heading);
+  cursor: pointer;
+  transition: all .45s;
+
+  &:hover {
+    background-color: #fff;
+  }
+}

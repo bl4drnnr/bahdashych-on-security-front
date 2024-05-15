@@ -19,10 +19,10 @@
   <div *ngIf="!showHeaderBurger" class="navbar">
     <div class="navbar-content-wrapper">
       <h2 (click)="handleRedirect('/')" class="logo-heading">Blog</h2>
-      <div>
-        <a href="" class="navbar-links">Blog</a>
-        <a href="" class="navbar-links">About</a>
-        <a href="" class="navbar-links">Contact</a>
+      <div class="w-nav-menu">
+        <a (click)="handleRedirect('blog')" class="navbar-links">Blog</a>
+        <a (click)="handleRedirect('about')" class="navbar-links">About</a>
+        <a (click)="handleRedirect('contact')" class="navbar-links">Contact</a>
       </div>
       <div class="menu-wrapper">
         <div (click)="toggleSearch()" class="nav-search-icon">
@@ -38,7 +38,7 @@
   >
     <div class="nav-right-list">
       <div *ngFor="let navLink of navigationBarLinks" class="nav-menu-header-row">
-        <a [href]="navLink.link" class="nav-menu-link">
+        <a (click)="handleRedirect(navLink.link)" class="nav-menu-link">
           <div class="nav-heading">{{ navLink.value }}</div>
         </a>
       </div>
@@ -58,7 +58,10 @@
 
   <div [@slideInOut]="showNavigationSearch ? 'in' : 'out'" class="search-wrapper">
     <div class="search">
-      <component-navigation-search/>
+      <basic-input
+        [label]="'Search for posts'"
+        [placeholder]="'Search...'"
+      />
     </div>
   </div>
 </div>

@@ -5,8 +5,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from '@components/components.module';
 import { PageNotFoundComponent } from '@pages/page-not-found/page-not-found.component';
 import { LayoutsModule } from '@layouts/layouts.module';
+import { AboutComponent } from '@pages/about/about.component';
+import { ContactComponent } from '@pages/contact/contact.component';
 
-const components: any = [HomeComponent, PageNotFoundComponent];
+const components: any = [
+  HomeComponent,
+  PageNotFoundComponent,
+  AboutComponent,
+  ContactComponent
+];
 
 const routes: Routes = [
   {
@@ -20,6 +27,14 @@ const routes: Routes = [
   {
     path: 'index',
     redirectTo: ''
+  },
+  {
+    path: 'about',
+    component: AboutComponent
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
   },
   {
     path: '**',

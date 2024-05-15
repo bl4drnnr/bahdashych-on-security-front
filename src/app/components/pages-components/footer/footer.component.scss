@@ -2,6 +2,10 @@
   padding: 50px 0 40px;
   position: relative;
 
+  &.no-padding {
+    padding: 0
+  }
+
   @media screen and (max-width: 767px) {
     padding-left: 15px;
     padding-right: 15px;
@@ -169,6 +173,7 @@
 }
 
 .footer-link-three {
+  cursor: pointer;
   color: #fff;
   font-size: var(--standard-subheading);
   border-bottom-style: none;
@@ -209,6 +214,15 @@
 .footer-content-wrapper-minimal {
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: 991px) {
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 479px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .footer-content-holder {

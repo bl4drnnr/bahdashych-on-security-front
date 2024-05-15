@@ -1,0 +1,13 @@
+<div class="textarea-container">
+  <p
+    class="textarea-label"
+    *ngIf="label"
+  >{{ label }}</p>
+
+  <textarea
+    class="textarea-field"
+    [(ngModel)]="value"
+    [placeholder]="placeholder || ''"
+    (input)="onInput()"
+  ></textarea>
+</div>

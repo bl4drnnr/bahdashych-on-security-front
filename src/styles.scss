@@ -138,6 +138,10 @@ li {
   font-weight: 400;
   line-height: 1;
 
+  @media screen and (max-width: 479px) {
+    width: 100%;
+  }
+
   &.not-found-page {
     text-align: center;
     font-size: 12em;
@@ -157,7 +161,6 @@ li {
   display: block;
   width: 100%;
   height: 38px;
-  padding: 8px 12px;
   margin-bottom: 10px;
   font-size: 14px;
   line-height: 1.42857143;
@@ -239,4 +242,133 @@ fieldset[disabled]:not(.w-input-disabled) .w-input {
     font-family: var(--secondary-font), sans-serif;
     font-size: var(--standard-subheading);
   }
+}
+
+.hero-section {
+  display: flex;
+  overflow: hidden;
+  height: 25vh;
+  min-height: 25vh;
+  padding: 5vw 5vw 2.5vw;
+  justify-content: flex-start;
+  align-items: flex-end;
+
+  @media screen and (max-width: 991px) {
+    height: 70vh;
+  }
+
+  @media screen and (max-width: 479px) {
+    padding-bottom: 5vw;
+  }
+}
+
+.hero-content-wrapper {
+  align-items: flex-start;
+  width: 100%;
+  display: flex;
+
+  @media screen and (max-width: 991px) {
+    flex-direction: column;
+  }
+}
+
+.left-hero-section {
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 50vw;
+  display: flex;
+
+  @media screen and (max-width: 991px) {
+    width: 100%;
+  }
+}
+
+.right-hero-section {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50vw;
+  display: flex;
+
+  @media screen and (max-width: 991px) {
+    width: 100%;
+  }
+}
+
+.bold-text-6 {
+  font-family: Roboto Mono, sans-serif;
+  font-weight: 300;
+  line-height: 20px;
+}
+
+.italic-text-2 {
+  font-size: var(--standard-heading);
+}
+
+.intro-paragraph {
+  font-size: var(--standard-subheading);
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: 400;
+
+  @media screen and (max-width: 991px) {
+    font-size: var(--standard-subheading);
+    text-align: right;
+    justify-content: flex-end;
+    width: 80%;
+    display: flex;
+  }
+
+  @media screen and (max-width: 767px) {
+    font-size: var(--standard-subheading);
+    width: 90%;
+  }
+
+  @media screen and (max-width: 479px) {
+    font-size: var(--standard-subheading);
+    width: 90%;
+    margin-bottom: 1em;
+
+    &.inhouse {
+      text-align: left;
+    }
+  }
+}
+
+.divider {
+  background-color: rgba(255, 255, 255, .07);
+  height: .5px;
+  margin-top: 2.5vw;
+  margin-bottom: 2.5vw;
+}
+
+.intro-wrapper {
+  width: 100%;
+
+  @media screen and (max-width: 991px) {
+    text-align: right;
+    justify-content: flex-end;
+    margin-top: 3em;
+    display: flex;
+  }
+
+  @media screen and (max-width: 767px) {
+    margin-top: 5vw;
+  }
+
+  @media screen and (max-width: 479px) {
+    margin-top: 5vw;
+  }
+}
+
+.w-button {
+  display: inline-block;
+  padding: 9px 15px;
+  background-color: #3898EC;
+  color: white;
+  border: 0;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0;
 }

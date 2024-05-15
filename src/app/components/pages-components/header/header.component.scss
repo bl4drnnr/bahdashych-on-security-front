@@ -121,6 +121,7 @@
 }
 
 .nav-menu-link {
+  cursor: pointer;
   opacity: .35;
   color: #fff;
   text-align: left;
@@ -155,6 +156,7 @@
 }
 
 .search-wrapper {
+  z-index: 999;
   position: fixed;
   left: 0;
   top: 0;
@@ -169,8 +171,7 @@
 }
 
 .search {
-  display: flex;
-  width: 80vw;
+  width: 60vw;
   margin-bottom: 0;
   align-items: center;
   justify-content: center;
@@ -189,7 +190,17 @@
   align-items: center;
 }
 
+.w-nav-menu {
+  position: relative;
+  float: right;
+
+  @media screen and (max-width: 991px) {
+    display: none;
+  }
+}
+
 .navbar-links {
+  cursor: pointer;
   margin-left: 2em;
   padding: 0;
   border-bottom-style: none;

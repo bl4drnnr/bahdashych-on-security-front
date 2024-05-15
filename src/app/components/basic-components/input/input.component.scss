@@ -1,0 +1,30 @@
+@import 'variables';
+
+.input-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.field-label {
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: var(--standard-heading);
+  font-weight: 400;
+  display: block;
+}
+
+.form-input-field {
+  color: #fff;
+  font-family: Roboto Mono, sans-serif;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-bottom-color: rgba(255, 255, 255, .07);
+  margin-bottom: 1.5em;
+  display: block;
+  font-size: var(--standard-subheading);
+  padding-top: 0;
+  padding-bottom: 0;
+  font-weight: 300;
+  line-height: 1;
+}

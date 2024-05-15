@@ -9,4 +9,5 @@ export class DefaultLayout {
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() showHeaderBurger = true;
+  @Input() showNewsletter = true;
 }

@@ -1,0 +1,37 @@
+@import 'variables';
+
+.textarea-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.textarea-label {
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: var(--standard-heading);
+  font-weight: 400;
+  display: block;
+}
+
+.textarea-field {
+  color: #fff;
+  width: 100%;
+  height: 120px;
+  min-height: 60px;
+  max-height: 360px;
+  font-family: Roboto Mono, sans-serif;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-bottom-color: rgba(255, 255, 255, .07);
+  display: block;
+  font-size: var(--standard-subheading);
+  font-weight: 300;
+  margin-bottom: 10px;
+  line-height: 1;
+  resize: vertical;
+
+  &:focus {
+    outline: 0;
+  }
+}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LinksListInterface } from '@interfaces/links-list.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-home',
@@ -23,4 +24,10 @@ export class HomeComponent {
   ];
 
   favoritePosts = [];
+
+  constructor(private readonly router: Router) {}
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
+  }
 }

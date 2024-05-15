@@ -1,5 +1,5 @@
-<section class="footer-subscribe">
-  <div class="footer-container">
+<section class="footer-subscribe" [ngClass]="{'no-padding': !showNewsletter}">
+  <div class="footer-container" *ngIf="showNewsletter">
     <div class="footer-form-two w-form">
       <div class="footer-form-container-two">
         <div class="footer-form-title">Subscribe To Our Newsletters</div>
@@ -20,14 +20,14 @@
         <a
           class="footer-link-three"
           *ngFor="let footerLink of footerLinksListLeft"
-          [href]="footerLink.link"
+          (click)="handleRedirect(footerLink.link)"
         >{{ footerLink.value }}</a>
       </div>
       <div class="footer-block-three">
         <a
           class="footer-link-three"
           *ngFor="let footerLink of footerLinksListRight"
-          [href]="footerLink.link"
+          (click)="handleRedirect(footerLink.link)"
         >{{ footerLink.value }}</a>
       </div>
     </div>

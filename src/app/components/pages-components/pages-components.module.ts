@@ -2,17 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { HeaderComponent } from '@components/header/header.component';
 import { FooterComponent } from '@components/footer/footer.component';
-import { NavigationSearchComponent } from '@components/navigation-search/navigation-search.component';
+import { BasicComponentsModule } from '@components/basic-components.module';
 
 const components: any = [
   FooterComponent,
-  HeaderComponent,
-  NavigationSearchComponent
+  HeaderComponent
 ];
 
 @NgModule({
   declarations: [...components],
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage, BasicComponentsModule],
   exports: [...components]
 })
 export class PagesComponentsModule {}
