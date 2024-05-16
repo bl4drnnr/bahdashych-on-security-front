@@ -10,6 +10,8 @@ import { ContactComponent } from '@pages/contact/contact.component';
 import { PrivacyPolicyComponent } from '@pages/policies/privacy-policy/privacy-policy.component';
 import { TacComponent } from '@pages/policies/tac/tac.component';
 import { ArticleComponent } from '@pages/article/article.component';
+import { CategoryComponent } from '@pages/category/category.component';
+import { BlogComponent } from '@pages/blog/blog.component';
 
 const components: any = [
   HomeComponent,
@@ -18,7 +20,9 @@ const components: any = [
   ContactComponent,
   PrivacyPolicyComponent,
   TacComponent,
-  ArticleComponent
+  ArticleComponent,
+  CategoryComponent,
+  BlogComponent
 ];
 
 const routes: Routes = [
@@ -53,6 +57,14 @@ const routes: Routes = [
   {
     path: 'article/:slug',
     component: ArticleComponent
+  },
+  {
+    path: 'category/:category',
+    component: CategoryComponent
+  },
+  {
+    path: 'blog',
+    component: BlogComponent
   },
   {
     path: '**',

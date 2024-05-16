@@ -1,8 +1,9 @@
 import { Controller } from '@interfaces/controller.enum';
 import { Method } from '@interfaces/methods.enum';
 import { ArticleEndpoint } from '@interfaces/article.enum';
+import { CategoryEndpoint } from '@interfaces/category.enum';
 
-type EndpointsType = ArticleEndpoint;
+type EndpointsType = ArticleEndpoint | CategoryEndpoint;
 
 export interface ProxyRequestInterface {
   controller: Controller;
