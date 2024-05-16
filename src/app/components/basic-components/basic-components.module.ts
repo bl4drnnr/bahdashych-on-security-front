@@ -5,11 +5,11 @@ import { InputComponent } from '@components/input/input.component';
 import { TextareaComponent } from '@components/textarea/textarea.component';
 import { ButtonComponent } from '@components/button/button.component';
 
-const components = [InputComponent, TextareaComponent, ButtonComponent]
+const components = [InputComponent, TextareaComponent, ButtonComponent];
 
 @NgModule({
   declarations: [...components],
   imports: [CommonModule, FormsModule],
   exports: [...components]
 })
-export class BasicComponentsModule { }
+export class BasicComponentsModule {}

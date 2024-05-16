@@ -20,14 +20,14 @@
         <a
           class="footer-link-three"
           *ngFor="let footerLink of footerLinksListLeft"
-          (click)="handleRedirect(footerLink.link)"
+          [href]="footerLink.link"
         >{{ footerLink.value }}</a>
       </div>
       <div class="footer-block-three">
         <a
           class="footer-link-three"
           *ngFor="let footerLink of footerLinksListRight"
-          (click)="handleRedirect(footerLink.link)"
+          [href]="footerLink.link"
         >{{ footerLink.value }}</a>
       </div>
     </div>

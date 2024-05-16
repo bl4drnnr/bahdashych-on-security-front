@@ -4,10 +4,7 @@ import { HeaderComponent } from '@components/header/header.component';
 import { FooterComponent } from '@components/footer/footer.component';
 import { BasicComponentsModule } from '@components/basic-components.module';
 
-const components: any = [
-  FooterComponent,
-  HeaderComponent
-];
+const components: any = [FooterComponent, HeaderComponent];
 
 @NgModule({
   declarations: [...components],

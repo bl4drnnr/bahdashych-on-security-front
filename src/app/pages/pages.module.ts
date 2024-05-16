@@ -7,12 +7,16 @@ import { PageNotFoundComponent } from '@pages/page-not-found/page-not-found.comp
 import { LayoutsModule } from '@layouts/layouts.module';
 import { AboutComponent } from '@pages/about/about.component';
 import { ContactComponent } from '@pages/contact/contact.component';
+import { PrivacyPolicyComponent } from '@pages/policies/privacy-policy/privacy-policy.component';
+import { TacComponent } from '@pages/policies/tac/tac.component';
 
 const components: any = [
   HomeComponent,
   PageNotFoundComponent,
   AboutComponent,
-  ContactComponent
+  ContactComponent,
+  PrivacyPolicyComponent,
+  TacComponent
 ];
 
 const routes: Routes = [
@@ -35,6 +39,14 @@ const routes: Routes = [
   {
     path: 'contact',
     component: ContactComponent
+  },
+  {
+    path: 'policies/privacy-policy',
+    component: PrivacyPolicyComponent
+  },
+  {
+    path: 'policies/terms-and-conditions',
+    component: TacComponent
   },
   {
     path: '**',

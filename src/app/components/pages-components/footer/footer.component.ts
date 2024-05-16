@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { LinksListInterface } from '@interfaces/links-list.interface';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'component-footer',
@@ -27,22 +26,12 @@ export class FooterComponent {
 
   footerLinksListRight: Array<LinksListInterface> = [
     {
-      link: 'privacy-policy',
+      link: 'policies/privacy-policy',
       value: 'Privacy Policy'
     },
     {
-      link: 'tac',
+      link: 'policies/terms-and-conditions',
       value: 'Terms & Conditions'
-    },
-    {
-      link: 'licensing',
-      value: 'Licensing'
     }
   ];
-
-  constructor(private readonly router: Router) {}
-
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
-  }
 }
