@@ -9,6 +9,7 @@ import { AboutComponent } from '@pages/about/about.component';
 import { ContactComponent } from '@pages/contact/contact.component';
 import { PrivacyPolicyComponent } from '@pages/policies/privacy-policy/privacy-policy.component';
 import { TacComponent } from '@pages/policies/tac/tac.component';
+import { ArticleComponent } from '@pages/article/article.component';
 
 const components: any = [
   HomeComponent,
@@ -16,7 +17,8 @@ const components: any = [
   AboutComponent,
   ContactComponent,
   PrivacyPolicyComponent,
-  TacComponent
+  TacComponent,
+  ArticleComponent
 ];
 
 const routes: Routes = [
@@ -47,6 +49,10 @@ const routes: Routes = [
   {
     path: 'policies/terms-and-conditions',
     component: TacComponent
+  },
+  {
+    path: 'article/:slug',
+    component: ArticleComponent
   },
   {
     path: '**',

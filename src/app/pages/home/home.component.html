@@ -35,27 +35,21 @@
 
   <div class="article-grid-section">
     <div class="collection-list-grid">
-      <div class="collection-cell">
-        <a href="#" class="card-main-category">Security</a>
-        <a href="#" class="card-link-block w-inline-block">
+      <div *ngFor="let favoriteArticle of favoriteArticles" class="collection-cell">
+        <a [href]="favoriteArticle.categoryLink" class="card-main-category">{{ favoriteArticle.category }}</a>
+        <a [href]="'article/' + favoriteArticle.slug" class="card-link-block w-inline-block">
           <div class="image-holder">
-            <img alt="" loading="lazy" src="https://assets-global.website-files.com/64f8a5805a1caa95358b298b/64f8aab91657617febc2e016_image3.jpeg" class="main-collection-image">
+            <img
+              class="main-collection-image"
+              [src]="favoriteArticle.image"
+              [alt]="favoriteArticle.slug"
+              loading="lazy"
+            >
             <div class="card-content">
-              <h3 class="card-main-additional-information">October 23, 2024</h3>
-              <h2 class="card-main-title">Emerging Trends in the IT Space: Navigating the Digital Future</h2>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="collection-cell">
-        <a href="#" class="card-main-category">Implementation</a>
-        <a href="#" class="card-link-block w-inline-block">
-          <div class="image-holder">
-            <img alt="" loading="lazy" src="https://assets-global.website-files.com/64f8a5805a1caa95358b298b/64f8aab91657617febc2e016_image3.jpeg" class="main-collection-image">
-            <div class="card-content">
-              <h3 class="card-main-additional-information">October 23, 2024</h3>
-              <h2 class="card-main-title">Emerging Trends in the IT Space: Navigating the Digital Future</h2>
+              <h3 class="card-main-additional-information">
+                {{ dayjs(favoriteArticle.date).format('MMMM D, YYYY') }}
+              </h3>
+              <h2 class="card-main-title">{{ favoriteArticle.title }}</h2>
             </div>
           </div>
         </a>

@@ -128,6 +128,25 @@ li {
   font-size: 1rem;
 }
 
+blockquote {
+  color: #fff;
+  border-left: 5px solid #e2e2e2;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-family: Roboto Mono, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.article-picture {
+  display: flex;
+  justify-content: center;
+
+  img {
+    max-width: 60%;
+  }
+}
+
 .heading-xxl {
   text-align: left;
   width: 75%;
@@ -247,8 +266,8 @@ fieldset[disabled]:not(.w-input-disabled) .w-input {
 .hero-section {
   display: flex;
   overflow: hidden;
-  height: 25vh;
-  min-height: 25vh;
+  height: 35vh;
+  min-height: 35vh;
   padding: 5vw 5vw 2.5vw;
   justify-content: flex-start;
   align-items: flex-end;
@@ -418,4 +437,11 @@ fieldset[disabled]:not(.w-input-disabled) .w-input {
   @media screen and (max-width: 991px) {
     width: 90%;
   }
+}
+
+.image-cover {
+  object-fit: cover;
+  width: 100%;
+  height: 30vh;
+  margin-bottom: 18px;
 }
