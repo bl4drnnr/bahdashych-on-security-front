@@ -15,8 +15,8 @@ export class ArticleService {
   getArticleBySlug(slug: string): Observable<Article> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
-      controller: Controller.ARTICLE,
-      action: ArticleEndpoint.GET_BY_SLUG,
+      controller: Controller.ARTICLES,
+      action: ArticleEndpoint.GET_POSTED_BY_SLUG,
       params: { slug }
     });
   }

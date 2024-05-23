@@ -1,3 +1,3 @@
 export enum ArticleEndpoint {
-  GET_BY_SLUG = 'get-by-slug'
+  GET_POSTED_BY_SLUG = 'get-posted-by-slug'
 }

@@ -1,8 +1,10 @@
 export interface Article {
-  category: string;
-  categoryLink: string;
-  image: string;
-  date: Date;
-  title: string;
-  content: any;
+  articleName: string;
+  articleSlug: string;
+  articleDescription: string;
+  articleTags: Array<string>;
+  articleContent: string;
+  articleImage: string;
+  createdAt: Date;
+  category: { categoryName: string };
 }

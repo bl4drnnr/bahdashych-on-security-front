@@ -1,4 +1,4 @@
 export enum Controller {
-  ARTICLE = 'article',
+  ARTICLES = 'articles',
   CATEGORY = 'category'
 }
