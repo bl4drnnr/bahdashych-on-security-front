@@ -23,6 +23,7 @@
         <a href="/blog" class="navbar-links">Blog</a>
         <a href="/about" class="navbar-links">About</a>
         <a href="/contact" class="navbar-links">Contact</a>
+        <a class="navbar-links" (click)="showLanguageMenu = true">Change language</a>
       </div>
       <div class="menu-wrapper">
         <div (click)="toggleSearch()" class="nav-search-icon">
@@ -61,6 +62,8 @@
       <basic-input
         [label]="'Search for posts'"
         [placeholder]="'Search...'"
+        [value]="postsSearchQuery"
+        (valueChange)="postsSearchQuery = $event"
       />
     </div>
   </div>

@@ -445,3 +445,49 @@ fieldset[disabled]:not(.w-input-disabled) .w-input {
   height: 30vh;
   margin-bottom: 18px;
 }
+
+.utility-page-wrap {
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  max-width: 100%;
+  height: 80vh;
+  max-height: 100%;
+  display: flex;
+}
+
+.utility-page-content {
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  width: 50vw;
+  display: flex;
+
+  @media screen and (max-width: 991px) {
+    width: 65%;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 85%;
+  }
+
+  @media screen and (max-width: 479px) {
+    width: 90%;
+  }
+}
+
+.standard-message {
+  color: #adadad;
+  font-family: Roboto Mono, sans-serif;
+  font-size: var(--standard-subheading);
+  line-height: 1;
+
+  @media screen and (max-width: 1920px) {
+    line-height: 1;
+  }
+}
+
+.span-link {
+  font-size: var(--standard-subheading);
+  cursor: pointer;
+}

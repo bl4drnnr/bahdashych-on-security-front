@@ -54,6 +54,9 @@
         "src/libs/api/errors/*",
         "src/libs/enums/api/*"
       ],
+      "@responses/*": [
+        "src/libs/api/responses/newsletters/*"
+      ],
       "@layouts/*": ["src/app/layouts/*"]
     }
   },

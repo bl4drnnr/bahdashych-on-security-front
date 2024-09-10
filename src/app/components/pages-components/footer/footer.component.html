@@ -1,19 +1,30 @@
 <section class="footer-subscribe" [ngClass]="{'no-padding': !showNewsletter}">
   <div class="footer-container" *ngIf="showNewsletter">
     <div class="footer-form-two w-form">
-      <div class="footer-form-container-two">
+      <div
+        *ngIf="!newslettersSubscriptionSubmitted"
+        class="footer-form-container-two"
+      >
         <div class="footer-form-title">Subscribe To Our Newsletters</div>
         <div class="footer-form-block-two">
-          <input class="footer-form-input w-input" placeholder="Enter your email" type="email">
-          <button class="button-primary w-button">Subscribe Now</button>
+          <input
+            [(ngModel)]="newslettersSubscriptionEmail"
+            class="footer-form-input w-input"
+            placeholder="Enter your email"
+            type="email"
+          >
+          <button
+            (click)="submitSubscriptionToNewsletters()"
+            class="button-primary w-button"
+          >Subscribe Now</button>
         </div>
       </div>
-<!--      <div class="w-form-done">-->
-<!--        <div class="text-block">Thank you! Your submission has been received!</div>-->
-<!--      </div>-->
-<!--      <div class="w-form-fail">-->
-<!--        <div class="text-block-2">Oops! Something went wrong while submitting the form.</div>-->
-<!--      </div>-->
+      <div *ngIf="newslettersSubscriptionSuccess" class="w-form-done">
+        <div class="text-block">Thank you! Your submission has been received! Check your email inbox in order to confirm the subscription.</div>
+      </div>
+      <div *ngIf="newslettersSubscriptionFailure" class="w-form-fail">
+        <div class="text-block-2">Oops! Something went wrong while submitting the form.</div>
+      </div>
     </div>
     <div class="footer-wrapper-three">
       <div class="footer-block-three">

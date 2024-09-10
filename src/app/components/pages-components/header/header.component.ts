@@ -72,8 +72,10 @@ import { LinksListInterface } from '@interfaces/links-list.interface';
 export class HeaderComponent {
   @Input() showHeaderBurger: boolean;
 
+  postsSearchQuery: string;
   showNavigationBarMenu = false;
   showNavigationSearch = false;
+  showLanguageMenu = false;
   hamburgerState = 'initial';
   navigationBarLinks: Array<LinksListInterface> = [
     {
@@ -109,6 +111,7 @@ export class HeaderComponent {
 
   toggleSearch() {
     this.showNavigationSearch = !this.showNavigationSearch;
+    if (!this.showNavigationSearch) this.postsSearchQuery = '';
   }
 
   async handleRedirect(path: string) {

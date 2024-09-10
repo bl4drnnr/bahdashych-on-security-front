@@ -7,7 +7,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagesModule } from '@pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withFetch
+} from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     PagesModule
   ],
-  providers: [provideClientHydration()],
+  providers: [provideHttpClient(withFetch()), provideClientHydration()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

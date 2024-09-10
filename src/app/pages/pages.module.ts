@@ -12,6 +12,7 @@ import { TacComponent } from '@pages/policies/tac/tac.component';
 import { ArticleComponent } from '@pages/article/article.component';
 import { CategoryComponent } from '@pages/category/category.component';
 import { BlogComponent } from '@pages/blog/blog.component';
+import { NewslettersComponent } from './newsletters/newsletters.component';
 
 const components: any = [
   HomeComponent,
@@ -22,7 +23,8 @@ const components: any = [
   TacComponent,
   ArticleComponent,
   CategoryComponent,
-  BlogComponent
+  BlogComponent,
+  NewslettersComponent
 ];
 
 const routes: Routes = [
@@ -65,6 +67,10 @@ const routes: Routes = [
   {
     path: 'blog',
     component: BlogComponent
+  },
+  {
+    path: 'newsletters/:action/:newslettersId',
+    component: NewslettersComponent
   },
   {
     path: '**',

@@ -33,7 +33,10 @@ export class ArticleComponent implements OnInit {
       next: (article) => {
         this.article = article;
       },
-      error: () => (this.articleNotFound = true)
+      error: () => {
+        console.log('dsfdgd');
+        this.articleNotFound = true;
+      }
     });
   }
 
