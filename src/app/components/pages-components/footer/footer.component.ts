@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { LinksListInterface } from '@interfaces/links-list.interface';
 import { NewslettersService } from '@shared/services/newsletters.service';
+import { GlobalMessageService } from '@shared/global-message.service';
 
 @Component({
   selector: 'component-footer',
@@ -15,7 +16,10 @@ export class FooterComponent {
   newslettersSubscriptionSuccess: boolean;
   newslettersSubscriptionFailure: boolean;
 
-  constructor(private readonly newslettersService: NewslettersService) {}
+  constructor(
+    private readonly newslettersService: NewslettersService,
+    private readonly globalMessageService: GlobalMessageService
+  ) {}
 
   submitSubscriptionToNewsletters() {
     this.newslettersService
@@ -25,8 +29,21 @@ export class FooterComponent {
           this.newslettersSubscriptionEmail = '';
           this.newslettersSubscriptionSubmitted = true;
           this.newslettersSubscriptionSuccess = true;
+
+          this.globalMessageService.handle({
+            message: 'Your submission has been received!'
+          });
         },
-        error: () => (this.newslettersSubscriptionFailure = false)
+        error: () => {
+          this.newslettersSubscriptionEmail = '';
+          this.newslettersSubscriptionSubmitted = true;
+          this.newslettersSubscriptionFailure = true;
+
+          this.globalMessageService.handle({
+            message: 'Something went wrong. Please, try again.',
+            isError: true
+          });
+        }
       });
   }
 

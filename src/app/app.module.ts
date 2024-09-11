@@ -12,6 +12,7 @@ import {
   provideHttpClient,
   withFetch
 } from '@angular/common/http';
+import { ComponentsModule } from '@components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +21,8 @@ import {
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    PagesModule
+    PagesModule,
+    ComponentsModule
   ],
   providers: [provideHttpClient(withFetch()), provideClientHydration()],
   bootstrap: [AppComponent]
