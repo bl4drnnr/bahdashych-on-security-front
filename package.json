@@ -4,10 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4202",
-    "build": "ng build",
+    "build": "ng build && node copy-proxy-server.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "extract-i18n": "ng extract-i18n",
     "serve:ssr:personal-blog-front": "node dist/personal-blog-front/server/server.mjs",
+    "serve:ssr:ssr-personal-blog-front": "node dist/personal-blog-front/proxy-server.mjs",
     "fetch:slugs:dev": "NODE_ENV=development node fetch-slugs.mjs",
     "fetch:slugs:prod": "NODE_ENV=production node fetch-slugs.mjs",
     "format": "prettier --write \"{src,packages}/**/*.ts\" && eslint \"{src,packages}/**/*.ts\" --fix"
@@ -37,6 +39,7 @@
     "@angular-devkit/build-angular": "^17.3.4",
     "@angular/cli": "^17.3.4",
     "@angular/compiler-cli": "^17.3.0",
+    "@angular/localize": "^17.3.12",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
@@ -51,6 +54,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ng-extract-i18n-merge": "^2.12.0",
     "prettier": "^3.2.5",
     "typescript": "~5.4.2"
   }

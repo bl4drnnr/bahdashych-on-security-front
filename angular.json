@@ -20,6 +20,21 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": {
+          "code": "en"
+        },
+        "locales": {
+          "pl": {
+            "translation": "src/locale/messages.pl.xlf",
+            "baseHref": "/pl/"
+          },
+          "ru": {
+            "translation": "src/locale/messages.ru.xlf",
+            "baseHref": "/ru/"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
@@ -49,7 +64,10 @@
             },
             "ssr": {
               "entry": "server.ts"
-            }
+            },
+            "localize": true,
+            "i18nMissingTranslation": "warning",
+            "i18nDuplicateTranslation": "warning"
           },
           "configurations": {
             "production": {
@@ -70,6 +88,11 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 }
               ]
             },
@@ -78,6 +101,10 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
+              "localize": [
+                "en"
+              ],
+              "baseHref": "/en/",
               "fileReplacements": [
                 {
                   "replace": "src/app/environments/environment.production.ts",
@@ -101,9 +128,15 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "personal-blog-front:build"
+            "buildTarget": "personal-blog-front:build",
+            "format": "xlf2",
+            "outputPath": "src/locale",
+            "targetFiles": [
+              "messages.pl.xlf",
+              "messages.ru.xlf"
+            ]
           }
         },
         "test": {

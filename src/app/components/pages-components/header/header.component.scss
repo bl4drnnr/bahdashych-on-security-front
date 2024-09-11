@@ -47,6 +47,7 @@
   z-index: 1005;
   cursor: pointer;
   position: relative;
+  min-width: 35px;
 }
 
 .menu-line {
@@ -191,10 +192,13 @@
 }
 
 .w-nav-menu {
-  position: relative;
-  float: right;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: fit-content;
 
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 1100px) {
     display: none;
   }
 }
