@@ -1,9 +1,9 @@
 <div *ngIf="globalMessageService.message$ | async as message" [@fadeInOut]="true" class="alert-container">
-  <div class="alert" role="alert">
+  <div [ngClass]="getAlertStyles()" role="alert">
     <div class="alert-content">
       <div *ngIf="globalMessageService.isError">
         <img
-          class="alert-icon"
+          class="alert-icon error"
           [ngSrc]="errorIcon"
           [width]="50"
           [height]="50"
@@ -13,7 +13,7 @@
 
       <div *ngIf="globalMessageService.isWarning">
         <img
-          class="alert-icon"
+          class="alert-icon warning"
           [ngSrc]="warningIcon"
           [width]="50"
           [height]="50"
@@ -23,7 +23,7 @@
 
       <div *ngIf="!globalMessageService.isError && !globalMessageService.isWarning">
         <img
-          class="alert-icon"
+          class="alert-icon success"
           [ngSrc]="successIcon"
           [width]="50"
           [height]="50"
@@ -33,7 +33,7 @@
 
       <div>
         <h2 class="alert-header">
-          {{ globalMessageService.isError ? 'errors.error' : globalMessageService.isWarning ? 'errors.warning' : 'responses.success' }}
+          {{ globalMessageService.isError ? 'Error!' : globalMessageService.isWarning ? 'Warning!' : 'Success!' }}
         </h2>
         <p class="alert-message" [innerHTML]="message"></p>
       </div>

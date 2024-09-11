@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EnvService } from '@shared/env.service';
-import { catchError, Observable } from 'rxjs';
+import { catchError, finalize, Observable } from 'rxjs';
 import { ProxyRequestInterface } from '@interfaces/proxy-request.interface';
 import { Method } from '@interfaces/methods.enum';
+import { LoaderService } from '@shared/loader.service';
+import { ErrorHandlerService } from '@shared/error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,9 @@ import { Method } from '@interfaces/methods.enum';
 export class ApiService {
   constructor(
     private readonly http: HttpClient,
-    private readonly envService: EnvService
+    private readonly loaderService: LoaderService,
+    private readonly envService: EnvService,
+    private readonly errorHandler: ErrorHandlerService
   ) {}
 
   private apiUrl: string = this.envService.getApiUrl;
@@ -54,7 +58,11 @@ export class ApiService {
 
     return request$.pipe(
       catchError(async (error) => {
+        await this.errorHandler.errorHandler(error);
         throw error;
+      }),
+      finalize(() => {
+        this.loaderService.stop();
       })
     );
   }
