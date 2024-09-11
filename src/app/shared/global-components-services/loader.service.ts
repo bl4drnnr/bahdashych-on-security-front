@@ -15,8 +15,4 @@ export class LoaderService {
   stop() {
     this.isLoadingSubject.next(false);
   }
-
-  getStatus(): boolean {
-    return this.isLoadingSubject.value;
-  }
 }

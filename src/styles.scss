@@ -161,7 +161,8 @@ blockquote {
     width: 100%;
   }
 
-  &.not-found-page {
+  &.not-found-page,
+  &.newsletters-page {
     text-align: center;
     font-size: 12em;
     font-weight: 600;

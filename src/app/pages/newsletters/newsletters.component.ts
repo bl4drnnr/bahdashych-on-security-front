@@ -10,6 +10,8 @@ import { NewslettersService } from '@shared/services/newsletters.service';
 export class NewslettersComponent implements OnInit {
   action: string;
   newslettersId: string;
+  confirmationNewslettersError: boolean;
+  unsubscriptionNewslettersError: boolean;
 
   constructor(
     private readonly router: Router,
@@ -17,16 +19,11 @@ export class NewslettersComponent implements OnInit {
     private readonly newslettersService: NewslettersService
   ) {}
 
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
-  }
-
   confirmNewslettersSubscription() {
     this.newslettersService
       .confirmNewslettersSubscription(this.newslettersId)
       .subscribe({
-        next: () => {},
-        error: () => {}
+        error: () => (this.confirmationNewslettersError = true)
       });
   }
 
@@ -34,28 +31,35 @@ export class NewslettersComponent implements OnInit {
     this.newslettersService
       .unsubscribeFromNewsletters(this.newslettersId)
       .subscribe({
-        next: () => {},
-        error: () => {}
+        error: () => (this.unsubscriptionNewslettersError = true)
       });
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
-      const action = params.get('action');
-      const newslettersId = params.get('newslettersId');
-
-      if (!action || !newslettersId) return await this.handleRedirect('/');
-
-      if ((action && action !== 'subscribe') || action !== 'unsubscribe')
-        return await this.handleRedirect('/');
+      const action = params.get('action') as string;
+      const newslettersId = params.get('newslettersId') as string;
 
       this.action = action;
       this.newslettersId = newslettersId;
+
+      if (!action || !newslettersId) return await this.handleRedirect('/');
+
+      if (
+        this.action &&
+        this.action !== 'subscribe' &&
+        this.action !== 'unsubscribe'
+      )
+        return await this.handleRedirect('/');
 
       if (this.action === 'subscribe')
         return this.confirmNewslettersSubscription();
       else if (this.action === 'unsubscribe')
         return this.unsubscribeFromNewsletters();
     });
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
   }
 }

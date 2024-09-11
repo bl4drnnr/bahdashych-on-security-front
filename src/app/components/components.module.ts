@@ -2,16 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { PagesComponentsModule } from '@components/pages-components.module';
 import { BasicComponentsModule } from '@components/basic-components.module';
-import { LoaderComponent } from './layout-components/loader/loader.component';
-import { GlobalMessageComponent } from './layout-components/global-message/global-message.component';
+import { LayoutComponentsModule } from '@components/layout-components.module';
 
 @NgModule({
   exports: [
     PagesComponentsModule,
     BasicComponentsModule,
-    GlobalMessageComponent
+    LayoutComponentsModule
   ],
   imports: [CommonModule, NgOptimizedImage],
-  declarations: [LoaderComponent, GlobalMessageComponent]
+  declarations: []
 })
 export class ComponentsModule {}

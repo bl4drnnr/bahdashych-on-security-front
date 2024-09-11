@@ -30,13 +30,8 @@ export class ArticleComponent implements OnInit {
 
   getArticleBySlug() {
     this.articleService.getArticleBySlug(this.articleSlug).subscribe({
-      next: (article) => {
-        this.article = article;
-      },
-      error: () => {
-        console.log('dsfdgd');
-        this.articleNotFound = true;
-      }
+      next: (article) => (this.article = article),
+      error: () => (this.articleNotFound = true)
     });
   }
 

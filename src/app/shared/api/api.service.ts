@@ -56,6 +56,8 @@ export class ApiService {
         break;
     }
 
+    this.loaderService.start();
+
     return request$.pipe(
       catchError(async (error) => {
         await this.errorHandler.errorHandler(error);
