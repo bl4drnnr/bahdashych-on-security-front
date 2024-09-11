@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="ngi18n" original="ng.template">
+    <unit id="1405994380706600968">
+      <segment>
+        <source>Dive into a world where artificial intelligence becomes your ultimate ally in revolutionizing IT operations. <ph id="0" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/><ph id="1" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/>Join us on a journey where data-driven decisions, automation, and predictive insights are the norm.<ph id="2" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/><ph id="3" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/>Expect in-depth articles, hands-on demos, and expert guidance on harnessing the full potential of AI to optimize your IT infrastructure. <ph id="4" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/><ph id="5" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/>Whether you&apos;re an IT professional, a tech enthusiast, or a curious mind, we&apos;ll demystify the world of AI in IT, making it accessible and actionable for all.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

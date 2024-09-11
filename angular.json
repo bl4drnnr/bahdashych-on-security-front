@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "personal-blog-front": {
+    "bahdashych-on-security-front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -39,7 +39,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/personal-blog-front",
+            "outputPath": "dist/bahdashych-on-security-front",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -119,10 +119,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "personal-blog-front:build:production"
+              "buildTarget": "bahdashych-on-security-front:build:production"
             },
             "development": {
-              "buildTarget": "personal-blog-front:build:development"
+              "buildTarget": "bahdashych-on-security-front:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -130,7 +130,7 @@
         "extract-i18n": {
           "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "buildTarget": "personal-blog-front:build",
+            "buildTarget": "bahdashych-on-security-front:build",
             "format": "xlf2",
             "outputPath": "src/locale",
             "targetFiles": [

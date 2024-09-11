@@ -1,5 +1,5 @@
 {
-  "name": "personal-blog-front",
+  "name": "bahdashych-on-security-front",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,8 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "extract-i18n": "ng extract-i18n",
-    "serve:ssr:personal-blog-front": "node dist/personal-blog-front/server/server.mjs",
-    "serve:ssr:ssr-personal-blog-front": "node dist/personal-blog-front/proxy-server.mjs",
+    "serve:ssr:bahdashych-on-security-front": "node dist/bahdashych-on-security-front/proxy-server.mjs",
     "fetch:slugs:dev": "NODE_ENV=development node fetch-slugs.mjs",
     "fetch:slugs:prod": "NODE_ENV=production node fetch-slugs.mjs",
     "format": "prettier --write \"{src,packages}/**/*.ts\" && eslint \"{src,packages}/**/*.ts\" --fix"
