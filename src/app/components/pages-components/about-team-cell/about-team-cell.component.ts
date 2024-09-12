@@ -4,7 +4,10 @@ import { SocialLinkInterface } from '@interfaces/social-link.interface';
 @Component({
   selector: 'component-about-team-cell',
   templateUrl: './about-team-cell.component.html',
-  styleUrl: './about-team-cell.component.scss'
+  styleUrls: [
+    './about-team-cell.component.scss',
+    '../shared/about.component.scss'
+  ]
 })
 export class AboutTeamCellComponent {
   @Input() image: string;

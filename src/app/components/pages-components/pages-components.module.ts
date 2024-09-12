@@ -5,6 +5,7 @@ import { FooterComponent } from '@components/footer/footer.component';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { FormsModule } from '@angular/forms';
 import { AboutTeamCellComponent } from '@components/about-team-cell/about-team-cell.component';
+import { AboutExperienceCellComponent } from './about-experience-cell/about-experience-cell.component';
 
 const components: any = [
   FooterComponent,
@@ -13,8 +14,8 @@ const components: any = [
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, AboutExperienceCellComponent],
   imports: [CommonModule, NgOptimizedImage, BasicComponentsModule, FormsModule],
-  exports: [...components]
+  exports: [...components, AboutExperienceCellComponent]
 })
 export class PagesComponentsModule {}
