@@ -20,7 +20,7 @@
       <div class="about-container">
         <div class="about-team-member-cell">
           <component-about-team-cell
-            *ngFor="let teamMember of aboutTeamCells"
+            *ngFor="let teamMember of aboutTeam"
             [title]="teamMember.title"
             [subtitle]="teamMember.subtitle"
             [description]="teamMember.description"
@@ -31,8 +31,13 @@
 
         <div class="about-team-member-cell">
           <component-about-experience-cell
-            [title]="'Experience'"
-            [experiences]="aboutExperienceCells"
+            [experiences]="aboutExperience"
+          />
+        </div>
+
+        <div class="about-team-member-cell full-width">
+          <component-about-certs-cell
+            [certs]="aboutCerts"
           />
         </div>
       </div>

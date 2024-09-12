@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AboutTeamCellInterface } from '@interfaces/about-team-cell.interface';
+import { AboutTeamInterface } from '@interfaces/about-team.interface';
 import { EnvService } from '@shared/env.service';
-import { AboutExperienceCellInterface } from '@interfaces/about-experience-cell.interface';
+import { AboutExperienceInterface } from '@interfaces/about-experience.interface';
+import { AboutCertsInterface } from '@interfaces/about-certs.interface';
 
 @Component({
   selector: 'page-about',
@@ -17,7 +18,7 @@ export class AboutComponent {
 
   staticStorage = this.envService.getStaticStorageLink;
 
-  aboutTeamCells: Array<AboutTeamCellInterface> = [
+  aboutTeam: Array<AboutTeamInterface> = [
     {
       title: 'Mikhail Bahdashych',
       subtitle: 'Chief Author',
@@ -36,7 +37,7 @@ export class AboutComponent {
       ]
     }
   ];
-  aboutExperienceCells: Array<AboutExperienceCellInterface> = [
+  aboutExperience: Array<AboutExperienceInterface> = [
     {
       companyName: 'Cryptovoucher / P100',
       companyDescription:
@@ -74,6 +75,48 @@ export class AboutComponent {
           positionEndDate: new Date()
         }
       ]
+    }
+  ];
+  aboutCerts: Array<AboutCertsInterface> = [
+    {
+      certName: 'CCNA',
+      certDescription:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste minus quis sit! Distinctio doloremque eveniet expedita facilis magnam, mollitia numquam voluptate. Adipisci beatae, fugit harum ipsam quam quod sit.',
+      certPicture: 'ccna-logo.png',
+      certDoc: 'Cisco Certified Network Associate certificate.pdf',
+      obtainingDate: new Date(),
+      expirationDate: new Date(),
+      obtainedSkills: ['Networking', 'Security', 'Cisco']
+    },
+    {
+      certName: 'CCNAv7: ENSA',
+      certDescription:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste minus quis sit! Distinctio doloremque eveniet expedita facilis magnam, mollitia numquam voluptate. Adipisci beatae, fugit harum ipsam quam quod sit.',
+      certPicture: 'ccna-logo.png',
+      certDoc: 'MikhailBahdashych-ccnav7-ensa.pdf',
+      obtainingDate: new Date(),
+      expirationDate: new Date(),
+      obtainedSkills: ['Networking', 'Security', 'Cisco']
+    },
+    {
+      certName: 'CCNAv7: SRWE',
+      certDescription:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste minus quis sit! Distinctio doloremque eveniet expedita facilis magnam, mollitia numquam voluptate. Adipisci beatae, fugit harum ipsam quam quod sit.',
+      certPicture: 'ccna-logo.png',
+      certDoc: 'MikhailBahdashych-ccnav7-srwe.pdf',
+      obtainingDate: new Date(),
+      expirationDate: new Date(),
+      obtainedSkills: ['Networking', 'Security', 'Cisco']
+    },
+    {
+      certName: 'CompTIA Security+',
+      certDescription:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste minus quis sit! Distinctio doloremque eveniet expedita facilis magnam, mollitia numquam voluptate. Adipisci beatae, fugit harum ipsam quam quod sit.',
+      certPicture: 'comptia-securityplus-logo.png',
+      certDoc: 'ccna.pdf',
+      obtainingDate: new Date(),
+      expirationDate: new Date(),
+      obtainedSkills: ['Networking', 'Security', 'Cisco']
     }
   ];
 

@@ -1,6 +1,6 @@
 import { CompanyPositionInterface } from '@interfaces/company-position.interface';
 
-export interface AboutExperienceCellInterface {
+export interface AboutExperienceInterface {
   companyName: string;
   companyDescription: string;
   companyLink: string;

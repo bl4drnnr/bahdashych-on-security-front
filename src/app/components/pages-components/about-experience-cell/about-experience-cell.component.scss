@@ -3,11 +3,6 @@
 .experience-cell {
   border-left: 1px solid rgba(226, 226, 226, 0.5);
   padding-left: 2em;
-  transition: .2s;
-
-  &:hover {
-    border-left: 1px solid rgba(226, 226, 226);
-  }
 }
 
 .experience-intro-info {

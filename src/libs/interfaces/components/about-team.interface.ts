@@ -1,6 +1,6 @@
 import { SocialLinkInterface } from '@interfaces/social-link.interface';
 
-export interface AboutTeamCellInterface {
+export interface AboutTeamInterface {
   title: string;
   subtitle: string;
   description: string;

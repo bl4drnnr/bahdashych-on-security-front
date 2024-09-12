@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { Component, Input } from '@angular/core';
-import { AboutExperienceCellInterface } from '@interfaces/about-experience-cell.interface';
+import { AboutExperienceInterface } from '@interfaces/about-experience.interface';
 import { EnvService } from '@shared/env.service';
 
 @Component({
@@ -12,8 +12,7 @@ import { EnvService } from '@shared/env.service';
   ]
 })
 export class AboutExperienceCellComponent {
-  @Input() title: string;
-  @Input() experiences: Array<AboutExperienceCellInterface>;
+  @Input() experiences: Array<AboutExperienceInterface>;
 
   constructor(private readonly envService: EnvService) {}
 
