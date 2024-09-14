@@ -21,20 +21,27 @@
           <basic-input
             [label]="'What is your name?'"
             [placeholder]="'Your name'"
+            [value]="name"
+            (valueChange)="name = $event"
           />
           <basic-input
             type="email"
             [label]="'What is your email address?'"
             [placeholder]="'Your email'"
+            [value]="email"
+            (valueChange)="email = $event"
           />
           <basic-textarea
             [label]="'What would you like to inquire about?'"
             [placeholder]="'Write whatever you want'"
+            [value]="message"
+            (valueChange)="message = $event"
           />
           <div class="submit-btn-wrapper">
             <div class="submit-btn-container">
               <basic-button
                 [label]="'Submit'"
+                (buttonClick)="contact()"
               />
             </div>
           </div>
