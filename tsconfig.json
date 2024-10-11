@@ -54,8 +54,12 @@
         "src/libs/api/errors/*",
         "src/libs/enums/api/*"
       ],
+      "@payloads/*": [
+        "src/libs/api/payloads/contact/*"
+      ],
       "@responses/*": [
-        "src/libs/api/responses/newsletters/*"
+        "src/libs/api/responses/newsletters/*",
+        "src/libs/api/responses/contact/*"
       ],
       "@layouts/*": ["src/app/layouts/*"]
     }

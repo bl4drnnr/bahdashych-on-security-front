@@ -12,14 +12,27 @@ export class ErrorHandlerService {
 
   async errorHandler(error: HttpErrorResponse) {
     const errorPayload: ErrorPayloadInterface = error.error;
+    const errorMessage = errorPayload.message;
     let displayErrorMessage = '';
 
-    if (errorPayload.message) {
+    function tryParseJSON(value: string): any {
+      try {
+        const parsed = JSON.parse(value);
+        if (typeof parsed === 'object' && parsed !== null) {
+          return parsed;
+        }
+      } catch (error) {}
+      return value;
+    }
+
+    const parsedErrorMessage = tryParseJSON(errorMessage as string);
+
+    if (typeof parsedErrorMessage === 'string') {
       await this.globalMessageService.handleError({
-        message: errorPayload.message
+        message: parsedErrorMessage
       });
-    } else if (errorPayload.messages) {
-      for (const messageItem of errorPayload.messages) {
+    } else if (Array.isArray(parsedErrorMessage)) {
+      for (const messageItem of parsedErrorMessage) {
         for (const message of messageItem.error) {
           displayErrorMessage += `${message}<br>`;
         }

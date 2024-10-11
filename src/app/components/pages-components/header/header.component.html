@@ -50,9 +50,18 @@
         <h1 class="nav-left-list-link">Stay Connected!</h1>
       </div>
       <div class="nav-left-list-block">
-        <a href="http://instagram.com" class="social-link">Instagram</a>
-        <a href="http://twitter.com" class="social-link">Twitter</a>
-        <a href="http://facebook.com" class="social-link">Facebook</a>
+        <basic-social-link
+          [link]="'https://instagram.com'"
+          [title]="'Instagram'"
+        />
+        <basic-social-link
+          [link]="'https://facebook.com'"
+          [title]="'Facebook'"
+        />
+        <basic-social-link
+          [link]="'https://twitter.com'"
+          [title]="'Twitter'"
+        />
       </div>
     </div>
   </div>
