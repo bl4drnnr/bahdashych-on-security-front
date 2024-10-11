@@ -1,12 +1,34 @@
 <xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="pl">
   <file id="ngi18n" original="ng.template">
+    <unit id="7708270344948043036">
+      <segment state="initial">
+        <source>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ globalMessageService.isError ? &apos;Error!&apos; : globalMessageService.isWarning ? &apos;Warning!&apos; : &apos;Success!&apos; }}"/>
+        </source>
+        <target>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ globalMessageService.isError ? &apos;Error!&apos; : globalMessageService.isWarning ? &apos;Warning!&apos; : &apos;Success!&apos; }}"/>
+        </target>
+      </segment>
+    </unit>
+    <unit id="3014984376950430597">
+      <segment state="initial">
+        <source>Certifications</source>
+        <target>Certifications</target>
+      </segment>
+    </unit>
+    <unit id="1824510134640326733">
+      <segment state="initial">
+        <source>Experiences</source>
+        <target>Experiences</target>
+      </segment>
+    </unit>
     <unit id="187187500641108332">
       <segment state="initial">
         <source>
-          <ph id="0" equiv="INTERPOLATION" disp="{{ subtitle }}"/>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ position.positionTitle }}"/>
         </source>
         <target>
-          <ph id="0" equiv="INTERPOLATION" disp="{{ subtitle }}"/>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ position.positionTitle }}"/>
         </target>
       </segment>
     </unit>
@@ -40,13 +62,16 @@
         <target>If you find anything that I am writing about interesting, you would like to talk or you have any other reasons why you want to talk to me, I will always be glad to do so. </target>
       </segment>
     </unit>
-    <unit id="my-test-title">
+    <unit id="main.hello">
+      <notes>
+        <note category="description">Welcome message.</note>
+      </notes>
       <segment state="initial">
         <source>
-          <ph id="0" equiv="INTERPOLATION" disp="{{ title }}"/>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ message }}"/>
         </source>
         <target>
-          <ph id="0" equiv="INTERPOLATION" disp="{{ title }}"/>
+          <ph id="0" equiv="INTERPOLATION" disp="{{ message }}"/>
         </target>
       </segment>
     </unit>
